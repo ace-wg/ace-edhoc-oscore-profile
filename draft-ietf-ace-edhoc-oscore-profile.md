@@ -1795,7 +1795,17 @@ M21 |<----------------------------------------------------------------|
     |                                  |                              |
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+# Document Updates # {#sec-document-updates}
+
+RFC EDITOR: PLEASE REMOVE THIS SECTION.
+
+## Version -00 to -01 ## {#sec-00-01}
+
+* Clarifications and editorial improvements.
+
 # Acknowledgments # {#acknowldegment}
 {: numbered="no"}
+
+The authors sincerely thank {{{Christian Amsüss}}} for his comments and feedback.
 
 Work on this document has in part been supported by the H2020 project SIFIS-Home (grant agreement 952652).

@@ -1814,6 +1814,6 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 # Acknowledgments # {#acknowldegment}
 {: numbered="no"}
 
-The authors sincerely thank {{{Christian Amsüss}}} for his comments and feedback.
+The authors sincerely thank {{{Christian Amsüss}}} and {{{Carsten Bormann}}} for their comments and feedback.
 
 Work on this document has in part been supported by the H2020 project SIFIS-Home (grant agreement 952652).

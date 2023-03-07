@@ -320,7 +320,7 @@ When issuing the first access token of a token series, AS MAY specify the follow
 
 When issuing the first access token of a token series, AS can take either of the two possible options.
 
-* AS provides the access token to C, by specifying it in the "access\_token" parameter of the access token response. In such a case, the access token response MAY include the parameter "access\_token", which MUST encode the CBOR simple value "false" (0xf4).
+* AS provides the access token to C, by specifying it in the "access\_token" parameter of the access token response. In such a case, the access token response MAY include the parameter "token\_uploaded", which MUST encode the CBOR simple value "false" (0xf4).
 
 * AS does not provide the access token to C. Rather, AS uploads the access token to the /authz-info endpoint at RS, exactly like C would do, and as defined in {{c-rs}} and {{rs-c}}. Then, when replying to C with the access token response as defined above, the response MUST NOT include the parameter "access\_token", and MUST include the parameter "token\_uploaded" encoding the CBOR simple value "true" (0xf5). This is shown by the example in {{example-without-optimization-as-posting}}.
 
@@ -581,7 +581,7 @@ When preparing EDHOC message\_1, C performs the following steps, in additions to
 
 * Rather than first uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token in the EAD\_1 field of EDHOC message\_1 (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). This is shown by the example in {{example-with-optimization}}.
 
-   In such a case, as per {{Section 3.8 of I-D.ietf-lake-edhoc}}, C adds the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value) to the EAD\_1 field. In particular, ead\_label is the integer value TBD registered in {{iana-edhoc-ead}} of this document, while ead\_value is a CBOR byte string with value the access token. That is, the value of the CBOR byte string is the content of the "access_token" field of the access token response from AS (see {{as-c}}).
+   In such a case, as per {{Section 3.8 of I-D.ietf-lake-edhoc}}, C adds the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value) to the EAD\_1 field. In particular, ead\_label is the integer value TBD registered in {{iana-edhoc-ead}} of this document, while ead\_value is a CBOR byte string with value the access token. That is, the CBOR byte string is equal to the value of the "access_token" field of the access token response from AS (see {{as-c}}).
 
    If EDHOC message\_1 includes the EAD item EAD\_ACCESS\_TOKEN within the field EAD\_1, then RS MUST process the access token carried out in ead\_value as specified in {{rs-c}}. If such a process fails, RS MUST reply to C as specified in {{rs-c}}, it MUST discontinue the EDHOC protocol, and it MUST NOT send an EDHOC error message (see {{Section 6 of I-D.ietf-lake-edhoc}}). RS MUST have successfully completed the processing of the access token before continuing the EDHOC execution by sending EDHOC message\_2.
 
@@ -1800,6 +1800,8 @@ M21 |<----------------------------------------------------------------|
 RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
 ## Version -00 to -01 ## {#sec-00-01}
+
+* Fixed semantics of the ead_value for transporting an Access Token in the EAD_1 field.
 
 * Updated references.
 

@@ -583,7 +583,7 @@ When preparing EDHOC message\_1, C performs the following steps, in additions to
 
    In such a case, as per {{Section 3.8 of I-D.ietf-lake-edhoc}}, C adds the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value) to the EAD\_1 field. In particular, ead\_label is the integer value TBD registered in {{iana-edhoc-ead}} of this document, while ead\_value is a CBOR byte string with value the access token. That is, the CBOR byte string is equal to the value of the "access_token" field of the access token response from AS (see {{as-c}}).
 
-   If EDHOC message\_1 includes the EAD item EAD\_ACCESS\_TOKEN within the field EAD\_1, then RS MUST process the access token carried out in ead\_value as specified in {{rs-c}}. If such a process fails, RS MUST reply to C as specified in {{rs-c}}, it MUST discontinue the EDHOC protocol, and it MUST NOT send an EDHOC error message (see {{Section 6 of I-D.ietf-lake-edhoc}}). RS MUST have successfully completed the processing of the access token before continuing the EDHOC execution by sending EDHOC message\_2.
+   If EDHOC message\_1 includes the EAD item EAD\_ACCESS\_TOKEN within the field EAD\_1, then RS MUST process the access token carried out in ead\_value as specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST discontinue the EDHOC protocol. RS MUST have successfully completed the processing of the access token before continuing the EDHOC execution by sending EDHOC message\_2.
 
    Note that the EAD\_1 field of EDHOC message\_1 cannot carry an access token for the update of access rights, but rather only an access token issued as the first of a token series.
 
@@ -1802,6 +1802,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 ## Version -00 to -01 ## {#sec-00-01}
 
 * Fixed semantics of the ead_value for transporting an Access Token in the EAD_1 field.
+
+* Error handling aligned with EDHOC.
 
 * Updated references.
 

@@ -757,7 +757,9 @@ If JSON is used instead of CBOR, then RAW\_STRING is the Base64 encoding of the 
 
 Once computed the CBOR byte string EXTENDED\_NONCE, both C and RS perform the following steps.
 
-1. C and RS refer to the stored state of a completed EDHOC execution where the authentication credential AUTH\_CRED\_C was used as CRED\_I. In case of multiple matches, the state of the latest completed EDHOC execution is considered.
+1. C refers to the stored state of the completed EDHOC execution where: i) the authentication credential AUTH\_CRED\_C was used as CRED\_I; and ii) the authentication credential that was used as CRED_R is the AUTH_CRED_RS that AS indicated in the access token response (see {{as-c}}), when providing C with the first access token of the token series comprising the access token just uploaded to RS.
+
+   RS refers to the stored state of a completed EDHOC execution where the authentication credential AUTH\_CRED\_C was used as CRED\_I. In case of multiple matching EDHOC executions, RS considers the state of the EDHOC execution that, among the matching ones, has completed latest.
 
 2. With reference to the EDHOC state determined at the previous step, C and RS invoke the EDHOC-KeyUpdate function (see {{Section I of I-D.ietf-lake-edhoc}}), specifying the CBOR byte string EXTENDED\_NONCE as "context" argument. This results in updating the secret key PRK\_out to be considered from here on for this EDHOC state.
 
@@ -1804,6 +1806,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Fixed semantics of the ead_value for transporting an Access Token in the EAD_1 field.
 
 * Error handling aligned with EDHOC.
+
+* Precise characterization of the EDHOC execution considered for EDHOC-KeyUpdate.
 
 * Updated references.
 

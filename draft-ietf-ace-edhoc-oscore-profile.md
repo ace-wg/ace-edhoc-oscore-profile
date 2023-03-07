@@ -1209,9 +1209,9 @@ M05 |<---------------------------------|                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       id     : h'01',            |                              |
-    |       suite  : 2,                |                              |
-    |       methods: 3                 |                              |
+    |       id : h'01',                |                              |
+    |       cipher_suites : 2,         |                              |
+    |       methods : 3                |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
@@ -1316,9 +1316,9 @@ M14 |<---------------------------------|                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       id     : h'05',            |                              |
-    |       suite  : 2,                |                              |
-    |       methods: 3                 |                              |
+    |       id : h'05',                |                              |
+    |       cipher_suites : 2,         |                              |
+    |       methods : 3                |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
@@ -1422,9 +1422,9 @@ M04 |<---------------------------------|                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       id     : h'01',            |                              |
-    |       suite  : 2,                |                              |
-    |       methods: 3                 |                              |
+    |       id : h'01',                |                              |
+    |       cipher_suites : 2,         |                              |
+    |       methods : 3                |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
@@ -1521,9 +1521,9 @@ M10 |<---------------------------------|                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       id     : h'05',            |                              |
-    |       suite  : 2,                |                              |
-    |       methods: 3                 |                              |
+    |       id : h'05',                |                              |
+    |       cipher_suites : 2,         |                              |
+    |       methods : 3                |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
@@ -1538,8 +1538,8 @@ M10 |<---------------------------------|                              |
     |  (unprotected message)           |                              |
 M11 |---------------------------------------------------------------->|
     |   Payload {                      |                              |
-    |     access_token: access token   |                              |
-    |     nonce_1: N1  // nonce        |                              |
+    |     access_token : access token  |                              |
+    |     nonce_1 : N1  // nonce       |                              |
     |   }                              |                              |
     |                                  |                              |
     |                                  |                              |
@@ -1547,7 +1547,7 @@ M11 |---------------------------------------------------------------->|
     |  (unprotected message)           |                              |
 M12 |<----------------------------------------------------------------|
     |   Payload {                      |                              |
-    |     nonce_2: N2  // nonce        |                              |
+    |     nonce_2 : N2  // nonce       |                              |
     |   }                              |                              |
     |                                  |                              |
 
@@ -1610,7 +1610,6 @@ M04 |--------------------------------->|                              |
     |                                  |                              |
     |                                  |                              |
     |                                  |  Token upload to /authz-info |
-    |                                  |  (OSCORE-protected message)  |
 M05 |                                  |----------------------------->|
     |                                  |  In the access token:        |
     |                                  |     * the 'cnf' claim        |
@@ -1619,8 +1618,8 @@ M05 |                                  |----------------------------->|
     |                                  |     * the 'edhoc_info'       |
     |                                  |       claim specifies        |
     |                                  |         {                    |
-    |                                  |           id     : h'01',    |
-    |                                  |           suite  : 2,        |
+    |                                  |           id : h'01',        |
+    |                                  |           cipher_suites : 2, |
     |                                  |           methods: 3         |
     |                                  |         }                    |
     |                                  |                              |
@@ -1631,7 +1630,6 @@ M05 |                                  |----------------------------->|
 
     |                                  |                              |
     |                                  |  2.01 (Created)              |
-    |                                  |  (OSCORE-protected message)  |
 M06 |                                  |<-----------------------------|
     |                                  |                              |
     |                                  |                              |
@@ -1648,9 +1646,9 @@ M07 |<---------------------------------|                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       id     : h'01',            |                              |
-    |       suite  : 2,                |                              |
-    |       methods: 3                 |                              |
+    |       id : h'01',                |                              |
+    |       cipher_suites  : 2,        |                              |
+    |       methods : 3                |                              |
     |     }                            |                              |
     |                                  |                              |
 
@@ -1725,7 +1723,6 @@ M13 |--------------------------------->|                              |
     |                                  |                              |
     |                                  |                              |
     |                                  |  Token upload to /authz-info |
-    |                                  |  (OSCORE-protected message)  |
 M14 |                                  |----------------------------->|
     |                                  |  In the access token:        |
     |                                  |     * the 'cnf' claim        |
@@ -1734,14 +1731,13 @@ M14 |                                  |----------------------------->|
     |                                  |     * the 'edhoc_info'       |
     |                                  |       claim specifies        |
     |                                  |         {                    |
-    |                                  |           id     : h'05',    |
-    |                                  |           suite  : 2,        |
-    |                                  |           methods: 3         |
+    |                                  |           id : h'05',        |
+    |                                  |           cipher_suites : 2, |
+    |                                  |           methods : 3        |
     |                                  |         }                    |
     |                                  |                              |
     |                                  |                              |
     |                                  |  2.01 (Created)              |
-    |                                  |  (OSCORE-protected message)  |
 M15 |                                  |<-----------------------------|
     |                                  |                              |
     |                                  |                              |
@@ -1758,9 +1754,9 @@ M16 |<---------------------------------|                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       id     : h'05',            |                              |
-    |       suite  : 2,                |                              |
-    |       methods: 3                 |                              |
+    |       id : h'05',                |                              |
+    |       cipher_suites : 2,         |                              |
+    |       methods : 3                |                              |
     |     }                            |                              |
     |                                  |                              |
     |                                  |                              |
@@ -1808,6 +1804,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Error handling aligned with EDHOC.
 
 * Precise characterization of the EDHOC execution considered for EDHOC-KeyUpdate.
+
+* Fixed message exchange examples.
 
 * Updated references.
 

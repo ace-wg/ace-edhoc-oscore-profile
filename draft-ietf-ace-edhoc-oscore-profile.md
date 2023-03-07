@@ -142,7 +142,7 @@ This profile specifies how C requests an access token from AS for the resources 
 
 If C has retrieved an access token, there are two different options for C to upload it to RS, as further detailed in this document.
 
-1. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.8 of RFC9200}}. If the access token is valid, RS responds to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol by sending EDHOC message_1 to RS. The communication with the /authz-info endpoint is not protected, except for the update of access rights.
+1. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.10 of RFC9200}}. If the access token is valid, RS responds to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol by sending EDHOC message_1 to RS. The communication with the /authz-info endpoint is not protected, except for the update of access rights.
 
 2. C initiates the EDHOC protocol by sending EDHOC message_1 to RS, specifying the access token as External Authorization Data (EAD) in the EAD_1 field of EDHOC message_1 (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). If the access token is valid and the processing of EDHOC message_1 is successful, RS responds with EDHOC message_2, thus continuing the EDHOC protocol. This alternative cannot be used for the update of access rights.
 
@@ -450,7 +450,7 @@ The EDHOC\_Information can either be encoded as a JSON object or as a CBOR map. 
 
 * cipher\_suites: This parameter specifies a set of supported EDHOC cipher suites (see {{Section 3.6 of I-D.ietf-lake-edhoc}}). If the set is composed of a single EDHOC cipher suite, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC cipher suite. In JSON, the "cipher\_suites" value is an integer or an array of integers. In CBOR, the "cipher\_suites" is an integer or an array of integers, and has label 2.
 
-* key\_update: This parameter indicates whether the EDHOC-KeyUpdate function (see {{Section 4.2.2 of I-D.ietf-lake-edhoc}}) is supported. In JSON, the "key\_update" value is a boolean. In CBOR, "key\_update" is the simple value "true" or "false", and has label 3.
+* key\_update: This parameter indicates whether the EDHOC-KeyUpdate function (see {{Section I of I-D.ietf-lake-edhoc}}) is supported. In JSON, the "key\_update" value is a boolean. In CBOR, "key\_update" is the simple value "true" or "false", and has label 3.
 
 * message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of I-D.ietf-lake-edhoc}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value "true" or "false", and has label 4.
 
@@ -613,7 +613,7 @@ If OSCORE verification succeeds and the target resource requires authorization, 
 
 Once successfully completed an EDHOC execution, C and RS are expected to preserve the EDHOC state of such an execution, as long as the authentication credentials of both C and RS, namely AUTH\_CRED\_C and AUTH\_CRED\_RS are valid. This especially consists in preserving the secret key PRK\_out attained at the end of the EDHOC execution.
 
-In case C has to establish a new OSCORE Security Context with RS, and as long as the outcome of their previously completed EDHOC execution is still valid, C and RS MUST rely on the EDHOC-KeyUpdate function defined in {{Section 4.2.2 of I-D.ietf-lake-edhoc}} as further specified in the rest of this section, rather than re-running the EDHOC protocol. When supporting this profile, both C and RS MUST support the EDHOC-KeyUpdate function. The procedure is sketched in {{key-update-procedure}}.
+In case C has to establish a new OSCORE Security Context with RS, and as long as the outcome of their previously completed EDHOC execution is still valid, C and RS MUST rely on the EDHOC-KeyUpdate function defined in {{Section I of I-D.ietf-lake-edhoc}} as further specified in the rest of this section, rather than re-running the EDHOC protocol. When supporting this profile, both C and RS MUST support the EDHOC-KeyUpdate function. The procedure is sketched in {{key-update-procedure}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
    C                            RS
@@ -759,7 +759,7 @@ Once computed the CBOR byte string EXTENDED\_NONCE, both C and RS perform the fo
 
 1. C and RS refer to the stored state of a completed EDHOC execution where the authentication credential AUTH\_CRED\_C was used as CRED\_I. In case of multiple matches, the state of the latest completed EDHOC execution is considered.
 
-2. With reference to the EDHOC state determined at the previous step, C and RS invoke the EDHOC-KeyUpdate function (see {{Section 4.2.2 of I-D.ietf-lake-edhoc}}), specifying the CBOR byte string EXTENDED\_NONCE as "context" argument. This results in updating the secret key PRK\_out to be considered from here on for this EDHOC state.
+2. With reference to the EDHOC state determined at the previous step, C and RS invoke the EDHOC-KeyUpdate function (see {{Section I of I-D.ietf-lake-edhoc}}), specifying the CBOR byte string EXTENDED\_NONCE as "context" argument. This results in updating the secret key PRK\_out to be considered from here on for this EDHOC state.
 
 3. With reference to the same EDHOC state as above, C and RS update the secret key PRK\_Exporter as per {{Section 4.2.1 of I-D.ietf-lake-edhoc}}. In particular, the key PRK\_out derived at step 2 is specified as "PRK\_out" argument. This results in updating the secret key PRK\_Exporter to be considered from here on for this EDHOC state.
 
@@ -771,9 +771,9 @@ Once computed the CBOR byte string EXTENDED\_NONCE, both C and RS perform the fo
 
 # Secure Communication with AS # {#secure-comm-as}
 
-As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicates via the /introspect or /token endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED. Other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} (such as HTTP and DTLS or TLS) MAY be used instead.
+As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicates via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED. Other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} (such as HTTP and DTLS or TLS) MAY be used instead.
 
-If OSCORE is used, the requesting entity and AS need to have a OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{example-without-optimization}}, {{example-with-optimization}} and {{example-without-optimization-as-posting}}. The requesting entity and AS communicate through the /introspect endpoint as specified in {{Section 5.9 of RFC9200}} and through the /token endpoint as specified in {{Section 5.8 of RFC9200}}.
+If OSCORE is used, the requesting entity and AS need to have a OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{example-without-optimization}}, {{example-with-optimization}} and {{example-without-optimization-as-posting}}. The requesting entity and AS communicate through the /token endpoint as specified in {{Section 5.8 of RFC9200}} and through the /introspect endpoint as specified in {{Section 5.9 of RFC9200}}.
 
 Furthermore, as defined in {{as-c}} and shown by the example in {{example-without-optimization-as-posting}}, AS may upload the access token to the /authz-info endpoint at RS, on behalf of C. In such a case, that exchange between AS and RS is not protected, just like when C uploads the access token to RS by itself.
 
@@ -1801,7 +1801,7 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
 ## Version -00 to -01 ## {#sec-00-01}
 
-* Update references.
+* Updated references.
 
 * Clarifications and editorial improvements.
 

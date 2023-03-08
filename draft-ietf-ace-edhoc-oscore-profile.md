@@ -1801,13 +1801,13 @@ This section lists the specifications of this profile based on the requirements 
 
 * Optionally, specify new grant types: Not specified
 
-* Optionally, define the use of client certificates as client credential type: C can use an authentication credentials of any type admitted by the EDHOC protocol, including public key certificates such as X.509 and C509 certificates.
+* Optionally, define the use of client certificates as client credential type: C can use authentication credentials of any type admitted by the EDHOC protocol, including public key certificates such as X.509 and C509 certificates.
 
 * Specify the communication protocol the client and RS must use: CoAP
 
 * Specify the security protocol the client and RS must use to protect their communication: OSCORE
 
-* Specify how the client and the RS mutually authenticate: Explicitly, by successfully executing the EDHOC key establishment protocol, after which a common OSCORE Security Context is established. As per the EDHOC authentication method used during the EDHOC session, authentication is provided by digital signatures, or by Message Authentication Codes (MACs) computed from an ephemeral-static ECDH shared secrets.
+* Specify how the client and the RS mutually authenticate: Explicitly, by successfully executing the EDHOC protocol, after which a common OSCORE Security Context is established from the EDHOC session keying material. As per the EDHOC authentication method used during the EDHOC session, authentication is provided by digital signatures, or by Message Authentication Codes (MACs) computed from an ephemeral-static ECDH shared secret.
 
 * Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of- possession protocol: proof-of-possession is first achieved by RS when successfully processing EDHOC message_3 during the EDHOC execution with C, through EDHOC algorithms and symmetric EDHOC session keys. Also, proof-of-possession is later achieved by C when receiving from RS: i) the optional EDHOC message_4 during the EDHOC execution with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC execution with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
 

@@ -1793,6 +1793,34 @@ M21 |<----------------------------------------------------------------|
     |                                  |                              |
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+# Profile Requirements # {#sec-profile-requirements}
+
+This section lists the specifications of this profile based on the requirements of the framework, as requested in {{Section C of RFC9200}}.
+
+* Optionally, define new methods for the client to discover the necessary permissions and AS for accessing a resource, different from the one proposed in {{RFC9200}}: Not specified
+
+* Optionally, specify new grant types: Not specified
+
+* Optionally, define the use of client certificates as client credential type: C can use an authentication credentials of any type admitted by the EDHOC protocol, including public key certificates such as X.509 and C509 certificates.
+
+* Specify the communication protocol the client and RS must use: CoAP
+
+* Specify the security protocol the client and RS must use to protect their communication: OSCORE
+
+* Specify how the client and the RS mutually authenticate: Explicitly, by successfully executing the EDHOC key establishment protocol, after which a common OSCORE Security Context is established. As per the EDHOC authentication method used during the EDHOC session, authentication is provided by digital signatures, or by Message Authentication Codes (MACs) computed from an ephemeral-static ECDH shared secrets.
+
+* Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of- possession protocol: proof-of-possession is first achieved by RS when successfully processing EDHOC message_3 during the EDHOC execution with C, through EDHOC algorithms and symmetric EDHOC session keys. Also, proof-of-possession is later achieved by C when receiving from RS: i) the optional EDHOC message_4 during the EDHOC execution with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC execution with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
+
+* Specify a unique ace_profile identifier: coap_edhoc_oscore
+
+* If introspection is supported, specify the communication and security protocol for introspection: HTTP/CoAP (+ TLS/DTLS/OSCORE)
+
+* Specify the communication and security protocol for interactions between client and AS: HTTP/CoAP (+ TLS/DTLS/OSCORE)
+
+* Specify if/how the authz-info endpoint is protected, including how error responses are protected: Not protected
+
+* Optionally, define methods of token transport other than the authz-info endpoint: C can upload the access token when executing EDHOC with RS, by including the access token in the EAD_1 field of EDHOC message_1 (see {{edhoc-exec}}).
+
 # Document Updates # {#sec-document-updates}
 
 RFC EDITOR: PLEASE REMOVE THIS SECTION.
@@ -1806,6 +1834,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Precise characterization of the EDHOC execution considered for EDHOC-KeyUpdate.
 
 * Fixed message exchange examples.
+
+* Added appendix with profile requirements.
 
 * Updated references.
 

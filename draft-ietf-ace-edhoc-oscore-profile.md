@@ -148,7 +148,7 @@ If C has retrieved an access token, there are two different options for C to upl
 
 When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC execution successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of I-D.ietf-lake-edhoc}}. Also, RS associates the two used authentication credentials and the completed EDHOC execution with the derived Security Context. The latter is in turn associated with the access token and the access rights of C specified therein.
 
-From then on, C effectively gains authorized and secure access to protected resources on RS, for as long as the access token is valid. Until then, C can communicate with RS by sending a request protected with the established OSCORE Security Context above. The Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new Security Context for C, either by exchanging nonces and using the EDHOC-KeyUpdate function (see {{edhoc-key-update}}), or by re-running EDHOC. In particular, when supporting this profile, both C and RS MUST support the EDHOC-KeyUpdate function, and they MUST use it instead of re-running EDHOC if the outcome of their previously completed EDHOC execution is still valid.
+From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as the access token is valid.  The Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new Security Context for C.
 
 After the whole procedure has completed and while the access token is valid, C can contact AS to request an update of its access rights, by sending a similar request to the /token endpoint. This request also includes an identifier, which allows AS to find the data it has previously shared with C. This specific identifier, encoded as a byte string, is assigned by AS to a "token series" (see {{terminology}}). Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
 
@@ -324,7 +324,7 @@ When issuing the first access token of a token series, AS can take either of the
 
 * AS does not provide the access token to C. Rather, AS uploads the access token to the /authz-info endpoint at RS, exactly like C would do, and as defined in {{c-rs}} and {{rs-c}}. Then, when replying to C with the access token response as defined above, the response MUST NOT include the parameter "access\_token", and MUST include the parameter "token\_uploaded" encoding the CBOR simple value "true" (0xf5). This is shown by the example in {{example-without-optimization-as-posting}}.
 
-   Note that, in case C and RS have already completed an EDHOC execution leveraging a previous access token series, using this approach implies that C and RS have to re-run the EDHOC protocol. That is, they cannot more efficiently make use of the EDHOC-KeyUpdate function, as defined in {{edhoc-key-update}}, see {{c-rs-comm}}.
+   Note that, in case C and RS have already completed an EDHOC execution leveraging a previous access token series, using this approach implies that C and RS have to re-run the EDHOC protocol.
 
    Also note that this approach is not applicable when issuing access tokens following the first one in the same token series, i.e., when updating access rights.
 
@@ -412,11 +412,6 @@ The EDHOC\_Information can either be encoded as a JSON object or as a CBOR map. 
 |               |      |              | Suites   | suites             |
 |               |      |              | Registry |                    |
 +---------------+------+--------------+----------+--------------------+
-| key_update    | 3    | simple value |          | Support for the    |
-|               |      | "true" /     |          | EDHOC-KeyUpdate    |
-|               |      | simple value |          | function           |
-|               |      | "false"      |          |                    |
-+---------------+------+--------------+----------+--------------------+
 | message_4     | 4    | simple value |          | Support for EDHOC  |
 |               |      | "true" /     |          | message_4          |
 |               |      | simple value |          |                    |
@@ -449,8 +444,6 @@ The EDHOC\_Information can either be encoded as a JSON object or as a CBOR map. 
 * methods: This parameter specifies a set of supported EDHOC methods (see {{Section 3.2 of I-D.ietf-lake-edhoc}}). If the set is composed of a single EDHOC method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and has label 1.
 
 * cipher\_suites: This parameter specifies a set of supported EDHOC cipher suites (see {{Section 3.6 of I-D.ietf-lake-edhoc}}). If the set is composed of a single EDHOC cipher suite, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC cipher suite. In JSON, the "cipher\_suites" value is an integer or an array of integers. In CBOR, the "cipher\_suites" is an integer or an array of integers, and has label 2.
-
-* key\_update: This parameter indicates whether the EDHOC-KeyUpdate function (see {{Section I of I-D.ietf-lake-edhoc}}) is supported. In JSON, the "key\_update" value is a boolean. In CBOR, "key\_update" is the simple value "true" or "false", and has label 3.
 
 * message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of I-D.ietf-lake-edhoc}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value "true" or "false", and has label 4.
 

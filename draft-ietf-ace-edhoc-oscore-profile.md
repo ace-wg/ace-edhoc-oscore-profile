@@ -508,23 +508,17 @@ That is, C sends a POST request to the /authz-info endpoint at RS, with the requ
 
 The communication with the /authz-info endpoint does not have to be protected, except for the update of access rights case described below.
 
-In case of initial access token provisioning to RS for this Client, or in other cases without a valid EDHOC session, the uploading of the access token is followed by the execution of the EDHOC protocol (or combined using EAD as described in {{edhoc-exec}}) and by the derivation of an OSCORE Security Context, as detailed later in this section.
+The Client provisioning an initial access token to the RS is followed by the execution of the EDHOC protocol (or combined using EAD as described in {{edhoc-exec}}) and by the derivation of an OSCORE Security Context, as detailed later in this section.
 
-In the following, we outline some alternative processing, which occur when the provisioned access token or the established OSCORE Security Context for various reasons is no longer available or sufficient. In the cases below, it is assumed that the EDHOC session is still valid, otherwise the processing essentially falls back to the case discussed above.
+The same procedure applies in other cases without a valid OSCORE Security Context shared between the C and RS, for example:
 
-1. C may be required to re-POST the access token, since RS may have deleted a stored access token (and associated OSCORE Security Context) at any time, for example due to all storage space being consumed. This situation can be detected by C when it receives a 4.01 (Unauthorized) response from RS, especially as an "AS Request Creation Hints" message (see {{Section 5.3 of RFC9200}}.
+* The old access token has expired (and thus its series terminated and associated OSCORE Security Context deleted) so C provisions a new access token to RS.
 
-2. C may be posting the first access token in a new series, e.g., because the old access token expired and thus its series terminated.
+* The Client re-POSTs an access token which was deleted by RS (and thus its associated OSCORE Security Context) for example due to lack of storage. This situation can be detected by C when it receives a 4.01 (Unauthorized) response from RS, e.g., as an "AS Request Creation Hints" message, see {{Section 5.3 of RFC9200}}.
 
-3. C may need to update the OSCORE Security Context, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. The OSCORE Security Context can be updated by:
+Another case is if there is a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space.
 
-    a. using the KUDOS key update protocol specified in {{I-D.ietf-core-oscore-key-update}}, if supported by both C and RS; or
-
-    b. re-posting the access token using the same procedure as in case 1 above.
-
-In cases 1, 2 and 3b, C and RS rely on a protocol similar to the `coap_oscore` profile {{RFC9203}}, but leveraging the EDHOC-KeyUpdate function (see {{edhoc-key-update}}) before deriving a new OSCORE Security Context.
-
-Case 3a provides a lightweight alternative independent of ACE, and does not require the posting of an access token.
+In this case C and RS SHALL attempt to run the KUDOS key update protocol  {{I-D.ietf-core-oscore-key-update}} which is a lightweight alternative independent of ACE that does not require the posting of an access token. If KUDOS is not supported, then the Client and RS falls back to EDHOC as outlined above.
 
 In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS MUST associate the new OSCORE Security Context with the current (potentially re-posted) access token. Note that, unless C and RS re-run the EDHOC protocol, they preserve their same OSCORE identifiers, i.e., their OSCORE Sender/Recipient IDs.
 
@@ -623,8 +617,6 @@ C MUST discard the current OSCORE Security Context shared with RS when any of th
 
 * C receives a number of 4.01 (Unauthorized) responses to OSCORE-protected requests sent to RS and protected using the same OSCORE Security Context. The exact number of such received responses needs to be specified by the application.
 
-* C receives a nonce N2 in the 2.01 (Created) response to an unprotected POST request to the /authz-info endpoint at RS, when re-posting a still valid access token associated with the existing OSCORE Security context together with a nonce N1, in order to trigger the use of the EDHOC-KeyUpdate function (see {{edhoc-key-update}}).
-
 * The authentication credential of C (of RS) becomes invalid (e.g., due to expiration or revocation), and it was used as CRED\_I (CRED\_R) in the EDHOC execution whose PRK\_out was used to establish the OSCORE Security Context.
 
 RS MUST discard the current OSCORE Security Context shared with C when any of the following occurs:
@@ -632,8 +624,6 @@ RS MUST discard the current OSCORE Security Context shared with C when any of th
 * The OSCORE Sender Sequence Number space of RS gets exhausted.
 
 * The access token associated with the OSCORE Security Context becomes invalid, for example due to expiration or revocation.
-
-* The current OSCORE Security Context shared with C has been successfully replaced  with a newer one, following an unprotected POST request to the /authz-info endpoint at RS that re-posted a still valid access token together with a nonce N1, in order to trigger the use of the EDHOC-KeyUpdate function (see {{edhoc-key-update}}).
 
 * The authentication credential of C (of RS) becomes invalid (e.g., due to expiration or revocation), and it was used as CRED\_I (CRED\_R) in the EDHOC execution whose PRK\_out was used to establish the OSCORE Security Context.
 
@@ -653,8 +643,6 @@ Furthermore, RS achieves confirmation that C has PRK\_out (proof-of-possession) 
 
 OSCORE is designed to secure point-to-point communication, providing a secure binding between a request and the corresponding response(s). Thus, the basic OSCORE protocol is not intended for use in point-to-multipoint communication (e.g., enforced via multicast or a publish-subscribe model). Implementers of this profile should make sure that their use case of OSCORE corresponds to the expected one, in order to prevent weakening the security assurances provided by OSCORE.
 
-As defined in {{edhoc-key-update}}, C can (re-)post an access token to RS and contextually exchange two nonces N1 and N2, in order to efficiently use the EDHOC-KeyUpdate function rather than re-running the EDHOC protocol with RS. The use of nonces guarantees uniqueness of the new PRK\_out derived by running EDHOC\_KeyUpdate. Consequently, it ensures uniqueness of the AEAD (nonce, key) pairs later used by C and RS, when protecting their communications with the OSCORE Security Context established after updating PRK\_out. Thus, it is REQUIRED that the exchanged nonces are not reused with the same pair of authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), even in case of reboot. When using this profile, it is RECOMMENDED to use a 64-bit long random numbers as a nonce's value. Considering the birthday paradox, the average collision for each nonce will happen after 2^32 messages, which amounts to considerably more issued access token than it would be expected for intended applications. If applications use something else, such as a counter, they need to guarantee that reboot and loss of state on either node does not yield reuse of nonces. If that is not guaranteed, nodes are susceptible to reuse of AEAD (nonce, key) pairs, especially since an on-path attacker can cause the use of a previously exchanged nonce N1 by replaying the corresponding C-to-RS message.
-
 When using this profile, it is RECOMMENDED that RS stores only one access token per client. The use of multiple access tokens for a single client increases the strain on RS, since it must consider every access token associated with the client and calculate the actual permissions that client has. Also, access tokens indicating different or disjoint permissions from each other may lead RS to enforce wrong permissions.  If one of the access tokens expires earlier than others, the resulting permissions may offer insufficient protection. Developers SHOULD avoid using multiple access tokens for a same client. Furthermore, RS MUST NOT store more than one access token per client per PoP-key (i.e., per client's authentication credential).
 
 # Privacy Considerations
@@ -667,7 +655,6 @@ An unprotected response to an unauthorized request may disclose information abou
 
 Except for the case where C attempts to update its access rights, the (encrypted) access token is sent in an unprotected POST request to the /authz-info endpoint at RS. Thus, if C uses the same single access token from multiple locations, it can risk being tracked by the access token's value even when the access token is encrypted.
 
-As defined in {{edhoc-key-update}}, C can (re-)post an access token to RS and contextually exchange two nonces N1 and N2, in order to efficiently use the EDHOC-KeyUpdate function rather than re-running the EDHOC protocol with RS. Since the exchanged nonces are also sent in the clear, using random nonces is best for privacy, as opposed to, e.g., a counter that might leak some information about C.
 
 The identifiers used in OSCORE, i.e., the OSCORE Sender/Recipient IDs, are negotiated by C and RS during the EDHOC execution. That is, the EDHOC Connection Identifier C\_I of C is going to be the OSCORE Recipient ID of C (the OSCORE Sender ID of RS). Conversely, the EDHOC Connection Identifier C\_R of RS is going to be the OSCORE Recipient ID of RS (the OSCORE Sender ID of C). These OSCORE identifiers are privacy sensitive (see {{Section 12.8 of RFC8613}}). In particular, they could reveal information about C, or may be used for correlating different requests from C, e.g., across different networks that C has joined and left over time. This can be mitigated if C and RS dynamically update their OSCORE identifiers, e.g., by using the method defined in {{I-D.ietf-core-oscore-key-update}}.
 
@@ -1215,6 +1202,8 @@ The example below builds on the example in {{example-without-optimization}}, whi
 These two optimizations used together result in the most efficient interaction between the C and RS, as consisting of only two roundtrips to upload the access token, run EDHOC and access the protected resource at RS.
 
 Also, a further optimization is used upon uploading a second access token to RS, following the expiration of the first one. That is, after posting the second access token, the Client and RS do not run EDHOC again, but rather EDHOC-KeyUpdate() and EDHOC-Exporter() building on the same, previously completed EDHOC execution.
+
+TODO: Remove EDHOC-KeyUpdate from this example
 
 ~~~~~~~~~~~~~~~~~~~~~~~
     C                                 AS                             RS

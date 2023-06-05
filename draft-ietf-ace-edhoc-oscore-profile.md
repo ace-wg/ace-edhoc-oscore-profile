@@ -870,14 +870,14 @@ IANA is asked to add the following entries to the "OAuth Parameters" registry.
 * Name: "edhoc_info"
 * Parameter Usage Location: token request, token response
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Reference: {{&SELF}}
 
 &nbsp;
 
 * Name: "token_uploaded"
 * Parameter Usage Location: token response
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Reference: {{&SELF}}
 
 ## OAuth Parameters CBOR Mappings Registry ## {#iana-oauth-cbor-mappings}
 
@@ -886,14 +886,14 @@ IANA is asked to add the following entries to the "OAuth Parameters CBOR Mapping
 * Name: "edhoc_info"
 * CBOR Key: TBD
 * Value Type: map
-* Specification Document(s): {{&SELF}}
+* Reference: {{&SELF}}
 
 &nbsp;
 
 * Name: "token_uploaded"
 * CBOR Key: TBD
 * Value Type: simple value "true" / simple type "false"
-* Specification Document(s): {{&SELF}}
+* Reference: {{&SELF}}
 
 ## JSON Web Token Claims Registry ## {#iana-token-json-claims}
 

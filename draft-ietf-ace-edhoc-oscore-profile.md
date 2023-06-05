@@ -329,6 +329,10 @@ When issuing the first access token of a token series, AS can take either of the
 
    Also note that this approach is not applicable when issuing access tokens following the first one in the same token series, i.e., when updating access rights.
 
+When receiving an Access Token response including the "rs\_cnf" parameter, C checks whether it is already storing the authentication credential of RS, namely AUTH\_CRED\_RS, specified in "rs\_cnf" by value or reference.
+
+If this is not the case, C retrieves AUTH\_CRED\_RS, e.g., from the "rs_cnf" parameter if the authentication credential is specified therein by value, or from a further trusted source pointed to by the AUTH\_CRED\_RS identifier included in the "rs_cnf" parameter. After that, C validates the actual AUTH\_CRED\_RS. In case of successful validation, C stores AUTH\_CRED\_RS as a valid authentication credential. Otherwise, C MUST delete the access token.
+
 When CWTs are used as access tokens, EDHOC\_Information MUST be transported in the "edhoc\_info" claim, defined in {{iana-token-cwt-claims}}.
 
 Since the access token does not contain secret information, only its integrity and source authentication are strictly necessary to ensure. Therefore, AS can protect the access token with either of the means discussed in {{Section 6.1 of RFC9200}}. Nevertheless, when using this profile, it is RECOMMENDED that the access token is a CBOR web token (CWT) protected with COSE_Encrypt/COSE_Encrypt0 as specified in {{RFC8392}}.

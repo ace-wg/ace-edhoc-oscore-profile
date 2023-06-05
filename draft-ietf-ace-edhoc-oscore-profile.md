@@ -93,7 +93,7 @@ When using this profile, C accesses protected resources hosted at RS with the us
 
 The authentication and authorization processing requires C and RS to have access to each other's authentication credentials. C can obtain the authentication credential of RS from AS together with the access token. RS can obtain the authentication credential of C together with the associated access token in different ways. If RS successfully verifies the access token, then C and RS run the Ephemeral Diffie-Hellman Over COSE (EDHOC) protocol {{I-D.ietf-lake-edhoc}} using the authentication credentials.
 
-Once the EDHOC execution is completed, C and RS are mutually authenticated and can derive an OSCORE Security Context to protect subsequent communications, over which C can access protected resources of RS according to the access rights specified in the access token. 
+Once the EDHOC execution is completed, C and RS are mutually authenticated and can derive an OSCORE Security Context to protect subsequent communications, over which C can access protected resources of RS according to the access rights specified in the access token.
 
 An authentication credential can be a raw public key, e.g., encoded as a CWT Claims Set (CCS, {{RFC8392}}); or a public key certificate, e.g., encoded as an X.509 certificate or as a CBOR encoded X.509 certificate (C509, {{I-D.ietf-cose-cbor-encoded-cert}}); or a different type of data structure containing the public key of the peer in question.
 
@@ -136,7 +136,7 @@ Examples throughout this document are expressed in CBOR diagnostic notation with
 
 This section gives an overview of how to use the ACE framework {{RFC9200}} together with the authenticated key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}. By doing so, a client (C) and a resource server (RS) generate an OSCORE Security Context {{RFC8613}} associated with authorization information, and use that Security Context to protect their communications. The parameters needed by C to negotiate the use of this profile with the authorization server (AS), as well as the OSCORE setup process, are described in detail in the following sections.
 
-RS maintains a collection of authentication credentials. These are related to OSCORE Security Contexts associated with authorization information for all the clients that RS is communicating with. The authorization information is maintained as policy that is used as input to the processing of requests from those clients.
+RS maintains a collection of authentication credentials. These are related to OSCORE Security Contexts associated with authorization information for all the clients that RS is communicating with. The authorization information is input to the processing of requests from those clients.
 
 This profile specifies how C requests an access token from AS for the resources it wants to access on an RS, by sending an access token request to the /token endpoint, as specified in {{Section 5.8 of RFC9200}}. The access token request and response MUST be confidentiality protected and ensure authenticity. The use of EDHOC and OSCORE between C and AS is RECOMMENDED in this profile, in order to reduce the number of libraries that C has to support. However, other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} MAY alternatively be used, such as TLS {{RFC8446}} or DTLS {{RFC9147}}.
 
@@ -144,7 +144,7 @@ If C has retrieved an access token, there are two different options for C to upl
 
 1. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.10 of RFC9200}}. If the access token is valid, RS responds to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol by sending EDHOC message_1 to RS. The communication with the /authz-info endpoint is not protected, except for the update of access rights.
 
-2. C initiates the EDHOC protocol by sending EDHOC message_1 to RS, specifying the access token as External Authorization Data (EAD) in the EAD_1 field of EDHOC message_1 (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). If the access token is valid and the processing of EDHOC message_1 is successful, RS responds with EDHOC message_2, thus continuing the EDHOC protocol. This alternative cannot be used for the update of access rights.
+2. C initiates the EDHOC protocol by sending EDHOC message_1 to RS, specifying the access token as External Authorization Data (EAD) in the EAD_1 field of EDHOC message_1 (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). If the access token is valid and the processing of EDHOC message_1 is successful, RS responds with EDHOC message_2, thus continuing the EDHOC protocol. This alternative cannot be used for the update of access rights only.
 
 When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC execution successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of I-D.ietf-lake-edhoc}}. Also, RS associates the two used authentication credentials and the completed EDHOC execution with the derived Security Context. The latter is in turn associated with the access token and the access rights of C specified therein.
 
@@ -395,47 +395,48 @@ The EDHOC\_Information can either be encoded as a JSON object or as a CBOR map. 
 {{fig-cbor-key-edhoc-params}} provides a summary of the EDHOC\_Information parameters defined in this section.
 
 ~~~~~~~~~~~
-+---------------+------+--------------+----------+--------------------+
-| Name          | CBOR | CBOR value   | Registry | Description        |
-|               | Type |              |          |                    |
-+---------------+------+--------------+----------+--------------------+
-| id            | 0    | bstr         |          | Identifier of      |
-|               |      |              |          | EDHOC execution    |
-+---------------+------+--------------+----------+--------------------+
-| methods       | 1    | int /        | EDHOC    | Set of supported   |
-|               |      | array of int | Method   | EDHOC methods      |
-|               |      |              | Type     |                    |
-|               |      |              | Registry |                    |
-+---------------+------+--------------+----------+--------------------+
-| cipher_suites | 2    | int /        | EDHOC    | Set of supported   |
-|               |      | array of int | Cipher   | EDHOC cipher       |
-|               |      |              | Suites   | suites             |
-|               |      |              | Registry |                    |
-+---------------+------+--------------+----------+--------------------+
-| message_4     | 4    | simple value |          | Support for EDHOC  |
-|               |      | "true" /     |          | message_4          |
-|               |      | simple value |          |                    |
-|               |      | "false"      |          |                    |
-+---------------+------+--------------+----------+--------------------+
-| comb_req      | 5    | simple value |          | Support for the    |
-|               |      | "true" /     |          | EDHOC + OSCORE     |
-|               |      | simple value |          | combined request   |
-|               |      | "false"      |          |                    |
-+---------------+------+--------------+----------+--------------------+
-| uri_path      | 6    | tstr         |          | URI-path of the    |
-|               |      |              |          | EDHOC resource     |
-+---------------+------+--------------+----------+--------------------+
-| osc_ms_len    | 7    | uint         |          | Length in bytes of |
-|               |      |              |          | the OSCORE Master  |
-|               |      |              |          | Secret to derive   |
-+---------------+------+--------------+----------+--------------------+
-| osc_salt_len  | 8    | uint         |          | Length in bytes of |
-|               |      |              |          | the OSCORE Master  |
-|               |      |              |          | Salt to derive     |
-+---------------+------+--------------+----------+--------------------+
-| osc_version   | 9    | uint         |          | OSCORE version     |
-|               |      |              |          | number to use      |
-+---------------+------+--------------+----------+--------------------+
+
++---------------+--------------+------+----------+--------------------+
+| Name          | CBOR value   | CBOR | Registry | Description        |
+|               |              | Type |          |                    |
++---------------+--------------+------+----------+--------------------+
+| id            | bstr         |  0   |          | Identifier of      |
+|               |              |      |          | EDHOC execution    |
++---------------+--------------+------+----------+--------------------+
+| methods       | int /        |      | EDHOC    | Set of supported   |
+|               | array of int |  1   | Method   | EDHOC methods      |
+|               |              |      | Type     |                    |
+|               |              |      | Registry |                    |
++---------------+--------------+------+----------+--------------------+
+| cipher_suites | int /        |      | EDHOC    | Set of supported   |
+|               | array of int |  2   | Cipher   | EDHOC cipher       |
+|               |              |      | Suites   | suites             |
+|               |              |      | Registry |                    |
++---------------+--------------+------+----------+--------------------+
+| message_4     | simple value |      |          | Support for EDHOC  |
+|               | "true" /     |  3   |          | message_4          |
+|               | simple value |      |          |                    |
+|               | "false"      |      |          |                    |
++---------------+--------------+------+----------+--------------------+
+| comb_req      | simple value |      |          | Support for the    |
+|               | "true" /     |  4   |          | EDHOC + OSCORE     |
+|               | simple value |      |          | combined request   |
+|               | "false"      |      |          |                    |
++---------------+--------------+------+----------+--------------------+
+| uri_path      | tstr         |  5   |          | URI-path of the    |
+|               |              |      |          | EDHOC resource     |
++---------------+--------------+------+----------+--------------------+
+| osc_ms_len    | uint         |      |          | Length in bytes of |
+|               |              |  6   |          | the OSCORE Master  |
+|               |              |      |          | Secret to derive   |
++---------------+--------------+------+----------+--------------------+
+| osc_salt_len  | uint         |      |          | Length in bytes of |
+|               |              |  7   |          | the OSCORE Master  |
+|               |              |      |          | Salt to derive     |
++---------------+--------------+------+----------+--------------------+
+| osc_version   | uint         |  8   |          | OSCORE version     |
+|               |              |      |          | number to use      |
++---------------+--------------+------+----------+--------------------+
 ~~~~~~~~~~~
 {: #fig-cbor-key-edhoc-params title="EDHOC_Information Parameters" artwork-align="center"}
 
@@ -510,15 +511,15 @@ The communication with the /authz-info endpoint does not have to be protected, e
 
 The Client provisioning an initial access token to the RS is followed by the execution of the EDHOC protocol (or combined using EAD as described in {{edhoc-exec}}) and by the derivation of an OSCORE Security Context, as detailed later in this section.
 
-The same procedure applies in other cases without a valid OSCORE Security Context shared between the C and RS, for example:
+The same procedure applies in other cases without a valid OSCORE Security Context shared between C and RS, for example:
 
-* The old access token has expired (and thus its series terminated and associated OSCORE Security Context deleted) so C provisions a new access token to RS.
+* The OSCORE Security Context has become invalid. Reasons include: OSCORE Security Context policy; the old access token has expired (and thus its series terminated and associated OSCORE Security Context deleted) in which case C provisions a new access token to RS; or that the associated EDHOC session has become invalid.
 
-* The Client re-POSTs an access token which was deleted by RS (and thus its associated OSCORE Security Context) for example due to lack of storage. This situation can be detected by C when it receives a 4.01 (Unauthorized) response from RS, e.g., as an "AS Request Creation Hints" message, see {{Section 5.3 of RFC9200}}.
+* The OSCORE Security Context has become deleted by RS. Reasons include: lack of storage. This situation can be detected by C when it receives a 4.01 (Unauthorized) response from RS, e.g., as an "AS Request Creation Hints" message, see {{Section 5.3 of RFC9200}}.
 
 Another case is if there is a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space.
 
-In this case C and RS SHALL attempt to run the KUDOS key update protocol  {{I-D.ietf-core-oscore-key-update}} which is a lightweight alternative independent of ACE that does not require the posting of an access token. If KUDOS is not supported, then the Client and RS falls back to EDHOC as outlined above.
+In this case C and RS SHALL attempt to run the KUDOS key update protocol  {{I-D.ietf-core-oscore-key-update}} which is a lightweight alternative independent of ACE and EDHOC that does not require the posting of an access token. If KUDOS is not supported, then the Client and RS falls back to EDHOC as outlined above.
 
 In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS MUST associate the new OSCORE Security Context with the current (potentially re-posted) access token. Note that, unless C and RS re-run the EDHOC protocol, they preserve their same OSCORE identifiers, i.e., their OSCORE Sender/Recipient IDs.
 
@@ -1195,11 +1196,11 @@ M21 |<----------------------------------------------------------------|
 
 The example below builds on the example in {{example-without-optimization}}, while additionally relying on the two following optimizations.
 
-* The access token is not separately uploaded to the /authz-info endpoint at RS, but rather included in the EAD_1 field of EDHOC message_1 sent by the C to RS.
+* The access token is not separately uploaded to the /authz-info endpoint at RS, but rather included in the EAD_1 field of EDHOC message_1 sent by C to RS.
 
 * The Client uses the EDHOC+OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} is used, when running EDHOC both with AS and with RS.
 
-These two optimizations used together result in the most efficient interaction between the C and RS, as consisting of only two roundtrips to upload the access token, run EDHOC and access the protected resource at RS.
+These two optimizations used together result in the most efficient interaction between C and RS, as consisting of only two roundtrips to upload the access token, run EDHOC and access the protected resource at RS.
 
 Also, a further optimization is used upon uploading a second access token to RS, following the expiration of the first one. That is, after posting the second access token, the Client and RS do not run EDHOC again, but rather EDHOC-KeyUpdate() and EDHOC-Exporter() building on the same, previously completed EDHOC execution.
 

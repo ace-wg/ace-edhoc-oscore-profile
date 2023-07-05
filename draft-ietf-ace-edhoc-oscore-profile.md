@@ -474,13 +474,12 @@ EDHOC_Information = {
    ? 0 => bstr,             ; id
    ? 1 => int / array,      ; methods
    ? 2 => int / array,      ; cipher_suites
-   ? 3 => true / false,     ; key_update
-   ? 4 => true / false,     ; message_4
-   ? 5 => true / false,     ; comb_req
-   ? 6 => tstr,             ; uri_path
-   ? 7 => uint,             ; osc_ms_len
-   ? 8 => uint,             ; osc_salt_len
-   ? 9 => uint,             ; osc_version
+   ? 3 => true / false,     ; message_4
+   ? 4 => true / false,     ; comb_req
+   ? 5 => tstr,             ; uri_path
+   ? 6 => uint,             ; osc_ms_len
+   ? 7 => uint,             ; osc_salt_len
+   ? 8 => uint,             ; osc_version
    * int / tstr => any
 }
 ~~~~~~~~~~~
@@ -505,18 +504,23 @@ The access token can be uploaded to RS by using the /authz-info endpoint at RS. 
 
 That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload conveying the access token without any CBOR wrapping. As per {{Section 5.10.1 of RFC9200}}, the Content-Format of the POST request has to reflect the format of the transported access token. In particular, if the access token is a CWT, the content-format MUST be "application/cwt".
 
-The communication with the /authz-info endpoint does not have to be protected, except for the update of access rights case described below.
+The communication with the /authz-info endpoint is in general not protected, except in the case of updating the access rights described below.
 
-The Client provisioning an initial access token to the RS is followed by the execution of the EDHOC protocol (or combined using EAD as described in {{edhoc-exec}}) and by the derivation of an OSCORE Security Context, as detailed later in this section.
+The Client provisioning of an initial access token to the RS is followed by the execution of the EDHOC protocol (or combined using EAD as described in {{edhoc-exec}}) and by the derivation of an OSCORE Security Context, as detailed later in this section.
 
-The same procedure applies in other cases without a valid OSCORE Security Context shared between C and RS, for example:
+The same procedure of C provisioning a new access token to RS applies to other cases when there is no valid OSCORE Security Context shared between C and RS, for example:
 
-* The OSCORE Security Context has become invalid. Reasons include: OSCORE Security Context policy; the old access token has expired (and thus its series terminated and associated OSCORE Security Context deleted) in which case C provisions a new access token to RS; or that the associated EDHOC session has become invalid.
+* The OSCORE Security Context has become invalid. Reasons include:
+  * The old access token has expired (and thus its series terminated and associated OSCORE Security Context deleted)
+  * The associated EDHOC session has become invalid
+  * Other policy for the OSCORE Security Context
 
-* The OSCORE Security Context has become deleted by RS. Reasons include: lack of storage. This situation can be detected by C when it receives a 4.01 (Unauthorized) response from RS, e.g., as an "AS Request Creation Hints" message, see {{Section 5.3 of RFC9200}}.
+* The OSCORE Security Context has become deleted by RS. Reasons include:
+  * Lack of storage. This situation can be detected by C when it receives a 4.01 (Unauthorized) response from RS, e.g., as an "AS Request Creation Hints" message, see {{Section 5.3 of RFC9200}}.
 
-Another case is if there is a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space.
+Another reason for the OSCORE Security Context to become invalid/deleted is if the EDHOC session from which this security context was derived has become invalid, e.g., due to the expiration of an authentication credential.
 
+A different exceptional case is when there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space.
 In this case C and RS SHALL attempt to run the KUDOS key update protocol {{I-D.ietf-core-oscore-key-update}} which is a lightweight alternative independent of ACE and EDHOC that does not require the posting of an access token. If KUDOS is not supported, then the Client and RS falls back to EDHOC as outlined above.
 
 In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS MUST associate the new OSCORE Security Context with the current (potentially re-posted) access token. Note that, unless C and RS re-run the EDHOC protocol, they preserve their same OSCORE identifiers, i.e., their OSCORE Sender/Recipient IDs.

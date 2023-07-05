@@ -1204,10 +1204,6 @@ The example below builds on the example in {{example-without-optimization}}, whi
 
 These two optimizations used together result in the most efficient interaction between C and RS, as consisting of only two roundtrips to upload the access token, run EDHOC and access the protected resource at RS.
 
-Also, a further optimization is used upon uploading a second access token to RS, following the expiration of the first one. That is, after posting the second access token, the Client and RS do not run EDHOC again, but rather EDHOC-KeyUpdate() and EDHOC-Exporter() building on the same, previously completed EDHOC execution.
-
-TODO: Remove EDHOC-KeyUpdate from this example
-
 ~~~~~~~~~~~~~~~~~~~~~~~
     C                                 AS                             RS
     |                                  |                              |
@@ -1301,96 +1297,6 @@ M07 |---------------------------------------------------------------->|
     |  Response                        |                              |
     |  (OSCORE-protected message)      |                              |
 M08 |<----------------------------------------------------------------|
-    |                                  |                              |
-
- // Later on, the access token expires ...
- //  - The Client and RS delete their OSCORE Security Context
- //    but do not purge the EDHOC session used to derive it.
- //  - RS retains AUTH_CRED_C as still valid,
- //    and AS knows about it.
- //  - The Client retains AUTH_CRED_RS as still valid,
- //    and AS knows about it.
-
-    |                                  |                              |
-    |                                  |                              |
-
- // Time passes ...
-
-    |                                  |                              |
-    |                                  |                              |
-
- // The Client asks for a new access token; now all the
- // authentication credentials can be indicated by reference
-
- // The price to pay is on AS, about remembering that at least
- // one access token has been issued for the pair (Client, RS)
- // and considering the pair (AUTH_CRED_C, AUTH_CRED_RS)
-
-    |                                  |                              |
-    |  Token request to /token         |                              |
-    |  (OSCORE-protected message)      |                              |
-M09 |--------------------------------->|                              |
-    |  'req_cnf' identifies            |                              |
-    |     CRED_I = AUTH_CRED_C         |                              |
-    |     by reference                 |                              |
-    |                                  |                              |
-    |  Token response                  |                              |
-    |  (OSCORE-protected message)      |                              |
-M10 |<---------------------------------|                              |
-    |  'rs_cnf' identifies             |                              |
-    |     AUTH_CRED_RS by reference    |                              |
-    |                                  |                              |
-    |  'ace_profile' =                 |                              |
-    |             coap_edhoc_oscore    |                              |
-    |                                  |                              |
-    |  'edhoc_info' specifies:         |                              |
-    |     {                            |                              |
-    |       id : h'05',                |                              |
-    |       cipher_suites : 2,         |                              |
-    |       methods : 3                |                              |
-    |     }                            |                              |
-    |                                  |                              |
-    |  In the access token:            |                              |
-    |     * the 'cnf' claim specifies  |                              |
-    |       AUTH_CRED_C by reference   |                              |
-    |     * the 'edhoc_info' claim     |                              |
-    |       specifies the same as      |                              |
-    |       'edhoc_info' above         |                              |
-    |                                  |                              |
-    |                                  |                              |
-    |  Token upload to /authz-info     |                              |
-    |  (unprotected message)           |                              |
-M11 |---------------------------------------------------------------->|
-    |   Payload {                      |                              |
-    |     access_token : access token  |                              |
-    |     nonce_1 : N1  // nonce       |                              |
-    |   }                              |                              |
-    |                                  |                              |
-    |                                  |                              |
-    |  2.01 (Created)                  |                              |
-    |  (unprotected message)           |                              |
-M12 |<----------------------------------------------------------------|
-    |   Payload {                      |                              |
-    |     nonce_2 : N2  // nonce       |                              |
-    |   }                              |                              |
-    |                                  |                              |
-
- // The Client and RS first run EDHOC-KeyUpdate(N1 | N2), and
- // then EDHOC-Exporter() to derive a new OSCORE Master Secret and
- // OSCORE Master Salt, from which a new OSCORE Security Context is
- // derived. The Sender/Recipient IDs are the same C_I and C_R from
- // the previous EDHOC execution
-
-    |                                  |                              |
-    |  Access to protected resource /r |                              |
-    |  (OSCORE-protected message)      |                              |
-    |  (access control is enforced)    |                              |
-M13 |---------------------------------------------------------------->|
-    |                                  |                              |
-    |                                  |                              |
-    |  Response                        |                              |
-    |  (OSCORE-protected message)      |                              |
-M14 |<----------------------------------------------------------------|
     |                                  |                              |
 ~~~~~~~~~~~~~~~~~~~~~~~
 

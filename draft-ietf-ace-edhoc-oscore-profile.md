@@ -79,7 +79,7 @@ entity:
 This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.
 It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual authentication between an OAuth 2.0 Client and Resource Server, and it binds an authentication credential of the Client to an OAuth 2.0 access token.
 EDHOC also establishes an Object Security for Constrained RESTful Environments (OSCORE) Security Context, which is used to secure communications when accessing protected resources according to the authorization information indicated in the access token.
-A resource-constrained server can use this profile to delegate management of authorization information to a trusted host with less severe limitations regarding processing power and memory.
+This profile can be used to delegate management of authorization information from a resource-constrained server to a trusted host with less severe limitations regarding processing power and memory.
 
 --- middle
 
@@ -1320,7 +1320,6 @@ M02 |<---------------------------------|                              |
     |     CRED_R = AUTH_CRED_AS        |                              |
     |     by reference                 |                              |
     |                                  |                              |
-
     |                                  |                              |
     |  EDHOC+OSCORE request to /token  |                              |
 M03 |--------------------------------->|                              |

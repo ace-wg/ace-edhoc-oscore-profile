@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 8 January 2024                                        M. Tiloca
+Expires: 11 April 2024                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                             7 July 2023
+                                                          9 October 2023
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -27,9 +27,10 @@ Abstract
    for Constrained RESTful Environments (OSCORE) Security Context, which
    is used to secure communications when accessing protected resources
    according to the authorization information indicated in the access
-   token.  A resource-constrained server can use this profile to
-   delegate management of authorization information to a trusted host
-   with less severe limitations regarding processing power and memory.
+   token.  This profile can be used to delegate management of
+   authorization information from a resource-constrained server to a
+   trusted host with less severe limitations regarding processing power
+   and memory.
 
 Discussion Venues
 
@@ -58,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 January 2024.
+   This Internet-Draft will expire on 11 April 2024.
 
 Copyright Notice
 
@@ -1852,24 +1853,24 @@ Table of Contents
    [I-D.ietf-core-oscore-edhoc]
               Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
               G. Selander, "Using EDHOC with CoAP and OSCORE", Work in
-              Progress, Internet-Draft, draft-ietf-core-oscore-edhoc-07,
-              13 March 2023, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-oscore-edhoc-07>.
+              Progress, Internet-Draft, draft-ietf-core-oscore-edhoc-08,
+              8 August 2023, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-oscore-edhoc-08>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-05, 10 January 2023,
+              ietf-cose-cbor-encoded-cert-06, 7 July 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-05>.
+              cbor-encoded-cert-06>.
 
    [I-D.ietf-lake-edhoc]
               Selander, G., Mattsson, J. P., and F. Palombini,
               "Ephemeral Diffie-Hellman Over COSE (EDHOC)", Work in
-              Progress, Internet-Draft, draft-ietf-lake-edhoc-20, 7 July
-              2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              lake-edhoc-20>.
+              Progress, Internet-Draft, draft-ietf-lake-edhoc-22, 25
+              August 2023, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-lake-edhoc-22>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1966,9 +1967,9 @@ Table of Contents
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-key-update-04, 13 March 2023,
+              core-oscore-key-update-05, 10 July 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-key-update-04>.
+              oscore-key-update-05>.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
@@ -2383,7 +2384,6 @@ A.3.  Alternative Workflow (AS token posting)
      |     CRED_R = AUTH_CRED_AS        |                              |
      |     by reference                 |                              |
      |                                  |                              |
-
      |                                  |                              |
      |  EDHOC+OSCORE request to /token  |                              |
  M03 |--------------------------------->|                              |

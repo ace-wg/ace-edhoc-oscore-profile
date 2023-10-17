@@ -121,15 +121,6 @@ Note that the term "endpoint" is used here, as in {{RFC9200}}, following its OAu
 
 The authorization information (authz-info) resource refers to the authorization information endpoint as specified in {{RFC9200}}. The term "claim" is used in this document with the same semantics as in {{RFC9200}}, i.e., it denotes information carried in the access token or returned from introspection.
 
-This document defines "token series" as a series of access tokens sorted in chronological order as they are released, characterized by the following properties:
-
-* issued by the same AS
-* issued to the same C and for the same RS
-* issued together with the same authentication credential of RS
-* associated with the same authentication credential of C
-
-When an access token becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.
-
 Concise Binary Object Representation (CBOR) {{RFC8949}}{{RFC8742}} and Concise Data Definition Language (CDDL) {{RFC8610}} are used in this document. CDDL predefined type names, especially bstr for CBOR byte strings and tstr for CBOR text strings, are used extensively in this document.
 
 Examples throughout this document are expressed in CBOR diagnostic notation without the tag and value abbreviations.
@@ -154,7 +145,7 @@ When running the EDHOC protocol, C uses the authentication credential of RS spec
 
 From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as the access token is valid. The Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new Security Context for C.
 
-After the whole procedure has completed and while the access token is valid, C can contact AS to request an update of its access rights, by sending a similar request to the /token endpoint. This request also includes an identifier, which allows AS to find the data it has previously shared with C. This specific identifier, encoded as a byte string, is assigned by AS to a "token series" (see {{terminology}}). Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
+After the whole procedure has completed and while the access token is valid, C can contact AS to request an update of its access rights, by sending a similar request to the /token endpoint. This request also includes an EDHOC session identifier (see {{edhoc-parameters-object}}), which allows AS to find the data it has previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see {{token-series}}). Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
 
 An overview of the profile flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}. The names of messages coincide with those of {{RFC9200}} when applicable.
 
@@ -210,7 +201,7 @@ The access token is securely associated with the authentication credential of C,
 
 AUTH\_CRED\_C is specified in the "req_cnf" parameter defined in {{RFC9201}} of the POST request to the /token endpoint from C to AS, either transported by value or uniquely referred to.
 
-The request to the /token endpoint and the corresponding response can include EDHOC\_Information, which is a CBOR map object containing information related to an EDHOC session, for example the identifier of a token series, see {{edhoc-parameters-object}}. This object is transported in the "edhoc\_info" parameter registered in {{iana-oauth-params}} and {{iana-oauth-cbor-mappings}}.
+The request to the /token endpoint and the corresponding response can include EDHOC\_Information, which is a CBOR map object containing information related to an EDHOC session, in particular the identifier "session\_id", see {{edhoc-parameters-object}}. This object is transported in the "edhoc\_info" parameter registered in {{iana-oauth-params}} and {{iana-oauth-cbor-mappings}}.
 
 ## C-to-AS: POST to /token endpoint # {#c-as}
 
@@ -238,11 +229,11 @@ An example of such a request is shown in {{token-request}}. In this example, C s
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #token-request title="Example of C-to-AS POST /token request for an access token."}
 
-If C wants to update its access rights without changing an existing OSCORE Security Context, it MUST include EDHOC\_Information in its POST request to the /token endpoint. The EDHOC\_Information MUST include the "id" field, carrying a CBOR byte string containing the identifier of the token series to which the current, still valid access token shared with RS belongs to. This POST request MUST omit the "req_cnf" parameter. An example of such a request is shown in {{token-request-update}}.
+If C wants to update its access rights without changing an existing OSCORE Security Context, it MUST include EDHOC\_Information in its POST request to the /token endpoint. The EDHOC\_Information MUST include the "session\_id" field. This POST request MUST omit the "req_cnf" parameter. An example of such a request is shown in {{token-request-update}}.
 
-The identifier "id" is assigned by AS as discussed in {{as-c}}, and, together with other information such as audience (see {{Section 5.8.1 of RFC9200}}), can be used by AS to determine the token series to which the new requested access token has to be added. Therefore, the identifier MUST identify the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS) associated with a still valid access token previously issued for C and RS by AS.
+The identifier "session\_id" is assigned by AS as discussed in {{token-series}}, and, together with other information such as audience (see {{Section 5.8.1 of RFC9200}}), can be used by AS to determine the token series to which the new requested access token has to be added.
 
-AS MUST verify that the received value identifies a token series to which a still valid access token issued for C and RS belongs. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid_request" as defined in {{Section 5.8.3 of RFC9200}}.
+AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token issued for C and RS belongs. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid_request" as defined in {{Section 5.8.3 of RFC9200}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
    Header: POST (Code=0.02)
@@ -254,11 +245,31 @@ AS MUST verify that the received value identifies a token series to which a stil
      "audience" : "tempSensor4711",
      "scope" : "write",
      "edhoc_info" : {
-        "id" : h'01'
+        "session_id" : h'01'
      }
    }
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #token-request-update title="Example of C-to-AS POST /token request for updating access rights to an access token."}
+
+## Token Series {#token-series}
+
+This document refers to "token series" as a series of access tokens sorted in chronological order as they are released, characterized by the following properties:
+
+* issued by the same AS
+* issued to the same C and for the same RS
+* issued together with the same authentication credential of RS
+* associated with the same authentication credential of C
+
+Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.
+
+A more general token series concept is described in Appendix B of {{I-D.tiloca-ace-workflow-and-params}}). In this profile, a token series is characterized by the access tokens associated to an EDHOC session between C and RS, and identified by the session\_id of the EDHOC\_Information, see {{edhoc-parameters-object}}. All access tokens belonging to the same token series are associated with the same session\_id, which does not change throughout the series lifetime.
+
+AS assigns the session\_id to the EDHOC\_Information when issuing the first access token of a series. When assigning the identifier, AS MUST ensure that it was not used in a previous series of access tokens, i.e., avoiding the case of two access tokens having the following properties:
+
+* i) issued for the same RS; and
+* ii) bound to the same authentication credential AUTH_CRED_C of the requesting client (irrespectively of how the AUTH_CRED_C is identified in the access tokens).
+
+ The session\_id MUST identify the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS) associated with a still valid access token previously issued for C and RS by AS.
 
 ## AS-to-C: Response # {#as-c}
 
@@ -275,14 +286,7 @@ The access token may be sent in the access token response to C for subsequent pr
 
 When issuing any access token, AS MUST send the following data in the response to C.
 
-* The "id" field of EDHOC\_Information, which is the identifier of the token series to which the issued access token belongs to.
-
-   All the access tokens belonging to the same token series are associated with the same identifier, which does not change throughout the series lifetime. A token series ends when the latest issued access token in the series becomes invalid (e.g., when it expires or gets revoked).
-
-   AS assigns the identifier to a token series when issuing the first access token of that series. When assigning the identifier, AS MUST ensure that it was not used in a previous series of access tokens, i.e., avoiding the case of two access tokens having the following properties:
-
-   * i)  issued for the same RS; and
-   * ii) bound to the same authentication credential AUTH\_CRED\_C of the requesting client  (irrespectively of how the AUTH\_CRED\_C is identified in the access tokens).
+* The "session\_id" field of EDHOC\_Information, which is the identifier of the token series to which the issued access token belongs to.
 
 When issuing the first access token of a token series, AS MUST send the following data in the response to C.
 
@@ -310,7 +314,7 @@ When issuing the first access token of a token series, AS MAY send EDHOC\_Inform
           (remainder of the access credential omitted for brevity)'
         }
         "edhoc_info" : {
-          "id" : h'01',
+          "session_id" : h'01',
           "methods" : [0, 1, 2, 3],
           "cipher_suites": 0
         }
@@ -322,7 +326,7 @@ When issuing the first access token of a token series, AS MAY send EDHOC\_Inform
 
 When issuing any access token of a token series, AS MUST specify the following data in the claims associated with the access token.
 
-* The identifier of the token series, specified in the "id" field of EDHOC\_Information, and with the same value specified in the response to C from the /token endpoint.
+* The "session\_id" field of EDHOC\_Information, and with the same value specified in the response to C from the /token endpoint.
 
 * The authentication credential that C specified in its POST request to the /token endpoint (see {{c-as}}), AUTH\_CRED\_C. If the access token is a CWT, this information MUST be specified in the "cnf" claim.
 
@@ -356,7 +360,7 @@ Since the access token does not contain secret information, only its integrity a
       "x5chain" : h'3081ee3081a1a00302 ...'
     }
     "edhoc_info" : {
-      "id" : h'01',
+      "session_id" : h'01',
       "methods" : [0, 1, 2, 3],
       "cipher_suites": 0
     }
@@ -376,11 +380,11 @@ If C has requested an update to its access rights using the same OSCORE Security
 
 * The response MUST NOT include the "rs\_cnf" parameter.
 
-* The EDHOC\_Information in the response MUST include only the "id" field, specifying the identifier of the token series.
+* The EDHOC\_Information in the response MUST include only the "session\_id" field.
 
-* The EDHOC\_Information in the access token MUST include only the "id" field, specifying the identifier of the token series. In particular, if the access token is a CWT, the "edhoc\_info" claim MUST include only the "id" field.
+* The EDHOC\_Information in the access token MUST include only the "session\_id" field. In particular, if the access token is a CWT, the "edhoc\_info" claim MUST include only the "session\_id" field.
 
-This identifier of the token series needs to be included in the new access token in order for RS to identify the old access token to supersede, as well as the OSCORE Security Context already shared between C and RS and to be associated with the new access token.
+The "session\_id" needs to be included in the new access token in order for RS to identify the old access token to supersede, as well as the OSCORE Security Context already shared between C and RS and to be associated with the new access token.
 
 ## The EDHOC_Information # {#edhoc-parameters-object}
 
@@ -396,7 +400,7 @@ The EDHOC\_Information can either be encoded as a JSON object or as a CBOR map. 
 | Name          | CBOR value   | CBOR | Registry | Description        |
 |               |              | Type |          |                    |
 +---------------+--------------+------+----------+--------------------+
-| id            | bstr         |  0   |          | Identifier of      |
+| session_id    | bstr         |  0   |          | Identifier of      |
 |               |              |      |          | EDHOC session      |
 +---------------+--------------+------+----------+--------------------+
 | methods       | int /        |      | EDHOC    | Set of supported   |
@@ -436,7 +440,7 @@ The EDHOC\_Information can either be encoded as a JSON object or as a CBOR map. 
 ~~~~~~~~~~~
 {: #fig-cbor-key-edhoc-params title="EDHOC_Information Parameters" artwork-align="center"}
 
-* id: This parameter identifies an EDHOC session and is encoded as a byte string. In JSON, the "id" value is a Base64 encoded byte string. In CBOR, the "id" type is a byte string, and has label 0.
+* session\_id: This parameter identifies an EDHOC session and is encoded as a byte string. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and has label 0.
 
 * methods: This parameter specifies a set of supported EDHOC methods (see {{Section 3.2 of I-D.ietf-lake-edhoc}}). If the set is composed of a single EDHOC method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and has label 1.
 
@@ -458,7 +462,7 @@ An example of JSON EDHOC_Information is given in {{fig-edhoc-info-json}}.
 
 ~~~~~~~~~~~
    "edhoc_info" : {
-       "id" : b64'AQ==',
+       "session_id" : b64'AQ==',
        "methods" : 1,
        "cipher_suites" : 0
    }
@@ -513,7 +517,7 @@ RS checks whether it is already storing the authentication credential of C, AUTH
 
 If RS fails to find or validate AUTH_CRED_C, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
 
-If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
+If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "session\_id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
 
 If all validations are successful RS MUST reply to the POST request with a 2.01 (Created) response.
 
@@ -532,7 +536,7 @@ This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value)
 
 This EAD item, which may be used either in EAD\_1 or EAD\_3, is critical, i.e. only used with its negative value, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}).
 
-Access tokens in EAD fields are used to issue the first of a token series and not for the update of access rights.
+Access tokens are only transported in EAD fields for the first access token of a token series and not for the update of access rights.
 
 ## EDHOC Session and OSCORE Security Context # {#edhoc-exec}
 
@@ -584,13 +588,13 @@ If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{I-
 
 If C has already established access rights and an OSCORE Security Context with RS, then C can update its access rights by posting a new access token to the /authz-info endpoint.
 
-The new access token contains the updated access rights for C to access protected resources at RS, and C has to obtain it from AS as a new access token in the same token series of the current one (see {{c-as}} and {{as-c}}). When posting the new access token to the /authz-info endpoint, C MUST protect the POST request using the current OSCORE Security Context shared with RS. After successful verification (see {{rs-c}}), RS will replace the old access token with the new one, while preserving the same OSCORE Security Context. In particular, C and RS do not re-run the EDHOC protocol and they do not establish a new OSCORE Security Context.
+The new access token contains the updated access rights for C to access protected resources at RS, and C has to obtain it from AS as a new access token in the same token series of the current one (see {{c-as-comm}}). When posting the new access token to the /authz-info endpoint, C MUST protect the POST request using the current OSCORE Security Context shared with RS. After successful verification (see {{rs-c}}), RS will replace the old access token with the new one, while preserving the same OSCORE Security Context. In particular, C and RS do not re-run the EDHOC protocol and they do not establish a new OSCORE Security Context.
 
 Editor's note: Add description about the alternative when the AS uploads the new access token to RS.
 
 If RS receives an access token in an OSCORE protected request, it means that C is requesting an update of access rights. In such a case, RS MUST check the following conditions:
 
-* RS checks whether it stores an access token T_OLD, such that the "id" field of EDHOC_Identifier matches the "id" field of EDHOC_Identifier in the new access token T_NEW.
+* RS checks whether it stores an access token T_OLD, such that the "session\_id" field of EDHOC_Identifier matches the "session\_id" field of EDHOC_Identifier in the new access token T_NEW.
 
 * RS checks whether the OSCORE Security Context CTX used to protect the request matches the OSCORE Security Context associated with the stored access token T_OLD.
 

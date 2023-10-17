@@ -97,7 +97,7 @@ Table of Contents
        4.4.3.  EDHOC message_3
        4.4.4.  OSCORE Security Context
      4.5.  Update of Access Rights
-     4.6.  Cases of establishing a new OSCORE Security Context
+     4.6.  Cases of Establishing a New OSCORE Security Context
      4.7.  Access Rights Verification
    5.  Secure Communication with AS
    6.  Discarding the Security Context
@@ -138,11 +138,11 @@ Table of Contents
    client (C) and a resource server (RS) use the Constrained Application
    Protocol (CoAP) [RFC7252] to communicate, and Object Security for
    Constrained RESTful Environments (OSCORE) [RFC8613] to protect their
-   communications, but this profile uses Ephemeral Diffie-Hellman Over
-   COSE (EDHOC) protocol [I-D.ietf-lake-edhoc] to establish the OSCORE
-   Security Context.  The processing of requests for specific protected
-   resources is identical to what is defined in the "coap_oscore"
-   profile.
+   communications, but this profile uses the Ephemeral Diffie-Hellman
+   Over COSE (EDHOC) protocol [I-D.ietf-lake-edhoc] to establish the
+   OSCORE Security Context.  The processing of requests for specific
+   protected resources is identical to what is defined in the
+   "coap_oscore" profile.
 
    When using this profile, C accesses protected resources hosted at RS
    with the use of an access token issued by a trusted authorization
@@ -176,16 +176,16 @@ Table of Contents
    to identify C when it requests an access token and to determine what
    access rights it can be granted.  However, the authentication
    credential of C may potentially be conveyed (or uniquely referred to)
-   within the request for access which C makes to AS.
+   within the request for access that C makes to AS.
 
-   The establishment of association between RS and AS in an ACE
-   ecosystem is out of scope but one solution is to build on the same
-   primitives as used in this document, EDHOC for authentication and
-   OSCORE for communication security, using for example
+   The establishment of an association between RS and AS in an ACE
+   ecosystem is out of scope, but one solution is to build on the same
+   primitives as used in this document, i.e., EDHOC for authentication
+   and OSCORE for communication security, using for example
    [I-D.selander-lake-authz] for onboarding an RS with AS, and
-   [I-D.ietf-ace-coap-est-oscore] for establishing a trust anchors in
-   RS.  A similar procedure can also be applied between C and AS for
-   registering a client and establishment of trust anchor.
+   [I-D.ietf-ace-coap-est-oscore] for establishing a trust anchor in RS.
+   A similar procedure can also be applied between C and AS for
+   registering a client and for the establishment of a trust anchor.
 
 1.1.  Terminology
 
@@ -409,7 +409,7 @@ Table of Contents
    hash of an X.509 certificate carried in the "x5t" field of the
    "req_cnf" parameter.  In fact, it is expected that C can typically
    specify its own authentication credential by reference, since AS is
-   expected to obtain the actual authentication credential during an
+   expected to obtain the actual authentication credential during a
    previous client registration process or secure association
    establishment with C.
 
@@ -519,7 +519,7 @@ Table of Contents
       AS assigns the identifier to a token series when issuing the first
       access token of that series.  When assigning the identifier, AS
       MUST ensure that it was not used in a previous series of access
-      tokens, i.e. avoiding the case of two access tokens having the
+      tokens, i.e., avoiding the case of two access tokens having the
       following properties:
 
       -  i) issued for the same RS; and
@@ -548,7 +548,7 @@ Table of Contents
    When issuing the first access token of a token series, AS MAY send
    EDHOC_Information related to RS, see Section 3.3, in corresponding
    fields of the response to C.  This information is based on knowledge
-   AS have about RS, e.g. from a previous onboarding process, with
+   that AS have about RS, e.g., from a previous onboarding process, with
    particular reference to what RS supports as EDHOC peer.
 
    Figure 4 shows an example of an AS response.  The "rs_cnf" parameter
@@ -840,8 +840,8 @@ Table of Contents
 
    This section describes the exchanges between C and RS, which comprise
    the token uploading to RS, and the execution of the EDHOC protocol.
-   Note that AS may have uploaded the access token directly to the RS,
-   see Section 3.2.
+   Note that AS may have uploaded the access token directly to the RS
+   (see Section 3.2).
 
    In order to upload the access token to RS, C can send a POST request
    to the /authz-info endpoint at RS.  This is detailed in Section 4.1
@@ -864,12 +864,12 @@ Table of Contents
    specified in the access token (see Section 4.7).
 
    C and RS are mutually authenticated once they have successfully
-   completed the EDHOC protocol.  RS gets key confirmation by C of
-   PRK_out at the end of the successful EDHOC session.  Conversely, C
-   get key confirmation by RS of PRK_out either when receiving and
-   successfully verifying the optional EDHOC message_4 from RS, or when
-   successfully verifying a response from RS protected with the
-   generated OSCORE Security Context.
+   completed the EDHOC protocol.  RS gets key confirmation of PRK_out by
+   C at the end of the successful EDHOC session.  Conversely, C get key
+   confirmation of PRK_out by RS either when receiving and successfully
+   verifying the optional EDHOC message_4 from RS, or when successfully
+   verifying a response from RS protected with the generated OSCORE
+   Security Context.
 
 4.1.  C-to-RS: POST to /authz-info endpoint
 
@@ -886,8 +886,8 @@ Table of Contents
    Format (if present) MUST be "application/cwt".
 
    The communication with the /authz-info endpoint is in general not
-   protected, except in the case of updating the access rights, see
-   Section 4.5.
+   protected, except in the case of updating the access rights (see
+   Section 4.5).
 
 4.2.  RS-to-C: 2.01 (Created)
 
@@ -931,8 +931,8 @@ Table of Contents
    Rather than first uploading the access token to the /authz-info
    endpoint at RS as described in Section 4.1, C MAY include the access
    token either in EDHOC message_1 or message_3 by making use of the
-   External Authorization Data fields EAD_1 or EAD_3, see Section 3.8 of
-   [I-D.ietf-lake-edhoc].  The former is shown by the example in
+   External Authorization Data fields EAD_1 or EAD_3 (see Section 3.8 of
+   [I-D.ietf-lake-edhoc]).  The former is shown by the example in
    Appendix A.2.
 
    This document defines the EAD item EAD_ACCESS_TOKEN = (ead_label,
@@ -984,8 +984,8 @@ Table of Contents
    *  If the access token is provisioned with EAD_1 as specified in
       Section 4.3, then C MUST the EAD item EAD_ACCESS_TOKEN =
       (ead_label, ead_value) to the EAD_1 field.  If EAD_1 includes
-      EAD_ACCESS_TOKEN then RS MUST process the access token carried out
-      in ead_value as specified in Section 4.2.  If this processing
+      EAD_ACCESS_TOKEN, then RS MUST process the access token carried
+      out in ead_value as specified in Section 4.2.  If this processing
       fails, RS MUST reply to C with an EDHOC error message with
       ERR_CODE 1 (see Section 6 of [I-D.ietf-lake-edhoc]), and it MUST
       abort the EDHOC session.  RS MUST have successfully completed the
@@ -1025,23 +1025,23 @@ Table of Contents
    OSCORE Security Context, as defined in Appendix A.1 of
    [I-D.ietf-lake-edhoc].  In addition, the following applies.
 
-   *  The length in bytes of the OSCORE Master Secret (i.e. the
+   *  The length in bytes of the OSCORE Master Secret (i.e., the
       oscore_key_length parameter, see Appendix A.1 of
       [I-D.ietf-lake-edhoc]) MUST be the value specified in the
       "osc_ms_size" field (if present) in the EDHOC_Information of the
-      access token response to C, and the access token provisioned to
+      access token response to C, and of the access token provisioned to
       RS, respectively.
 
-   *  The length in bytes of the OSCORE Master Salt (i.e. the
+   *  The length in bytes of the OSCORE Master Salt (i.e., the
       oscore_salt_length parameter, see Appendix A.1 of
       [I-D.ietf-lake-edhoc]) MUST be the value specified in the
       "osc_salt_size" field (if present) in the EDHOC_Information of the
-      access token response to C, and in the access token provisioned to
+      access token response to C, and of the access token provisioned to
       RS, respectively.
 
    *  The C and RS MUST use an OSCORE version consistent with the value
       specified in the "osc_version" field (if present) in the
-      EDHOC_Information of the access token response to C, and in the
+      EDHOC_Information of the access token response to C, and of the
       access token provisioned to RS, respectively.
 
    *  RS associates the derived OSCORE Security Context with the stored
@@ -1051,12 +1051,13 @@ Table of Contents
    If supported by C, C MAY use the EDHOC + OSCORE combined request
    defined in [I-D.ietf-core-oscore-edhoc], unless the "comb_req" field
    of the EDHOC_Information was present in the access token response and
-   set to the CBOR simple value "false" (0xf4).  In the combined request
-   both EDHOC message_3 and the first OSCORE-protected application
-   request are combined together in a single OSCORE-protected CoAP
-   request thus saving one round trip, see example in Appendix A.2.
-   This requires C to derive the OSCORE Security Context with RS already
-   after having successfully processed the received EDHOC message_2.
+   set to the CBOR simple value "false" (0xf4).  In the combined
+   request, both EDHOC message_3 and the first OSCORE-protected
+   application request are combined together in a single OSCORE-
+   protected CoAP request, thus saving one round trip.  For an example,
+   see Appendix A.2.  This requires C to derive the OSCORE Security
+   Context with RS already after having successfully processed the
+   received EDHOC message_2.
 
 4.5.  Update of Access Rights
 
@@ -1105,9 +1106,9 @@ Table of Contents
    process needed by RS to keep track of authorization information for a
    given client.
 
-4.6.  Cases of establishing a new OSCORE Security Context
+4.6.  Cases of Establishing a New OSCORE Security Context
 
-   The procedures of provisioning a new access token to RS specified in
+   The procedure of provisioning a new access token to RS specified in
    this section applies to various cases when an OSCORE Security Context
    shared between C and RS has been deleted, for example:
 
@@ -1128,8 +1129,8 @@ Table of Contents
    Security Context but it needs to be updated, e.g., due to a policy
    limiting its use in terms of time or amount of processed data, or to
    the imminent exhaustion of the OSCORE Sender Sequence Number space.
-   In this case C and RS SHALL attempt to run the KUDOS key update
-   protocol [I-D.ietf-core-oscore-key-update] which is a lightweight
+   In this case, C and RS SHALL attempt to run the KUDOS key update
+   protocol [I-D.ietf-core-oscore-key-update], which is a lightweight
    alternative independent of ACE and EDHOC that does not require the
    posting of an access token.  If KUDOS is not supported, then C and RS
    falls back to EDHOC as outlined above.
@@ -1148,7 +1149,7 @@ Table of Contents
    That is, if RS receives an OSCORE-protected request targeting a
    protected resource from C, then RS processes the request according to
    [RFC8613], when Version 1 of OSCORE is used.  Future specifications
-   may define new versions of OSCORE, that AS can indicate C and RS to
+   may define new versions of OSCORE, which AS can indicate C and RS to
    use by means of the "osc_version" field of EDHOC_Information (see
    Section 3).
 
@@ -1168,11 +1169,11 @@ Table of Contents
    defined in Section 5 of [RFC9200] (such as HTTP and DTLS or TLS) MAY
    be used instead.
 
-   If OSCORE is used, the requesting entity and AS need to have a OSCORE
-   Security Context in place.  While this can be pre-installed, the
-   requesting entity and AS can establish such an OSCORE Security
+   If OSCORE is used, the requesting entity and AS need to have an
+   OSCORE Security Context in place.  While this can be pre-installed,
+   the requesting entity and AS can establish such an OSCORE Security
    Context, for example, by running the EDHOC protocol, as shown between
-   C and AS by the examples in Appendix A.1, Appendix A.2 and
+   C and AS by the examples in Appendix A.1, Appendix A.2, and
    Appendix A.3.  The requesting entity and AS communicate through the
    /token endpoint as specified in Section 5.8 of [RFC9200] and through
    the /introspect endpoint as specified in Section 5.9 of [RFC9200].

@@ -521,12 +521,16 @@ When an access token becomes invalid (e.g., due to its expiration or revocation)
 
 ## Access Token in External Authorization Data {#AT-in-EAD}
 
-Rather than first uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token either in EDHOC message\_1 or message\_3 by making use of the External Authorization Data fields  EAD\_1 or EAD\_3 (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). The former is shown by the example in {{example-with-optimization}}.
+Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token either in EDHOC message\_1 or message\_3 by making use of the External Authorization Data fields (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). The former is shown by the example in {{example-with-optimization}}. The latter causes the access token to be encrypted between C and RS, which enables protection of privacy sensitive information in the access token.
+
+Editor's note: Shall we remove the EAD_1 case? The case POST /token offers already early abort, and the EAD_3 case is equally efficienct but offers better protection of the access token.
 
 This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value), where:
 
 * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}, and
 * ead\_value is a CBOR byte string equal to the value of the "access_token" field of the access token response from AS (see {{as-c}}).
+
+This EAD item, which may be used either in EAD\_1 or EAD\_3, is critical, i.e. only used with its negative value, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}).
 
 Access tokens in EAD fields are used to issue the first of a token series and not for the update of access rights.
 
@@ -544,9 +548,9 @@ The processing of EDHOC message\_1 is specified in {{Section 5.2 of I-D.ietf-lak
 
 * The EDHOC method MUST be one of the EDHOC methods specified in the "methods" field (if present) in the EDHOC\_Information of the access token response to C.
 
-* The selected cipher suite MUST be the EDHOC cipher suite specified in the "cipher\_suites" field (if present) in the EDHOC\_Information of the access token response to C.
+* The selected cipher suite MUST be an EDHOC cipher suite specified in the "cipher\_suites" field (if present) in the EDHOC\_Information of the access token response to C.
 
-* If the access token is provisioned with EAD\_1 as specified in {{AT-in-EAD}}, then C MUST the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value) to the EAD\_1 field. If EAD\_1 includes EAD\_ACCESS\_TOKEN, then RS MUST process the access token carried out in ead\_value as specified in {{rs-c}}. If this processing fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. RS MUST have successfully completed the processing of the access token before continuing the EDHOC session by sending EDHOC message\_2.
+* If the access token is provisioned with EDHOC message\_1 as specified in {{AT-in-EAD}}, then C adds the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value) to the EAD\_1 field. If EAD\_1 includes EAD\_ACCESS\_TOKEN, then RS MUST process the access token carried in ead\_value as specified in {{rs-c}}. If this processing fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. RS MUST have successfully completed the processing of the access token before continuing the EDHOC session by sending EDHOC message\_2.
 
 ### EDHOC message\_2
 
@@ -560,7 +564,7 @@ The processing of EDHOC message\_3 is specified in {{Section 5.4 of I-D.ietf-lak
 
 * The authentication credential CRED\_I indicated by the message field ID\_CRED\_I is AUTH\_CRED\_C.
 
-* If the access token is provisioned with EAD\_3 as specified in {{AT-in-EAD}}, then C adds the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value) to the EAD\_3 field. If EAD\_3 includes EAD\_ACCESS\_TOKEN then RS MUST process the access token carried out in ead\_value as specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. RS MUST have successfully completed the processing of the access token before completing the EDHOC session.
+* If the access token is provisioned with EDHOC message\_3 as specified in {{AT-in-EAD}}, then C adds the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value) to the EAD\_3 field. If EAD\_3 includes EAD\_ACCESS\_TOKEN, then RS MUST process the access token carried in ead\_value as specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. RS MUST have successfully completed the processing of the access token before completing the EDHOC session.
 
 ### OSCORE Security Context
 
@@ -574,7 +578,7 @@ Once successfully completed the EDHOC session, C and RS derive an OSCORE Securit
 
 * RS associates the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential (AUTH\_CRED\_C = CRED\_I) used in the EDHOC session.
 
-If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{I-D.ietf-core-oscore-edhoc}}, unless the "comb\_req" field of the EDHOC\_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see {{example-with-optimization}}. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2.
+If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{I-D.ietf-core-oscore-edhoc}}, unless the "comb\_req" field of the EDHOC\_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see {{example-with-optimization}}. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2 and before sending EDHOC message\_3.
 
 ## Update of Access Rights {#update-access-rights-c-rs}
 
@@ -917,9 +921,11 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 IANA is asked to add the following entry to the "EDHOC External Authorization Data" registry defined in {{Section 9.5 of I-D.ietf-lake-edhoc}}.
 
+The ead_label = TBD and the ead\_value defines an access token in EAD_1 or EAD_3, with processing specified in {{AT-in-EAD}}.
+
 * Label: TBD
-* Message: EDHOC message\_1
-* Description: "ead\_value" specifies an access token
+* Value Type: bstr
+* Description: Access Token
 * Reference: {{&SELF}}
 
 ## EDHOC Information Registry # {#iana-edhoc-parameters}

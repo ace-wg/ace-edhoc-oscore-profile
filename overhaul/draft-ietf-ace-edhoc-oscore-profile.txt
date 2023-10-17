@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 18 April 2024                                         M. Tiloca
+Expires: 19 April 2024                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         16 October 2023
+                                                         17 October 2023
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 April 2024.
+   This Internet-Draft will expire on 19 April 2024.
 
 Copyright Notice
 
@@ -96,9 +96,9 @@ Table of Contents
        4.4.2.  EDHOC message_2
        4.4.3.  EDHOC message_3
        4.4.4.  OSCORE Security Context
-       4.4.5.  Update of Access Rights
-     4.5.  Cases of establishing a new OSCORE Security Context
-     4.6.  Access Rights Verification
+     4.5.  Update of Access Rights
+     4.6.  Cases of establishing a new OSCORE Security Context
+     4.7.  Access Rights Verification
    5.  Secure Communication with AS
    6.  Discarding the Security Context
    7.  Security Considerations
@@ -295,11 +295,11 @@ Table of Contents
    When running the EDHOC protocol, C uses the authentication credential
    of RS specified by AS together with the access token, while RS uses
    the authentication credential of C bound to and specified within the
-   access token.  If C and RS complete the EDHOC execution successfully,
+   access token.  If C and RS complete the EDHOC session successfully,
    they are mutually authenticated and they derive an OSCORE Security
    Context as per Appendix A.1 of [I-D.ietf-lake-edhoc].  Also, RS
    associates the two used authentication credentials and the completed
-   EDHOC execution with the derived Security Context.  The latter is in
+   EDHOC session with the derived Security Context.  The latter is in
    turn associated with the access token and the access rights of C
    specified therein.
 
@@ -383,9 +383,10 @@ Table of Contents
    either transported by value or uniquely referred to.
 
    The request to the /token endpoint and the corresponding response can
-   include EDHOC_Information, which is a CBOR map object defined in
-   Section 3.3.  This object is transported in the "edhoc_info"
-   parameter registered in Section 9.2 and Section 9.3.
+   include EDHOC_Information, which is a CBOR map object containing
+   information related to an EDHOC session, for example the identifier
+   of a token series, see Section 3.3.  This object is transported in
+   the "edhoc_info" parameter registered in Section 9.2 and Section 9.3.
 
 3.1.  C-to-AS: POST to /token endpoint
 
@@ -501,8 +502,7 @@ Table of Contents
       when responding to C with the access token response, the response
       MUST NOT include the parameter "access_token", and MUST include
       the parameter "token_uploaded" encoding the CBOR simple value
-      "true" (0xf5).  An example is given in Appendix A.3 as defined in
-      [I-D.tiloca-ace-workflow-and-params].
+      "true" (0xf5).  An example is given in Appendix A.3.
 
    When issuing any access token, AS MUST send the following data in the
    response to C.
@@ -718,7 +718,7 @@ Table of Contents
  |               |              | Type |          |                    |
  +---------------+--------------+------+----------+--------------------+
  | id            | bstr         |  0   |          | Identifier of      |
- |               |              |      |          | EDHOC execution    |
+ |               |              |      |          | EDHOC session      |
  +---------------+--------------+------+----------+--------------------+
  | methods       | int /        |      | EDHOC    | Set of supported   |
  |               | array of int |  1   | Method   | EDHOC methods      |
@@ -757,8 +757,8 @@ Table of Contents
 
                  Figure 6: EDHOC_Information Parameters
 
-   *  id: This parameter identifies an EDHOC execution and is encoded as
-      a byte string.  In JSON, the "id" value is a Base64 encoded byte
+   *  id: This parameter identifies an EDHOC session and is encoded as a
+      byte string.  In JSON, the "id" value is a Base64 encoded byte
       string.  In CBOR, the "id" type is a byte string, and has label 0.
 
    *  methods: This parameter specifies a set of supported EDHOC methods
@@ -794,13 +794,13 @@ Table of Contents
       "uri_path" is text string, and has label 6.
 
    *  osc_ms_len: This parameter specifies the size in bytes of the
-      OSCORE Master Secret to derive after the EDHOC execution, as per
+      OSCORE Master Secret to derive after the EDHOC session, as per
       Appendix A.1 of [I-D.ietf-lake-edhoc].  In JSON, the "osc_ms_len"
       value is an integer.  In CBOR, the "osc_ms_len" type is unsigned
       integer, and has label 7.
 
    *  osc_salt_len: This parameter specifies the size in bytes of the
-      OSCORE Master Salt to derive after the EDHOC execution, as per
+      OSCORE Master Salt to derive after the EDHOC session, as per
       Appendix A.1 of [I-D.ietf-lake-edhoc].  In JSON, the
       "osc_salt_len" value is an integer.  In CBOR, the "osc_salt_len"
       type is unsigned integer, and has label 8.
@@ -850,7 +850,8 @@ Table of Contents
    Alternatively, C can upload the access token while executing the
    EDHOC protocol, by transporting the access token in an EAD field of
    an EDHOC message sent to RS.  This is further discussed in
-   Section 4.4, and shown by the example in Appendix A.2.
+   Section 4.3 and Section 4.4, and shown by the example in
+   Appendix A.2.
 
    In either case, C and RS run the EDHOC protocol by exchanging POST
    requests and related responses to a dedicated EDHOC resource at RS
@@ -860,11 +861,11 @@ Table of Contents
    Context (see Section 4.4).  After that, C and RS use the established
    OSCORE Security Context to protect their communications when
    accessing protected resources at RS, as per the access rights
-   specified in the access token (see Section 4.6).
+   specified in the access token (see Section 4.7).
 
    C and RS are mutually authenticated once they have successfully
    completed the EDHOC protocol.  RS gets key confirmation by C of
-   PRK_out at the end of the successful EDHOC execution.  Conversely, C
+   PRK_out at the end of the successful EDHOC session.  Conversely, C
    get key confirmation by RS of PRK_out either when receiving and
    successfully verifying the optional EDHOC message_4 from RS, or when
    successfully verifying a response from RS protected with the
@@ -886,7 +887,7 @@ Table of Contents
 
    The communication with the /authz-info endpoint is in general not
    protected, except in the case of updating the access rights, see
-   Section 4.4.5.
+   Section 4.5.
 
 4.2.  RS-to-C: 2.01 (Created)
 
@@ -988,8 +989,8 @@ Table of Contents
       fails, RS MUST reply to C with an EDHOC error message with
       ERR_CODE 1 (see Section 6 of [I-D.ietf-lake-edhoc]), and it MUST
       abort the EDHOC session.  RS MUST have successfully completed the
-      processing of the access token before continuing the EDHOC
-      execution by sending EDHOC message_2.
+      processing of the access token before continuing the EDHOC session
+      by sending EDHOC message_2.
 
 4.4.2.  EDHOC message_2
 
@@ -1016,11 +1017,11 @@ Table of Contents
       ERR_CODE 1 (see Section 6 of [I-D.ietf-lake-edhoc]), and it MUST
       abort the EDHOC session.  RS MUST have successfully completed the
       processing of the access token before completing the EDHOC
-      execution.
+      session.
 
 4.4.4.  OSCORE Security Context
 
-   Once successfully completed the EDHOC execution, C and RS derive an
+   Once successfully completed the EDHOC session, C and RS derive an
    OSCORE Security Context, as defined in Appendix A.1 of
    [I-D.ietf-lake-edhoc].  In addition, the following applies.
 
@@ -1057,7 +1058,7 @@ Table of Contents
    This requires C to derive the OSCORE Security Context with RS already
    after having successfully processed the received EDHOC message_2.
 
-4.4.5.  Update of Access Rights
+4.5.  Update of Access Rights
 
    If C has already established access rights and an OSCORE Security
    Context with RS, then C can update its access rights by posting a new
@@ -1094,15 +1095,17 @@ Table of Contents
 
    Otherwise, RS MUST respond with a 4.01 (Unauthorized) error response.
    RS may provide additional information in the payload of the error
-   response, in order to clarify what went wrong.As specified in
-   Section 5.10.1 of [RFC9200], when receiving an updated access token
-   with updated authorization information from C (see Section 4.1), it
-   is recommended that RS overwrites the previous access token.  That
-   is, only the latest authorization information in the access token
-   received by RS is valid.  This simplifies the process needed by RS to
-   keep track of authorization information for a given client.
+   response, in order to clarify what went wrong.
 
-4.5.  Cases of establishing a new OSCORE Security Context
+   As specified in Section 5.10.1 of [RFC9200], when receiving an
+   updated access token with updated authorization information from C
+   (see Section 4.1), it is recommended that RS overwrites the previous
+   access token.  That is, only the latest authorization information in
+   the access token received by RS is valid.  This simplifies the
+   process needed by RS to keep track of authorization information for a
+   given client.
+
+4.6.  Cases of establishing a new OSCORE Security Context
 
    The procedures of provisioning a new access token to RS specified in
    this section applies to various cases when an OSCORE Security Context
@@ -1139,7 +1142,7 @@ Table of Contents
    preserve their OSCORE identifiers, i.e., the OSCORE Sender/Recipient
    IDs.
 
-4.6.  Access Rights Verification
+4.7.  Access Rights Verification
 
    RS MUST follow the procedures defined in Section 5.10.2 of [RFC9200].
    That is, if RS receives an OSCORE-protected request targeting a
@@ -1200,8 +1203,8 @@ Table of Contents
 
    *  The authentication credential of C (of RS) becomes invalid (e.g.,
       due to expiration or revocation), and it was used as CRED_I
-      (CRED_R) in the EDHOC execution whose PRK_out was used to
-      establish the OSCORE Security Context.
+      (CRED_R) in the EDHOC session whose PRK_out was used to establish
+      the OSCORE Security Context.
 
    RS MUST discard the current OSCORE Security Context shared with C
    when any of the following occurs:
@@ -1213,8 +1216,8 @@ Table of Contents
 
    *  The authentication credential of C (of RS) becomes invalid (e.g.,
       due to expiration or revocation), and it was used as CRED_I
-      (CRED_R) in the EDHOC execution whose PRK_out was used to
-      establish the OSCORE Security Context.
+      (CRED_R) in the EDHOC session whose PRK_out was used to establish
+      the OSCORE Security Context.
 
    After a new access token is successfully uploaded to RS, and a new
    OSCORE Security Context is established between C and RS, messages
@@ -1243,15 +1246,15 @@ Table of Contents
    from EDHOC [I-D.ietf-lake-edhoc] also apply to this specific use of
    the OSCORE and EDHOC protocols.
 
-   As previously stated, once completed the EDHOC execution, C and RS
-   are mutually authenticated through their respective authentication
+   As previously stated, once completed the EDHOC session, C and RS are
+   mutually authenticated through their respective authentication
    credentials, whose retrieval has been facilitated by AS.  Also once
-   completed the EDHOC execution, C and RS have established a long-term
+   completed the EDHOC session, C and RS have established a long-term
    secret key PRK_out enjoying forward secrecy.  This is in turn used by
    C and RS to establish an OSCORE Security Context.
 
    Furthermore, RS achieves confirmation that C has PRK_out (proof-of-
-   possession) when completing the EDHOC execution.  Rather, C achieves
+   possession) when completing the EDHOC session.  Rather, C achieves
    confirmation that RS has PRK_out (proof-of-possession) either when
    receiving the optional EDHOC message_4 from RS, or when successfully
    verifying a response from RS protected with the established OSCORE
@@ -1302,7 +1305,7 @@ Table of Contents
    the access token's value even when the access token is encrypted.
 
    The identifiers used in OSCORE, i.e., the OSCORE Sender/Recipient
-   IDs, are negotiated by C and RS during the EDHOC execution.  That is,
+   IDs, are negotiated by C and RS during the EDHOC session.  That is,
    the EDHOC Connection Identifier C_I of C is going to be the OSCORE
    Recipient ID of C (the OSCORE Sender ID of RS).  Conversely, the
    EDHOC Connection Identifier C_R of RS is going to be the OSCORE
@@ -1373,7 +1376,7 @@ Table of Contents
 
    *  Claim Name: "edhoc_info"
 
-   *  Claim Description: Information for EDHOC execution
+   *  Claim Description: Information for EDHOC session
 
    *  Change Controller: IETF
 
@@ -1386,7 +1389,7 @@ Table of Contents
 
    *  Claim Name: "edhoc_info"
 
-   *  Claim Description: Information for EDHOC execution
+   *  Claim Description: Information for EDHOC session
 
    *  JWT Claim Name: "edhoc_info"
 
@@ -2456,12 +2459,12 @@ Appendix B.  Profile Requirements
       symmetric/asymmetric) are supported by a specific proof-of-
       possession protocol: proof-of-possession is first achieved by RS
       when successfully processing EDHOC message_3 during the EDHOC
-      execution with C, through EDHOC algorithms and symmetric EDHOC
+      session with C, through EDHOC algorithms and symmetric EDHOC
       session keys.  Also, proof-of-possession is later achieved by C
       when receiving from RS: i) the optional EDHOC message_4 during the
-      EDHOC execution with RS, through EDHOC algorithms and symmetric
+      EDHOC session with RS, through EDHOC algorithms and symmetric
       EDHOC session keys; or ii) the first response protected with the
-      OSCORE Security Context established after the EDHOC execution with
+      OSCORE Security Context established after the EDHOC session with
       RS, through OSCORE algorithms and OSCORE symmetric keys derived
       from the completed EDHOC session.
 

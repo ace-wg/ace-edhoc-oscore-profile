@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-15T00:39:32.743483+00:00",
+  "timestamp": "2023-10-17T00:36:56.962810+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -287,13 +287,13 @@
       "labels": [],
       "body": "An unstructed bunch of suggested updates following a detailed review. For discussion.\r\n",
       "createdAt": "2023-10-12T10:13:56Z",
-      "updatedAt": "2023-10-12T10:14:20Z",
+      "updatedAt": "2023-10-16T15:45:25Z",
       "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
       "baseRefName": "main",
       "baseRefOid": "5e61eb08d656f517fb2163b18a8916068a9271f1",
       "headRepository": "ace-wg/ace-edhoc-oscore-profile",
       "headRefName": "overhaul",
-      "headRefOid": "a1d1673e3d2e3ce00080bf17f0ca0c870777757d",
+      "headRefOid": "7d8e1f120346c1af64b0a8588759584a93700995",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,

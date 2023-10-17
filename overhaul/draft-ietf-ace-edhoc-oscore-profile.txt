@@ -469,12 +469,11 @@ Table of Contents
 
 3.2.  AS-to-C: Response
 
-   After verifying the POST request to the /token endpoint and that C is
-   authorized to access a resource following its request, AS responds as
-   defined in Section 5.8.2 of [RFC9200], with potential modification as
-   detailed below.  If the request from C was invalid, or not
-   authorized, AS returns an error response as described in
-   Section 5.8.3 of [RFC9200].
+   After verifying the POST request to the /token endpoint that C is
+   authorized to access, AS responds as defined in Section 5.8.2 of
+   [RFC9200], with potential modification as detailed below.  If the
+   request from C was invalid, or not authorized, AS returns an error
+   response as described in Section 5.8.3 of [RFC9200].
 
    AS can signal that the use of EDHOC and OSCORE as per this profile is
    REQUIRED for a specific access token, by including the "ace_profile"
@@ -498,11 +497,11 @@ Table of Contents
       response.
 
    *  In the latter case, AS uploads the access token to the /authz-info
-      endpoint at RS as defined in Section 4.1 and Section 4.2.  Then,
-      when responding to C with the access token response, the response
-      MUST NOT include the parameter "access_token", and MUST include
-      the parameter "token_uploaded" encoding the CBOR simple value
-      "true" (0xf5).  An example is given in Appendix A.3.
+      endpoint at RS as defined in Section 4.1 and Section 4.2.  In case
+      of successful token upload, the access token response to C does
+      not include the parameter "access_token", and includes the
+      parameter "token_uploaded" encoding the CBOR simple value "true"
+      (0xf5).  An example is given in Appendix A.3.
 
    When issuing any access token, AS MUST send the following data in the
    response to C.
@@ -883,7 +882,7 @@ Table of Contents
    wrapping.  As per Section 5.10.1 of [RFC9200], the Content-Format of
    the POST request has to reflect the format of the transported access
    token.  In particular, if the access token is a CWT, the Content-
-   Format (if present) MUST be "application/cwt".
+   Format MUST be "application/cwt".
 
    The communication with the /authz-info endpoint is in general not
    protected, except in the case of updating the access rights (see
@@ -960,7 +959,7 @@ Table of Contents
 
 4.4.  EDHOC Session and OSCORE Security Context
 
-   In order to mutually authenticate and establish a secure connection,
+   In order to mutually authenticate and establish a secure association,
    C and RS run the EDHOC protocol [I-D.ietf-lake-edhoc] with C as EDHOC
    Initiator and RS as EDHOC Responder.
 
@@ -1086,6 +1085,9 @@ Table of Contents
    with the new one, while preserving the same OSCORE Security Context.
    In particular, C and RS do not re-run the EDHOC protocol and they do
    not establish a new OSCORE Security Context.
+
+   Editor's note: Add description about the alternative when the AS
+   uploads the new access token to RS.
 
    If RS receives an access token in an OSCORE protected request, it
    means that C is requesting an update of access rights.  In such a

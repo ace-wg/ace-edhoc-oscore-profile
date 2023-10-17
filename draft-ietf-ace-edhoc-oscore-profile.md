@@ -262,7 +262,7 @@ AS MUST verify that the received value identifies a token series to which a stil
 
 ## AS-to-C: Response # {#as-c}
 
-After verifying the POST request to the /token endpoint and that C is authorized to access a resource following its request, AS responds as defined in {{Section 5.8.2 of RFC9200}}, with potential modification as detailed below. If the request from C was invalid, or not authorized, AS returns an error response as described in {{Section 5.8.3 of RFC9200}}.
+After verifying the POST request to the /token endpoint that C is authorized to access, AS responds as defined in {{Section 5.8.2 of RFC9200}}, with potential modification as detailed below. If the request from C was invalid, or not authorized, AS returns an error response as described in {{Section 5.8.3 of RFC9200}}.
 
 AS can signal that the use of EDHOC and OSCORE as per this profile is REQUIRED for a specific access token, by including the "ace_profile" parameter with the value "coap_edhoc_oscore" in the access token response. This means that C MUST use EDHOC with RS and derive an OSCORE Security Context, as specified in {{edhoc-exec}}. After that, C MUST use the established OSCORE Security Context to protect communications with RS, when accessing protected resources at RS according to the authorization information indicated in the access token. Usually, it is assumed that constrained devices will be pre-configured with the necessary profile, so that this kind of profile signaling can be omitted.
 
@@ -270,7 +270,7 @@ The access token may be sent in the access token response to C for subsequent pr
 
 * In the former case, AS provides the access token to C, by specifying it in the "access\_token" parameter of the access token response.
 
-* In the latter case, AS uploads the access token to the /authz-info endpoint at RS as defined in {{c-rs}} and {{rs-c}}. Then, when responding to C with the access token response, the response MUST NOT include the parameter "access\_token", and MUST include the parameter "token\_uploaded" encoding the CBOR simple value "true" (0xf5). An example is given in {{example-without-optimization-as-posting}}.
+* In the latter case, AS uploads the access token to the /authz-info endpoint at RS as defined in {{c-rs}} and {{rs-c}}. In case of successful token upload, the access token response to C does not include the parameter "access\_token", and includes the parameter "token_uploaded" encoding the CBOR simple value "true" (0xf5). An example is given in {{example-without-optimization-as-posting}}.
 
 
 When issuing any access token, AS MUST send the following data in the response to C.
@@ -499,7 +499,7 @@ C and RS are mutually authenticated once they have successfully completed the ED
 
 The access token can be uploaded to RS by using the /authz-info endpoint at RS. To this end, C uses CoAP {{RFC7252}} and the Authorization Information endpoint described in {{Section 5.10.1 of RFC9200}} in order to transport the access token.
 
-That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload conveying the access token without any CBOR wrapping. As per {{Section 5.10.1 of RFC9200}}, the Content-Format of the POST request has to reflect the format of the transported access token. In particular, if the access token is a CWT, the Content-Format (if present) MUST be "application/cwt".
+That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload conveying the access token without any CBOR wrapping. As per {{Section 5.10.1 of RFC9200}}, the Content-Format of the POST request has to reflect the format of the transported access token. In particular, if the access token is a CWT, the Content-Format MUST be "application/cwt".
 
 The communication with the /authz-info endpoint is in general not protected, except in the case of updating the access rights (see {{update-access-rights-c-rs}}).
 
@@ -536,7 +536,7 @@ Access tokens in EAD fields are used to issue the first of a token series and no
 
 ## EDHOC Session and OSCORE Security Context # {#edhoc-exec}
 
-In order to mutually authenticate and establish a secure connection, C and RS run the EDHOC protocol {{I-D.ietf-lake-edhoc}} with C as EDHOC Initiator and RS as EDHOC Responder.
+In order to mutually authenticate and establish a secure association, C and RS run the EDHOC protocol {{I-D.ietf-lake-edhoc}} with C as EDHOC Initiator and RS as EDHOC Responder.
 
 As per {{Section A.2 of I-D.ietf-lake-edhoc}}, C sends EDHOC message_1 and EDHOC message_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message_2 and (optionally) EDHOC message_4 as 2.04 (Changed) CoAP responses. C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present.
 
@@ -585,6 +585,8 @@ If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{I-
 If C has already established access rights and an OSCORE Security Context with RS, then C can update its access rights by posting a new access token to the /authz-info endpoint.
 
 The new access token contains the updated access rights for C to access protected resources at RS, and C has to obtain it from AS as a new access token in the same token series of the current one (see {{c-as}} and {{as-c}}). When posting the new access token to the /authz-info endpoint, C MUST protect the POST request using the current OSCORE Security Context shared with RS. After successful verification (see {{rs-c}}), RS will replace the old access token with the new one, while preserving the same OSCORE Security Context. In particular, C and RS do not re-run the EDHOC protocol and they do not establish a new OSCORE Security Context.
+
+Editor's note: Add description about the alternative when the AS uploads the new access token to RS.
 
 If RS receives an access token in an OSCORE protected request, it means that C is requesting an update of access rights. In such a case, RS MUST check the following conditions:
 

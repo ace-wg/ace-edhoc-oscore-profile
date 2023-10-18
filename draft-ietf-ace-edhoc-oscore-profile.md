@@ -374,7 +374,7 @@ When receiving an Access Token response including the "rs\_cnf" parameter, C che
 
 If this is not the case, C retrieves AUTH\_CRED\_RS, e.g., from the "rs_cnf" parameter if the authentication credential is specified therein by value, or from a further trusted source pointed to by the AUTH\_CRED\_RS identifier included in the "rs_cnf" parameter. After that, C validates the actual AUTH\_CRED\_RS. In case of successful validation, C stores AUTH\_CRED\_RS as a valid authentication credential. Otherwise, C MUST delete the access token.
 
-### Updated Access Rights
+### Update of Access Rights
 
 If C has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, then:
 
@@ -386,7 +386,7 @@ If C has requested an update to its access rights using the same OSCORE Security
 
 The "session\_id" needs to be included in the new access token in order for RS to identify the old access token to supersede, as well as the OSCORE Security Context already shared between C and RS and to be associated with the new access token.
 
-## The EDHOC_Information # {#edhoc-parameters-object}
+## EDHOC_Information # {#edhoc-parameters-object}
 
 EDHOC\_Information is an object including information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC\_Information is defined to be serialized and transported between nodes, as specified by this document, but it can also be used by other specifications if needed.
 

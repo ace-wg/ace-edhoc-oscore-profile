@@ -124,7 +124,9 @@ Table of Contents
      A.3.  Alternative Workflow (AS token posting)
    Appendix B.  Profile Requirements
    Appendix C.  Document Updates
-     C.1.  Version -00 to -01
+     C.1.  Version -02 to -03
+     C.2.  Version -01 to -02
+     C.3.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -2515,7 +2517,32 @@ Appendix C.  Document Updates
 
    RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
-C.1.  Version -00 to -01
+C.1.  Version -02 to -03
+
+   *  Restructured presentation of content.
+
+   *  Semplified description of the use of EDHOC_Information.
+
+   *  Merged the concepts of EDHOC "session_id" and identifier of token
+      series.
+
+   *  Enabled the transport of the access token also in EDHOC EAD_3.
+
+C.2.  Version -01 to -02
+
+   *  Removed use of EDHOC_KeyUpdate.
+
+   *  The Security Context is updated either by KUDOS or a rerun of
+      EDHOC.
+
+   *  The alternative workflow (AS token posting) is specified in
+      separate draft.
+
+   *  Fixed and updated examples.
+
+   *  Editorial improvements.
+
+C.3.  Version -00 to -01
 
    *  Fixed semantics of the ead_value for transporting an Access Token
       in the EAD_1 field.

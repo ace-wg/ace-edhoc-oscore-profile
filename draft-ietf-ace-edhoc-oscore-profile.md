@@ -467,7 +467,7 @@ An example of JSON EDHOC_Information is given in {{fig-edhoc-info-json}}.
        "cipher_suites" : 0
    }
 ~~~~~~~~~~~
-{: #fig-edhoc-info-json title="Example of JSON EDHOC\_Information"}
+{: #fig-edhoc-info-json title="Example of JSON EDHOC_Information"}
 
 The CDDL grammar describing the CBOR EDHOC_Information is:
 
@@ -1470,7 +1470,7 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
 * Restructured presentation of content.
 
-* Semplified description of the use of EDHOC_Information.
+* Simplified description of the use of EDHOC_Information.
 
 * Merged the concepts of EDHOC "session_id" and identifier of token series.
 

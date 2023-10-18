@@ -1466,6 +1466,28 @@ This section lists the specifications of this profile based on the requirements 
 
 RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
+## Version -02 to -03 ## {#sec-02-03}
+
+* Restructured presentation of content.
+
+* Semplified description of the use of EDHOC_Information.
+
+* Merged the concepts of EDHOC "session_id" and identifier of token series.
+
+* Enabled the transport of the access token also in EDHOC EAD_3.
+
+## Version -01 to -02 ## {#sec-01-02}
+
+* Removed use of EDHOC_KeyUpdate.
+
+* The Security Context is updated either by KUDOS or a rerun of EDHOC.
+
+* The alternative workflow (AS token posting) is specified in separate draft.
+
+* Fixed and updated examples.
+
+* Editorial improvements.
+
 ## Version -00 to -01 ## {#sec-00-01}
 
 * Fixed semantics of the ead_value for transporting an Access Token in the EAD_1 field.

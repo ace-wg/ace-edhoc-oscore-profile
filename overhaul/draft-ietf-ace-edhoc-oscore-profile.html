@@ -1656,7 +1656,7 @@ When later issuing further access tokens to the same pair (C, RS) using the same
 <a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-processing-in-c" class="section-name selfRef">Processing in C</a>
           </h4>
 <p id="section-3.3.2-1">When receiving an Access Token response including the "rs_cnf" parameter, C checks whether it is already storing the authentication credential of RS, namely AUTH_CRED_RS, specified in "rs_cnf" by value or reference.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.3.2-2">If this is not the case, C retrieves AUTH_CRED_RS, e.g., from the "rs_cnf" parameter if the authentication credential is specified therein by value, or from a further trusted source pointed to by the AUTH_CRED_RS identifier included in the "rs_cnf" parameter. After that, C validates the actual AUTH_CRED_RS. In case of successful validation, C stores AUTH_CRED_RS as a valid authentication credential. Otherwise, C MUST delete the access token.<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-2">If this is not the case, C retrieves AUTH_CRED_RS, either using the "rs_cnf" parameter or some other trusted source. After that, C validates the actual AUTH_CRED_RS. In case of successful validation, C stores AUTH_CRED_RS as a valid authentication credential. Otherwise, C MUST delete the access token.<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="update-of-access-rights">

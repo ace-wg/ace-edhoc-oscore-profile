@@ -204,7 +204,7 @@ Table of Contents
    RESTful terminology follows HTTP [RFC9110].
 
    Readers are expected to be familiar with the terms and concepts
-   defined in CoAP [RFC7252], OSCORE [RFC8613] and EDHOC
+   defined in CoAP [RFC7252], OSCORE [RFC8613], and EDHOC
    [I-D.ietf-lake-edhoc].
 
    Readers are also expected to be familiar with the terms and concepts
@@ -249,7 +249,7 @@ Table of Contents
    the following sections.
 
    RS maintains a collection of authentication credentials.  These are
-   associated to OSCORE Security Contexts and to authorization
+   associated with OSCORE Security Contexts and with authorization
    information for all clients that RS is communicating with.  The
    authorization information is used to enforce polices for processing
    requests from those clients.
@@ -260,7 +260,8 @@ Table of Contents
    [RFC9200].
 
    This profile also supports the alternative workflow where AS uploads
-   the access token to RS, see [I-D.tiloca-ace-workflow-and-params].
+   the access token to RS, as defined in
+   [I-D.tiloca-ace-workflow-and-params].
 
    If C has retrieved an access token, there are two options for C to
    upload it to RS, as further detailed in this document.
@@ -270,11 +271,11 @@ Table of Contents
        token is valid, RS responds to the request with a 2.01 (Created)
        response, after which C initiates the EDHOC protocol with RS.
        The communication with the /authz-info endpoint is not protected,
-       except for the update of access rights.
+       except for the update of access rights (see Section 4.5).
 
    2.  C initiates the EDHOC protocol and includes the access token as
        External Authorization Data (EAD), see Section 3.8 of
-       [I-D.ietf-lake-edhoc].  In this case the access token is
+       [I-D.ietf-lake-edhoc].  In this case, the access token is
        validated in parallel with the EDHOC session.  This option cannot
        be used for the update of access rights only.
 
@@ -303,10 +304,10 @@ Table of Contents
    AS to find the data it has previously shared with C.  The session
    identifier is assigned by AS and used to identify a series of access
    tokens, called a "token series" (see Section 3.2).  Upon a successful
-   update of access rights, the new issued access token becomes the
-   latest in its token series.  When the latest access token of a token
-   series becomes invalid (e.g., when it expires or gets revoked), that
-   token series ends.
+   update of access rights (see Section 4.5), the new issued access
+   token becomes the latest in its token series.  When the latest access
+   token of a token series becomes invalid (e.g., when it expires or
+   gets revoked), that token series ends.
 
    An overview of the profile flow for the "coap_edhoc_oscore" profile
    in case of option 1 above is given in Figure 1.  The names of
@@ -380,7 +381,7 @@ Table of Contents
    The client-to-AS request is specified in Section 5.8.1 of [RFC9200].
 
    The client must send this POST request to the /token endpoint over a
-   secure channel that guarantees authentication, message integrity and
+   secure channel that guarantees authentication, message integrity, and
    confidentiality (see Section 5).
 
    The access token request and response MUST be confidentiality
@@ -496,7 +497,7 @@ Table of Contents
 
    After verifying the POST request to the /token endpoint that C is
    authorized to access, AS responds as defined in Section 5.8.2 of
-   [RFC9200], with potential modification as detailed below.  If the
+   [RFC9200], with potential modifications as detailed below.  If the
    request from C was invalid, or not authorized, AS returns an error
    response as described in Section 5.8.3 of [RFC9200].
 
@@ -532,7 +533,7 @@ Table of Contents
    response to C.
 
    *  The "session_id" field of EDHOC_Information, which is the
-      identifier of the token series to which the issued access token
+      identifier of the token series which the issued access token
       belongs to.
 
    When issuing the first access token of a token series, AS MUST send
@@ -565,7 +566,7 @@ Table of Contents
    readability.
 
       Header: Created (Code=2.01)
-         Content-Type: "application/ace+cbor"
+         Content-Format: "application/ace+cbor"
          Payload:
          {
            "access_token" : h'8343a1010aa2044c53 ...
@@ -591,8 +592,8 @@ Table of Contents
    When issuing any access token of a token series, AS MUST specify the
    following data in the claims associated with the access token.
 
-   *  The "session_id" field of EDHOC_Information, and with the same
-      value specified in the response to C from the /token endpoint.
+   *  The "session_id" field of EDHOC_Information, with the same value
+      specified in the response to C from the /token endpoint.
 
    *  The authentication credential that C specified in its POST request
       to the /token endpoint (see Section 3.1), AUTH_CRED_C.  If the
@@ -797,7 +798,7 @@ Table of Contents
    *  uri_path: This parameter specifies the path component of the URI
       of the EDHOC resource where EDHOC messages have to be sent as
       requests.  In JSON, the "uri_path" value is a string.  In CBOR,
-      "uri_path" is text string, and has label 6.
+      "uri_path" is a text string, and has label 6.
 
    *  osc_ms_len: This parameter specifies the size in bytes of the
       OSCORE Master Secret to derive after the EDHOC session, as per
@@ -905,9 +906,9 @@ Table of Contents
    If the access token is valid, RS proceeds as follows.
 
    RS checks whether it is already storing the authentication credential
-   of C, AUTH_CRED_C, specified in the cnf claim of the access token by
-   value or by reference.  If not, RS retrieves AUTH_CRED_C, either
-   using the cnf claim or some other trusted source.
+   of C, AUTH_CRED_C, specified in the "cnf" claim of the access token
+   by value or by reference.  If not, RS retrieves AUTH_CRED_C, either
+   using the "cnf" claim or some other trusted source.
 
    If RS fails to find or validate AUTH_CRED_C, then RS MUST respond
    with an error response code equivalent to the CoAP code 4.00 (Bad
@@ -924,7 +925,7 @@ Table of Contents
    information in the payload of the error response, in order to clarify
    what went wrong.
 
-   If all validations are successful RS MUST reply to the POST request
+   If all validations are successful, RS MUST reply to the POST request
    with a 2.01 (Created) response.
 
    When an access token becomes invalid (e.g., due to its expiration or
@@ -958,9 +959,9 @@ Table of Contents
       Section 3.3).
 
    This EAD item, which may be used either in EAD_1 or EAD_3, is
-   critical, i.e. only used with its negative value, indicating that the
-   receiving RS must either process the access token or abort the EDHOC
-   session (see Section 3.8 of [I-D.ietf-lake-edhoc]).
+   critical, i.e., only used with its negative value, indicating that
+   the receiving RS must either process the access token or abort the
+   EDHOC session (see Section 3.8 of [I-D.ietf-lake-edhoc]).
 
    Access tokens are only transported in EAD fields for the first access
    token of a token series and not for the update of access rights.
@@ -1057,7 +1058,7 @@ Table of Contents
       access token response to C, and of the access token provisioned to
       RS, respectively.
 
-   *  The C and RS MUST use an OSCORE version consistent with the value
+   *  C and RS MUST use an OSCORE version consistent with the value
       specified in the "osc_version" field (if present) in the
       EDHOC_Information of the access token response to C, and of the
       access token provisioned to RS, respectively.
@@ -1138,7 +1139,8 @@ Table of Contents
 
    *  Lack of storage in RS.  This situation can be detected by C when
       it receives a 4.01 (Unauthorized) response from RS, e.g., as an
-      "AS Request Creation Hints" message, see Section 5.3 of [RFC9200].
+      "AS Request Creation Hints" message (see Section 5.3 of
+      [RFC9200]).
 
    *  The EDHOC session from which this OSCORE Security Context was
       derived has become invalid, e.g., due to the expiration of an

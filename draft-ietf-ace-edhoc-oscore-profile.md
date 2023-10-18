@@ -1047,17 +1047,17 @@ M05 |<---------------------------------|                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       id : h'01',                |                              |
+    |       session_id : h'01',        |                              |
     |       cipher_suites : 2,         |                              |
     |       methods : 3                |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
-    |     * the 'cnf' claim specifies  |                              |
-    |       AUTH_CRED_C by value       |                              |
-    |     * the 'edhoc_info' claim     |                              |
-    |       specifies the same as      |                              |
-    |       'edhoc_info' above         |                              |
+    |    * the 'cnf' claim specifies   |                              |
+    |      AUTH_CRED_C by value        |                              |
+    |    * the 'edhoc_info' claim      |                              |
+    |      specifies the same as       |                              |
+    |      'edhoc_info' above          |                              |
     |                                  |                              |
 
  // Possibly after chain verification, the Client adds AUTH_CRED_RS
@@ -1154,17 +1154,17 @@ M14 |<---------------------------------|                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       id : h'05',                |                              |
+    |       session_id : h'05',        |                              |
     |       cipher_suites : 2,         |                              |
     |       methods : 3                |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
-    |     * the 'cnf' claim specifies  |                              |
-    |       AUTH_CRED_C by reference   |                              |
-    |     * the 'edhoc_info' claim     |                              |
-    |       specifies the same as      |                              |
-    |       'edhoc_info' above         |                              |
+    |    * the 'cnf' claim specifies   |                              |
+    |      AUTH_CRED_C by reference    |                              |
+    |    * the 'edhoc_info' claim      |                              |
+    |      specifies the same as       |                              |
+    |      'edhoc_info' above          |                              |
     |                                  |                              |
     |                                  |                              |
     |  Token upload to /authz-info     |                              |
@@ -1258,17 +1258,17 @@ M04 |<---------------------------------|                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       id : h'01',                |                              |
+    |       session_id : h'01',        |                              |
     |       cipher_suites : 2,         |                              |
     |       methods : 3                |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
-    |     * the 'cnf' claim specifies  |                              |
-    |       AUTH_CRED_C by value       |                              |
-    |     * the 'edhoc_info' claim     |                              |
-    |       specifies the same as      |                              |
-    |       'edhoc_info' above         |                              |
+    |    * the 'cnf' claim specifies   |                              |
+    |      AUTH_CRED_C by value        |                              |
+    |    * the 'edhoc_info' claim      |                              |
+    |      specifies the same as       |                              |
+    |      'edhoc_info' above          |                              |
     |                                  |                              |
 
  // Possibly after chain verification, the Client adds AUTH_CRED_RS
@@ -1354,16 +1354,16 @@ M03 |--------------------------------->|                              |
     |                                  |  Token upload to /authz-info |
 M04 |                                  |----------------------------->|
     |                                  |  In the access token:        |
-    |                                  |     * the 'cnf' claim        |
-    |                                  |       specifies AUTH_CRED_C  |
-    |                                  |       by value               |
-    |                                  |     * the 'edhoc_info'       |
-    |                                  |       claim specifies        |
-    |                                  |         {                    |
-    |                                  |           id : h'01',        |
-    |                                  |           cipher_suites : 2, |
-    |                                  |           methods: 3         |
-    |                                  |         }                    |
+    |                                  |    * the 'cnf' claim         |
+    |                                  |      specifies AUTH_CRED_C   |
+    |                                  |      by value                |
+    |                                  |    * the 'edhoc_info'        |
+    |                                  |      claim specifies         |
+    |                                  |        {                     |
+    |                                  |          session_id : h'01', |
+    |                                  |          cipher_suites : 2,  |
+    |                                  |          methods: 3          |
+    |                                  |        }                     |
     |                                  |                              |
 
  // Possibly after chain verification, RS adds AUTH_CRED_C
@@ -1388,7 +1388,7 @@ M06 |<---------------------------------|                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       id : h'01',                |                              |
+    |       session_id : h'01',        |                              |
     |       cipher_suites  : 2,        |                              |
     |       methods : 3                |                              |
     |     }                            |                              |

@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 19 April 2024                                         M. Tiloca
+Expires: 20 April 2024                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         17 October 2023
+                                                         18 October 2023
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 April 2024.
+   This Internet-Draft will expire on 20 April 2024.
 
 Copyright Notice
 
@@ -86,8 +86,8 @@ Table of Contents
      3.3.  AS-to-C: Response
        3.3.1.  Access Token
        3.3.2.  Processing in C
-       3.3.3.  Updated Access Rights
-     3.4.  The EDHOC_Information
+       3.3.3.  Update of Access Rights
+     3.4.  EDHOC_Information
    4.  Client-RS Communication
      4.1.  C-to-RS: POST to /authz-info endpoint
      4.2.  RS-to-C: 2.01 (Created)
@@ -681,7 +681,7 @@ Table of Contents
    validation, C stores AUTH_CRED_RS as a valid authentication
    credential.  Otherwise, C MUST delete the access token.
 
-3.3.3.  Updated Access Rights
+3.3.3.  Update of Access Rights
 
    If C has requested an update to its access rights using the same
    OSCORE Security Context, which is valid and authorized, then:
@@ -700,7 +700,7 @@ Table of Contents
    as the OSCORE Security Context already shared between C and RS and to
    be associated with the new access token.
 
-3.4.  The EDHOC_Information
+3.4.  EDHOC_Information
 
    EDHOC_Information is an object including information that guides two
    peers towards executing the EDHOC protocol.  In particular, the

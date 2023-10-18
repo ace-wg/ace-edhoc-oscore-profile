@@ -828,7 +828,7 @@ Table of Contents
           "cipher_suites" : 0
       }
 
-                Figure 7: Example of JSON EDHOC\_Information
+                Figure 7: Example of JSON EDHOC_Information
 
    The CDDL grammar describing the CBOR EDHOC_Information is:
 
@@ -2521,7 +2521,7 @@ C.1.  Version -02 to -03
 
    *  Restructured presentation of content.
 
-   *  Semplified description of the use of EDHOC_Information.
+   *  Simplified description of the use of EDHOC_Information.
 
    *  Merged the concepts of EDHOC "session_id" and identifier of token
       series.

@@ -207,9 +207,7 @@ The request to the /token endpoint and the corresponding response can include ED
 
 The client-to-AS request is specified in {{Section 5.8.1 of RFC9200}}.
 
-The client must send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see {{secure-comm-as}}).
-
-The access token request and response MUST be confidentiality protected and ensure authenticity. The use of EDHOC and OSCORE between C and AS is RECOMMENDED in this profile, in order to reduce the number of libraries that C has to support. However, other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} MAY alternatively be used, such as TLS {{RFC8446}} or DTLS {{RFC9147}}.
+The client MUST send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see {{secure-comm-as}}). This document describes the use of CoAP, EDHOC and OSCORE to reduce the number of libraries that C has to support.
 
 An example of such a request is shown in {{token-request}}. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req\_cnf" parameter. In fact, it is expected that C can typically specify its own authentication credential by reference, since AS is expected to obtain the actual authentication credential during a previous client registration process or secure association establishment with C.
 
@@ -652,7 +650,7 @@ If OSCORE verification succeeds and the target resource requires authorization, 
 
 As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicates via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED. Other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} (such as HTTP and DTLS or TLS) MAY be used instead.
 
-If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{example-without-optimization}}, {{example-with-optimization}}, and {{example-without-optimization-as-posting}}. The requesting entity and AS communicate through the /token endpoint as specified in {{Section 5.8 of RFC9200}} and through the /introspect endpoint as specified in {{Section 5.9 of RFC9200}}.
+If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{example-without-optimization}}, {{example-with-optimization}}, and {{example-without-optimization-as-posting}}.
 
 Furthermore, as discussed in {{as-c}} and shown by the example in {{example-without-optimization-as-posting}}, AS may upload an access token directly to the /authz-info endpoint at RS. Unless encryption is applied, that exchange between AS and RS discloses the plain text token, just like when C uses the the /authz-info endpoint at RS to upload a first token in a series.
 

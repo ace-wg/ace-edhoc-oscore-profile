@@ -382,17 +382,11 @@ Table of Contents
 
    The client-to-AS request is specified in Section 5.8.1 of [RFC9200].
 
-   The client must send this POST request to the /token endpoint over a
+   The client MUST send this POST request to the /token endpoint over a
    secure channel that guarantees authentication, message integrity, and
-   confidentiality (see Section 5).
-
-   The access token request and response MUST be confidentiality
-   protected and ensure authenticity.  The use of EDHOC and OSCORE
-   between C and AS is RECOMMENDED in this profile, in order to reduce
-   the number of libraries that C has to support.  However, other
-   protocols fulfilling the security requirements defined in Section 5
-   of [RFC9200] MAY alternatively be used, such as TLS [RFC8446] or DTLS
-   [RFC9147].
+   confidentiality (see Section 5).  This document describes the use of
+   CoAP, EDHOC and OSCORE to reduce the number of libraries that C has
+   to support.
 
    An example of such a request is shown in Figure 2.  In this example,
    C specifies its own authentication credential by reference, as the
@@ -1245,9 +1239,7 @@ Table of Contents
    the requesting entity and AS can establish such an OSCORE Security
    Context, for example, by running the EDHOC protocol, as shown between
    C and AS by the examples in Appendix A.1, Appendix A.2, and
-   Appendix A.3.  The requesting entity and AS communicate through the
-   /token endpoint as specified in Section 5.8 of [RFC9200] and through
-   the /introspect endpoint as specified in Section 5.9 of [RFC9200].
+   Appendix A.3.
 
    Furthermore, as discussed in Section 3.3 and shown by the example in
    Appendix A.3, AS may upload an access token directly to the /authz-

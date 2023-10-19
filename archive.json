@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-17T00:36:56.962810+00:00",
+  "timestamp": "2023-10-19T00:36:26.619438+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -287,13 +287,13 @@
       "labels": [],
       "body": "An unstructed bunch of suggested updates following a detailed review. For discussion.\r\n",
       "createdAt": "2023-10-12T10:13:56Z",
-      "updatedAt": "2023-10-16T15:45:25Z",
+      "updatedAt": "2023-10-18T14:14:36Z",
       "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
       "baseRefName": "main",
       "baseRefOid": "5e61eb08d656f517fb2163b18a8916068a9271f1",
       "headRepository": "ace-wg/ace-edhoc-oscore-profile",
       "headRefName": "overhaul",
-      "headRefOid": "7d8e1f120346c1af64b0a8588759584a93700995",
+      "headRefOid": "9fa37188d756420de77cdc9d5abee1807f84a0bb",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -307,7 +307,388 @@
           "updatedAt": "2023-10-12T10:14:20Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOIar0bc5kRBaW",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:25:27Z",
+          "updatedAt": "2023-10-17T12:25:27Z",
+          "comments": [
+            {
+              "originalPosition": 131,
+              "body": "The access is requested for a scope applied to an audience. That can be more than a resource.\r\n\r\nA middle ground between the new and old sentence can be:\r\n\r\n\"After verifying the POST request to the /token endpoint and that C is authorized to perform the access specified in its request, ...\"",
+              "createdAt": "2023-10-17T12:25:27Z",
+              "updatedAt": "2023-10-17T12:25:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kRB99",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:26:39Z",
+          "updatedAt": "2023-10-17T12:26:39Z",
+          "comments": [
+            {
+              "originalPosition": 174,
+              "body": "This is correct if the upload of the access token by the AS was successful, but it's different if the upload was not successful. Also, we can avoid the normative language, since that is now defined in -ace-workflow-and-params. The second sentence can be:\r\n\r\n\"In case of successful token upload, the access token response to C does not include the parameter \"access_token\", and includes the parameter \"token_uploaded\" encoding the CBOR simple value \"true\" (0xf5).\"\r\n\r\n(we can avoid restating how it works in case of unsuccessful token upload, as it is described in -ace-workflow-and-params anyway)",
+              "createdAt": "2023-10-17T12:26:39Z",
+              "updatedAt": "2023-10-17T12:26:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kRCJb",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:27:03Z",
+          "updatedAt": "2023-10-17T12:27:04Z",
+          "comments": [
+            {
+              "originalPosition": 338,
+              "body": "I think we can remove \"(if present)\", which is applicable specifically to the Content-Format CoAP Option.",
+              "createdAt": "2023-10-17T12:27:03Z",
+              "updatedAt": "2023-10-17T12:27:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kRCr8",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:28:10Z",
+          "updatedAt": "2023-10-17T12:28:11Z",
+          "comments": [
+            {
+              "originalPosition": 377,
+              "body": "Is this EAD item going to be used as critical?",
+              "createdAt": "2023-10-17T12:28:11Z",
+              "updatedAt": "2023-10-17T12:28:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kRDkB",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:29:31Z",
+          "updatedAt": "2023-10-17T12:29:31Z",
+          "comments": [
+            {
+              "originalPosition": 390,
+              "body": "Since this is about OSCORE, it's better to use \"association\" instead of \"connection\".",
+              "createdAt": "2023-10-17T12:29:31Z",
+              "updatedAt": "2023-10-17T12:29:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kREG_",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:30:23Z",
+          "updatedAt": "2023-10-17T12:30:23Z",
+          "comments": [
+            {
+              "originalPosition": 408,
+              "body": "I think that \"the EDHOC cipher suite\" should actually be \"an EDHOC cipher suite\".",
+              "createdAt": "2023-10-17T12:30:23Z",
+              "updatedAt": "2023-10-17T12:30:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kREX5",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:30:56Z",
+          "updatedAt": "2023-10-17T12:30:57Z",
+          "comments": [
+            {
+              "originalPosition": 411,
+              "body": "s/then C MUST the EAD item/then C adds the EAD item\r\n\r\n(this would also be consistent with the later sentence about using the item in EAD_3)",
+              "createdAt": "2023-10-17T12:30:56Z",
+              "updatedAt": "2023-10-17T12:30:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kREo2",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:31:31Z",
+          "updatedAt": "2023-10-17T12:31:31Z",
+          "comments": [
+            {
+              "originalPosition": 450,
+              "body": "The last sentence can be extended as:\r\n\r\n\"... the received EDHOC message_2 and before sending EDHOC message_3.\"",
+              "createdAt": "2023-10-17T12:31:31Z",
+              "updatedAt": "2023-10-17T12:31:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kRE8y",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:32:11Z",
+          "updatedAt": "2023-10-17T12:32:12Z",
+          "comments": [
+            {
+              "originalPosition": 459,
+              "body": "After this paragraph, we can add (for now) a placeholder about the alternative when the AS uploads the new access token to RS. This will require some additional explanation, which should be mostly possible to give in a future version of -ace-workflow-and params, as independent of the specifically used transport profile of ACE.",
+              "createdAt": "2023-10-17T12:32:12Z",
+              "updatedAt": "2023-10-17T12:32:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kTV2F",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T16:15:41Z",
+          "updatedAt": "2023-10-17T16:15:59Z",
+          "comments": [
+            {
+              "originalPosition": 338,
+              "body": "I was thinking that the Content-Format, being an option, could be omitted in this profile when it is understood out of band, in the interest of optimization.",
+              "createdAt": "2023-10-17T16:15:42Z",
+              "updatedAt": "2023-10-17T16:15:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kTXVN",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T16:17:51Z",
+          "updatedAt": "2023-10-17T16:17:52Z",
+          "comments": [
+            {
+              "originalPosition": 377,
+              "body": "Good point, should add that.",
+              "createdAt": "2023-10-17T16:17:52Z",
+              "updatedAt": "2023-10-17T16:17:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kTvTG",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T16:54:11Z",
+          "updatedAt": "2023-10-17T16:54:11Z",
+          "comments": [
+            {
+              "originalPosition": 338,
+              "body": "In general, it is not ultimately forbidden but it is discouraged.\r\n\r\nFrom RFC 7252, Section 5.5.1\r\n\r\n> The payload of requests or of responses ... Its format is specified by the Internet media type and content coding given by the Content-Format Option.  In the absence of this option, no default value is assumed, and the format will need to be inferred by the application (e.g., from the application context).\r\n>\r\n> Implementation Note:  On a quality-of-implementation level, there is a strong expectation that a Content-Format indication will be provided with resource representations whenever possible.  This is not a \"SHOULD\" level requirement solely because it is not a protocol requirement, and it also would be difficult to outline exactly in what cases this expectation can be violated.\r\n\r\nSpecifically for ACE, Section 5.10.1 of RFC 9200 says:\r\n\r\n> The method consists of an authz-info endpoint, implemented by the RS. A client using this method MUST make a POST request to the authz-info endpoint at the RS with the access token in the payload. The CoAP Content-Format or HTTP media type MUST reflect the format of the token, e.g., \"application/cwt\", for CBOR Web Tokens; if no Content-Format or media type is defined for the token format, \"application/octet-stream\" MUST be used.",
+              "createdAt": "2023-10-17T16:54:11Z",
+              "updatedAt": "2023-10-17T16:54:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kUSJ8",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T18:05:54Z",
+          "updatedAt": "2023-10-17T18:05:54Z",
+          "comments": [
+            {
+              "originalPosition": 408,
+              "body": "Adding that.",
+              "createdAt": "2023-10-17T18:05:54Z",
+              "updatedAt": "2023-10-17T18:05:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kUmdj",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T18:41:32Z",
+          "updatedAt": "2023-10-17T18:41:32Z",
+          "comments": [
+            {
+              "originalPosition": 411,
+              "body": "Changed this and some minor related things.",
+              "createdAt": "2023-10-17T18:41:32Z",
+              "updatedAt": "2023-10-17T18:41:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kU3iy",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T19:19:26Z",
+          "updatedAt": "2023-10-17T19:19:26Z",
+          "comments": [
+            {
+              "originalPosition": 338,
+              "body": "I removed \"(if present)\" pending other's comments. ",
+              "createdAt": "2023-10-17T19:19:26Z",
+              "updatedAt": "2023-10-17T19:19:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kU6He",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T19:26:35Z",
+          "updatedAt": "2023-10-17T19:26:35Z",
+          "comments": [
+            {
+              "originalPosition": 131,
+              "body": "The authorization may be different from what is specified in the request. Changed to:\r\n\r\n\"After verifying the POST request to the /token endpoint that C is authorized to access, ...\"",
+              "createdAt": "2023-10-17T19:26:35Z",
+              "updatedAt": "2023-10-17T19:26:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kU74f",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T19:30:42Z",
+          "updatedAt": "2023-10-17T19:30:42Z",
+          "comments": [
+            {
+              "originalPosition": 174,
+              "body": "Done.\r\n",
+              "createdAt": "2023-10-17T19:30:42Z",
+              "updatedAt": "2023-10-17T19:30:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kVDnz",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T19:50:58Z",
+          "updatedAt": "2023-10-17T19:50:59Z",
+          "comments": [
+            {
+              "originalPosition": 390,
+              "body": "Done.",
+              "createdAt": "2023-10-17T19:50:58Z",
+              "updatedAt": "2023-10-17T19:50:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kVD8s",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T19:51:46Z",
+          "updatedAt": "2023-10-17T19:51:47Z",
+          "comments": [
+            {
+              "originalPosition": 450,
+              "body": "Done",
+              "createdAt": "2023-10-17T19:51:46Z",
+              "updatedAt": "2023-10-17T19:51:48Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

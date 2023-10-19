@@ -1137,17 +1137,18 @@ Table of Contents
    C MUST discard the current OSCORE Security Context shared with RS
    when any of the following occurs.
 
-   *  The OSCORE Sender Sequence Number space of C gets exhausted.
+   *  The OSCORE Sender Sequence Number space of C is exhausted.
 
    *  The access token associated with the OSCORE Security Context
       becomes invalid, for example due to expiration or revocation.
 
-   *  C receives a number of 4.01 (Unauthorized) responses to OSCORE-
-      protected requests sent to RS and protected using the same OSCORE
-      Security Context.  The exact number of such received responses
-      needs to be specified by the application.  This may for example
-      happen due to lack of storage in RS which then sends the "AS
-      Request Creation Hints" message (see Section 5.3 of [RFC9200]).
+   *  C receives a number of unprotected 4.01 (Unauthorized) responses
+      to OSCORE-protected requests, which are sent to RS and protected
+      using the same OSCORE Security Context.  The exact number of such
+      received responses needs to be specified by the application.  This
+      may for example happen due to lack of storage in RS, which then
+      sends the "AS Request Creation Hints" message (see Section 5.3 of
+      [RFC9200]).
 
    *  The authentication credential of C (of RS) becomes invalid, e.g.,
       due to expiration or revocation, and it was used as CRED_I
@@ -1164,8 +1165,8 @@ Table of Contents
 
    *  The authentication credential of C (of RS) becomes invalid (e.g.,
       due to expiration or revocation), and it was used as CRED_I
-      (CRED_R) in the EDHOC session whose PRK_out was used to establish
-      the OSCORE Security Context.
+      (CRED_R) in the EDHOC session to establish the OSCORE Security
+      Context.
 
    After a new access token is successfully uploaded to RS, and a new
    OSCORE Security Context is established between C and RS, messages
@@ -1245,7 +1246,7 @@ Table of Contents
    Appendix A.3, AS may upload an access token directly to the /authz-
    info endpoint at RS.  Unless encryption is applied, that exchange
    between AS and RS discloses the plain text token, just like when C
-   uses the the /authz-info endpoint at RS to upload a first token in a
+   uses the /authz-info endpoint at RS to upload a first token in a
    series.
 
    Editor's note: Elaborate on how to encrypt the token from AS to RS,

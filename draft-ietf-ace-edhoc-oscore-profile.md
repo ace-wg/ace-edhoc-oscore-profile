@@ -43,10 +43,13 @@ author:
 
 normative:
   RFC2119:
+  RFC3986:
+  RFC4648:
   RFC5280:
   RFC8174:
   RFC6749:
   RFC7252:
+  RFC7515:
   RFC7519:
   RFC7800:
   RFC8126:
@@ -56,6 +59,7 @@ normative:
   RFC8742:
   RFC8747:
   RFC8949:
+  RFC9053:
   RFC9200:
   RFC9201:
   RFC9203:
@@ -255,7 +259,7 @@ This document refers to "token series" as a series of access tokens sorted in ch
 
 * issued by the same AS
 * issued to the same C, and associated with the same authentication credential of C
-* issued for the same RS, identified by its authentication credential
+* issued for the same RS, identified by the same authentication credential
 
 Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.
 
@@ -526,7 +530,7 @@ When an access token becomes invalid (e.g., due to its expiration or revocation)
 
 Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token either in EDHOC message\_1 or message\_3 by making use of the External Authorization Data fields (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). The former is shown by the example in {{example-with-optimization}}. In the latter case, the access token is encrypted between C and RS, which provides an alternative for protecting potential sensitive information in the access token.
 
-Editor's note: Shall we remove the EAD_1 case? The case POST /token offers already early abort, and the EAD_3 case is equally efficienct but offers better protection of the access token.
+Editor's note: Shall we remove the EAD_1 case? The case POST /token offers already early abort, and the EAD_3 case is equally efficient but offers better protection of the access token.
 
 This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value), where:
 
@@ -656,6 +660,94 @@ Furthermore, as discussed in {{as-c}} and shown by the example in {{example-with
 
 Editor's note: Elaborate on how to encrypt the token from AS to RS, since there is a pre-established security context.
 
+# CWT Confirmation Metods
+
+This document defines a number of new CWT confirmation methods (see {{iana-cwt-confirmation-methods}}). The semantics of each confirmation method is defined below.
+
+## Ordered Chain of X.509 Certificates # {#ssec-cwt-conf-x5chain}
+
+The confirmation method "x5chain" specifies an ordered array of X.509 certificates {{RFC5280}}. The semantics of "x5chain" is like that of the "x5chain" COSE Header Parameter specified in {{RFC9360}}.
+
+## Unordered Bag of X.509 Certificates # {#ssec-cwt-conf-x5bag}
+
+The confirmation method "x5bag" specifies a bag of X.509 certificates {{RFC5280}}. The semantics of "x5bag" is like that of the "x5bag" COSE Header Parameter specified in {{RFC9360}}.
+
+## Hash of an X.509 Certificate # {#ssec-cwt-conf-x5t}
+
+The confirmation method "x5t" specifies the hash value of the end-entity X.509 certificate {{RFC5280}}. The semantics of "x5t" is like that of the "x5t" COSE Header Parameter specified in {{RFC9360}}.
+
+## URI Pointing to an Ordered Chain of X.509 Certificates # {#ssec-cwt-conf-x5u}
+
+The confirmation method "x5u" specifies the URI {{RFC3986}} of an ordered chain of X.509 certificates {{RFC5280}}. The semantics of "x5u" is like that of the "x5u" COSE Header Parameter specified in {{RFC9360}}.
+
+## Ordered Chain of C509 Certificates # {#ssec-cwt-conf-c5c}
+
+The confirmation method "c5c" specifies an ordered array of C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5c" is like that of the "c5c" COSE Header Parameter specified in {{I-D.ietf-cose-cbor-encoded-cert}}.
+
+## Unordered Bag of C509 Certificates # {#ssec-cwt-conf-c5b}
+
+The confirmation method "c5b" specifies a bag of C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5b" is like that of the "c5b" COSE Header Parameter specified in {{I-D.ietf-cose-cbor-encoded-cert}}.
+
+## Hash of a C509 Certificate # {#ssec-cwt-conf-c5t}
+
+The confirmation method "c5t" specifies the hash value of the end-entity C509 certificate {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5t" is like that of the "c5t" COSE Header Parameter specified in {{I-D.ietf-cose-cbor-encoded-cert}}.
+
+## URI Pointing to an Ordered Chain of C509 Certificates # {#ssec-cwt-conf-c5u}
+
+The confirmation method "c5u" specifies the URI {{RFC3986}} of a COSE_C509 containing an ordered chain of C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. COSE_C509 is defined in {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5u" is like that of the "c5u" COSE Header Parameter specified in {{I-D.ietf-cose-cbor-encoded-cert}}.
+
+## CWT Containing a COSE_Key # {#ssec-cwt-conf-kcwt}
+
+The confirmation method "kcwt" specifies a CBOR Web Token (CWT) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a 'cnf' claim and possibly other claims. The semantics of "kcwt" is like that of the "kcwt" COSE Header Parameter specified in {{I-D.ietf-lake-edhoc}}.
+
+## CCS Containing a COSE_Key # {#ssec-cwt-conf-kccs}
+
+The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a 'cnf' claim and possibly other claims. The semantics of "kccs" is like that of the "kccs" COSE Header Parameter specified in {{I-D.ietf-lake-edhoc}}.
+
+# JWT Confirmation Metods
+
+This document defines a number of new JWT confirmation methods (see {{iana-jwt-confirmation-methods}}). The semantics of each confirmation method is defined below.
+
+## Ordered Chain of X.509 Certificates # {#ssec-jwt-conf-x5c}
+
+The confirmation method "x5c" specifies an ordered array of X.509 certificates {{RFC5280}}. The semantics of "x5c" is like that of the "x5c" JSON Web Signature and Encryption Header Parameter specified in {{RFC7515}}, with the following difference. The public key contained in the first certificate is the proof-of-possession key and does not have to correspond to a key used to digitally sign the JWS.
+
+## Unordered Bag of X.509 Certificates # {#ssec-jwt-conf-x5b}
+
+The confirmation method "x5b" specifies a bag of X.509 certificates {{RFC5280}}. The semantics of the "x5b" is like that of the "x5c" JWT confirmation method defined in {{ssec-jwt-conf-x5c}}, with the following differences. First, the set of certificates is unordered and may contain self-signed certificates. Second, the composition and processing of "x5b" are like for the "x5bag" COSE Header Parameter defined in {{RFC9360}}.
+
+## Hash of an X.509 Certificate # {#ssec-jwt-conf-x5t}
+
+The confirmation method "x5t" specifies the hash value of the end-entity X.509 certificate {{RFC5280}}. The semantics of "x5t" is like that of the "x5t" JSON Web Signature and Encryption Header Parameter specified in {{RFC7515}}.
+
+## URI Pointing to an Ordered Chain of X.509 Certificates # {#ssec-jwt-conf-x5u}
+
+The confirmation method "x5u" specifies the URI {{RFC3986}} of an ordered chain of X.509 certificates {{RFC5280}}. The semantics of "x5u" is like that of the "x5u" COSE Header Parameter specified in {{RFC9360}}, with the following difference. The public key contained in the first certificate is the proof-of-possession key and does not have to correspond to a key used to digitally sign the JWS.
+
+## Ordered Chain of C509 Certificates # {#ssec-jwt-conf-c5c}
+
+The confirmation method "c5c" specifies an ordered array of C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5c" is like that of the "x5c" JWT confirmation method defined in {{ssec-jwt-conf-x5c}}, with the following difference. Each string in the JSON array is a base64-encoded ({{Section 4 of RFC4648}} - not base64url-encoded) C509 certificate.
+
+## Unordered Bag of C509 Certificates # {#ssec-jwt-conf-c5b}
+
+The confirmation method "c5b" specifies a bag of C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5b" is like that of the "c5c" JWT confirmation method defined in {{ssec-jwt-conf-c5c}}, with the following differences. First, the set of certificates is unordered and may contain self-signed certificates. Second, the composition and processing of "c5b" is like for the "c5b" COSE Header Parameter defined in {{I-D.ietf-cose-cbor-encoded-cert}}.
+
+## Hash of a C09 Certificate # {#ssec-jwt-conf-c5t}
+
+The confirmation method "c5t" specifies the hash value of the end-entity C509 certificate {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5t" is like that of the "x5t" JWT confirmation method defined in {{ssec-jwt-conf-x5t}}, with the following differences. First, the base64url-encoded SHA-1 thumbprint is computed over the C509 certificate. Second, the public key contained in the C509 certificate does not have to correspond to a key used to digitally sign the JWS.
+
+## URI Pointing to an Ordered Chain of C509 Certificates # {#ssec-jwt-conf-c5u}
+
+The confirmation method "c5u" specifies the URI {{RFC3986}} of COSE_C509 containing an ordered chain of C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. COSE_C509 is defined in {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5u" is like that of the "x5u" JWT confirmation method defined in {{ssec-jwt-conf-x5u}}, with the following differences. First, the URI refers to a resource for the C509 certificate chain. Second, the public key contained in one of the C509 certificates and acting as proof-of-possession key does not have to correspond to a key used to digitally sign the JWS.
+
+## CWT Containing a COSE_Key # {#ssec-jwt-conf-kcwt}
+
+The confirmation method "kcwt" specifies a CBOR Web Token (CWT) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a 'cnf' claim and possibly other claims. The format of "kcwt" is the base64url-encoded serialization of the CWT.
+
+## CCS Containing a COSE_Key # {#ssec-jwt-conf-kccs}
+
+The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a 'cnf' claim and possibly other claims. The format of "kcwt" is the base64url-encoded serialization of the CWT.
+
 # Security Considerations
 
 This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}. Thus, the general security considerations from the ACE framework also apply to this profile.
@@ -746,97 +838,95 @@ IANA is asked to add the following entries to the "CBOR Web Token Claims" regist
 
 IANA is asked to add the following entries to the "JWT Confirmation Methods" registry following the procedure specified in {{RFC7800}}.
 
-* Confirmation Method Value: "x5bag"
-* Confirmation Method Description: An unordered bag of X.509 certificates
+* Confirmation Method Value: "x5c"
+* Confirmation Method Description: An ordered chain of X.509 certificates
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-jwt-conf-x5c}} of {{&SELF}}
 
 &nbsp;
 
-* Confirmation Method Value: "x5chain"
-* Confirmation Method Description: An ordered chain of X.509 certificates
+* Confirmation Method Value: "x5b"
+* Confirmation Method Description: An unordered bag of X.509 certificates
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-jwt-conf-x5b}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Value: "x5t"
 * Confirmation Method Description: Hash of an X.509 certificate
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-jwt-conf-x5t}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Value: "x5u"
-* Confirmation Method Description: URI pointing to an X.509 certificate
+* Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
-
-&nbsp;
-
-* Confirmation Method Value: "c5b"
-* Confirmation Method Description: An unordered bag of C509 certificates
-* Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-jwt-conf-x5u}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Value: "c5c"
 * Confirmation Method Description: An ordered chain of C509 certificates
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-jwt-conf-c5c}} of {{&SELF}}
+
+&nbsp;
+
+* Confirmation Method Value: "c5b"
+* Confirmation Method Description: An unordered bag of C509 certificates
+* Change Controller: IESG
+* Specification Document(s): {{ssec-jwt-conf-c5b}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Value: "c5t"
-* Confirmation Method Description: Hash of an C509 certificate
+* Confirmation Method Description: Hash of a C509 certificate
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-jwt-conf-c5t}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Value: "c5u"
 * Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of certificates
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-jwt-conf-c5u}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Value: "kcwt"
-* Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim
+* Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-jwt-conf-kcwt}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Value: "kccs"
-* Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim
+* Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
-
-&nbsp;
+* Specification Document(s): {{ssec-jwt-conf-kccs}} of {{&SELF}}
 
 ## CWT Confirmation Methods Registry ## {#iana-cwt-confirmation-methods}
 
 IANA is asked to add the following entries to the "CWT Confirmation Methods" registry following the procedure specified in {{RFC8747}}.
 
-* Confirmation Method Name: x5bag
-* Confirmation Method Description: An unordered bag of X.509 certificates
-* JWT Confirmation Method Name: "x5bag"
+* Confirmation Method Name: x5chain
+* Confirmation Method Description: An ordered chain of X.509 certificates
+* JWT Confirmation Method Name: "x5c"
 * Confirmation Key: TBD
 * Confirmation Value Type(s): COSE_X509
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-cwt-conf-x5chain}} of {{&SELF}}
 
 &nbsp;
 
-* Confirmation Method Name: x5chain
-* Confirmation Method Description: An ordered chain of X.509 certificates
-* JWT Confirmation Method Name: "x5chain"
+* Confirmation Method Name: x5bag
+* Confirmation Method Description: An unordered bag of X.509 certificates
+* JWT Confirmation Method Name: "x5b"
 * Confirmation Key: TBD
 * Confirmation Value Type(s): COSE_X509
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-cwt-conf-x5bag}} of {{&SELF}}
 
 &nbsp;
 
@@ -846,27 +936,17 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Key: TBD
 * Confirmation Value Type(s): COSE_CertHash
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-cwt-conf-x5t}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Name: x5u
-* Confirmation Method Description: URI pointing to an X.509 certificate
+* Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
 * JWT Confirmation Method Name: "x5u"
 * Confirmation Key: TBD
 * Confirmation Value Type(s): uri
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
-
-&nbsp;
-
-* Confirmation Method Name: c5b
-* Confirmation Method Description: An unordered bag of C509 certificates
-* JWT Confirmation Method Name: "c5b"
-* Confirmation Key: TBD
-* Confirmation Value Type(s): COSE_C509
-* Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-cwt-conf-x5u}} of {{&SELF}}
 
 &nbsp;
 
@@ -876,47 +956,57 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Key: TBD
 * Confirmation Value Type(s): COSE_C509
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-cwt-conf-c5c}} of {{&SELF}}
+
+&nbsp;
+
+* Confirmation Method Name: c5b
+* Confirmation Method Description: An unordered bag of C509 certificates
+* JWT Confirmation Method Name: "c5b"
+* Confirmation Key: TBD
+* Confirmation Value Type(s): COSE_C509
+* Change Controller: IESG
+* Specification Document(s): {{ssec-cwt-conf-c5b}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Name: c5t
-* Confirmation Method Description: Hash of an C509 certificate
+* Confirmation Method Description: Hash of a C509 certificate
 * JWT Confirmation Method Name: "c5t"
 * Confirmation Key: TBD
 * Confirmation Value Type(s): COSE_CertHash
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-cwt-conf-c5t}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Name: c5u
-* Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of certificates
+* Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
 * JWT Confirmation Method Name: "c5u"
 * Confirmation Key: TBD
 * Confirmation Value Type(s): uri
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-cwt-conf-c5u}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Name: kcwt
-* Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim
+* Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * JWT Confirmation Method Name: "kcwt"
 * Confirmation Key: TBD
 * Confirmation Value Type(s): COSE_Messages
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-cwt-conf-kcwt}} of {{&SELF}}
 
 &nbsp;
 
 * Confirmation Method Name: kccs
-* Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim
+* Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * JWT Confirmation Method Name: "kccs"
 * Confirmation Key: TBD
 * Confirmation Value Type(s): map / #6(map)
 * Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Specification Document(s): {{ssec-cwt-conf-kccs}} of {{&SELF}}
 
 ## EDHOC External Authorization Data Registry # {#iana-edhoc-ead}
 
@@ -1470,6 +1560,10 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Merged the concepts of EDHOC "session_id" and identifier of token series.
 
 * Enabled the transport of the access token also in EDHOC EAD_3.
+
+* Defined semantics of the newly defined CWT/JWT Confirmation Methods.
+
+* Clarifications and editorial improvements.
 
 ## Version -01 to -02 ## {#sec-01-02}
 

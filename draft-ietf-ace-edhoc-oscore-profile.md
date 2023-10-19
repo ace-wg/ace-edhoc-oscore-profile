@@ -256,9 +256,8 @@ AS MUST verify that the received "session\_id" identifies a token series to whic
 This document refers to "token series" as a series of access tokens sorted in chronological order as they are released, characterized by the following properties:
 
 * issued by the same AS
-* issued to the same C and for the same RS
-* issued together with the same authentication credential of RS
-* associated with the same authentication credential of C
+* issued to the same C and associated with the same authentication credential of C
+* issued for the same RS identified by its same authentication credential
 
 Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.
 
@@ -270,6 +269,8 @@ AS assigns the session\_id to the EDHOC\_Information when issuing the first acce
 * ii) bound to the same authentication credential AUTH_CRED_C of the requesting client (irrespectively of how the AUTH_CRED_C is identified in the access tokens).
 
 The session\_id MUST identify the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS) associated with a still valid access token previously issued for C and RS by AS.
+
+In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}),  what is defined above applies, with the difference that the token series is associated with: all the RSs in the group-audience; all the EDHOC sessions between C and each RS; and the AUTH_CRED_RS of each RS.
 
 ## AS-to-C: Response # {#as-c}
 

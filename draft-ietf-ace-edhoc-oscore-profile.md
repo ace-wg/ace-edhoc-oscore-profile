@@ -615,13 +615,13 @@ C MUST discard the current OSCORE Security Context shared with RS when any of th
 
 * The access token associated with the OSCORE Security Context becomes invalid, for example due to expiration or revocation.
 
-* C receives a number of 4.01 (Unauthorized) responses to OSCORE-protected requests sent to RS and protected using the same OSCORE Security Context. The exact number of such received responses needs to be specified by the application.
+* C receives a number of 4.01 (Unauthorized) responses to OSCORE-protected requests sent to RS and protected using the same OSCORE Security Context. The exact number of such received responses needs to be specified by the application. This may for example happen due to lack of storage in RS which then sends the "AS Request Creation Hints" message (see {{Section 5.3 of RFC9200}}).
 
-* The authentication credential of C (of RS) becomes invalid (e.g., due to expiration or revocation), and it was used as CRED\_I (CRED\_R) in the EDHOC session whose PRK\_out was used to establish the OSCORE Security Context.
+* The authentication credential of C (of RS) becomes invalid, e.g., due to expiration or revocation, and it was used as CRED\_I (CRED\_R) in the EDHOC session to establish the OSCORE Security Context.
 
 RS MUST discard the current OSCORE Security Context shared with C when any of the following occurs:
 
-* The OSCORE Sender Sequence Number space of RS gets exhausted.
+* The OSCORE Sender Sequence Number space of RS is exhausted.
 
 * The access token associated with the OSCORE Security Context becomes invalid, for example due to expiration or revocation.
 
@@ -634,14 +634,7 @@ Furthermore, implementations may want to cancel CoAP observations at RS, if regi
 
 ## Cases of Establishing a New OSCORE Security Context
 
-The procedure of provisioning a new access token to RS specified in this section applies to various cases when an OSCORE Security Context shared between C and RS has been deleted, for example:
-
-* The old access token has expired and thus the token series is terminated.
-
-* Lack of storage in RS. This situation can be detected by C when it receives a 4.01 (Unauthorized) response from RS, e.g., as an "AS Request Creation Hints" message (see {{Section 5.3 of RFC9200}}).
-
-* The EDHOC session from which this OSCORE Security Context was derived has become invalid, e.g., due to the expiration of an authentication credential.
-* Other security policy.
+The procedure of provisioning a new access token to RS specified in this section applies to various cases when an OSCORE Security Context shared between C and RS has been deleted, for example as described in {{discard-context}}.
 
 Another exceptional case is when there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS SHALL attempt to run the KUDOS key update protocol {{I-D.ietf-core-oscore-key-update}}, which is a lightweight alternative independent of ACE and EDHOC that does not require the posting of an access token. If KUDOS is not supported, then C and RS falls back to EDHOC as outlined above.
 

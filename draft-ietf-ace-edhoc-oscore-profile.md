@@ -888,7 +888,7 @@ IANA is asked to add the following entries to the "JWT Confirmation Methods" reg
 &nbsp;
 
 * Confirmation Method Value: "c5u"
-* Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of certificates
+* Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
 * Change Controller: IESG
 * Specification Document(s): {{ssec-jwt-conf-c5u}} of {{&SELF}}
 

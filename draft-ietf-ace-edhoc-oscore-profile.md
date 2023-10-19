@@ -526,7 +526,7 @@ When an access token becomes invalid (e.g., due to its expiration or revocation)
 
 ## Access Token in External Authorization Data {#AT-in-EAD}
 
-Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token either in EDHOC message\_1 or message\_3 by making use of the External Authorization Data fields (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). The former is shown by the example in {{example-with-optimization}}. The latter causes the access token to be encrypted between C and RS, which enables protection of privacy sensitive information in the access token.
+Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token either in EDHOC message\_1 or message\_3 by making use of the External Authorization Data fields (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). The former is shown by the example in {{example-with-optimization}}. In the latter case, the access token is encrypted between C and RS, which provides an alternative for protecting potential sensitive information in the access token.
 
 Editor's note: Shall we remove the EAD_1 case? The case POST /token offers already early abort, and the EAD_3 case is equally efficienct but offers better protection of the access token.
 
@@ -593,7 +593,7 @@ The new access token contains the updated access rights for C to access protecte
 
 Editor's note: Add description about the alternative when the AS uploads the new access token to RS.
 
-If RS receives an access token in an OSCORE protected request, it means that C is requesting an update of access rights. In such a case, RS MUST check the following conditions:
+If RS receives an access token in an OSCORE protected request, it means that C is requesting an update of access rights. In this case, RS MUST check the following conditions:
 
 * RS checks whether it stores an access token T_OLD, such that the "session\_id" field of EDHOC_Information matches the "session\_id" field of EDHOC_Information in the new access token T_NEW.
 
@@ -654,8 +654,9 @@ As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the
 
 If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{example-without-optimization}}, {{example-with-optimization}}, and {{example-without-optimization-as-posting}}. The requesting entity and AS communicate through the /token endpoint as specified in {{Section 5.8 of RFC9200}} and through the /introspect endpoint as specified in {{Section 5.9 of RFC9200}}.
 
-Furthermore, as defined in {{as-c}} and shown by the example in {{example-without-optimization-as-posting}}, AS may upload the access token to the /authz-info endpoint at RS, on behalf of C. In such a case, that exchange between AS and RS is not protected, just like when C uploads the access token to RS by itself.
+Furthermore, as discussed in {{as-c}} and shown by the example in {{example-without-optimization-as-posting}}, AS may upload an access token directly to the /authz-info endpoint at RS. Unless encryption is applied, that exchange between AS and RS discloses the plain text token, just like when C uses the the /authz-info endpoint at RS to upload a first token in a series.
 
+Editor's note: Elaborate on how to encrypt the token from AS to RS, since there is a pre-established security context.
 
 # Security Considerations
 

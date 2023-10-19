@@ -1504,13 +1504,10 @@ storage (latest)/               |                         |
             <p id="section-3.2-2.1.1">issued by the same AS<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-2.2">
-            <p id="section-3.2-2.2.1">issued to the same C and for the same RS<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-2.2.1">issued to the same C and associated with the same authentication credential of C<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-2.3">
-            <p id="section-3.2-2.3.1">issued together with the same authentication credential of RS<a href="#section-3.2-2.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-2.4">
-            <p id="section-3.2-2.4.1">associated with the same authentication credential of C<a href="#section-3.2-2.4.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-2.3.1">issued for the same RS identified by its same authentication credential<a href="#section-3.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.2-3">Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
@@ -1525,6 +1522,7 @@ storage (latest)/               |                         |
 </li>
         </ul>
 <p id="section-3.2-7">The session_id MUST identify the pair (AUTH_CRED_C, AUTH_CRED_RS) associated with a still valid access token previously issued for C and RS by AS.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
+<p id="section-3.2-8">In case the access token is issued for a group-audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-6.9" class="relref">Section 6.9</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>),  what is defined above applies, with the difference that the token series is associated with: all the RSs in the group-audience; all the EDHOC sessions between C and each RS; and the AUTH_CRED_RS of each RS.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="as-c">

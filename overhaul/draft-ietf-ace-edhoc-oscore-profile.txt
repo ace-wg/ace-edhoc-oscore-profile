@@ -460,10 +460,10 @@ Table of Contents
 
    *  issued by the same AS
 
-   *  issued to the same C and associated with the same authentication
+   *  issued to the same C, and associated with the same authentication
       credential of C
 
-   *  issued for the same RS identified by its same authentication
+   *  issued for the same RS, identified by its authentication
       credential
 
    Upon a successful update of access rights, the new issued access

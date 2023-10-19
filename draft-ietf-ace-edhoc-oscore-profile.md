@@ -101,7 +101,7 @@ The ACE protocol establishes what those authentication credentials are, and may 
 
 In general, AS and RS are likely to have trusted access to each other's authentication credentials, since AS acts on behalf of RS as per the trust model of ACE. Also, AS needs to have some information about C, including the relevant authentication credential, in order to identify C when it requests an access token and to determine what access rights it can be granted. However, the authentication credential of C may potentially be conveyed (or uniquely referred to) within the request for access that C makes to AS.
 
-The establishment of an association between RS and AS in an ACE ecosystem is out of scope, but one solution is to build on the same primitives as used in this document, i.e., EDHOC for authentication and OSCORE for communication security, using for example {{I-D.selander-lake-authz}} for onboarding an RS with AS, and {{I-D.ietf-ace-coap-est-oscore}} for establishing a trust anchor in RS. A similar procedure can also be applied between C and AS for registering a client and for the establishment of a trust anchor.
+The establishment of an association between RS and AS in an ACE ecosystem is out of scope, but one solution is to build on the same primitives as used in this document, i.e., EDHOC for authentication and OSCORE for communication security, using for example {{I-D.selander-lake-authz}} for onboarding RS with AS, and {{I-D.ietf-ace-coap-est-oscore}} for establishing a trust anchor in RS. A similar procedure can also be applied between C and AS for registering a client and for the establishment of a trust anchor.
 
 ## Terminology # {#terminology}
 
@@ -131,7 +131,7 @@ This section gives an overview of how to use the ACE framework {{RFC9200}} toget
 
 RS maintains a collection of authentication credentials. These are associated with OSCORE Security Contexts and with authorization information for all clients that RS is communicating with. The authorization information is used to enforce polices for processing requests from those clients.
 
-This profile specifies how C requests an access token from AS for the resources it wants to access on an RS, by sending an access token request to the /token endpoint, as specified in {{Section 5.8 of RFC9200}}.
+This profile specifies how C requests an access token from AS for the resources it wants to access on RS, by sending an access token request to the /token endpoint, as specified in {{Section 5.8 of RFC9200}}.
 
 This profile also supports the alternative workflow where AS uploads the access token to RS, as defined in {{I-D.tiloca-ace-workflow-and-params}}.
 
@@ -490,7 +490,7 @@ EDHOC_Information = {
 
 # Client-RS Communication # {#c-rs-comm}
 
-This section describes the exchanges between C and RS, which comprise the token uploading to RS, and the execution of the EDHOC protocol. Note that AS may have uploaded the access token directly to the RS (see {{as-c}}).
+This section describes the exchanges between C and RS, which comprise the token uploading to RS, and the execution of the EDHOC protocol. Note that AS may have uploaded the access token directly to RS (see {{as-c}}).
 
 In order to upload the access token to RS, C can send a POST request to the /authz-info endpoint at RS. This is detailed in {{c-rs}} and {{rs-c}}, and shown by the example in {{example-without-optimization}}.
 
@@ -1445,7 +1445,7 @@ This section lists the specifications of this profile based on the requirements 
 
 * Specify the security protocol the client and RS must use to protect their communication: OSCORE
 
-* Specify how the client and the RS mutually authenticate: Explicitly, by successfully executing the EDHOC protocol, after which a common OSCORE Security Context is exported from the EDHOC session. As per the EDHOC authentication method used during the EDHOC session, authentication is provided by digital signatures, or by Message Authentication Codes (MACs) computed from an ephemeral-static ECDH shared secret.
+* Specify how the client and RS mutually authenticate: Explicitly, by successfully executing the EDHOC protocol, after which a common OSCORE Security Context is exported from the EDHOC session. As per the EDHOC authentication method used during the EDHOC session, authentication is provided by digital signatures, or by Message Authentication Codes (MACs) computed from an ephemeral-static ECDH shared secret.
 
 * Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of- possession protocol: proof-of-possession is first achieved by RS when successfully processing EDHOC message_3 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys. Also, proof-of-possession is later achieved by C when receiving from RS: i) the optional EDHOC message_4 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC session with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
 

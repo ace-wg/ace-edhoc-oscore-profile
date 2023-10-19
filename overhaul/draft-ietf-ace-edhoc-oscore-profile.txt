@@ -1688,7 +1688,7 @@ Table of Contents
    *  Confirmation Method Value: "c5u"
 
    *  Confirmation Method Description: URI pointing to a COSE_C509
-      containing an ordered chain of certificates
+      containing an ordered chain of C509 certificates
 
    *  Change Controller: IESG
 

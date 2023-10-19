@@ -102,22 +102,44 @@ Table of Contents
      4.7.  Cases of Establishing a New OSCORE Security Context
      4.8.  Access Rights Verification
    5.  Secure Communication with AS
-   6.  Security Considerations
-   7.  Privacy Considerations
-   8.  IANA Considerations
-     8.1.  ACE OAuth Profile Registry
-     8.2.  OAuth Parameters Registry
-     8.3.  OAuth Parameters CBOR Mappings Registry
-     8.4.  JSON Web Token Claims Registry
-     8.5.  CBOR Web Token Claims Registry
-     8.6.  JWT Confirmation Methods Registry
-     8.7.  CWT Confirmation Methods Registry
-     8.8.  EDHOC External Authorization Data Registry
-     8.9.  EDHOC Information Registry
-     8.10. Expert Review Instructions
-   9.  References
-     9.1.  Normative References
-     9.2.  Informative References
+   6.  CWT Confirmation Metods
+     6.1.  Ordered Chain of X.509 Certificates
+     6.2.  Unordered Bag of X.509 Certificates
+     6.3.  Hash of an X.509 Certificate
+     6.4.  URI Pointing to an Ordered Chain of X.509 Certificates
+     6.5.  Ordered Chain of C509 Certificates
+     6.6.  Unordered Bag of C509 Certificates
+     6.7.  Hash of a C509 Certificate
+     6.8.  URI Pointing to an Ordered Chain of C509 Certificates
+     6.9.  CWT Containing a COSE_Key
+     6.10. CCS Containing a COSE_Key
+   7.  JWT Confirmation Metods
+     7.1.  Ordered Chain of X.509 Certificates
+     7.2.  Unordered Bag of X.509 Certificates
+     7.3.  Hash of an X.509 Certificate
+     7.4.  URI Pointing to an Ordered Chain of X.509 Certificates
+     7.5.  Ordered Chain of C509 Certificates
+     7.6.  Unordered Bag of C509 Certificates
+     7.7.  Hash of a C09 Certificate
+     7.8.  URI Pointing to an Ordered Chain of C509 Certificates
+     7.9.  CWT Containing a COSE_Key
+     7.10. CCS Containing a COSE_Key
+   8.  Security Considerations
+   9.  Privacy Considerations
+   10. IANA Considerations
+     10.1.  ACE OAuth Profile Registry
+     10.2.  OAuth Parameters Registry
+     10.3.  OAuth Parameters CBOR Mappings Registry
+     10.4.  JSON Web Token Claims Registry
+     10.5.  CBOR Web Token Claims Registry
+     10.6.  JWT Confirmation Methods Registry
+     10.7.  CWT Confirmation Methods Registry
+     10.8.  EDHOC External Authorization Data Registry
+     10.9.  EDHOC Information Registry
+     10.10. Expert Review Instructions
+   11. References
+     11.1.  Normative References
+     11.2.  Informative References
    Appendix A.  Examples
      A.1.  Workflow without Optimizations
      A.2.  Workflow with Optimizations
@@ -376,7 +398,7 @@ Table of Contents
    include EDHOC_Information, which is a CBOR map object containing
    information related to an EDHOC session, in particular the identifier
    "session_id", see Section 3.4.  This object is transported in the
-   "edhoc_info" parameter registered in Section 8.2 and Section 8.3.
+   "edhoc_info" parameter registered in Section 10.2 and Section 10.3.
 
 3.1.  C-to-AS: POST to /token endpoint
 
@@ -457,7 +479,7 @@ Table of Contents
    *  issued to the same C, and associated with the same authentication
       credential of C
 
-   *  issued for the same RS, identified by its authentication
+   *  issued for the same RS, identified by the same authentication
       credential
 
    Upon a successful update of access rights, the new issued access
@@ -636,7 +658,7 @@ Table of Contents
       default value of 1 (see Section 5.4 of [RFC8613]) is assumed.
 
    When CWTs are used as access tokens, EDHOC_Information MUST be
-   transported in the "edhoc_info" claim, defined in Section 8.5.
+   transported in the "edhoc_info" claim, defined in Section 10.5.
 
    Since the access token does not contain secret information, only its
    integrity and source authentication are strictly necessary to ensure.
@@ -712,7 +734,7 @@ Table of Contents
    The EDHOC_Information can either be encoded as a JSON object or as a
    CBOR map.  The set of common fields that can appear in an
    EDHOC_Information can be found in the IANA "EDHOC Information"
-   registry (see Section 8.9), defined for extensibility, and the
+   registry (see Section 10.9), defined for extensibility, and the
    initial set of parameters defined in this document is specified
    below.  All parameters are optional.
 
@@ -946,13 +968,13 @@ Table of Contents
    access token.
 
    Editor's note: Shall we remove the EAD_1 case?  The case POST /token
-   offers already early abort, and the EAD_3 case is equally efficienct
+   offers already early abort, and the EAD_3 case is equally efficient
    but offers better protection of the access token.
 
    This document defines the EAD item EAD_ACCESS_TOKEN = (ead_label,
    ead_value), where:
 
-   *  ead_label is the integer value TBD registered in Section 8.8, and
+   *  ead_label is the integer value TBD registered in Section 10.8, and
 
    *  ead_value is a CBOR byte string equal to the value of the
       "access_token" field of the access token response from AS (see
@@ -1252,7 +1274,179 @@ Table of Contents
    Editor's note: Elaborate on how to encrypt the token from AS to RS,
    since there is a pre-established security context.
 
-6.  Security Considerations
+6.  CWT Confirmation Metods
+
+   This document defines a number of new CWT confirmation methods (see
+   Section 10.7).  The semantics of each confirmation method is defined
+   below.
+
+6.1.  Ordered Chain of X.509 Certificates
+
+   The confirmation method "x5chain" specifies an ordered array of X.509
+   certificates [RFC5280].  The semantics of "x5chain" is like that of
+   the "x5chain" COSE Header Parameter specified in [RFC9360].
+
+6.2.  Unordered Bag of X.509 Certificates
+
+   The confirmation method "x5bag" specifies a bag of X.509 certificates
+   [RFC5280].  The semantics of "x5bag" is like that of the "x5bag" COSE
+   Header Parameter specified in [RFC9360].
+
+6.3.  Hash of an X.509 Certificate
+
+   The confirmation method "x5t" specifies the hash value of the end-
+   entity X.509 certificate [RFC5280].  The semantics of "x5t" is like
+   that of the "x5t" COSE Header Parameter specified in [RFC9360].
+
+6.4.  URI Pointing to an Ordered Chain of X.509 Certificates
+
+   The confirmation method "x5u" specifies the URI [RFC3986] of an
+   ordered chain of X.509 certificates [RFC5280].  The semantics of
+   "x5u" is like that of the "x5u" COSE Header Parameter specified in
+   [RFC9360].
+
+6.5.  Ordered Chain of C509 Certificates
+
+   The confirmation method "c5c" specifies an ordered array of C509
+   certificates [I-D.ietf-cose-cbor-encoded-cert].  The semantics of
+   "c5c" is like that of the "c5c" COSE Header Parameter specified in
+   [I-D.ietf-cose-cbor-encoded-cert].
+
+6.6.  Unordered Bag of C509 Certificates
+
+   The confirmation method "c5b" specifies a bag of C509 certificates
+   [I-D.ietf-cose-cbor-encoded-cert].  The semantics of "c5b" is like
+   that of the "c5b" COSE Header Parameter specified in
+   [I-D.ietf-cose-cbor-encoded-cert].
+
+6.7.  Hash of a C509 Certificate
+
+   The confirmation method "c5t" specifies the hash value of the end-
+   entity C509 certificate [I-D.ietf-cose-cbor-encoded-cert].  The
+   semantics of "c5t" is like that of the "c5t" COSE Header Parameter
+   specified in [I-D.ietf-cose-cbor-encoded-cert].
+
+6.8.  URI Pointing to an Ordered Chain of C509 Certificates
+
+   The confirmation method "c5u" specifies the URI [RFC3986] of a
+   COSE_C509 containing an ordered chain of C509 certificates
+   [I-D.ietf-cose-cbor-encoded-cert].  COSE_C509 is defined in
+   [I-D.ietf-cose-cbor-encoded-cert].  The semantics of "c5u" is like
+   that of the "c5u" COSE Header Parameter specified in
+   [I-D.ietf-cose-cbor-encoded-cert].
+
+6.9.  CWT Containing a COSE_Key
+
+   The confirmation method "kcwt" specifies a CBOR Web Token (CWT)
+   [RFC8392] containing a COSE_Key [RFC9053] in a 'cnf' claim and
+   possibly other claims.  The semantics of "kcwt" is like that of the
+   "kcwt" COSE Header Parameter specified in [I-D.ietf-lake-edhoc].
+
+6.10.  CCS Containing a COSE_Key
+
+   The confirmation method "kccs" specifies a CWT Claims Set (CCS)
+   [RFC8392] containing a COSE_Key [RFC9053] in a 'cnf' claim and
+   possibly other claims.  The semantics of "kccs" is like that of the
+   "kccs" COSE Header Parameter specified in [I-D.ietf-lake-edhoc].
+
+7.  JWT Confirmation Metods
+
+   This document defines a number of new JWT confirmation methods (see
+   Section 10.6).  The semantics of each confirmation method is defined
+   below.
+
+7.1.  Ordered Chain of X.509 Certificates
+
+   The confirmation method "x5c" specifies an ordered array of X.509
+   certificates [RFC5280].  The semantics of "x5c" is like that of the
+   "x5c" JSON Web Signature and Encryption Header Parameter specified in
+   [RFC7515], with the following difference.  The public key contained
+   in the first certificate is the proof-of-possession key and does not
+   have to correspond to a key used to digitally sign the JWS.
+
+7.2.  Unordered Bag of X.509 Certificates
+
+   The confirmation method "x5b" specifies a bag of X.509 certificates
+   [RFC5280].  The semantics of the "x5b" is like that of the "x5c" JWT
+   confirmation method defined in Section 7.1, with the following
+   differences.  First, the set of certificates is unordered and may
+   contain self-signed certificates.  Second, the composition and
+   processing of "x5b" are like for the "x5bag" COSE Header Parameter
+   defined in [RFC9360].
+
+7.3.  Hash of an X.509 Certificate
+
+   The confirmation method "x5t" specifies the hash value of the end-
+   entity X.509 certificate [RFC5280].  The semantics of "x5t" is like
+   that of the "x5t" JSON Web Signature and Encryption Header Parameter
+   specified in [RFC7515].
+
+7.4.  URI Pointing to an Ordered Chain of X.509 Certificates
+
+   The confirmation method "x5u" specifies the URI [RFC3986] of an
+   ordered chain of X.509 certificates [RFC5280].  The semantics of
+   "x5u" is like that of the "x5u" COSE Header Parameter specified in
+   [RFC9360], with the following difference.  The public key contained
+   in the first certificate is the proof-of-possession key and does not
+   have to correspond to a key used to digitally sign the JWS.
+
+7.5.  Ordered Chain of C509 Certificates
+
+   The confirmation method "c5c" specifies an ordered array of C509
+   certificates [I-D.ietf-cose-cbor-encoded-cert].  The semantics of
+   "c5c" is like that of the "x5c" JWT confirmation method defined in
+   Section 7.1, with the following difference.  Each string in the JSON
+   array is a base64-encoded (Section 4 of [RFC4648] - not base64url-
+   encoded) C509 certificate.
+
+7.6.  Unordered Bag of C509 Certificates
+
+   The confirmation method "c5b" specifies a bag of C509 certificates
+   [I-D.ietf-cose-cbor-encoded-cert].  The semantics of "c5b" is like
+   that of the "c5c" JWT confirmation method defined in Section 7.5,
+   with the following differences.  First, the set of certificates is
+   unordered and may contain self-signed certificates.  Second, the
+   composition and processing of "c5b" is like for the "c5b" COSE Header
+   Parameter defined in [I-D.ietf-cose-cbor-encoded-cert].
+
+7.7.  Hash of a C09 Certificate
+
+   The confirmation method "c5t" specifies the hash value of the end-
+   entity C509 certificate [I-D.ietf-cose-cbor-encoded-cert].  The
+   semantics of "c5t" is like that of the "x5t" JWT confirmation method
+   defined in Section 7.3, with the following differences.  First, the
+   base64url-encoded SHA-1 thumbprint is computed over the C509
+   certificate.  Second, the public key contained in the C509
+   certificate does not have to correspond to a key used to digitally
+   sign the JWS.
+
+7.8.  URI Pointing to an Ordered Chain of C509 Certificates
+
+   The confirmation method "c5u" specifies the URI [RFC3986] of
+   COSE_C509 containing an ordered chain of C509 certificates
+   [I-D.ietf-cose-cbor-encoded-cert].  COSE_C509 is defined in
+   [I-D.ietf-cose-cbor-encoded-cert].  The semantics of "c5u" is like
+   that of the "x5u" JWT confirmation method defined in Section 7.4,
+   with the following differences.  First, the URI refers to a resource
+   for the C509 certificate chain.  Second, the public key contained in
+   one of the C509 certificates and acting as proof-of-possession key
+   does not have to correspond to a key used to digitally sign the JWS.
+
+7.9.  CWT Containing a COSE_Key
+
+   The confirmation method "kcwt" specifies a CBOR Web Token (CWT)
+   [RFC8392] containing a COSE_Key [RFC9053] in a 'cnf' claim and
+   possibly other claims.  The format of "kcwt" is the base64url-encoded
+   serialization of the CWT.
+
+7.10.  CCS Containing a COSE_Key
+
+   The confirmation method "kccs" specifies a CWT Claims Set (CCS)
+   [RFC8392] containing a COSE_Key [RFC9053] in a 'cnf' claim and
+   possibly other claims.  The format of "kcwt" is the base64url-encoded
+   serialization of the CWT.
+
+8.  Security Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -1298,7 +1492,7 @@ Table of Contents
    token per client per PoP-key (i.e., per client's authentication
    credential).
 
-7.  Privacy Considerations
+9.  Privacy Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -1334,14 +1528,14 @@ Table of Contents
    if C and RS dynamically update their OSCORE identifiers, e.g., by
    using the method defined in [I-D.ietf-core-oscore-key-update].
 
-8.  IANA Considerations
+10.  IANA Considerations
 
    This document has the following actions for IANA.
 
    Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
    with the RFC number of this specification and delete this paragraph.
 
-8.1.  ACE OAuth Profile Registry
+10.1.  ACE OAuth Profile Registry
 
    IANA is asked to add the following entry to the "ACE OAuth Profile"
    Registry following the procedure specified in [RFC9200].
@@ -1360,7 +1554,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-8.2.  OAuth Parameters Registry
+10.2.  OAuth Parameters Registry
 
    IANA is asked to add the following entries to the "OAuth Parameters"
    registry.
@@ -1373,7 +1567,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-8.3.  OAuth Parameters CBOR Mappings Registry
+10.3.  OAuth Parameters CBOR Mappings Registry
 
    IANA is asked to add the following entries to the "OAuth Parameters
    CBOR Mappings" following the procedure specified in [RFC9200].
@@ -1386,7 +1580,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-8.4.  JSON Web Token Claims Registry
+10.4.  JSON Web Token Claims Registry
 
    IANA is asked to add the following entries to the "JSON Web Token
    Claims" registry following the procedure specified in [RFC7519].
@@ -1399,7 +1593,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-8.5.  CBOR Web Token Claims Registry
+10.5.  CBOR Web Token Claims Registry
 
    IANA is asked to add the following entries to the "CBOR Web Token
    Claims" registry following the procedure specified in [RFC8392].
@@ -1418,29 +1612,29 @@ Table of Contents
 
    *  Specification Document(s): [RFC-XXXX]
 
-8.6.  JWT Confirmation Methods Registry
+10.6.  JWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "JWT Confirmation
    Methods" registry following the procedure specified in [RFC7800].
 
-   *  Confirmation Method Value: "x5bag"
-
-   *  Confirmation Method Description: An unordered bag of X.509
-      certificates
-
-   *  Change Controller: IESG
-
-   *  Specification Document(s): [RFC-XXXX]
-
-
-   *  Confirmation Method Value: "x5chain"
+   *  Confirmation Method Value: "x5c"
 
    *  Confirmation Method Description: An ordered chain of X.509
       certificates
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 7.1 of [RFC-XXXX]
+
+
+   *  Confirmation Method Value: "x5b"
+
+   *  Confirmation Method Description: An unordered bag of X.509
+      certificates
+
+   *  Change Controller: IESG
+
+   *  Specification Document(s): Section 7.2 of [RFC-XXXX]
 
 
    *  Confirmation Method Value: "x5t"
@@ -1449,27 +1643,17 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 7.3 of [RFC-XXXX]
 
 
    *  Confirmation Method Value: "x5u"
 
-   *  Confirmation Method Description: URI pointing to an X.509
-      certificate
+   *  Confirmation Method Description: URI pointing to an ordered chain
+      of X.509 certificates
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
-
-
-   *  Confirmation Method Value: "c5b"
-
-   *  Confirmation Method Description: An unordered bag of C509
-      certificates
-
-   *  Change Controller: IESG
-
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 7.4 of [RFC-XXXX]
 
 
    *  Confirmation Method Value: "c5c"
@@ -1479,16 +1663,26 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 7.5 of [RFC-XXXX]
+
+
+   *  Confirmation Method Value: "c5b"
+
+   *  Confirmation Method Description: An unordered bag of C509
+      certificates
+
+   *  Change Controller: IESG
+
+   *  Specification Document(s): Section 7.6 of [RFC-XXXX]
 
 
    *  Confirmation Method Value: "c5t"
 
-   *  Confirmation Method Description: Hash of an C509 certificate
+   *  Confirmation Method Description: Hash of a C509 certificate
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 7.7 of [RFC-XXXX]
 
 
    *  Confirmation Method Value: "c5u"
@@ -1498,56 +1692,39 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 7.8 of [RFC-XXXX]
 
 
    *  Confirmation Method Value: "kcwt"
 
    *  Confirmation Method Description: A CBOR Web Token (CWT) containing
-      a COSE_Key in a 'cnf' claim
+      a COSE_Key in a 'cnf' claim and possibly other claims
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 7.9 of [RFC-XXXX]
 
 
    *  Confirmation Method Value: "kccs"
 
    *  Confirmation Method Description: A CWT Claims Set (CCS) containing
-      a COSE_Key in a 'cnf' claim
+      a COSE_Key in a 'cnf' claim and possibly other claims
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 7.10 of [RFC-XXXX]
 
-
-8.7.  CWT Confirmation Methods Registry
+10.7.  CWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "CWT Confirmation
    Methods" registry following the procedure specified in [RFC8747].
-
-   *  Confirmation Method Name: x5bag
-
-   *  Confirmation Method Description: An unordered bag of X.509
-      certificates
-
-   *  JWT Confirmation Method Name: "x5bag"
-
-   *  Confirmation Key: TBD
-
-   *  Confirmation Value Type(s): COSE_X509
-
-   *  Change Controller: IESG
-
-   *  Specification Document(s): [RFC-XXXX]
-
 
    *  Confirmation Method Name: x5chain
 
    *  Confirmation Method Description: An ordered chain of X.509
       certificates
 
-   *  JWT Confirmation Method Name: "x5chain"
+   *  JWT Confirmation Method Name: "x5c"
 
    *  Confirmation Key: TBD
 
@@ -1555,7 +1732,23 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 6.1 of [RFC-XXXX]
+
+
+   *  Confirmation Method Name: x5bag
+
+   *  Confirmation Method Description: An unordered bag of X.509
+      certificates
+
+   *  JWT Confirmation Method Name: "x5b"
+
+   *  Confirmation Key: TBD
+
+   *  Confirmation Value Type(s): COSE_X509
+
+   *  Change Controller: IESG
+
+   *  Specification Document(s): Section 6.2 of [RFC-XXXX]
 
 
    *  Confirmation Method Name: x5t
@@ -1570,13 +1763,13 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 6.3 of [RFC-XXXX]
 
 
    *  Confirmation Method Name: x5u
 
-   *  Confirmation Method Description: URI pointing to an X.509
-      certificate
+   *  Confirmation Method Description: URI pointing to an ordered chain
+      of X.509 certificates
 
    *  JWT Confirmation Method Name: "x5u"
 
@@ -1586,23 +1779,7 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
-
-
-   *  Confirmation Method Name: c5b
-
-   *  Confirmation Method Description: An unordered bag of C509
-      certificates
-
-   *  JWT Confirmation Method Name: "c5b"
-
-   *  Confirmation Key: TBD
-
-   *  Confirmation Value Type(s): COSE_C509
-
-   *  Change Controller: IESG
-
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 6.4 of [RFC-XXXX]
 
 
    *  Confirmation Method Name: c5c
@@ -1618,12 +1795,28 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 6.5 of [RFC-XXXX]
+
+
+   *  Confirmation Method Name: c5b
+
+   *  Confirmation Method Description: An unordered bag of C509
+      certificates
+
+   *  JWT Confirmation Method Name: "c5b"
+
+   *  Confirmation Key: TBD
+
+   *  Confirmation Value Type(s): COSE_C509
+
+   *  Change Controller: IESG
+
+   *  Specification Document(s): Section 6.6 of [RFC-XXXX]
 
 
    *  Confirmation Method Name: c5t
 
-   *  Confirmation Method Description: Hash of an C509 certificate
+   *  Confirmation Method Description: Hash of a C509 certificate
 
    *  JWT Confirmation Method Name: "c5t"
 
@@ -1633,13 +1826,13 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 6.7 of [RFC-XXXX]
 
 
    *  Confirmation Method Name: c5u
 
    *  Confirmation Method Description: URI pointing to a COSE_C509
-      containing an ordered chain of certificates
+      containing an ordered chain of C509 certificates
 
    *  JWT Confirmation Method Name: "c5u"
 
@@ -1649,13 +1842,13 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 6.8 of [RFC-XXXX]
 
 
    *  Confirmation Method Name: kcwt
 
    *  Confirmation Method Description: A CBOR Web Token (CWT) containing
-      a COSE_Key in a 'cnf' claim
+      a COSE_Key in a 'cnf' claim and possibly other claims
 
    *  JWT Confirmation Method Name: "kcwt"
 
@@ -1665,13 +1858,13 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 6.9 of [RFC-XXXX]
 
 
    *  Confirmation Method Name: kccs
 
    *  Confirmation Method Description: A CWT Claims Set (CCS) containing
-      a COSE_Key in a 'cnf' claim
+      a COSE_Key in a 'cnf' claim and possibly other claims
 
    *  JWT Confirmation Method Name: "kccs"
 
@@ -1681,9 +1874,9 @@ Table of Contents
 
    *  Change Controller: IESG
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Specification Document(s): Section 6.10 of [RFC-XXXX]
 
-8.8.  EDHOC External Authorization Data Registry
+10.8.  EDHOC External Authorization Data Registry
 
    IANA is asked to add the following entry to the "EDHOC External
    Authorization Data" registry defined in Section 9.5 of
@@ -1700,12 +1893,12 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-8.9.  EDHOC Information Registry
+10.9.  EDHOC Information Registry
 
    It is requested that IANA create a new registry entitled "EDHOC
    Information" registry.  The registry is to be created with
    registration policy Expert Review [RFC8126].  Guidelines for the
-   experts are provided in Section 8.10.  It should be noted that in
+   experts are provided in Section 10.10.  It should be noted that in
    addition to the expert review, some portions of the registry require
    a specification, potentially on Standards Track, be supplied as well.
 
@@ -1748,7 +1941,7 @@ Table of Contents
    The "Specification" column for all of these entries will be this
    document and [I-D.ietf-lake-edhoc].
 
-8.10.  Expert Review Instructions
+10.10.  Expert Review Instructions
 
    The IANA registry established in this document is defined to use the
    registration policy Expert Review.  This section gives some general
@@ -1785,9 +1978,9 @@ Table of Contents
       used on, and the number of code points left that encode to that
       size.
 
-9.  References
+11.  References
 
-9.1.  Normative References
+11.1.  Normative References
 
    [I-D.ietf-core-oscore-edhoc]
               Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
@@ -1825,6 +2018,15 @@ Table of Contents
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/rfc/rfc2119>.
 
+   [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+              Resource Identifier (URI): Generic Syntax", STD 66,
+              RFC 3986, DOI 10.17487/RFC3986, January 2005,
+              <https://www.rfc-editor.org/rfc/rfc3986>.
+
+   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
+              <https://www.rfc-editor.org/rfc/rfc4648>.
+
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
               Infrastructure Certificate and Certificate Revocation List
@@ -1839,6 +2041,10 @@ Table of Contents
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
               <https://www.rfc-editor.org/rfc/rfc7252>.
+
+   [RFC7515]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web
+              Signature (JWS)", RFC 7515, DOI 10.17487/RFC7515, May
+              2015, <https://www.rfc-editor.org/rfc/rfc7515>.
 
    [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
@@ -1887,6 +2093,10 @@ Table of Contents
               DOI 10.17487/RFC8949, December 2020,
               <https://www.rfc-editor.org/rfc/rfc8949>.
 
+   [RFC9053]  Schaad, J., "CBOR Object Signing and Encryption (COSE):
+              Initial Algorithms", RFC 9053, DOI 10.17487/RFC9053,
+              August 2022, <https://www.rfc-editor.org/rfc/rfc9053>.
+
    [RFC9200]  Seitz, L., Selander, G., Wahlstroem, E., Erdtman, S., and
               H. Tschofenig, "Authentication and Authorization for
               Constrained Environments Using the OAuth 2.0 Framework
@@ -1910,7 +2120,7 @@ Table of Contents
               Certificates", RFC 9360, DOI 10.17487/RFC9360, February
               2023, <https://www.rfc-editor.org/rfc/rfc9360>.
 
-9.2.  Informative References
+11.2.  Informative References
 
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
@@ -2518,6 +2728,11 @@ C.1.  Version -02 to -03
       series.
 
    *  Enabled the transport of the access token also in EDHOC EAD_3.
+
+   *  Defined semantics of the newly defined CWT/JWT Confirmation
+      Methods.
+
+   *  Clarifications and editorial improvements.
 
 C.2.  Version -01 to -02
 

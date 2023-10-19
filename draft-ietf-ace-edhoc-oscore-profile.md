@@ -256,8 +256,8 @@ AS MUST verify that the received "session\_id" identifies a token series to whic
 This document refers to "token series" as a series of access tokens sorted in chronological order as they are released, characterized by the following properties:
 
 * issued by the same AS
-* issued to the same C and associated with the same authentication credential of C
-* issued for the same RS identified by its same authentication credential
+* issued to the same C, and associated with the same authentication credential of C
+* issued for the same RS, identified by its authentication credential
 
 Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.
 

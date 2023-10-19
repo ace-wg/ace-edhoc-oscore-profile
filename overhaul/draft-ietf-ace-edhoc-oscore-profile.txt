@@ -98,26 +98,26 @@ Table of Contents
        4.4.3.  EDHOC message_3
        4.4.4.  OSCORE Security Context
      4.5.  Update of Access Rights
-     4.6.  Cases of Establishing a New OSCORE Security Context
-     4.7.  Access Rights Verification
+     4.6.  Discarding the Security Context
+     4.7.  Cases of Establishing a New OSCORE Security Context
+     4.8.  Access Rights Verification
    5.  Secure Communication with AS
-   6.  Discarding the Security Context
-   7.  Security Considerations
-   8.  Privacy Considerations
-   9.  IANA Considerations
-     9.1.  ACE OAuth Profile Registry
-     9.2.  OAuth Parameters Registry
-     9.3.  OAuth Parameters CBOR Mappings Registry
-     9.4.  JSON Web Token Claims Registry
-     9.5.  CBOR Web Token Claims Registry
-     9.6.  JWT Confirmation Methods Registry
-     9.7.  CWT Confirmation Methods Registry
-     9.8.  EDHOC External Authorization Data Registry
-     9.9.  EDHOC Information Registry
-     9.10. Expert Review Instructions
-   10. References
-     10.1.  Normative References
-     10.2.  Informative References
+   6.  Security Considerations
+   7.  Privacy Considerations
+   8.  IANA Considerations
+     8.1.  ACE OAuth Profile Registry
+     8.2.  OAuth Parameters Registry
+     8.3.  OAuth Parameters CBOR Mappings Registry
+     8.4.  JSON Web Token Claims Registry
+     8.5.  CBOR Web Token Claims Registry
+     8.6.  JWT Confirmation Methods Registry
+     8.7.  CWT Confirmation Methods Registry
+     8.8.  EDHOC External Authorization Data Registry
+     8.9.  EDHOC Information Registry
+     8.10. Expert Review Instructions
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Appendix A.  Examples
      A.1.  Workflow without Optimizations
      A.2.  Workflow with Optimizations
@@ -376,7 +376,7 @@ Table of Contents
    include EDHOC_Information, which is a CBOR map object containing
    information related to an EDHOC session, in particular the identifier
    "session_id", see Section 3.4.  This object is transported in the
-   "edhoc_info" parameter registered in Section 9.2 and Section 9.3.
+   "edhoc_info" parameter registered in Section 8.2 and Section 8.3.
 
 3.1.  C-to-AS: POST to /token endpoint
 
@@ -642,7 +642,7 @@ Table of Contents
       default value of 1 (see Section 5.4 of [RFC8613]) is assumed.
 
    When CWTs are used as access tokens, EDHOC_Information MUST be
-   transported in the "edhoc_info" claim, defined in Section 9.5.
+   transported in the "edhoc_info" claim, defined in Section 8.5.
 
    Since the access token does not contain secret information, only its
    integrity and source authentication are strictly necessary to ensure.
@@ -718,7 +718,7 @@ Table of Contents
    The EDHOC_Information can either be encoded as a JSON object or as a
    CBOR map.  The set of common fields that can appear in an
    EDHOC_Information can be found in the IANA "EDHOC Information"
-   registry (see Section 9.9), defined for extensibility, and the
+   registry (see Section 8.9), defined for extensibility, and the
    initial set of parameters defined in this document is specified
    below.  All parameters are optional.
 
@@ -874,7 +874,7 @@ Table of Contents
    Context (see Section 4.4).  After that, C and RS use the established
    OSCORE Security Context to protect their communications when
    accessing protected resources at RS, as per the access rights
-   specified in the access token (see Section 4.7).
+   specified in the access token (see Section 4.8).
 
    C and RS are mutually authenticated once they have successfully
    completed the EDHOC protocol.  RS gets key confirmation of PRK_out by
@@ -958,7 +958,7 @@ Table of Contents
    This document defines the EAD item EAD_ACCESS_TOKEN = (ead_label,
    ead_value), where:
 
-   *  ead_label is the integer value TBD registered in Section 9.8, and
+   *  ead_label is the integer value TBD registered in Section 8.8, and
 
    *  ead_value is a CBOR byte string equal to the value of the
       "access_token" field of the access token response from AS (see
@@ -1135,86 +1135,7 @@ Table of Contents
    process needed by RS to keep track of authorization information for a
    given client.
 
-4.6.  Cases of Establishing a New OSCORE Security Context
-
-   The procedure of provisioning a new access token to RS specified in
-   this section applies to various cases when an OSCORE Security Context
-   shared between C and RS has been deleted, for example:
-
-   *  The old access token has expired and thus the token series is
-      terminated.
-
-   *  Lack of storage in RS.  This situation can be detected by C when
-      it receives a 4.01 (Unauthorized) response from RS, e.g., as an
-      "AS Request Creation Hints" message (see Section 5.3 of
-      [RFC9200]).
-
-   *  The EDHOC session from which this OSCORE Security Context was
-      derived has become invalid, e.g., due to the expiration of an
-      authentication credential.
-
-   *  Other security policy.
-
-   Another exceptional case is when there is still a valid OSCORE
-   Security Context but it needs to be updated, e.g., due to a policy
-   limiting its use in terms of time or amount of processed data, or to
-   the imminent exhaustion of the OSCORE Sender Sequence Number space.
-   In this case, C and RS SHALL attempt to run the KUDOS key update
-   protocol [I-D.ietf-core-oscore-key-update], which is a lightweight
-   alternative independent of ACE and EDHOC that does not require the
-   posting of an access token.  If KUDOS is not supported, then C and RS
-   falls back to EDHOC as outlined above.
-
-   In either case, C and RS establish a new OSCORE Security Context that
-   replaces the old one and will be used for protecting their
-   communications from then on.  In particular, RS MUST associate the
-   new OSCORE Security Context with the current (potentially re-posted)
-   access token.  Unless C and RS re-run the EDHOC protocol, they
-   preserve their OSCORE identifiers, i.e., the OSCORE Sender/Recipient
-   IDs.
-
-4.7.  Access Rights Verification
-
-   RS MUST follow the procedures defined in Section 5.10.2 of [RFC9200].
-   That is, if RS receives an OSCORE-protected request targeting a
-   protected resource from C, then RS processes the request according to
-   [RFC8613], when Version 1 of OSCORE is used.  Future specifications
-   may define new versions of OSCORE, which AS can indicate C and RS to
-   use by means of the "osc_version" field of EDHOC_Information (see
-   Section 3).
-
-   If OSCORE verification succeeds and the target resource requires
-   authorization, RS retrieves the authorization information using the
-   access token associated with the OSCORE Security Context.  Then, RS
-   must verify that the authorization information covers the target
-   resource and the action intended by C on it.
-
-5.  Secure Communication with AS
-
-   As specified in the ACE framework (see Sections 5.8 and 5.9 of
-   [RFC9200]), the requesting entity (RS and/or C) and AS communicates
-   via the /token or /introspect endpoint.  When using this profile, the
-   use of CoAP [RFC7252] and OSCORE [RFC8613] for this communication is
-   RECOMMENDED.  Other protocols fulfilling the security requirements
-   defined in Section 5 of [RFC9200] (such as HTTP and DTLS or TLS) MAY
-   be used instead.
-
-   If OSCORE is used, the requesting entity and AS need to have an
-   OSCORE Security Context in place.  While this can be pre-installed,
-   the requesting entity and AS can establish such an OSCORE Security
-   Context, for example, by running the EDHOC protocol, as shown between
-   C and AS by the examples in Appendix A.1, Appendix A.2, and
-   Appendix A.3.  The requesting entity and AS communicate through the
-   /token endpoint as specified in Section 5.8 of [RFC9200] and through
-   the /introspect endpoint as specified in Section 5.9 of [RFC9200].
-
-   Furthermore, as defined in Section 3.3 and shown by the example in
-   Appendix A.3, AS may upload the access token to the /authz-info
-   endpoint at RS, on behalf of C.  In such a case, that exchange
-   between AS and RS is not protected, just like when C uploads the
-   access token to RS by itself.
-
-6.  Discarding the Security Context
+4.6.  Discarding the Security Context
 
    There are a number of cases where C or RS have to discard the OSCORE
    Security Context, and possibly establish a new one.
@@ -1266,7 +1187,86 @@ Table of Contents
    those observations are going to be protected with the newly derived
    OSCORE Security Context.
 
-7.  Security Considerations
+4.7.  Cases of Establishing a New OSCORE Security Context
+
+   The procedure of provisioning a new access token to RS specified in
+   this section applies to various cases when an OSCORE Security Context
+   shared between C and RS has been deleted, for example:
+
+   *  The old access token has expired and thus the token series is
+      terminated.
+
+   *  Lack of storage in RS.  This situation can be detected by C when
+      it receives a 4.01 (Unauthorized) response from RS, e.g., as an
+      "AS Request Creation Hints" message (see Section 5.3 of
+      [RFC9200]).
+
+   *  The EDHOC session from which this OSCORE Security Context was
+      derived has become invalid, e.g., due to the expiration of an
+      authentication credential.
+
+   *  Other security policy.
+
+   Another exceptional case is when there is still a valid OSCORE
+   Security Context but it needs to be updated, e.g., due to a policy
+   limiting its use in terms of time or amount of processed data, or to
+   the imminent exhaustion of the OSCORE Sender Sequence Number space.
+   In this case, C and RS SHALL attempt to run the KUDOS key update
+   protocol [I-D.ietf-core-oscore-key-update], which is a lightweight
+   alternative independent of ACE and EDHOC that does not require the
+   posting of an access token.  If KUDOS is not supported, then C and RS
+   falls back to EDHOC as outlined above.
+
+   In either case, C and RS establish a new OSCORE Security Context that
+   replaces the old one and will be used for protecting their
+   communications from then on.  In particular, RS MUST associate the
+   new OSCORE Security Context with the current (potentially re-posted)
+   access token.  Unless C and RS re-run the EDHOC protocol, they
+   preserve their OSCORE identifiers, i.e., the OSCORE Sender/Recipient
+   IDs.
+
+4.8.  Access Rights Verification
+
+   RS MUST follow the procedures defined in Section 5.10.2 of [RFC9200].
+   That is, if RS receives an OSCORE-protected request targeting a
+   protected resource from C, then RS processes the request according to
+   [RFC8613], when Version 1 of OSCORE is used.  Future specifications
+   may define new versions of OSCORE, which AS can indicate C and RS to
+   use by means of the "osc_version" field of EDHOC_Information (see
+   Section 3).
+
+   If OSCORE verification succeeds and the target resource requires
+   authorization, RS retrieves the authorization information using the
+   access token associated with the OSCORE Security Context.  Then, RS
+   must verify that the authorization information covers the target
+   resource and the action intended by C on it.
+
+5.  Secure Communication with AS
+
+   As specified in the ACE framework (see Sections 5.8 and 5.9 of
+   [RFC9200]), the requesting entity (RS and/or C) and AS communicates
+   via the /token or /introspect endpoint.  When using this profile, the
+   use of CoAP [RFC7252] and OSCORE [RFC8613] for this communication is
+   RECOMMENDED.  Other protocols fulfilling the security requirements
+   defined in Section 5 of [RFC9200] (such as HTTP and DTLS or TLS) MAY
+   be used instead.
+
+   If OSCORE is used, the requesting entity and AS need to have an
+   OSCORE Security Context in place.  While this can be pre-installed,
+   the requesting entity and AS can establish such an OSCORE Security
+   Context, for example, by running the EDHOC protocol, as shown between
+   C and AS by the examples in Appendix A.1, Appendix A.2, and
+   Appendix A.3.  The requesting entity and AS communicate through the
+   /token endpoint as specified in Section 5.8 of [RFC9200] and through
+   the /introspect endpoint as specified in Section 5.9 of [RFC9200].
+
+   Furthermore, as defined in Section 3.3 and shown by the example in
+   Appendix A.3, AS may upload the access token to the /authz-info
+   endpoint at RS, on behalf of C.  In such a case, that exchange
+   between AS and RS is not protected, just like when C uploads the
+   access token to RS by itself.
+
+6.  Security Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -1312,7 +1312,7 @@ Table of Contents
    token per client per PoP-key (i.e., per client's authentication
    credential).
 
-8.  Privacy Considerations
+7.  Privacy Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -1348,14 +1348,14 @@ Table of Contents
    if C and RS dynamically update their OSCORE identifiers, e.g., by
    using the method defined in [I-D.ietf-core-oscore-key-update].
 
-9.  IANA Considerations
+8.  IANA Considerations
 
    This document has the following actions for IANA.
 
    Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
    with the RFC number of this specification and delete this paragraph.
 
-9.1.  ACE OAuth Profile Registry
+8.1.  ACE OAuth Profile Registry
 
    IANA is asked to add the following entry to the "ACE OAuth Profile"
    Registry following the procedure specified in [RFC9200].
@@ -1374,7 +1374,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-9.2.  OAuth Parameters Registry
+8.2.  OAuth Parameters Registry
 
    IANA is asked to add the following entries to the "OAuth Parameters"
    registry.
@@ -1387,7 +1387,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-9.3.  OAuth Parameters CBOR Mappings Registry
+8.3.  OAuth Parameters CBOR Mappings Registry
 
    IANA is asked to add the following entries to the "OAuth Parameters
    CBOR Mappings" following the procedure specified in [RFC9200].
@@ -1400,7 +1400,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-9.4.  JSON Web Token Claims Registry
+8.4.  JSON Web Token Claims Registry
 
    IANA is asked to add the following entries to the "JSON Web Token
    Claims" registry following the procedure specified in [RFC7519].
@@ -1413,7 +1413,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-9.5.  CBOR Web Token Claims Registry
+8.5.  CBOR Web Token Claims Registry
 
    IANA is asked to add the following entries to the "CBOR Web Token
    Claims" registry following the procedure specified in [RFC8392].
@@ -1432,7 +1432,7 @@ Table of Contents
 
    *  Specification Document(s): [RFC-XXXX]
 
-9.6.  JWT Confirmation Methods Registry
+8.6.  JWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "JWT Confirmation
    Methods" registry following the procedure specified in [RFC7800].
@@ -1535,7 +1535,7 @@ Table of Contents
    *  Specification Document(s): [RFC-XXXX]
 
 
-9.7.  CWT Confirmation Methods Registry
+8.7.  CWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "CWT Confirmation
    Methods" registry following the procedure specified in [RFC8747].
@@ -1697,7 +1697,7 @@ Table of Contents
 
    *  Specification Document(s): [RFC-XXXX]
 
-9.8.  EDHOC External Authorization Data Registry
+8.8.  EDHOC External Authorization Data Registry
 
    IANA is asked to add the following entry to the "EDHOC External
    Authorization Data" registry defined in Section 9.5 of
@@ -1714,12 +1714,12 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-9.9.  EDHOC Information Registry
+8.9.  EDHOC Information Registry
 
    It is requested that IANA create a new registry entitled "EDHOC
    Information" registry.  The registry is to be created with
    registration policy Expert Review [RFC8126].  Guidelines for the
-   experts are provided in Section 9.10.  It should be noted that in
+   experts are provided in Section 8.10.  It should be noted that in
    addition to the expert review, some portions of the registry require
    a specification, potentially on Standards Track, be supplied as well.
 
@@ -1762,7 +1762,7 @@ Table of Contents
    The "Specification" column for all of these entries will be this
    document and [I-D.ietf-lake-edhoc].
 
-9.10.  Expert Review Instructions
+8.10.  Expert Review Instructions
 
    The IANA registry established in this document is defined to use the
    registration policy Expert Review.  This section gives some general
@@ -1799,9 +1799,9 @@ Table of Contents
       used on, and the number of code points left that encode to that
       size.
 
-10.  References
+9.  References
 
-10.1.  Normative References
+9.1.  Normative References
 
    [I-D.ietf-core-oscore-edhoc]
               Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
@@ -1924,7 +1924,7 @@ Table of Contents
               Certificates", RFC 9360, DOI 10.17487/RFC9360, February
               2023, <https://www.rfc-editor.org/rfc/rfc9360>.
 
-10.2.  Informative References
+9.2.  Informative References
 
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.

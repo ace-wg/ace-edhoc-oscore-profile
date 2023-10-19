@@ -185,7 +185,7 @@ Table of Contents
    ecosystem is out of scope, but one solution is to build on the same
    primitives as used in this document, i.e., EDHOC for authentication
    and OSCORE for communication security, using for example
-   [I-D.selander-lake-authz] for onboarding an RS with AS, and
+   [I-D.selander-lake-authz] for onboarding RS with AS, and
    [I-D.ietf-ace-coap-est-oscore] for establishing a trust anchor in RS.
    A similar procedure can also be applied between C and AS for
    registering a client and for the establishment of a trust anchor.
@@ -257,7 +257,7 @@ Table of Contents
    requests from those clients.
 
    This profile specifies how C requests an access token from AS for the
-   resources it wants to access on an RS, by sending an access token
+   resources it wants to access on RS, by sending an access token
    request to the /token endpoint, as specified in Section 5.8 of
    [RFC9200].
 
@@ -853,8 +853,8 @@ Table of Contents
 
    This section describes the exchanges between C and RS, which comprise
    the token uploading to RS, and the execution of the EDHOC protocol.
-   Note that AS may have uploaded the access token directly to the RS
-   (see Section 3.3).
+   Note that AS may have uploaded the access token directly to RS (see
+   Section 3.3).
 
    In order to upload the access token to RS, C can send a POST request
    to the /authz-info endpoint at RS.  This is detailed in Section 4.1
@@ -2473,13 +2473,13 @@ Appendix B.  Profile Requirements
    *  Specify the security protocol the client and RS must use to
       protect their communication: OSCORE
 
-   *  Specify how the client and the RS mutually authenticate:
-      Explicitly, by successfully executing the EDHOC protocol, after
-      which a common OSCORE Security Context is exported from the EDHOC
-      session.  As per the EDHOC authentication method used during the
-      EDHOC session, authentication is provided by digital signatures,
-      or by Message Authentication Codes (MACs) computed from an
-      ephemeral-static ECDH shared secret.
+   *  Specify how the client and RS mutually authenticate: Explicitly,
+      by successfully executing the EDHOC protocol, after which a common
+      OSCORE Security Context is exported from the EDHOC session.  As
+      per the EDHOC authentication method used during the EDHOC session,
+      authentication is provided by digital signatures, or by Message
+      Authentication Codes (MACs) computed from an ephemeral-static ECDH
+      shared secret.
 
    *  Specify the proof-of-possession protocol(s) and how to select one,
       if several are available.  Also specify which key types (e.g.,

@@ -609,11 +609,11 @@ There are a number of cases where C or RS have to discard the OSCORE Security Co
 
 C MUST discard the current OSCORE Security Context shared with RS when any of the following occurs.
 
-* The OSCORE Sender Sequence Number space of C gets exhausted.
+* The OSCORE Sender Sequence Number space of C is exhausted.
 
 * The access token associated with the OSCORE Security Context becomes invalid, for example due to expiration or revocation.
 
-* C receives a number of 4.01 (Unauthorized) responses to OSCORE-protected requests sent to RS and protected using the same OSCORE Security Context. The exact number of such received responses needs to be specified by the application. This may for example happen due to lack of storage in RS which then sends the "AS Request Creation Hints" message (see {{Section 5.3 of RFC9200}}).
+* C receives a number of unprotected 4.01 (Unauthorized) responses to OSCORE-protected requests, which are sent to RS and protected using the same OSCORE Security Context. The exact number of such received responses needs to be specified by the application. This may for example happen due to lack of storage in RS, which then sends the "AS Request Creation Hints" message (see {{Section 5.3 of RFC9200}}).
 
 * The authentication credential of C (of RS) becomes invalid, e.g., due to expiration or revocation, and it was used as CRED\_I (CRED\_R) in the EDHOC session to establish the OSCORE Security Context.
 
@@ -623,7 +623,7 @@ RS MUST discard the current OSCORE Security Context shared with C when any of th
 
 * The access token associated with the OSCORE Security Context becomes invalid, for example due to expiration or revocation.
 
-* The authentication credential of C (of RS) becomes invalid (e.g., due to expiration or revocation), and it was used as CRED\_I (CRED\_R) in the EDHOC session whose PRK\_out was used to establish the OSCORE Security Context.
+* The authentication credential of C (of RS) becomes invalid (e.g., due to expiration or revocation), and it was used as CRED\_I (CRED\_R) in the EDHOC session to establish the OSCORE Security Context.
 
 After a new access token is successfully uploaded to RS, and a new OSCORE Security Context is established between C and RS, messages still in transit that were protected with the previous OSCORE Security Context might not be successfully verified by the recipient, since the old OSCORE Security Context might have been discarded. This means that messages sent shortly before C has uploaded the new access token to RS might not be successfully accepted by the recipient.
 
@@ -652,7 +652,7 @@ As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the
 
 If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{example-without-optimization}}, {{example-with-optimization}}, and {{example-without-optimization-as-posting}}.
 
-Furthermore, as discussed in {{as-c}} and shown by the example in {{example-without-optimization-as-posting}}, AS may upload an access token directly to the /authz-info endpoint at RS. Unless encryption is applied, that exchange between AS and RS discloses the plain text token, just like when C uses the the /authz-info endpoint at RS to upload a first token in a series.
+Furthermore, as discussed in {{as-c}} and shown by the example in {{example-without-optimization-as-posting}}, AS may upload an access token directly to the /authz-info endpoint at RS. Unless encryption is applied, that exchange between AS and RS discloses the plain text token, just like when C uses the /authz-info endpoint at RS to upload a first token in a series.
 
 Editor's note: Elaborate on how to encrypt the token from AS to RS, since there is a pre-established security context.
 

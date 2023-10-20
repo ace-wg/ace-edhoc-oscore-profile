@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 21 April 2024                                         M. Tiloca
+Expires: 22 April 2024                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         19 October 2023
+                                                         20 October 2023
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 April 2024.
+   This Internet-Draft will expire on 22 April 2024.
 
 Copyright Notice
 
@@ -1254,8 +1254,8 @@ Table of Contents
    via the /token or /introspect endpoint.  When using this profile, the
    use of CoAP [RFC7252] and OSCORE [RFC8613] for this communication is
    RECOMMENDED.  Other protocols fulfilling the security requirements
-   defined in Section 5 of [RFC9200] (such as HTTP and DTLS or TLS) MAY
-   be used instead.
+   defined in Section 5 of [RFC9200] (such as HTTP and DTLS [RFC9147] or
+   TLS [RFC8446]) MAY be used instead.
 
    If OSCORE is used, the requesting entity and AS need to have an
    OSCORE Security Context in place.  While this can be pre-installed,
@@ -1993,9 +1993,9 @@ Table of Contents
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-06, 7 July 2023,
+              ietf-cose-cbor-encoded-cert-07, 20 October 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-06>.
+              cbor-encoded-cert-07>.
 
    [I-D.ietf-lake-edhoc]
               Selander, G., Mattsson, J. P., and F. Palombini,

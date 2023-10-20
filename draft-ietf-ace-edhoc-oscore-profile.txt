@@ -1254,8 +1254,8 @@ Table of Contents
    via the /token or /introspect endpoint.  When using this profile, the
    use of CoAP [RFC7252] and OSCORE [RFC8613] for this communication is
    RECOMMENDED.  Other protocols fulfilling the security requirements
-   defined in Section 5 of [RFC9200] (such as HTTP and DTLS or TLS) MAY
-   be used instead.
+   defined in Section 5 of [RFC9200] (such as HTTP and DTLS [RFC9147] or
+   TLS [RFC8446]) MAY be used instead.
 
    If OSCORE is used, the requesting entity and AS need to have an
    OSCORE Security Context in place.  While this can be pre-installed,

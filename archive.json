@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-19T00:36:26.619438+00:00",
+  "timestamp": "2023-10-22T00:39:24.910627+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -280,24 +280,26 @@
       "id": "PR_kwDOIar0bc5cnd13",
       "title": "Compiled updates",
       "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/2",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "gselander",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "An unstructed bunch of suggested updates following a detailed review. For discussion.\r\n",
       "createdAt": "2023-10-12T10:13:56Z",
-      "updatedAt": "2023-10-18T14:14:36Z",
+      "updatedAt": "2023-10-20T14:43:03Z",
       "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
       "baseRefName": "main",
       "baseRefOid": "5e61eb08d656f517fb2163b18a8916068a9271f1",
       "headRepository": "ace-wg/ace-edhoc-oscore-profile",
       "headRefName": "overhaul",
-      "headRefOid": "9fa37188d756420de77cdc9d5abee1807f84a0bb",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "b98663c6084288fdd7ee228d5c6b3934e4dbe8ff",
+      "closedAt": "2023-10-20T14:43:03Z",
+      "mergedAt": "2023-10-20T14:43:03Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "78c9a7d63f9abba40f0d9f15b3d4185e19a1472c"
+      },
       "comments": [
         {
           "author": "gselander",
@@ -305,6 +307,13 @@
           "body": "First commit covers sections 1-3.",
           "createdAt": "2023-10-12T10:14:20Z",
           "updatedAt": "2023-10-12T10:14:20Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Merging in preparation of new version.",
+          "createdAt": "2023-10-20T14:42:56Z",
+          "updatedAt": "2023-10-20T14:42:56Z"
         }
       ],
       "reviews": [
@@ -689,6 +698,32 @@
           ]
         }
       ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOIar0bc5dazsi",
+      "title": "adding back refs",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/3",
+      "state": "CLOSED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-20T20:30:22Z",
+      "updatedAt": "2023-10-20T20:30:26Z",
+      "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "baseRefName": "main",
+      "baseRefOid": "3922b405d87ec615b4f5fa2afee12783b53276b5",
+      "headRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "headRefName": "overhaul",
+      "headRefOid": "cf90b8c45cd7d0e047aebf43c01471e7ee4bc0fc",
+      "closedAt": "2023-10-20T20:30:26Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }

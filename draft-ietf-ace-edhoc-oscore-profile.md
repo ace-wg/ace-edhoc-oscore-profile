@@ -662,7 +662,7 @@ Furthermore, as discussed in {{as-c}} and shown by the example in {{example-with
 
 Editor's note: Elaborate on how to encrypt the token from AS to RS, since there is a pre-established security context.
 
-# CWT Confirmation Metods
+# CWT Confirmation Methods
 
 This document defines a number of new CWT confirmation methods (see {{iana-cwt-confirmation-methods}}). The semantics of each confirmation method is defined below.
 
@@ -706,7 +706,7 @@ The confirmation method "kcwt" specifies a CBOR Web Token (CWT) {{RFC8392}} cont
 
 The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a 'cnf' claim and possibly other claims. The semantics of "kccs" is like that of the "kccs" COSE Header Parameter specified in {{I-D.ietf-lake-edhoc}}.
 
-# JWT Confirmation Metods
+# JWT Confirmation Methods
 
 This document defines a number of new JWT confirmation methods (see {{iana-jwt-confirmation-methods}}). The semantics of each confirmation method is defined below.
 

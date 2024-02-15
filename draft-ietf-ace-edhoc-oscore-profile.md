@@ -233,7 +233,7 @@ An example of such a request is shown in {{token-request}}. In this example, C s
 
 If C wants to update its access rights without changing an existing OSCORE Security Context, it MUST include EDHOC\_Information in its POST request to the /token endpoint. The EDHOC\_Information MUST include the "session\_id" field. This POST request MUST omit the "req_cnf" parameter. An example of such a request is shown in {{token-request-update}}.
 
-The identifier "session\_id" is assigned by AS as discussed in {{token-series}}, and, together with other information such as audience (see {{Section 5.8.1 of RFC9200}}), can be used by AS to determine the token series to which the new requested access token has to be added.
+The identifier "session\_id" is assigned by AS as discussed in {{token-series}}, and, together with other information such as audience (see {{Section 5.8.1 of RFC9200}}), can be used by AS to determine the token series to which the new requested access token has to be added. Therefore, the session\_id MUST identify the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS) associated with a still valid access token previously issued for C and RS by AS.
 
 AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token issued for C and RS belongs. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid_request" as defined in {{Section 5.8.3 of RFC9200}}.
 
@@ -269,8 +269,6 @@ AS assigns the session\_id to the EDHOC\_Information when issuing the first acce
 
 * i) issued for the same RS; and
 * ii) bound to the same authentication credential AUTH_CRED_C of the requesting client (irrespectively of how the AUTH_CRED_C is identified in the access tokens).
-
-The session\_id MUST identify the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS) associated with a still valid access token previously issued for C and RS by AS.
 
 In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}),  what is defined above applies, with the difference that the token series is associated with: all the RSs in the group-audience; all the EDHOC sessions between C and each RS; and the AUTH_CRED_RS of each RS.
 

@@ -153,7 +153,7 @@ After the whole procedure has completed and while the access token is valid, C c
 
 An overview of the profile flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}. The names of messages coincide with those of {{RFC9200}} when applicable.
 
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
 
    C                            RS                       AS
    |                            |                         |
@@ -191,7 +191,7 @@ storage (latest)/               |                         |
    |                            |                         |
    |           ...              |                         |
 
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 {: #protocol-overview title="Protocol Overview Example"}
 
 
@@ -1093,7 +1093,7 @@ In any other case, it is otherwise possible to indicate both AUTH_CRED_C and AUT
 
 The example below considers the simplest (though least efficient) interaction between the Client and RS. That is: first C uploads the access token to RS; then C and RS run EDHOC; and, finally, the Client accesses the protected resource at RS.
 
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
     C                                 AS                             RS
     |                                  |                              |
     |  EDHOC message_1 to /edhoc       |                              |
@@ -1293,7 +1293,7 @@ M20 |---------------------------------------------------------------->|
     |  (OSCORE-protected message)      |                              |
 M21 |<----------------------------------------------------------------|
     |                                  |                              |
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 ## Workflow with Optimizations # {#example-with-optimization}
 
@@ -1305,7 +1305,7 @@ The example below builds on the example in {{example-without-optimization}}, whi
 
 These two optimizations used together result in the most efficient interaction between C and RS, as consisting of only two roundtrips to upload the access token, run EDHOC and access the protected resource at RS.
 
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
     C                                 AS                             RS
     |                                  |                              |
     |  EDHOC message_1 to /edhoc       |                              |
@@ -1399,7 +1399,7 @@ M07 |---------------------------------------------------------------->|
     |  (OSCORE-protected message)      |                              |
 M08 |<----------------------------------------------------------------|
     |                                  |                              |
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 
 ## Alternative Workflow (AS token posting) # {#example-without-optimization-as-posting}
@@ -1407,7 +1407,7 @@ M08 |<----------------------------------------------------------------|
 The example below builds on the example in {{example-with-optimization}}, but assumes that AS is uploading the access token to RS as specified in {{I-D.ietf-ace-workflow-and-params}}.
 
 
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~ aasvg
     C                                 AS                             RS
     |                                  |                              |
     |                                  |                              |
@@ -1517,7 +1517,7 @@ M09 |---------------------------------------------------------------->|
 M10 |<----------------------------------------------------------------|
     |                                  |                              |
 
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 # Profile Requirements # {#sec-profile-requirements}
 

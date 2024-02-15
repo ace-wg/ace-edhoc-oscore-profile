@@ -208,7 +208,7 @@ Table of Contents
    ecosystem is out of scope, but one solution is to build on the same
    primitives as used in this document, i.e., EDHOC for authentication
    and OSCORE for communication security, using for example
-   [I-D.selander-lake-authz] for onboarding RS with AS, and
+   [I-D.ietf-lake-authz] for onboarding RS with AS, and
    [I-D.ietf-ace-coap-est-oscore] for establishing a trust anchor in RS.
    A similar procedure can also be applied between C and AS for
    registering a client and for the establishment of a trust anchor.
@@ -286,7 +286,7 @@ Table of Contents
 
    This profile also supports the alternative workflow where AS uploads
    the access token to RS, as defined in
-   [I-D.tiloca-ace-workflow-and-params].
+   [I-D.ietf-ace-workflow-and-params].
 
    If C has retrieved an access token, there are two options for C to
    upload it to RS, as further detailed in this document.
@@ -491,9 +491,9 @@ Table of Contents
    token of a token series becomes invalid (e.g., due to its expiration
    or revocation), the token series it belongs to ends.
 
-   A more general token series concept is described in Appendix B of
-   [I-D.tiloca-ace-workflow-and-params]).  In this profile, a token
-   series is characterized by the access tokens associated with an EDHOC
+   The general token series concept is defined in
+   [I-D.ietf-ace-workflow-and-params].  In this profile, a token series
+   is characterized by the access tokens associated with an EDHOC
    session between C and RS, and identified by the session_id of the
    EDHOC_Information, see Section 3.4.  All access tokens belonging to
    the same token series are associated with the same session_id, which
@@ -540,7 +540,7 @@ Table of Contents
    The access token may be sent in the access token response to C for
    subsequent provisioning to RS, or the access token may be uploaded by
    AS directly to RS, as specified in
-   [I-D.tiloca-ace-workflow-and-params].
+   [I-D.ietf-ace-workflow-and-params].
 
    *  In the former case, AS provides the access token to C, by
       specifying it in the "access_token" parameter of the access token
@@ -1984,6 +1984,15 @@ Table of Contents
 
 11.1.  Normative References
 
+   [I-D.ietf-ace-workflow-and-params]
+              Tiloca, M. and G. Selander, "Alternative Workflow and
+              OAuth Parameters for the Authentication and Authorization
+              for Constrained Environments (ACE) Framework", Work in
+              Progress, Internet-Draft, draft-ietf-ace-workflow-and-
+              params-00, 2 January 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
+              workflow-and-params-00>.
+
    [I-D.ietf-core-oscore-edhoc]
               Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
               G. Selander, "Using Ephemeral Diffie-Hellman Over COSE
@@ -2008,15 +2017,6 @@ Table of Contents
               Progress, Internet-Draft, draft-ietf-lake-edhoc-23, 22
               January 2024, <https://datatracker.ietf.org/doc/html/
               draft-ietf-lake-edhoc-23>.
-
-   [I-D.tiloca-ace-workflow-and-params]
-              Tiloca, M. and G. Selander, "Alternative Workflow and
-              OAuth Parameters for the Authentication and Authorization
-              for Constrained Environments (ACE) Framework", Work in
-              Progress, Internet-Draft, draft-tiloca-ace-workflow-and-
-              params-01, 23 October 2023,
-              <https://datatracker.ietf.org/doc/html/draft-tiloca-ace-
-              workflow-and-params-01>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2142,13 +2142,13 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
               oscore-key-update-06>.
 
-   [I-D.selander-lake-authz]
-              Selander, G., Mattsson, J. P., Vučinić, M., Richardson,
-              M., and A. Schellenbaum, "Lightweight Authorization using
-              Ephemeral Diffie-Hellman Over COSE", Work in Progress,
-              Internet-Draft, draft-selander-lake-authz-03, 7 July 2023,
-              <https://datatracker.ietf.org/doc/html/draft-selander-
-              lake-authz-03>.
+   [I-D.ietf-lake-authz]
+              Selander, G., Mattsson, J. P., Vučinić, M., and M.
+              Richardson, "Lightweight Authorization using Ephemeral
+              Diffie-Hellman Over COSE", Work in Progress, Internet-
+              Draft, draft-ietf-lake-authz-00, 23 October 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
+              authz-00>.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
@@ -2548,7 +2548,7 @@ A.3.  Alternative Workflow (AS token posting)
 
    The example below builds on the example in Appendix A.2, but assumes
    that AS is uploading the access token to RS as specified in
-   [I-D.tiloca-ace-workflow-and-params].
+   [I-D.ietf-ace-workflow-and-params].
 
      C                                 AS                             RS
      |                                  |                              |
@@ -2728,6 +2728,8 @@ C.1.  Version -02 to -03
 
    *  Fixed column name and prefilling of the "EDHOC Information"
       registry.
+
+   *  Updated references.
 
    *  Editorial fixes and improvements.
 

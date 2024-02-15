@@ -531,20 +531,20 @@ The CDDL grammar describing the CBOR EDHOC_Information is:
 
 ~~~~~~~~~~~
 EDHOC_Information = {
-  ?  0 => bstr,                  ; id
-  ?  1 => int / array,           ; methods
-  ?  2 => int / array,           ; cipher_suites
-  ?  3 => true / false,          ; message_4
-  ?  4 => true / false,          ; comb_req
-  ?  5 => tstr,                  ; uri_path
-  ?  6 => uint,                  ; osc_ms_len
-  ?  7 => uint,                  ; osc_salt_len
-  ?  8 => uint,                  ; osc_version
-  ?  9 => int / array,           ; cred_types
-  ? 10 => int / tstr / array     ; id_cred_types
-  ? 11 => uint / array           ; eads
-  ? 12 => true / false           ; initiator
-  ? 13 => true / false           ; responder
+  ?  0 => bstr,                   ; id
+  ?  1 => int / array,            ; methods
+  ?  2 => int / array,            ; cipher_suites
+  ?  3 => true / false,           ; message_4
+  ?  4 => true / false,           ; comb_req
+  ?  5 => tstr,                   ; uri_path
+  ?  6 => uint,                   ; osc_ms_len
+  ?  7 => uint,                   ; osc_salt_len
+  ?  8 => uint,                   ; osc_version
+  ?  9 => int / array,            ; cred_types
+  ? 10 => int / tstr / array,     ; id_cred_types
+  ? 11 => uint / array,           ; eads
+  ? 12 => true / false,           ; initiator
+  ? 13 => true / false,           ; responder
   * int / tstr => any
 }
 ~~~~~~~~~~~

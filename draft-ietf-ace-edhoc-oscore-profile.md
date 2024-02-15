@@ -1145,9 +1145,9 @@ M05 |<---------------------------------|                              |
     |      'edhoc_info' above          |                              |
     |                                  |                              |
 
- // Possibly after chain verification, the Client adds AUTH_CRED_RS
- // to the set of its trusted peer authentication credentials,
- // relying on AS as trusted provider
+     Possibly after chain verification, the Client adds AUTH_CRED_RS
+     to the set of its trusted peer authentication credentials,
+     relying on AS as trusted provider/
 
     |                                  |                              |
     |  Token upload to /authz-info     |                              |
@@ -1155,9 +1155,9 @@ M05 |<---------------------------------|                              |
 M06 |---------------------------------------------------------------->|
     |                                  |                              |
 
- // Possibly after chain verification, RS adds AUTH_CRED_C
- // to the set of its trusted peer authentication credentials,
- // relying on AS as trusted provider
+     Possibly after chain verification, RS adds AUTH_CRED_C
+     to the set of its trusted peer authentication credentials,
+     relying on AS as trusted provider/
 
     |                                  |                              |
     |   2.01 (Created)                 |                              |
@@ -1195,29 +1195,29 @@ M11 |---------------------------------------------------------------->|
 M12 |<----------------------------------------------------------------|
     |                                  |                              |
 
- // Later on, the access token expires ...
- //  - The Client and RS delete their OSCORE Security Context and
- //    purge the EDHOC session used to derive it (unless the same
- //    session is also used for other reasons).
- //  - RS retains AUTH_CRED_C as still valid,
- //    and AS knows about it.
- //  - The Client retains AUTH_CRED_RS as still valid,
- //    and AS knows about it.
+     Later on, the access token expires ...
+      - The Client and RS delete their OSCORE Security Context and
+        purge the EDHOC session used to derive it (unless the same
+        session is also used for other reasons).
+      - RS retains AUTH_CRED_C as still valid,
+        and AS knows about it.
+      - The Client retains AUTH_CRED_RS as still valid,
+        and AS knows about it.
 
     |                                  |                              |
     |                                  |                              |
 
- // Time passes ...
+     Time passes ...
 
     |                                  |                              |
     |                                  |                              |
 
- // The Client asks for a new access token; now all the
- // authentication credentials can be indicated by reference
+     The Client asks for a new access token; now all the
+     authentication credentials can be indicated by reference
 
- // The price to pay is on AS, about remembering that at least
- // one access token has been issued for the pair (Client, RS)
- // and considering the pair (AUTH_CRED_C, AUTH_CRED_RS)
+     The price to pay is on AS, about remembering that at least
+     one access token has been issued for the pair (Client, RS)
+     and considering the pair (AUTH_CRED_C, AUTH_CRED_RS)
 
     |                                  |                              |
     |  Token request to /token         |                              |
@@ -1356,9 +1356,9 @@ M04 |<---------------------------------|                              |
     |      'edhoc_info' above          |                              |
     |                                  |                              |
 
- // Possibly after chain verification, the Client adds AUTH_CRED_RS
- // to the set of its trusted peer authentication credentials,
- // relying on AS as trusted provider
+     Possibly after chain verification, the Client adds AUTH_CRED_RS
+     to the set of its trusted peer authentication credentials,
+     relying on AS as trusted provider
 
     |                                  |                              |
     |  EDHOC message_1 to /edhoc       |                              |
@@ -1367,9 +1367,9 @@ M05 |---------------------------------------------------------------->|
     |  Access token specified in EAD_1 |                              |
     |                                  |                              |
 
- // Possibly after chain verification, RS adds AUTH_CRED_C
- // to the set of its trusted peer authentication credentials,
- // relying on AS as trusted provider
+     Possibly after chain verification, RS adds AUTH_CRED_C
+     to the set of its trusted peer authentication credentials,
+     relying on AS as trusted provider
 
     |                                  |                              |
     |  EDHOC message_2                 |                              |
@@ -1390,9 +1390,9 @@ M07 |---------------------------------------------------------------->|
     |      Application request to /r   |                              |
     |                                  |                              |
 
- // After the EDHOC processing is completed, access control
- // is enforced on the rebuilt OSCORE-protected request,
- // like if it had been sent stand-alone
+     After the EDHOC processing is completed, access control
+     is enforced on the rebuilt OSCORE-protected request,
+     like if it had been sent stand-alone
 
     |                                  |                              |
     |  Response                        |                              |
@@ -1451,9 +1451,9 @@ M04 |                                  |----------------------------->|
     |                                  |        }                     |
     |                                  |                              |
 
- // Possibly after chain verification, RS adds AUTH_CRED_C
- // to the set of its trusted peer authentication credentials,
- // relying on AS as trusted provider
+     Possibly after chain verification, RS adds AUTH_CRED_C
+     to the set of its trusted peer authentication credentials,
+     relying on AS as trusted provider
 
     |                                  |                              |
     |                                  |  2.01 (Created)              |
@@ -1479,9 +1479,9 @@ M06 |<---------------------------------|                              |
     |     }                            |                              |
     |                                  |                              |
 
- // Possibly after chain verification, the Client adds AUTH_CRED_RS
- // to the set of its trusted peer authentication credentials,
- // relying on AS as trusted provider
+     Possibly after chain verification, the Client adds AUTH_CRED_RS
+     to the set of its trusted peer authentication credentials,
+     relying on AS as trusted provider
 
     |                                  |                              |
     |  EDHOC message_1 to /edhoc       |                              |
@@ -1507,9 +1507,9 @@ M09 |---------------------------------------------------------------->|
     |      Application request to /r   |                              |
     |                                  |                              |
 
- // After the EDHOC processing is completed, access control
- // is enforced on the rebuilt OSCORE-protected request,
- // like if it had been sent stand-alone
+     After the EDHOC processing is completed, access control
+     is enforced on the rebuilt OSCORE-protected request,
+     like if it had been sent stand-alone
 
     |                                  |                              |
     |  Response                        |                              |

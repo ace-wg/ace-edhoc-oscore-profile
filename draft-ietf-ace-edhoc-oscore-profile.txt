@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 22 April 2024                                         M. Tiloca
+Expires: 18 August 2024                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         20 October 2023
+                                                        15 February 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -59,11 +59,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 April 2024.
+   This Internet-Draft will expire on 18 August 2024.
 
 Copyright Notice
 
-   Copyright (c) 2023 IETF Trust and the persons identified as the
+   Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -147,8 +147,9 @@ Table of Contents
    Appendix B.  Profile Requirements
    Appendix C.  Document Updates
      C.1.  Version -02 to -03
-     C.2.  Version -01 to -02
-     C.3.  Version -00 to -01
+     C.2.  Version -02 to -03
+     C.3.  Version -01 to -02
+     C.4.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -731,7 +732,7 @@ Table of Contents
    nodes, as specified by this document, but it can also be used by
    other specifications if needed.
 
-   The EDHOC_Information can either be encoded as a JSON object or as a
+   The EDHOC_Information can be encoded either as a JSON object or as a
    CBOR map.  The set of common fields that can appear in an
    EDHOC_Information can be found in the IANA "EDHOC Information"
    registry (see Section 10.9), defined for extensibility, and the
@@ -741,49 +742,51 @@ Table of Contents
    Figure 6 provides a summary of the EDHOC_Information parameters
    defined in this section.
 
- +---------------+--------------+------+----------+--------------------+
- | Name          | CBOR value   | CBOR | Registry | Description        |
- |               |              | Type |          |                    |
- +---------------+--------------+------+----------+--------------------+
- | session_id    | bstr         |  0   |          | Identifier of      |
- |               |              |      |          | EDHOC session      |
- +---------------+--------------+------+----------+--------------------+
- | methods       | int /        |      | EDHOC    | Set of supported   |
- |               | array of int |  1   | Method   | EDHOC methods      |
- |               |              |      | Type     |                    |
- |               |              |      | Registry |                    |
- +---------------+--------------+------+----------+--------------------+
- | cipher_suites | int /        |      | EDHOC    | Set of supported   |
- |               | array of int |  2   | Cipher   | EDHOC cipher       |
- |               |              |      | Suites   | suites             |
- |               |              |      | Registry |                    |
- +---------------+--------------+------+----------+--------------------+
- | message_4     | simple value |      |          | Support for EDHOC  |
- |               | "true" /     |  3   |          | message_4          |
- |               | simple value |      |          |                    |
- |               | "false"      |      |          |                    |
- +---------------+--------------+------+----------+--------------------+
- | comb_req      | simple value |      |          | Support for the    |
- |               | "true" /     |  4   |          | EDHOC + OSCORE     |
- |               | simple value |      |          | combined request   |
- |               | "false"      |      |          |                    |
- +---------------+--------------+------+----------+--------------------+
- | uri_path      | tstr         |  5   |          | URI-path of the    |
- |               |              |      |          | EDHOC resource     |
- +---------------+--------------+------+----------+--------------------+
- | osc_ms_len    | uint         |      |          | Length in bytes of |
- |               |              |  6   |          | the OSCORE Master  |
- |               |              |      |          | Secret to derive   |
- +---------------+--------------+------+----------+--------------------+
- | osc_salt_len  | uint         |      |          | Length in bytes of |
- |               |              |  7   |          | the OSCORE Master  |
- |               |              |      |          | Salt to derive     |
- +---------------+--------------+------+----------+--------------------+
- | osc_version   | uint         |  8   |          | OSCORE version     |
- |               |              |      |          | number to use      |
- +---------------+--------------+------+----------+--------------------+
+  +---------------+-------+--------------+----------+------------------+
+  | Name          | CBOR  | CBOR Type    | Registry | Description      |
+  |               | label |              |          |                  |
+  +---------------+-------+--------------+----------+------------------+
+  | session_id    | 0     | bstr         |          | Identifier of    |
+  |               |       |              |          | EDHOC session    |
+  +---------------+-------+--------------+----------+------------------+
+  | methods       | 1     | int /        | EDHOC    | Set of supported |
+  |               |       | array of int | Method   | EDHOC methods    |
+  |               |       |              | Type     |                  |
+  |               |       |              | Registry |                  |
+  +---------------+-------+--------------+----------+------------------+
+  | cipher_suites | 2     | int /        | EDHOC    | Set of supported |
+  |               |       | array of int | Cipher   | EDHOC cipher     |
+  |               |       |              | Suites   | suites           |
+  |               |       |              | Registry |                  |
+  +---------------+-------+--------------+----------+------------------+
+  | message_4     | 3     | simple value |          | Support for      |
+  |               |       | "true" /     |          | EDHOC message_4  |
+  |               |       | simple value |          |                  |
+  |               |       | "false"      |          |                  |
+  +---------------+-------+--------------+----------+------------------+
+  | comb_req      | 4     | simple value |          | Support for the  |
+  |               |       | "true" /     |          | EDHOC + OSCORE   |
+  |               |       | simple value |          | combined request |
+  |               |       | "false"      |          |                  |
+  +---------------+-------+--------------+----------+------------------+
+  | uri_path      | 5     | tstr         |          | URI-path of the  |
+  |               |       |              |          | EDHOC resource   |
+  +---------------+-------+--------------+----------+------------------+
+  | osc_ms_len    | 6     | uint         |          | Length in bytes  |
+  |               |       |              |          | of the OSCORE    |
+  |               |       |              |          | Master Secret to |
+  |               |       |              |          | derive           |
+  +---------------+-------+--------------+----------+------------------+
+  | osc_salt_len  | 7     | uint         |          | Length in bytes  |
+  |               |       |              |          | of the OSCORE    |
+  |               |       |              |          | Master Salt to   |
+  |               |       |              |          | derive           |
+  +---------------+-------+--------------+----------+------------------+
+  | osc_version   | 8     | uint         |          | OSCORE version   |
+  |               |       |              |          | number to use    |
+  +---------------+-------+--------------+----------+------------------+
 
-                 Figure 6: EDHOC_Information Parameters
+                  Figure 6: EDHOC_Information Parameters
 
    *  session_id: This parameter identifies an EDHOC session and is
       encoded as a byte string.  In JSON, the "session_id" value is a
@@ -1914,7 +1917,7 @@ Table of Contents
       determine that there is a compelling reason to allow an exception.
       The name is not used in the CBOR encoding.
 
-   *  CBOR Value: The value to be used as CBOR abbreviation of the item.
+   *  CBOR label: The value to be used as CBOR abbreviation of the item.
 
       The value MUST be unique.  The value can be a positive integer, a
       negative integer or a string.  Integer values between -256 and 255
@@ -1926,7 +1929,7 @@ Table of Contents
       than 2 are subject to the Expert Review policy.  Integer values
       less than -65536 are marked as private use.
 
-   *  CBOR Type: The CBOR type of the item, or a pointer to the registry
+   *  CBOR type: The CBOR type of the item, or a pointer to the registry
       that defines its type, when that depends on another item.
 
    *  Registry: The registry that values of the item may come from, if
@@ -1984,10 +1987,13 @@ Table of Contents
 
    [I-D.ietf-core-oscore-edhoc]
               Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
-              G. Selander, "Using EDHOC with CoAP and OSCORE", Work in
-              Progress, Internet-Draft, draft-ietf-core-oscore-edhoc-09,
-              13 October 2023, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-oscore-edhoc-09>.
+              G. Selander, "Using Ephemeral Diffie-Hellman Over COSE
+              (EDHOC) with the Constrained Application Protocol (CoAP)
+              and Object Security for Constrained RESTful Environments
+              (OSCORE)", Work in Progress, Internet-Draft, draft-ietf-
+              core-oscore-edhoc-10, 29 November 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              oscore-edhoc-10>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
@@ -2000,18 +2006,18 @@ Table of Contents
    [I-D.ietf-lake-edhoc]
               Selander, G., Mattsson, J. P., and F. Palombini,
               "Ephemeral Diffie-Hellman Over COSE (EDHOC)", Work in
-              Progress, Internet-Draft, draft-ietf-lake-edhoc-22, 25
-              August 2023, <https://datatracker.ietf.org/doc/html/draft-
-              ietf-lake-edhoc-22>.
+              Progress, Internet-Draft, draft-ietf-lake-edhoc-23, 22
+              January 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lake-edhoc-23>.
 
    [I-D.tiloca-ace-workflow-and-params]
               Tiloca, M. and G. Selander, "Alternative Workflow and
               OAuth Parameters for the Authentication and Authorization
               for Constrained Environments (ACE) Framework", Work in
               Progress, Internet-Draft, draft-tiloca-ace-workflow-and-
-              params-00, 10 July 2023,
+              params-01, 23 October 2023,
               <https://datatracker.ietf.org/doc/html/draft-tiloca-ace-
-              workflow-and-params-00>.
+              workflow-and-params-01>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2126,15 +2132,16 @@ Table of Contents
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              02, 9 July 2023, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-coap-est-oscore-02>.
+              03, 23 October 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
+              coap-est-oscore-03>.
 
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-key-update-05, 10 July 2023,
+              core-oscore-key-update-06, 23 October 2023,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-key-update-05>.
+              oscore-key-update-06>.
 
    [I-D.selander-lake-authz]
               Selander, G., Mattsson, J. P., Vučinić, M., Richardson,
@@ -2720,6 +2727,13 @@ Appendix C.  Document Updates
 
 C.1.  Version -02 to -03
 
+   *  Fixed column name and prefilling of the "EDHOC Information"
+      registry.
+
+   *  Editorial fixes and improvements.
+
+C.2.  Version -02 to -03
+
    *  Restructured presentation of content.
 
    *  Simplified description of the use of EDHOC_Information.
@@ -2734,7 +2748,7 @@ C.1.  Version -02 to -03
 
    *  Clarifications and editorial improvements.
 
-C.2.  Version -01 to -02
+C.3.  Version -01 to -02
 
    *  Removed use of EDHOC_KeyUpdate.
 
@@ -2748,7 +2762,7 @@ C.2.  Version -01 to -02
 
    *  Editorial improvements.
 
-C.3.  Version -00 to -01
+C.4.  Version -00 to -01
 
    *  Fixed semantics of the ead_value for transporting an Access Token
       in the EAD_1 field.

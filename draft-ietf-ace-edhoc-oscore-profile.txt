@@ -446,6 +446,9 @@ Table of Contents
    Section 3.2, and, together with other information such as audience
    (see Section 5.8.1 of [RFC9200]), can be used by AS to determine the
    token series to which the new requested access token has to be added.
+   Therefore, the session_id MUST identify the pair (AUTH_CRED_C,
+   AUTH_CRED_RS) associated with a still valid access token previously
+   issued for C and RS by AS.
 
    AS MUST verify that the received "session_id" identifies a token
    series to which a still valid access token issued for C and RS
@@ -507,10 +510,6 @@ Table of Contents
    *  ii) bound to the same authentication credential AUTH_CRED_C of the
       requesting client (irrespectively of how the AUTH_CRED_C is
       identified in the access tokens).
-
-   The session_id MUST identify the pair (AUTH_CRED_C, AUTH_CRED_RS)
-   associated with a still valid access token previously issued for C
-   and RS by AS.
 
    In case the access token is issued for a group-audience (see
    Section 6.9 of [RFC9200]), what is defined above applies, with the

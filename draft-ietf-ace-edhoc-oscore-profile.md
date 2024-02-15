@@ -67,7 +67,7 @@ normative:
   I-D.ietf-lake-edhoc:
   I-D.ietf-core-oscore-edhoc:
   I-D.ietf-cose-cbor-encoded-cert:
-  I-D.tiloca-ace-workflow-and-params:
+  I-D.ietf-ace-workflow-and-params:
 
 informative:
   RFC4949:
@@ -75,7 +75,7 @@ informative:
   RFC9110:
   RFC9147:
   I-D.ietf-core-oscore-key-update:
-  I-D.selander-lake-authz:
+  I-D.ietf-lake-authz:
   I-D.ietf-ace-coap-est-oscore:
 
 entity:
@@ -105,7 +105,7 @@ The ACE protocol establishes what those authentication credentials are, and may 
 
 In general, AS and RS are likely to have trusted access to each other's authentication credentials, since AS acts on behalf of RS as per the trust model of ACE. Also, AS needs to have some information about C, including the relevant authentication credential, in order to identify C when it requests an access token and to determine what access rights it can be granted. However, the authentication credential of C may potentially be conveyed (or uniquely referred to) within the request for access that C makes to AS.
 
-The establishment of an association between RS and AS in an ACE ecosystem is out of scope, but one solution is to build on the same primitives as used in this document, i.e., EDHOC for authentication and OSCORE for communication security, using for example {{I-D.selander-lake-authz}} for onboarding RS with AS, and {{I-D.ietf-ace-coap-est-oscore}} for establishing a trust anchor in RS. A similar procedure can also be applied between C and AS for registering a client and for the establishment of a trust anchor.
+The establishment of an association between RS and AS in an ACE ecosystem is out of scope, but one solution is to build on the same primitives as used in this document, i.e., EDHOC for authentication and OSCORE for communication security, using for example {{I-D.ietf-lake-authz}} for onboarding RS with AS, and {{I-D.ietf-ace-coap-est-oscore}} for establishing a trust anchor in RS. A similar procedure can also be applied between C and AS for registering a client and for the establishment of a trust anchor.
 
 ## Terminology # {#terminology}
 
@@ -137,7 +137,7 @@ RS maintains a collection of authentication credentials. These are associated wi
 
 This profile specifies how C requests an access token from AS for the resources it wants to access on RS, by sending an access token request to the /token endpoint, as specified in {{Section 5.8 of RFC9200}}.
 
-This profile also supports the alternative workflow where AS uploads the access token to RS, as defined in {{I-D.tiloca-ace-workflow-and-params}}.
+This profile also supports the alternative workflow where AS uploads the access token to RS, as defined in {{I-D.ietf-ace-workflow-and-params}}.
 
 If C has retrieved an access token, there are two options for C to upload it to RS, as further detailed in this document.
 
@@ -263,7 +263,7 @@ This document refers to "token series" as a series of access tokens sorted in ch
 
 Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.
 
-A more general token series concept is described in Appendix B of {{I-D.tiloca-ace-workflow-and-params}}). In this profile, a token series is characterized by the access tokens associated with an EDHOC session between C and RS, and identified by the session\_id of the EDHOC\_Information, see {{edhoc-parameters-object}}. All access tokens belonging to the same token series are associated with the same session\_id, which does not change throughout the series lifetime.
+The general token series concept is defined in {{I-D.ietf-ace-workflow-and-params}}. In this profile, a token series is characterized by the access tokens associated with an EDHOC session between C and RS, and identified by the session\_id of the EDHOC\_Information, see {{edhoc-parameters-object}}. All access tokens belonging to the same token series are associated with the same session\_id, which does not change throughout the series lifetime.
 
 AS assigns the session\_id to the EDHOC\_Information when issuing the first access token of a new series. When assigning the identifier, AS MUST ensure that it was not used in a previous series whose access tokens share the following properties with the access tokens of the new series:
 
@@ -278,7 +278,7 @@ After verifying the POST request to the /token endpoint and that C is authorized
 
 AS can signal that the use of EDHOC and OSCORE as per this profile is REQUIRED for a specific access token, by including the "ace_profile" parameter with the value "coap_edhoc_oscore" in the access token response. This means that C MUST use EDHOC with RS and derive an OSCORE Security Context, as specified in {{edhoc-exec}}. After that, C MUST use the established OSCORE Security Context to protect communications with RS, when accessing protected resources at RS according to the authorization information indicated in the access token. Usually, it is assumed that constrained devices will be pre-configured with the necessary profile, so that this kind of profile signaling can be omitted.
 
-The access token may be sent in the access token response to C for subsequent provisioning to RS, or the access token may be uploaded by AS directly to RS, as specified in {{I-D.tiloca-ace-workflow-and-params}}.
+The access token may be sent in the access token response to C for subsequent provisioning to RS, or the access token may be uploaded by AS directly to RS, as specified in {{I-D.ietf-ace-workflow-and-params}}.
 
 * In the former case, AS provides the access token to C, by specifying it in the "access\_token" parameter of the access token response.
 
@@ -1404,7 +1404,7 @@ M08 |<----------------------------------------------------------------|
 
 ## Alternative Workflow (AS token posting) # {#example-without-optimization-as-posting}
 
-The example below builds on the example in {{example-with-optimization}}, but assumes that AS is uploading the access token to RS as specified in {{I-D.tiloca-ace-workflow-and-params}}.
+The example below builds on the example in {{example-with-optimization}}, but assumes that AS is uploading the access token to RS as specified in {{I-D.ietf-ace-workflow-and-params}}.
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -1554,6 +1554,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 ## Version -02 to -03 ## {#sec-03-04}
 
 * Fixed column name and prefilling of the "EDHOC Information" registry.
+
+* Updated references.
 
 * Editorial fixes and improvements.
 

@@ -68,6 +68,12 @@ normative:
   I-D.ietf-core-oscore-edhoc:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-ace-workflow-and-params:
+  COSE.Header.Parameters:
+    author:
+      org: IANA
+    date: false
+    title: COSE Header Parameters
+    target: https://www.iana.org/assignments/cose/cose.xhtml#header-parameters
 
 informative:
   RFC4949:
@@ -398,49 +404,87 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 ~~~~~~~~~~~
 
-+---------------+-------+--------------+----------+------------------+
-| Name          | CBOR  | CBOR Type    | Registry | Description      |
-|               | label |              |          |                  |
-+---------------+-------+--------------+----------+------------------+
-| session_id    | 0     | bstr         |          | Identifier of    |
-|               |       |              |          | EDHOC session    |
-+---------------+-------+--------------+----------+------------------+
-| methods       | 1     | int /        | EDHOC    | Set of supported |
-|               |       | array of int | Method   | EDHOC methods    |
-|               |       |              | Type     |                  |
-|               |       |              | Registry |                  |
-+---------------+-------+--------------+----------+------------------+
-| cipher_suites | 2     | int /        | EDHOC    | Set of supported |
-|               |       | array of int | Cipher   | EDHOC cipher     |
-|               |       |              | Suites   | suites           |
-|               |       |              | Registry |                  |
-+---------------+-------+--------------+----------+------------------+
-| message_4     | 3     | simple value |          | Support for      |
-|               |       | "true" /     |          | EDHOC message_4  |
-|               |       | simple value |          |                  |
-|               |       | "false"      |          |                  |
-+---------------+-------+--------------+----------+------------------+
-| comb_req      | 4     | simple value |          | Support for the  |
-|               |       | "true" /     |          | EDHOC + OSCORE   |
-|               |       | simple value |          | combined request |
-|               |       | "false"      |          |                  |
-+---------------+-------+--------------+----------+------------------+
-| uri_path      | 5     | tstr         |          | URI-path of the  |
-|               |       |              |          | EDHOC resource   |
-+---------------+-------+--------------+----------+------------------+
-| osc_ms_len    | 6     | uint         |          | Length in bytes  |
-|               |       |              |          | of the OSCORE    |
-|               |       |              |          | Master Secret to |
-|               |       |              |          | derive           |
-+---------------+-------+--------------+----------+------------------+
-| osc_salt_len  | 7     | uint         |          | Length in bytes  |
-|               |       |              |          | of the OSCORE    |
-|               |       |              |          | Master Salt to   |
-|               |       |              |          | derive           |
-+---------------+-------+--------------+----------+------------------+
-| osc_version   | 8     | uint         |          | OSCORE version   |
-|               |       |              |          | number to use    |
-+---------------+-------+--------------+----------+------------------+
++---------------+-------+----------+----------------+-----------------+
+| Name          | CBOR  | CBOR     | Registry       | Description     |
+|               | label | Type     |                |                 |
++---------------+-------+----------+----------------+-----------------+
+| session_id    | 0     | bstr     |                | Identifier of   |
+|               |       |          |                | EDHOC session   |
++---------------+-------+----------+----------------+-----------------+
+| methods       | 1     | int /    | EDHOC Method   | Set of          |
+|               |       | array    | Type Registry  | supported       |
+|               |       |          |                | EDHOC methods   |
++---------------+-------+----------+----------------+-----------------+
+| cipher_suites | 2     | int /    | EDHOC Cipher   | Set of          |
+|               |       | array    | Suites         | supported EDHOC |
+|               |       |          | Registry       | cipher suites   |
++---------------+-------+----------+----------------+-----------------+
+| message_4     | 3     | simple   |                | Support for     |
+|               |       | value    |                | EDHOC message_4 |
+|               |       | "true" / |                |                 |
+|               |       | simple   |                |                 |
+|               |       | value    |                |                 |
+|               |       | "false"  |                |                 |
++---------------+-------+----------+----------------+-----------------+
+| comb_req      | 4     | simple   |                | Support for the |
+|               |       | value    |                | EDHOC + OSCORE  |
+|               |       | "true" / |                | combined        |
+|               |       | simple   |                | request         |
+|               |       | value    |                |                 |
+|               |       | "false"  |                |                 |
++---------------+-------+----------+----------------+-----------------+
+| uri_path      | 5     | tstr     |                | URI-path of the |
+|               |       |          |                | EDHOC resource  |
++---------------+-------+----------+----------------+-----------------+
+| osc_ms_len    | 6     | uint     |                | Length in bytes |
+|               |       |          |                | of the OSCORE   |
+|               |       |          |                | Master Secret   |
+|               |       |          |                | to derive       |
++---------------+-------+----------+----------------+-----------------+
+| osc_salt_len  | 7     | uint     |                | Length in bytes |
+|               |       |          |                | of the OSCORE   |
+|               |       |          |                | Master Salt to  |
+|               |       |          |                | derive          |
++---------------+-------+----------+----------------+-----------------+
+| osc_version   | 8     | uint     |                | OSCORE version  |
+|               |       |          |                | number to use   |
++---------------+-------+----------+----------------+-----------------+
+| cred_types    | 9     | int /    | EDHOC          | Set of          |
+|               |       | array    | Authentication | supported       |
+|               |       |          | Credential     | types of        |
+|               |       |          | Types Registry | authentication  |
+|               |       |          |                | credentials     |
+|               |       |          |                | for EDHOC       |
++---------------+-------+----------+----------------+-----------------+
+| id_cred_types | 10    | int /    | COSE Header    | Set of          |
+|               |       | tstr /   | Parameters     | supported       |
+|               |       | array    | Registry       | types of        |
+|               |       |          |                | authentication  |
+|               |       |          |                | credential      |
+|               |       |          |                | identifiers for |
+|               |       |          |                | EDHOC           |
++---------------+-------+----------+----------------+-----------------+
+| eads          | 11    | uint /   | EDHOC External | Set of          |
+|               |       | array    | Authorization  | supported EDHOC |
+|               |       |          | Data Registry  | External        |
+|               |       |          |                | Authorization   |
+|               |       |          |                | Data (EAD)      |
+|               |       |          |                | items           |
++---------------+-------+----------+----------------+-----------------+
+| initiator     | 12    | simple   |                | Support for the |
+|               |       | value    |                | EDHOC Initiator |
+|               |       | "true" / |                | role            |
+|               |       | simple   |                |                 |
+|               |       | value    |                |                 |
+|               |       | "false"  |                |                 |
++---------------+-------+----------+----------------+-----------------+
+| responder     | 13    | simple   |                | Support for the |
+|               |       | value    |                | EDHOC Responder |
+|               |       | "true" / |                | role            |
+|               |       | simple   |                |                 |
+|               |       | value    |                |                 |
+|               |       | "false"  |                |                 |
++---------------+-------+----------+----------------+-----------------+
 ~~~~~~~~~~~
 {: #fig-cbor-key-edhoc-params title="EDHOC_Information Parameters" artwork-align="center"}
 
@@ -462,7 +506,17 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * osc\_version: This parameter specifies the OSCORE Version number that the two EDHOC peers have to use when using OSCORE. For more information about this parameter, see {{Section 5.4 of RFC8613}}. In JSON, the "osc\_version" value is an integer. In CBOR, the "osc\_version" type is unsigned integer, and has label 9.
 
-An example of JSON EDHOC_Information is given in {{fig-edhoc-info-json}}.
+* cred\_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see {{Section 3.5.2 of I-D.ietf-lake-edhoc}}). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred\_types" value is an integer or an array of integers. In CBOR, "cred\_types" is an integer or an array of integers, and has label 9. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in {{I-D.ietf-core-oscore-edhoc}}.
+
+* id\_cred\_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see {{Section 3.5.3 of I-D.ietf-lake-edhoc}}). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id\_cred\_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id\_cred\_types" is an integer or a text string, or an array of integers and text strings, and has label 10. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}}.
+
+* eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead\_label (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). If the set is composed of a single ead\_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead\_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 11. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in {{I-D.ietf-lake-edhoc}}.
+
+* initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value "true" (0xf5) or "false" (0xf4), and has label 12.
+
+* responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value "true" (0xf5) or "false" (0xf4), and has label 13.
+
+An example of JSON EDHOC\_Information is given in {{fig-edhoc-info-json}}.
 
 ~~~~~~~~~~~
    "edhoc_info" : {
@@ -477,16 +531,21 @@ The CDDL grammar describing the CBOR EDHOC_Information is:
 
 ~~~~~~~~~~~
 EDHOC_Information = {
-   ? 0 => bstr,             ; id
-   ? 1 => int / array,      ; methods
-   ? 2 => int / array,      ; cipher_suites
-   ? 3 => true / false,     ; message_4
-   ? 4 => true / false,     ; comb_req
-   ? 5 => tstr,             ; uri_path
-   ? 6 => uint,             ; osc_ms_len
-   ? 7 => uint,             ; osc_salt_len
-   ? 8 => uint,             ; osc_version
-   * int / tstr => any
+  ?  0 => bstr,                  ; id
+  ?  1 => int / array,           ; methods
+  ?  2 => int / array,           ; cipher_suites
+  ?  3 => true / false,          ; message_4
+  ?  4 => true / false,          ; comb_req
+  ?  5 => tstr,                  ; uri_path
+  ?  6 => uint,                  ; osc_ms_len
+  ?  7 => uint,                  ; osc_salt_len
+  ?  8 => uint,                  ; osc_version
+  ?  9 => int / array,           ; cred_types
+  ? 10 => int / tstr / array     ; id_cred_types
+  ? 11 => uint / array           ; eads
+  ? 12 => true / false           ; initiator
+  ? 13 => true / false           ; responder
+  * int / tstr => any
 }
 ~~~~~~~~~~~
 
@@ -1555,6 +1614,8 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 ## Version -02 to -03 ## {#sec-03-04}
 
 * Fixed column name and prefilling of the "EDHOC Information" registry.
+
+* Added EDHOC_Information Parameters originally in draft-tiloca-lake-app-profiles-00.
 
 * Updated references.
 

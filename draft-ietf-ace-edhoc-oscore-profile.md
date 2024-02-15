@@ -219,7 +219,7 @@ An example of such a request is shown in {{token-request}}. In this example, C s
    Header: POST (Code=0.02)
    Uri-Host: "as.example.com"
    Uri-Path: "token"
-   Content-Format: "application/ace+cbor"
+   Content-Format: application/ace+cbor
    Payload:
    {
      "audience" : "tempSensor4711",
@@ -241,7 +241,7 @@ AS MUST verify that the received "session\_id" identifies a token series to whic
    Header: POST (Code=0.02)
    Uri-Host: "as.example.com"
    Uri-Path: "token"
-   Content-Format: "application/ace+cbor"
+   Content-Format: application/ace+cbor
    Payload:
    {
      "audience" : "tempSensor4711",
@@ -303,16 +303,16 @@ When issuing the first access token of a token series, AS MAY send EDHOC\_Inform
 
 ~~~~~~~~~~~~~~~~~~~~~~~
    Header: Created (Code=2.01)
-      Content-Format: "application/ace+cbor"
+      Content-Format: application/ace+cbor
       Payload:
       {
-        "access_token" : h'8343a1010aa2044c53 ...
-         (remainder of access token (CWT) omitted for brevity)',
+        "access_token" : h'8343a1010aa2044c53/...
+         (remainder of access token (CWT) omitted for brevity)/',
         "ace_profile" : "coap_edhoc_oscore",
         "expires_in" : "3600",
         "rs_cnf" : {
-          "x5chain" : h'3081ee3081a1a00302 ...'
-          (remainder of the access credential omitted for brevity)'
+          "x5chain" : h'3081ee3081a1a00302/...'
+          (remainder of the access credential omitted for brevity)/'
         }
         "edhoc_info" : {
           "session_id" : h'01',
@@ -358,7 +358,8 @@ Since the access token does not contain secret information, only its integrity a
     "exp" : "1360289224",
     "scope" :  "temperature_g firmware_p",
     "cnf" : {
-      "x5chain" : h'3081ee3081a1a00302 ...'
+      "x5chain" : h'3081ee3081a1a00302/...
+      (remainder of the access credential omitted for brevity)/'
     }
     "edhoc_info" : {
       "session_id" : h'01',

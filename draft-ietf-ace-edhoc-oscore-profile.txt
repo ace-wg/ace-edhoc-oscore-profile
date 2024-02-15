@@ -102,7 +102,7 @@ Table of Contents
      4.7.  Cases of Establishing a New OSCORE Security Context
      4.8.  Access Rights Verification
    5.  Secure Communication with AS
-   6.  CWT Confirmation Metods
+   6.  CWT Confirmation Methods
      6.1.  Ordered Chain of X.509 Certificates
      6.2.  Unordered Bag of X.509 Certificates
      6.3.  Hash of an X.509 Certificate
@@ -113,7 +113,7 @@ Table of Contents
      6.8.  URI Pointing to an Ordered Chain of C509 Certificates
      6.9.  CWT Containing a COSE_Key
      6.10. CCS Containing a COSE_Key
-   7.  JWT Confirmation Metods
+   7.  JWT Confirmation Methods
      7.1.  Ordered Chain of X.509 Certificates
      7.2.  Unordered Bag of X.509 Certificates
      7.3.  Hash of an X.509 Certificate
@@ -1277,7 +1277,7 @@ Table of Contents
    Editor's note: Elaborate on how to encrypt the token from AS to RS,
    since there is a pre-established security context.
 
-6.  CWT Confirmation Metods
+6.  CWT Confirmation Methods
 
    This document defines a number of new CWT confirmation methods (see
    Section 10.7).  The semantics of each confirmation method is defined
@@ -1352,7 +1352,7 @@ Table of Contents
    possibly other claims.  The semantics of "kccs" is like that of the
    "kccs" COSE Header Parameter specified in [I-D.ietf-lake-edhoc].
 
-7.  JWT Confirmation Metods
+7.  JWT Confirmation Methods
 
    This document defines a number of new JWT confirmation methods (see
    Section 10.6).  The semantics of each confirmation method is defined

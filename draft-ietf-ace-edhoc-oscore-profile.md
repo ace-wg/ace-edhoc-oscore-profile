@@ -393,53 +393,55 @@ The "session\_id" needs to be included in the new access token in order for RS t
 
 EDHOC\_Information is an object including information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC\_Information is defined to be serialized and transported between nodes, as specified by this document, but it can also be used by other specifications if needed.
 
-The EDHOC\_Information can either be encoded as a JSON object or as a CBOR map.  The set of common fields that can appear in an EDHOC\_Information can be found in the IANA "EDHOC Information" registry (see {{iana-edhoc-parameters}}), defined for extensibility, and the initial set of parameters defined in this document is specified below. All parameters are optional.
+The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. The set of common fields that can appear in an EDHOC\_Information can be found in the IANA "EDHOC Information" registry (see {{iana-edhoc-parameters}}), defined for extensibility, and the initial set of parameters defined in this document is specified below. All parameters are optional.
 
 {{fig-cbor-key-edhoc-params}} provides a summary of the EDHOC\_Information parameters defined in this section.
 
 ~~~~~~~~~~~
 
-+---------------+--------------+------+----------+--------------------+
-| Name          | CBOR value   | CBOR | Registry | Description        |
-|               |              | Type |          |                    |
-+---------------+--------------+------+----------+--------------------+
-| session_id    | bstr         |  0   |          | Identifier of      |
-|               |              |      |          | EDHOC session      |
-+---------------+--------------+------+----------+--------------------+
-| methods       | int /        |      | EDHOC    | Set of supported   |
-|               | array of int |  1   | Method   | EDHOC methods      |
-|               |              |      | Type     |                    |
-|               |              |      | Registry |                    |
-+---------------+--------------+------+----------+--------------------+
-| cipher_suites | int /        |      | EDHOC    | Set of supported   |
-|               | array of int |  2   | Cipher   | EDHOC cipher       |
-|               |              |      | Suites   | suites             |
-|               |              |      | Registry |                    |
-+---------------+--------------+------+----------+--------------------+
-| message_4     | simple value |      |          | Support for EDHOC  |
-|               | "true" /     |  3   |          | message_4          |
-|               | simple value |      |          |                    |
-|               | "false"      |      |          |                    |
-+---------------+--------------+------+----------+--------------------+
-| comb_req      | simple value |      |          | Support for the    |
-|               | "true" /     |  4   |          | EDHOC + OSCORE     |
-|               | simple value |      |          | combined request   |
-|               | "false"      |      |          |                    |
-+---------------+--------------+------+----------+--------------------+
-| uri_path      | tstr         |  5   |          | URI-path of the    |
-|               |              |      |          | EDHOC resource     |
-+---------------+--------------+------+----------+--------------------+
-| osc_ms_len    | uint         |      |          | Length in bytes of |
-|               |              |  6   |          | the OSCORE Master  |
-|               |              |      |          | Secret to derive   |
-+---------------+--------------+------+----------+--------------------+
-| osc_salt_len  | uint         |      |          | Length in bytes of |
-|               |              |  7   |          | the OSCORE Master  |
-|               |              |      |          | Salt to derive     |
-+---------------+--------------+------+----------+--------------------+
-| osc_version   | uint         |  8   |          | OSCORE version     |
-|               |              |      |          | number to use      |
-+---------------+--------------+------+----------+--------------------+
++---------------+-------+--------------+----------+------------------+
+| Name          | CBOR  | CBOR Type    | Registry | Description      |
+|               | label |              |          |                  |
++---------------+-------+--------------+----------+------------------+
+| session_id    | 0     | bstr         |          | Identifier of    |
+|               |       |              |          | EDHOC session    |
++---------------+-------+--------------+----------+------------------+
+| methods       | 1     | int /        | EDHOC    | Set of supported |
+|               |       | array of int | Method   | EDHOC methods    |
+|               |       |              | Type     |                  |
+|               |       |              | Registry |                  |
++---------------+-------+--------------+----------+------------------+
+| cipher_suites | 2     | int /        | EDHOC    | Set of supported |
+|               |       | array of int | Cipher   | EDHOC cipher     |
+|               |       |              | Suites   | suites           |
+|               |       |              | Registry |                  |
++---------------+-------+--------------+----------+------------------+
+| message_4     | 3     | simple value |          | Support for      |
+|               |       | "true" /     |          | EDHOC message_4  |
+|               |       | simple value |          |                  |
+|               |       | "false"      |          |                  |
++---------------+-------+--------------+----------+------------------+
+| comb_req      | 4     | simple value |          | Support for the  |
+|               |       | "true" /     |          | EDHOC + OSCORE   |
+|               |       | simple value |          | combined request |
+|               |       | "false"      |          |                  |
++---------------+-------+--------------+----------+------------------+
+| uri_path      | 5     | tstr         |          | URI-path of the  |
+|               |       |              |          | EDHOC resource   |
++---------------+-------+--------------+----------+------------------+
+| osc_ms_len    | 6     | uint         |          | Length in bytes  |
+|               |       |              |          | of the OSCORE    |
+|               |       |              |          | Master Secret to |
+|               |       |              |          | derive           |
++---------------+-------+--------------+----------+------------------+
+| osc_salt_len  | 7     | uint         |          | Length in bytes  |
+|               |       |              |          | of the OSCORE    |
+|               |       |              |          | Master Salt to   |
+|               |       |              |          | derive           |
++---------------+-------+--------------+----------+------------------+
+| osc_version   | 8     | uint         |          | OSCORE version   |
+|               |       |              |          | number to use    |
++---------------+-------+--------------+----------+------------------+
 ~~~~~~~~~~~
 {: #fig-cbor-key-edhoc-params title="EDHOC_Information Parameters" artwork-align="center"}
 
@@ -1029,11 +1031,11 @@ The columns of the registry are:
 
    This name is case sensitive. Names may not match other registered names in a case-insensitive manner unless the Designated Experts determine that there is a compelling reason to allow an exception. The name is not used in the CBOR encoding.
 
-* CBOR Value: The value to be used as CBOR abbreviation of the item.
+* CBOR label: The value to be used as CBOR abbreviation of the item.
 
    The value MUST be unique. The value can be a positive integer, a negative integer or a string. Integer values between -256 and 255 and strings of length 1 are to be registered by Standards Track documents (Standards Action). Integer values from -65536 to -257 and from 256 to 65535 and strings of maximum length 2 are to be registered by public specifications (Specification Required). Integer values greater than 65535 and strings of length greater than 2 are subject to the Expert Review policy. Integer values less than -65536 are marked as private use.
 
-* CBOR Type: The CBOR type of the item, or a pointer to the registry that defines its type, when that depends on another item.
+* CBOR type: The CBOR type of the item, or a pointer to the registry that defines its type, when that depends on another item.
 
 * Registry: The registry that values of the item may come from, if one exists.
 
@@ -1550,6 +1552,12 @@ This section lists the specifications of this profile based on the requirements 
 # Document Updates # {#sec-document-updates}
 
 RFC EDITOR: PLEASE REMOVE THIS SECTION.
+
+## Version -02 to -03 ## {#sec-03-04}
+
+* Fixed column name and prefilling of the "EDHOC Information" registry.
+
+* Editorial fixes and improvements.
 
 ## Version -02 to -03 ## {#sec-02-03}
 

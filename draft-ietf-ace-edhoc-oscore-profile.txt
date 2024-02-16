@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 18 August 2024                                        M. Tiloca
+Expires: 19 August 2024                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                        15 February 2024
+                                                        16 February 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 August 2024.
+   This Internet-Draft will expire on 19 August 2024.
 
 Copyright Notice
 
@@ -744,7 +744,7 @@ Table of Contents
 
  +---------------+-------+----------+----------------+-----------------+
  | Name          | CBOR  | CBOR     | Registry       | Description     |
- |               | label | Type     |                |                 |
+ |               | label | type     |                |                 |
  +---------------+-------+----------+----------------+-----------------+
  | session_id    | 0     | bstr     |                | Identifier of   |
  |               |       |          |                | EDHOC session   |

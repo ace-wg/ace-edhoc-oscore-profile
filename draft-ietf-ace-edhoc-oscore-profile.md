@@ -406,7 +406,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 +---------------+-------+----------+----------------+-----------------+
 | Name          | CBOR  | CBOR     | Registry       | Description     |
-|               | label | Type     |                |                 |
+|               | label | type     |                |                 |
 +---------------+-------+----------+----------------+-----------------+
 | session_id    | 0     | bstr     |                | Identifier of   |
 |               |       |          |                | EDHOC session   |

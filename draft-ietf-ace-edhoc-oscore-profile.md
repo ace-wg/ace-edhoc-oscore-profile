@@ -90,7 +90,7 @@ entity:
 --- abstract
 
 This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.
-It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual authentication between an OAuth 2.0 Client and Resource Server, and it binds an authentication credential of the Client to an OAuth 2.0 access token.
+It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual authentication between an ACE-OAuth Client and Resource Server, and it binds an authentication credential of the Client to an ACE-OAuth access token.
 EDHOC also establishes an Object Security for Constrained RESTful Environments (OSCORE) Security Context, which is used to secure communications when accessing protected resources according to the authorization information indicated in the access token.
 This profile can be used to delegate management of authorization information from a resource-constrained server to a trusted host with less severe limitations regarding processing power and memory.
 
@@ -99,7 +99,7 @@ This profile can be used to delegate management of authorization information fro
 
 # Introduction
 
-This document defines the "coap_edhoc_oscore" profile of the ACE framework {{RFC9200}}. This profile addresses a "zero-touch" constrained setting where trusted operations can be performed with low overhead without endpoint specific configurations.
+This document defines the "coap_edhoc_oscore" profile of the ACE-OAuth framework {{RFC9200}}. This profile addresses a "zero-touch" constrained setting where authenticated and authorized operations can be performed with low overhead without endpoint specific configurations.
 
 Like in the "coap_oscore" profile {{RFC9203}}, also in this profile a client (C) and a resource server (RS) use the Constrained Application Protocol (CoAP) {{RFC7252}} to communicate, and Object Security for Constrained RESTful Environments (OSCORE) {{RFC8613}} to protect their communications, but this profile uses the Ephemeral Diffie-Hellman Over COSE (EDHOC) protocol {{I-D.ietf-lake-edhoc}} to establish the OSCORE Security Context. The processing of requests for specific protected resources is identical to what is defined in the "coap_oscore" profile.
 

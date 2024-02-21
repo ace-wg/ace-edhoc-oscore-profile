@@ -588,16 +588,14 @@ When an access token becomes invalid (e.g., due to its expiration or revocation)
 
 ## Access Token in External Authorization Data {#AT-in-EAD}
 
-Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token either in EDHOC message\_1 or message\_3 by making use of the External Authorization Data fields (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). The former is shown by the example in {{example-with-optimization}}. In the latter case, the access token is encrypted between C and RS, which provides an alternative for protecting potential sensitive information in the access token.
-
-Editor's note: Shall we remove the EAD_1 case? The case POST /token offers already early abort, and the EAD_3 case is equally efficient but offers better protection of the access token.
+Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token in EDHOC message\_3 by making use of the External Authorization Data fields (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). The former is shown by the example in {{example-with-optimization}}. In this case, the access token is encrypted between C and RS, which enables protection of potential sensitive information in the access token.
 
 This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value), where:
 
 * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}, and
 * ead\_value is a CBOR byte string equal to the value of the "access_token" field of the access token response from AS (see {{as-c}}).
 
-This EAD item, which may be used either in EAD\_1 or EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}).
+This EAD item, which is used in EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}).
 
 Access tokens are only transported in EAD fields for the first access token of a token series and not for the update of access rights.
 
@@ -605,7 +603,7 @@ Access tokens are only transported in EAD fields for the first access token of a
 
 In order to mutually authenticate and establish a secure association, C and RS run the EDHOC protocol {{I-D.ietf-lake-edhoc}} with C as EDHOC Initiator and RS as EDHOC Responder.
 
-As per {{Section A.2 of I-D.ietf-lake-edhoc}}, C sends EDHOC message_1 and EDHOC message_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message_2 and (optionally) EDHOC message_4 as 2.04 (Changed) CoAP responses. C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present.
+As per {{Section A.2 of I-D.ietf-lake-edhoc}}, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as 2.04 (Changed) CoAP responses. C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present.
 
 In order to seamlessly run EDHOC, a client does not have to first upload to RS an access token whose scope explicitly indicates authorized access to the EDHOC resource. At the same time, RS has to ensure that attackers cannot perform requests on the EDHOC resource, other than sending EDHOC messages. Specifically, it SHOULD NOT be possible to perform anything else than POST on an EDHOC resource.
 
@@ -616,8 +614,6 @@ The processing of EDHOC message\_1 is specified in {{Section 5.2 of I-D.ietf-lak
 * The EDHOC method MUST be one of the EDHOC methods specified in the "methods" field (if present) in the EDHOC\_Information of the access token response to C.
 
 * The selected cipher suite MUST be an EDHOC cipher suite specified in the "cipher\_suites" field (if present) in the EDHOC\_Information of the access token response to C.
-
-* If the access token is provisioned with EDHOC message\_1 as specified in {{AT-in-EAD}}, then C adds the EAD item EAD\_ACCESS\_TOKEN = (-ead\_label, ead\_value) to the EAD\_1 field. If EAD\_1 includes EAD\_ACCESS\_TOKEN, then RS MUST process the access token carried in ead\_value as specified in {{rs-c}}. If this processing fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. RS MUST have successfully completed the processing of the access token before continuing the EDHOC session by sending EDHOC message\_2.
 
 ### EDHOC message\_2
 
@@ -1072,7 +1068,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 IANA is asked to add the following entry to the "EDHOC External Authorization Data" registry defined in {{Section 9.5 of I-D.ietf-lake-edhoc}}.
 
-The ead_label = TBD and the ead\_value defines an access token in EAD_1 or EAD_3, with processing specified in {{AT-in-EAD}}.
+The ead\_label = TBD and the ead\_value defines an access token in EAD\_3, with processing specified in {{AT-in-EAD}}.
 
 * Label: TBD
 * Value Type: bstr
@@ -1359,7 +1355,7 @@ M21 |<----------------------------------------------------------------|
 
 The example below builds on the example in {{example-without-optimization}}, while additionally relying on the two following optimizations.
 
-* The access token is not separately uploaded to the /authz-info endpoint at RS, but rather included in the EAD_1 field of EDHOC message_1 sent by C to RS.
+* The access token is not separately uploaded to the /authz-info endpoint at RS, but rather included in the EAD\_3 field of EDHOC message\_3 sent by C to RS.
 
 * The Client uses the EDHOC+OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} is used, when running EDHOC both with AS and with RS.
 
@@ -1424,7 +1420,6 @@ M04 |<---------------------------------|                              |
     |  EDHOC message_1 to /edhoc       |                              |
     |  (no access control is enforced) |                              |
 M05 |---------------------------------------------------------------->|
-    |  Access token specified in EAD_1 |                              |
     |                                  |                              |
 
      Possibly after chain verification, RS adds AUTH_CRED_C
@@ -1442,6 +1437,7 @@ M06 |<----------------------------------------------------------------|
     |  EDHOC+OSCORE request to /r      |                              |
 M07 |---------------------------------------------------------------->|
     |  * EDHOC message_3               |                              |
+    |      EAD_3 contains access token |                              |
     |      ID_CRED_I identifies        |                              |
     |         CRED_I = AUTH_CRED_C     |                              |
     |         by reference             |                              |
@@ -1595,7 +1591,7 @@ This section lists the specifications of this profile based on the requirements 
 
 * Specify how the client and RS mutually authenticate: Explicitly, by successfully executing the EDHOC protocol, after which a common OSCORE Security Context is exported from the EDHOC session. As per the EDHOC authentication method used during the EDHOC session, authentication is provided by digital signatures, or by Message Authentication Codes (MACs) computed from an ephemeral-static ECDH shared secret.
 
-* Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of- possession protocol: proof-of-possession is first achieved by RS when successfully processing EDHOC message_3 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys. Also, proof-of-possession is later achieved by C when receiving from RS: i) the optional EDHOC message_4 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC session with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
+* Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of-possession protocol: proof-of-possession is first achieved by RS when successfully processing EDHOC message\_3 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys. Also, proof-of-possession is later achieved by C when receiving from RS: i) the optional EDHOC message\_4 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC session with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
 
 * Specify a unique ace_profile identifier: coap_edhoc_oscore
 
@@ -1605,11 +1601,16 @@ This section lists the specifications of this profile based on the requirements 
 
 * Specify if/how the authz-info endpoint is protected, including how error responses are protected: Not protected
 
-* Optionally, define methods of token transport other than the authz-info endpoint: C can upload the access token when executing EDHOC with RS, by including the access token in the EAD_1 field of EDHOC message_1 (see {{edhoc-exec}}).
+* Optionally, define methods of token transport other than the authz-info endpoint: C can upload the access token when executing EDHOC with RS, by including the access token in the EAD\_3 field of EDHOC message\_3 (see {{edhoc-exec}}).
 
 # Document Updates # {#sec-document-updates}
 
 RFC EDITOR: PLEASE REMOVE THIS SECTION.
+
+## Version -03 to -04 ## {#sec-04-05}
+
+* Removed the case of transporting access token in EAD_1
+
 
 ## Version -02 to -03 ## {#sec-03-04}
 

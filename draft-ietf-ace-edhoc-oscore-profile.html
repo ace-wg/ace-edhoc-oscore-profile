@@ -11,15 +11,15 @@
 <meta content="Rikard Höglund" name="author">
 <meta content="
        This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.
-It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual authentication between an OAuth 2.0 Client and Resource Server, and it binds an authentication credential of the Client to an OAuth 2.0 access token.
+It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual authentication between an ACE-OAuth Client and Resource Server, and it binds an authentication credential of the Client to an ACE-OAuth access token.
 EDHOC also establishes an Object Security for Constrained RESTful Environments (OSCORE) Security Context, which is used to secure communications when accessing protected resources according to the authorization information indicated in the access token.
 This profile can be used to delegate management of authorization information from a resource-constrained server to a trusted host with less severe limitations regarding processing power and memory. 
     " name="description">
-<meta content="xml2rfc 3.19.2" name="generator">
+<meta content="xml2rfc 3.19.4" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-ace-edhoc-oscore-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.19.2
+  xml2rfc 3.19.4
     Python 3.11.6
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
@@ -1035,7 +1035,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 19 August 2024</td>
+<td class="center">Expires 24 August 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1048,12 +1048,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-02-16" class="published">16 February 2024</time>
+<time datetime="2024-02-21" class="published">21 February 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-08-19">19 August 2024</time></dd>
+<dd class="expires"><time datetime="2024-08-24">24 August 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1079,7 +1079,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework.
-It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual authentication between an OAuth 2.0 Client and Resource Server, and it binds an authentication credential of the Client to an OAuth 2.0 access token.
+It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual authentication between an ACE-OAuth Client and Resource Server, and it binds an authentication credential of the Client to an ACE-OAuth access token.
 EDHOC also establishes an Object Security for Constrained RESTful Environments (OSCORE) Security Context, which is used to secure communications when accessing protected resources according to the authorization information indicated in the access token.
 This profile can be used to delegate management of authorization information from a resource-constrained server to a trusted host with less severe limitations regarding processing power and memory.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
@@ -1113,7 +1113,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1398,7 +1398,7 @@ This profile can be used to delegate management of authorization information fro
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">This document defines the "coap_edhoc_oscore" profile of the ACE framework <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. This profile addresses a "zero-touch" constrained setting where trusted operations can be performed with low overhead without endpoint specific configurations.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">This document defines the "coap_edhoc_oscore" profile of the ACE-OAuth framework <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. This profile addresses a "zero-touch" constrained setting where authenticated and authorized operations can be performed with low overhead without endpoint specific configurations.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">Like in the "coap_oscore" profile <span>[<a href="#RFC9203" class="cite xref">RFC9203</a>]</span>, also in this profile a client (C) and a resource server (RS) use the Constrained Application Protocol (CoAP) <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> to communicate, and Object Security for Constrained RESTful Environments (OSCORE) <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> to protect their communications, but this profile uses the Ephemeral Diffie-Hellman Over COSE (EDHOC) protocol <span>[<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span> to establish the OSCORE Security Context. The processing of requests for specific protected resources is identical to what is defined in the "coap_oscore" profile.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">When using this profile, C accesses protected resources hosted at RS with the use of an access token issued by a trusted authorization server (AS) and bound to an authentication credential of C. This differs from the "coap_oscore" profile, where the access token is bound to a symmetric key used to derive the OSCORE Security Context. As recommended in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, this document recommends the use of CBOR Web Tokens (CWTs) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> as access tokens.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">An authentication credential can be a raw public key, e.g., encoded as a CWT Claims Set (CCS, <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>); or a public key certificate, e.g., encoded as an X.509 certificate <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span> or as a CBOR encoded X.509 certificate (C509, <span>[<a href="#I-D.ietf-cose-cbor-encoded-cert" class="cite xref">I-D.ietf-cose-cbor-encoded-cert</a>]</span>); or a different type of data structure containing the public key of the peer in question.<a href="#section-1-4" class="pilcrow">¶</a></p>

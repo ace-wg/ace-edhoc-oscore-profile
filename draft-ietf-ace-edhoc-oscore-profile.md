@@ -588,14 +588,14 @@ When an access token becomes invalid (e.g., due to its expiration or revocation)
 
 ## Access Token in External Authorization Data {#AT-in-EAD}
 
-Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token in EDHOC message\_3 by making use of the External Authorization Data fields (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). The former is shown by the example in {{example-with-optimization}}. In this case, the access token is encrypted between C and RS, which enables protection of potential sensitive information in the access token.
+Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token in EDHOC message\_3 by making use of the External Authorization Data fields (see {{Section 3.8 of I-D.ietf-lake-edhoc}}), see example in {{example-with-optimization}}. In this case, the access token is encrypted between C and RS, which enables protection of potential sensitive information in the access token.
 
 This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value), where:
 
 * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}, and
 * ead\_value is a CBOR byte string equal to the value of the "access_token" field of the access token response from AS (see {{as-c}}).
 
-This EAD item, which is used in EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}).
+This EAD item, which is used in EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). An endpoint supporting the profile of ACE defined in this document MUST support this EAD item.
 
 Access tokens are only transported in EAD fields for the first access token of a token series and not for the update of access rights.
 

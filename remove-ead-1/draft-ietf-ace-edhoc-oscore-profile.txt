@@ -1057,10 +1057,10 @@ Table of Contents
    Instead of uploading the access token to the /authz-info endpoint at
    RS as described in Section 4.1, C MAY include the access token in
    EDHOC message_3 by making use of the External Authorization Data
-   fields (see Section 3.8 of [I-D.ietf-lake-edhoc]).  The former is
-   shown by the example in Appendix A.2.  In this case, the access token
-   is encrypted between C and RS, which enables protection of potential
-   sensitive information in the access token.
+   fields (see Section 3.8 of [I-D.ietf-lake-edhoc]), see example in
+   Appendix A.2.  In this case, the access token is encrypted between C
+   and RS, which enables protection of potential sensitive information
+   in the access token.
 
    This document defines the EAD item EAD_ACCESS_TOKEN = (ead_label,
    ead_value), where:
@@ -1074,7 +1074,9 @@ Table of Contents
    This EAD item, which is used in EAD_3, is critical, i.e., it is used
    only with the negative value of its ead_label, indicating that the
    receiving RS must either process the access token or abort the EDHOC
-   session (see Section 3.8 of [I-D.ietf-lake-edhoc]).
+   session (see Section 3.8 of [I-D.ietf-lake-edhoc]).  An endpoint
+   supporting the profile of ACE defined in this document MUST support
+   this EAD item.
 
    Access tokens are only transported in EAD fields for the first access
    token of a token series and not for the update of access rights.

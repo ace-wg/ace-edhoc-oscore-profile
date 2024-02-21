@@ -592,8 +592,11 @@ Instead of uploading the access token to the /authz-info endpoint at RS as descr
 
 This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value), where:
 
-* ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}, and
-* ead\_value is a CBOR byte string equal to the value of the "access_token" field of the access token response from AS (see {{as-c}}).
+* ead\_label is the integer value TBD registered in {{iana-edhoc-ead}} and
+* ead\_value is a CBOR map object with label either 0 or 1 and byte string value:
+
+   * For label 0, ead\_value = { 0 : access_token }, the map value is the CBOR byte string equal to the value of the "access_token" field of the access token response from AS, see {{as-c}}.
+   * For label 1, ead\_value = { 1 : session_id }, the map value is a CBOR byte string equal to the value of the "session_id" field of the access token response from AS, see {{token-series}}.
 
 This EAD item, which is used in EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). An endpoint supporting the profile of ACE defined in this document MUST support this EAD item.
 

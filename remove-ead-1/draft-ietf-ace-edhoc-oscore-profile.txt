@@ -501,7 +501,7 @@ Table of Contents
    The general token series concept is defined in
    [I-D.ietf-ace-workflow-and-params].  In this profile, a token series
    is characterized by access tokens used between a given pair (C, RS)
-   having the same session_id in the EDHOC_Information, see Section 3.4,
+   having the same session_id in the EDHOC_Information, see Section 3.4.
 
    AS assigns the session_id to the EDHOC_Information when issuing the
    first access token of a new series and it remains fixed throughout
@@ -1100,10 +1100,10 @@ Table of Contents
    for authorized access, C and RS run the EDHOC protocol
    [I-D.ietf-lake-edhoc] using the profile described in this document
    with C as EDHOC Initiator and RS as EDHOC Responder.  When a new
-   EDHOC session is established using this profiles, any previous EDHOC
-   session and derived security context between the same parties
-   associated to the access token or session_id included in EAD_3 is
-   deleted.
+   EDHOC session is established using this profile, any previous EDHOC
+   session and derived security context, between the same parties
+   associated to the access token / session_id included in EAD_3, is
+   removed.
 
    As per Appendix A.2 of [I-D.ietf-lake-edhoc], C sends EDHOC message_1
    and EDHOC message_3 to an EDHOC resource at RS, as CoAP POST
@@ -1158,9 +1158,9 @@ Table of Contents
 
    *  The RS MUST ensure that the access token is valid, potentially
       first retrieving it using the session_id and authentication
-      credential of C, the validation following the procedure specified
-      in Section 4.2.  If such a process fails, RS MUST reply to C with
-      an EDHOC error message with ERR_CODE 1 (see Section 6 of
+      credential of C, the validation follows the procedure specified in
+      Section 4.2.  If such a process fails, RS MUST reply to C with an
+      EDHOC error message with ERR_CODE 1 (see Section 6 of
       [I-D.ietf-lake-edhoc]), and it MUST abort the EDHOC session.  If
       EDHOC and the validation of the access token has completed
       successfully, then any old EDHOC session associated to this

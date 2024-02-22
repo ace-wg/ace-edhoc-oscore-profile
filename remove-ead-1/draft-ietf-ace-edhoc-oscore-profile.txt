@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 24 August 2024                                        M. Tiloca
+Expires: 25 August 2024                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                        21 February 2024
+                                                        22 February 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 August 2024.
+   This Internet-Draft will expire on 25 August 2024.
 
 Copyright Notice
 
@@ -1096,9 +1096,14 @@ Table of Contents
 
 4.4.  EDHOC Session and OSCORE Security Context
 
-   In order to mutually authenticate and establish a secure association,
-   C and RS run the EDHOC protocol [I-D.ietf-lake-edhoc] with C as EDHOC
-   Initiator and RS as EDHOC Responder.
+   In order to mutually authenticate and establish secure communication
+   for authorized access, C and RS run the EDHOC protocol
+   [I-D.ietf-lake-edhoc] using the profile described in this document
+   with C as EDHOC Initiator and RS as EDHOC Responder.  When a new
+   EDHOC session is established using this profiles, any previous EDHOC
+   session and derived security context between the same parties
+   associated to the access token or session_id included in EAD_3 is
+   deleted.
 
    As per Appendix A.2 of [I-D.ietf-lake-edhoc], C sends EDHOC message_1
    and EDHOC message_3 to an EDHOC resource at RS, as CoAP POST
@@ -1149,14 +1154,19 @@ Table of Contents
       with EDHOC message_3 as specified in Section 4.3, then ead_value =
       { 0 : access_token}, otherwise ead_value = { 1 : session_id},
       copying the session_id from the relevant POST /token response or
-      access token.  The RS MUST ensure that the access token is valid,
-      potentially first retrieving it using the session_id and
-      authentication credential of C, the validation following the
-      procedure specified in Section 4.2.  If such a process fails, RS
-      MUST reply to C with an EDHOC error message with ERR_CODE 1 (see
-      Section 6 of [I-D.ietf-lake-edhoc]), and it MUST abort the EDHOC
-      session.  RS MUST have successfully completed the processing of
-      the access token before completing the EDHOC session.
+      access token.
+
+   *  The RS MUST ensure that the access token is valid, potentially
+      first retrieving it using the session_id and authentication
+      credential of C, the validation following the procedure specified
+      in Section 4.2.  If such a process fails, RS MUST reply to C with
+      an EDHOC error message with ERR_CODE 1 (see Section 6 of
+      [I-D.ietf-lake-edhoc]), and it MUST abort the EDHOC session.  If
+      EDHOC and the validation of the access token has completed
+      successfully, then any old EDHOC session associated to this
+      session_id and authentication credential of C MUST be deleted.  RS
+      MUST have successfully completed the processing of the access
+      token before completing the EDHOC session.
 
 4.4.4.  OSCORE Security Context
 

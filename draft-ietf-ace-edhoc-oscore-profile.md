@@ -606,7 +606,7 @@ Access tokens are only transported in EAD fields for the first access token of a
 
 ## EDHOC Session and OSCORE Security Context # {#edhoc-exec}
 
-In order to mutually authenticate and establish a secure association, C and RS run the EDHOC protocol {{I-D.ietf-lake-edhoc}} with C as EDHOC Initiator and RS as EDHOC Responder.
+In order to mutually authenticate and establish secure communication for authorized access, C and RS run the EDHOC protocol {{I-D.ietf-lake-edhoc}} using the profile described in this document with C as EDHOC Initiator and RS as EDHOC Responder. When a new EDHOC session is established using this profiles, any previous EDHOC session and derived security context between the same parties associated to the access token or session_id included in EAD\_3 is deleted.
 
 As per {{Section A.2 of I-D.ietf-lake-edhoc}}, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as 2.04 (Changed) CoAP responses. C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present.
 
@@ -633,7 +633,8 @@ The processing of EDHOC message\_3 is specified in {{Section 5.4 of I-D.ietf-lak
 * The authentication credential CRED\_I indicated by the message field ID\_CRED\_I is AUTH\_CRED\_C.
 
 * The EAD item EAD\_ACCESS\_TOKEN = (-ead\_label, ead\_value) MUST be included in the EAD\_3 field. If the access token is provisioned with EDHOC message\_3 as specified in {{AT-in-EAD}}, then ead\_value = { 0 : access\_token}, otherwise ead\_value = { 1 : session\_id}, copying the session\_id from the relevant POST /token response or access token.
-The RS MUST ensure that the access token is valid, potentially first retrieving it using the session\_id and authentication credential of C, the validation following the procedure specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. RS MUST have successfully completed the processing of the access token before completing the EDHOC session.
+
+* The RS MUST ensure that the access token is valid, potentially first retrieving it using the session\_id and authentication credential of C, the validation following the procedure specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. If EDHOC and the validation of the access token has completed successfully, then any old EDHOC session associated to this session\_id and authentication credential of C MUST be deleted. RS MUST have successfully completed the processing of the access token before completing the EDHOC session.
 
 ### OSCORE Security Context
 

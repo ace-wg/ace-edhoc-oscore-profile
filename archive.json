@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-02-22T00:36:30.779430+00:00",
+  "timestamp": "2024-02-25T00:39:48.562554+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -724,6 +724,333 @@
       "mergeCommit": null,
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOIar0bc5nnQzc",
+      "title": "EAD_3 related updates",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/4",
+      "state": "OPEN",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-02-22T07:50:55Z",
+      "updatedAt": "2024-02-22T16:34:46Z",
+      "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "baseRefName": "main",
+      "baseRefOid": "a56711aea656d210bca6050302405f50c83a74ed",
+      "headRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "headRefName": "remove-ead-1",
+      "headRefOid": "050b22d377d359ac6cedb1cbfb728bfb9ccbfb72",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOIar0bc5xBDbU",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:07:07Z",
+          "updatedAt": "2024-02-22T15:07:08Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "s/RS responds to the/RS replies to the",
+              "createdAt": "2024-02-22T15:07:08Z",
+              "updatedAt": "2024-02-22T15:07:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBIBR",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:14:43Z",
+          "updatedAt": "2024-02-22T15:14:43Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "s/the associated session identifier/then the associated session identifier",
+              "createdAt": "2024-02-22T15:14:43Z",
+              "updatedAt": "2024-02-22T15:14:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBKML",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:18:20Z",
+          "updatedAt": "2024-02-22T15:18:20Z",
+          "comments": [
+            {
+              "originalPosition": 30,
+              "body": "s/AS assigns the session\\_id to/AS assigns the \"session\\_id\" to\r\n\r\ns/series and it remains fixed/series, and that \"session\\_id\" remains fixed",
+              "createdAt": "2024-02-22T15:18:20Z",
+              "updatedAt": "2024-02-22T15:18:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBKUs",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:18:34Z",
+          "updatedAt": "2024-02-22T15:18:34Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "s/same session\\_id in/same \"session\\_id\" in",
+              "createdAt": "2024-02-22T15:18:34Z",
+              "updatedAt": "2024-02-22T15:18:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBLxG",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:20:58Z",
+          "updatedAt": "2024-02-22T15:20:59Z",
+          "comments": [
+            {
+              "originalPosition": 54,
+              "body": "s/to which the EDHOC information is associated/which the EDHOC information is associated with\r\n\r\ns/session\\_id identifies a/\"session\\_id\" identifies a",
+              "createdAt": "2024-02-22T15:20:59Z",
+              "updatedAt": "2024-02-22T15:20:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBMpd",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:22:23Z",
+          "updatedAt": "2024-02-22T15:22:23Z",
+          "comments": [
+            {
+              "originalPosition": 63,
+              "body": "s/The content of the access token is/The access token is\r\n\r\ns/retrieve based on session\\_id/retrieve it based on session\\_id",
+              "createdAt": "2024-02-22T15:22:23Z",
+              "updatedAt": "2024-02-22T16:04:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBRIS",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:29:28Z",
+          "updatedAt": "2024-02-22T15:29:28Z",
+          "comments": [
+            {
+              "originalPosition": 79,
+              "body": "NEW\r\n\r\n> * ead\\_value is a CBOR byte string, with value the binary serialization of a CBOR map. The CBOR map includes one field, whose label is a CBOR unsigned integer with value either 0 or 1, and whose value is a CBOR byte string. In particular:",
+              "createdAt": "2024-02-22T15:29:28Z",
+              "updatedAt": "2024-02-22T15:29:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBT2f",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:34:00Z",
+          "updatedAt": "2024-02-22T15:34:00Z",
+          "comments": [
+            {
+              "originalPosition": 82,
+              "body": "OLD\r\n> * For label 0, ead\\_value = { 0 : access\\_token }, the map value is the CBOR byte string equal to the value of the \"access\\_token\" field of the access token response from AS, see {{as-c}}.\r\n\r\nNEW\r\n> * For label 0, ead\\_value = { 0 : access\\_token }, where access\\_token is a CBOR byte string equal to the value of the \"access\\_token\" field of the access token response from AS, see {{as-c}}.",
+              "createdAt": "2024-02-22T15:34:00Z",
+              "updatedAt": "2024-02-22T15:34:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBUpK",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:35:16Z",
+          "updatedAt": "2024-02-22T15:35:17Z",
+          "comments": [
+            {
+              "originalPosition": 83,
+              "body": "OLD\r\n> * For label 1, ead\\_value = { 1 : session\\_id }, the map value is a CBOR byte string equal to the value of the \"session\\_id\" field of the access token response from AS, see {{token-series}}.\r\n\r\nNEW\r\n> * For label 1, ead\\_value = { 1 : session\\_id },where session\\_id is a CBOR byte string equal to the value of the \"session\\_id\" field of the access token response from AS, see {{token-series}}.",
+              "createdAt": "2024-02-22T15:35:16Z",
+              "updatedAt": "2024-02-22T15:35:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBXZy",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:38:58Z",
+          "updatedAt": "2024-02-22T15:38:58Z",
+          "comments": [
+            {
+              "originalPosition": 86,
+              "body": "s/An endpoint supporting/A node supporting\r\n\r\nAn alternative to \"node\" is \"participant\", or \"Client or Resource Server\". But \"endpoint\" is used to denote resources such as /token and /authz-info (see Section 1.1).",
+              "createdAt": "2024-02-22T15:38:58Z",
+              "updatedAt": "2024-02-22T15:39:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBYk3",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:40:40Z",
+          "updatedAt": "2024-02-22T15:40:41Z",
+          "comments": [
+            {
+              "originalPosition": 88,
+              "body": "OLD\r\n> Access tokens are only transported in EAD fields for the first access token of a token series and not for the update of access rights, see {{update-access-rights-c-rs}}.\r\n\r\nNEW\r\n> Access tokens are transported in EAD_3 fields only for the first access token of a token series, and not for the update of access rights, see {{update-access-rights-c-rs}}.",
+              "createdAt": "2024-02-22T15:40:40Z",
+              "updatedAt": "2024-02-22T15:40:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBquG",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T16:10:00Z",
+          "updatedAt": "2024-02-22T16:10:00Z",
+          "comments": [
+            {
+              "originalPosition": 93,
+              "body": "s/using the profile/, using the profile\r\n\r\nOLD\r\n> When a new EDHOC session is established using this profile, any previous EDHOC session and derived security context, between the same parties associated to the access token / session_id included in EAD\\_3, is removed.\r\n\r\nNEW\r\n> When a new EDHOC session S_NEW is established using this profile, it is possible that both S_NEW and another, existing session S_OLD between the same parties are associated with the same access token and with the same pair (session\\_id, AUTH_CRED_C). In such a case, S_OLD and the derived OSCORE Security Context MUST be deleted.\r\n\r\n(This explanation does not need to involve EAD_3 and its two possible values)",
+              "createdAt": "2024-02-22T16:10:00Z",
+              "updatedAt": "2024-02-22T16:21:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBuZp",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T16:15:06Z",
+          "updatedAt": "2024-02-22T16:15:06Z",
+          "comments": [
+            {
+              "originalPosition": 120,
+              "body": "OLD\r\n> copying the session\\_id from the relevant POST /token response or access token.\r\n\r\nNEW\r\n> where session\\_id is equal to the value of the \"session_id\" field of the access token response from AS, see {{token-series}}.",
+              "createdAt": "2024-02-22T16:15:06Z",
+              "updatedAt": "2024-02-22T16:15:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xB3N3",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T16:30:34Z",
+          "updatedAt": "2024-02-22T16:30:34Z",
+          "comments": [
+            {
+              "originalPosition": 122,
+              "body": "s/of C, the/of C, i.e., AUTH_CRED_C. The\r\n\r\nOLD\r\n> If EDHOC and the validation of the access token has completed successfully, then any old EDHOC session associated to this session\\_id and authentication credential of C MUST be deleted. RS MUST have successfully completed the processing of the access token before completing the EDHOC session.\r\n\r\nNEW\r\n> If EDHOC and the validation of the access token have completed successfully, then the new EDHOC session S_NEW is established, and is associated with both the access token and the pair (session\\_id, AUTH_CRED_C). RS MUST have successfully completed the processing of the access token before completing the EDHOC session.\r\n> If there is any existing session S_OLD that is also associated with the same access token and with the same pair (session\\_id, AUTH_CRED_C), then S_OLD and the derived OSCORE Security Context MUST be deleted.",
+              "createdAt": "2024-02-22T16:30:34Z",
+              "updatedAt": "2024-02-22T16:30:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xB5e_",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T16:34:46Z",
+          "updatedAt": "2024-02-22T16:34:46Z",
+          "comments": [
+            {
+              "originalPosition": 131,
+              "body": "NEW\r\n> RS associates the latest EDHOC session and the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential (AUTH_CRED_C = CRED_I) used in the EDHOC session and with the session\\_id identifying the token series that the access token belongs to.",
+              "createdAt": "2024-02-22T16:34:46Z",
+              "updatedAt": "2024-02-22T16:34:46Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

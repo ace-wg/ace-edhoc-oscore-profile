@@ -2845,6 +2845,11 @@ C.1.  Version -03 to -04
 
    *  Removed the case of transporting access token in EAD_1
 
+   *  Removed redundant normative text
+
+   *  Clarifications of association between access token, session_id,
+      EDHOC session and OSCORE security context
+
 C.2.  Version -02 to -03
 
    *  Fixed column name and prefilling of the "EDHOC Information"

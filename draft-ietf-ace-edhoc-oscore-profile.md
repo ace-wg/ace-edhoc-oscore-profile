@@ -1620,6 +1620,9 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
 * Removed the case of transporting access token in EAD_1
 
+* Removed redundant normative text
+
+* Clarifications of association between access token, session_id, EDHOC session and OSCORE security context
 
 ## Version -02 to -03 ## {#sec-03-04}
 

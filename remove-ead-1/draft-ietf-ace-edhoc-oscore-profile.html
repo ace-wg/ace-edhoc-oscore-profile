@@ -1031,11 +1031,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">EDHOC and OSCORE profile of ACE</td>
-<td class="right">February 2024</td>
+<td class="right">March 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 25 August 2024</td>
+<td class="center">Expires 2 September 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1048,12 +1048,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-02-22" class="published">22 February 2024</time>
+<time datetime="2024-03-01" class="published">1 March 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-08-25">25 August 2024</time></dd>
+<dd class="expires"><time datetime="2024-09-02">2 September 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1113,7 +1113,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 2 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1443,7 +1443,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2-5">If C has retrieved an access token, there are two options for C to upload it to RS, as further detailed in this document.<a href="#section-2-5" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-2-6">
 <li id="section-2-6.1">
-          <p id="section-2-6.1.1">C posts the access token to the /authz-info endpoint by using the mechanisms specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10" class="relref">Section 5.10</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. If the access token is valid, RS responds to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol with RS. The communication with the /authz-info endpoint is typically not protected, except for the update of access rights (see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.5</a>).<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
+          <p id="section-2-6.1.1">C posts the access token to the /authz-info endpoint by using the mechanisms specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10" class="relref">Section 5.10</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. If the access token is valid, RS replies to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol with RS. The communication with the /authz-info endpoint is typically not protected, except for the update of access rights (see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.5</a>).<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-2-6.2">
           <p id="section-2-6.2.1">C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23#section-3.8" class="relref">Section 3.8</a> of [<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>. In this case, the access token is validated in parallel with the EDHOC session. This option cannot be used for the update of access rights.<a href="#section-2-6.2.1" class="pilcrow">¶</a></p>
@@ -1452,7 +1452,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2-7">When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>.<a href="#section-2-7" class="pilcrow">¶</a></p>
 <p id="section-2-8">From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. The Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new Security Context for C.<a href="#section-2-8" class="pilcrow">¶</a></p>
 <p id="section-2-9">After the whole procedure has completed and while the access token is valid, C can contact AS to request an update of its access rights, by sending a similar request to the /token endpoint. This request also includes a "session identifier" (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) provided by AS in the initial request, which allows AS to find the data it has previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see <a href="#token-series" class="auto internal xref">Section 3.2</a>). Upon a successful update of access rights (see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.5</a>), the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.<a href="#section-2-9" class="pilcrow">¶</a></p>
-<p id="section-2-10">When an RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, the associated session identifier, together with the authentication credential of C used in the EDHOC session, enables the RS to look up the unique access token determining the access rights of C.<a href="#section-2-10" class="pilcrow">¶</a></p>
+<p id="section-2-10">When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then the associated session identifier, together with the authentication credential of C used in the EDHOC session, enables the RS to look up the unique access token determining the access rights of C.<a href="#section-2-10" class="pilcrow">¶</a></p>
 <p id="section-2-11">An overview of the profile flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in <a href="#protocol-overview" class="auto internal xref">Figure 1</a>. The names of messages coincide with those of <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> when applicable.<a href="#section-2-11" class="pilcrow">¶</a></p>
 <span id="name-protocol-overview-example"></span><div id="protocol-overview">
 <figure id="figure-1">
@@ -1649,8 +1649,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 </li>
         </ul>
 <p id="section-3.2-3">Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2-4">The general token series concept is defined in <span>[<a href="#I-D.ietf-ace-workflow-and-params" class="cite xref">I-D.ietf-ace-workflow-and-params</a>]</span>. In this profile, a token series is characterized by access tokens used between a given pair (C, RS) having the same session_id in the EDHOC_Information, see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
-<p id="section-3.2-5">AS assigns the session_id to the EDHOC_Information when issuing the first access token of a new series and it remains fixed throughout the series lifetime. When assigning the identifier, AS MUST ensure that it was not used in a previous series whose access tokens share the following properties with the access tokens of the new series:<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">The general token series concept is defined in <span>[<a href="#I-D.ietf-ace-workflow-and-params" class="cite xref">I-D.ietf-ace-workflow-and-params</a>]</span>. In this profile, a token series is characterized by access tokens used between a given pair (C, RS) having the same "session_id" in the EDHOC_Information, see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-5">AS assigns the "session_id" to the EDHOC_Information when issuing the first access token of a new series and that "session_id" remains fixed throughout the series lifetime. When assigning the identifier, AS MUST ensure that it was not used in a previous series whose access tokens share the following properties with the access tokens of the new series:<a href="#section-3.2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.2-6.1">
             <p id="section-3.2-6.1.1">i) issued for the same RS; and<a href="#section-3.2-6.1.1" class="pilcrow">¶</a></p>
@@ -1918,7 +1918,7 @@ When later issuing further access tokens to the same pair (C, RS) using the same
 </div>
 <ul class="normal">
 <li class="normal" id="section-3.4-5.1">
-            <p id="section-3.4-5.1.1">session_id: This parameter identifies a 'session' to which the EDHOC information is associated, but does not necessarily identify a specific EDHOC session. In this document, session_id identifies a token series. In JSON, the "session_id" value is a Base64 encoded byte string. In CBOR, the "session_id" type is a byte string, and has label 0.<a href="#section-3.4-5.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-5.1.1">session_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session_id" identifies a token series. In JSON, the "session_id" value is a Base64 encoded byte string. In CBOR, the "session_id" type is a byte string, and has label 0.<a href="#section-3.4-5.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-5.2">
             <p id="section-3.4-5.2.1">methods: This parameter specifies a set of supported EDHOC methods (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>). If the set is composed of a single EDHOC method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and has label 1.<a href="#section-3.4-5.2.1" class="pilcrow">¶</a></p>
@@ -2032,7 +2032,7 @@ EDHOC_Information = {
 <p id="section-4.2-3">RS checks whether it is already storing the authentication credential of C, AUTH_CRED_C, specified in the "cnf" claim of the access token by value or by reference. If not, RS retrieves AUTH_CRED_C, either using the "cnf" claim or some other trusted source.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.2-4">If RS fails to find or validate AUTH_CRED_C, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). RS may provide additional information in the payload of the error response, in order to clarify what went wrong.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
 <p id="section-4.2-5">If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "session_id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
-<p id="section-4.2-6">If all validations are successful, RS MUST reply to the POST request with a 2.01 (Created) response. The content of the access token is stored such that it is possible to retrieve based on session_id and AUTH_CRED_C.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.2-6">If all validations are successful, RS MUST reply to the POST request with a 2.01 (Created) response. The access token is stored such that it is possible to retrieve it based on "session_id" and AUTH_CRED_C.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
 <p id="section-4.2-7">When an access token becomes invalid (e.g., due to its expiration or revocation), RS MUST delete the access token and the associated OSCORE Security Context, and MUST notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-4.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2048,19 +2048,19 @@ EDHOC_Information = {
             <p id="section-4.3-3.1.1">ead_label is the integer value TBD registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 10.8</a> and<a href="#section-4.3-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.3-3.2">
-            <p id="section-4.3-3.2.1">ead_value is a CBOR map object with label either 0 or 1 and byte string value:<a href="#section-4.3-3.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.3-3.2.1">ead_value is a CBOR byte string, with value the binary serialization of a CBOR map. The CBOR map includes one field, whose label is a CBOR unsigned integer with value either 0 or 1, and whose value is a CBOR byte string:<a href="#section-4.3-3.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.3-3.2.2.1">
-                <p id="section-4.3-3.2.2.1.1">For label 0, ead_value = { 0 : access_token }, the map value is the CBOR byte string equal to the value of the "access_token" field of the access token response from AS, see <a href="#as-c" class="auto internal xref">Section 3.3</a>.<a href="#section-4.3-3.2.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.3-3.2.2.1.1">For label 0, ead_value = { 0 : access_token }, where access_token is a CBOR byte string equal to the value of the "access_token" field of the access token response from AS, see <a href="#as-c" class="auto internal xref">Section 3.3</a>.<a href="#section-4.3-3.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="section-4.3-3.2.2.2">
-                <p id="section-4.3-3.2.2.2.1">For label 1, ead_value = { 1 : session_id }, the map value is a CBOR byte string equal to the value of the "session_id" field of the access token response from AS, see <a href="#token-series" class="auto internal xref">Section 3.2</a>.<a href="#section-4.3-3.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-4.3-3.2.2.2.1">For label 1, ead_value = { 1 : session_id }, where session_id is a CBOR byte string equal to the value of the "session_id" field of the access token response from AS, see <a href="#token-series" class="auto internal xref">Section 3.2</a>.<a href="#section-4.3-3.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
         </ul>
-<p id="section-4.3-4">This EAD item, which is used in EAD_3, is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23#section-3.8" class="relref">Section 3.8</a> of [<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>). An endpoint supporting the profile of ACE defined in this document MUST support this EAD item. When EDHOC is used with this profile, this EAD item MUST be included in EAD_3, see <a href="#m_3" class="auto internal xref">Section 4.4.3</a>.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.3-5">Access tokens are only transported in EAD fields for the first access token of a token series and not for the update of access rights, see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.5</a>.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
+<p id="section-4.3-4">This EAD item, which is used in EAD_3, is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23#section-3.8" class="relref">Section 3.8</a> of [<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>). A Client or Resource Server supporting the profile of ACE defined in this document MUST support this EAD item. When EDHOC is used with this profile, this EAD item is included in EAD_3, see <a href="#m_3" class="auto internal xref">Section 4.4.3</a>.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
+<p id="section-4.3-5">Access tokens are transported in EAD fields only for the first access token of a token series, and not for the update of access rights, see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.5</a>.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="edhoc-exec">
@@ -2068,7 +2068,7 @@ EDHOC_Information = {
         <h3 id="name-edhoc-session-and-oscore-se">
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-edhoc-session-and-oscore-se" class="section-name selfRef">EDHOC Session and OSCORE Security Context</a>
         </h3>
-<p id="section-4.4-1">In order to mutually authenticate and establish secure communication for authorized access, C and RS run the EDHOC protocol <span>[<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span> using the profile described in this document with C as EDHOC Initiator and RS as EDHOC Responder. When a new EDHOC session is established using this profile, any previous EDHOC session and derived security context, between the same parties associated to the access token / session_id included in EAD_3, is removed.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-1">In order to mutually authenticate and establish secure communication for authorized access, C and RS run the EDHOC protocol <span>[<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>, using the profile described in this document with C as EDHOC Initiator and RS as EDHOC Responder. When a new EDHOC session is established using this profile, previous EDHOC session associated with the same access token and the same pair (session_id, AUTH_CRED_C), and derived OSCORE Security Context are deleted, see <a href="#m_3" class="auto internal xref">Section 4.4.3</a>.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.4-2">As per <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23#appendix-A.2" class="relref">Appendix A.2</a> of [<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>, C sends EDHOC message_1 and EDHOC message_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message_2 and (optionally) EDHOC message_4 as 2.04 (Changed) CoAP responses. C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC_Information in the access token response received from AS (see <a href="#c-as" class="auto internal xref">Section 3.1</a>), if present.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.4-3">In order to seamlessly run EDHOC, a client does not have to first upload to RS an access token whose scope explicitly indicates authorized access to the EDHOC resource. At the same time, RS has to ensure that attackers cannot perform requests on the EDHOC resource, other than sending EDHOC messages. Specifically, it SHOULD NOT be possible to perform anything else than POST on an EDHOC resource.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 <div id="edhoc-message1">
@@ -2111,10 +2111,10 @@ EDHOC_Information = {
               <p id="section-4.4.3-2.1.1">The authentication credential CRED_I indicated by the message field ID_CRED_I is AUTH_CRED_C.<a href="#section-4.4.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.4.3-2.2">
-              <p id="section-4.4.3-2.2.1">The EAD item EAD_ACCESS_TOKEN = (-ead_label, ead_value) MUST be included in the EAD_3 field. If the access token is provisioned with EDHOC message_3 as specified in <a href="#AT-in-EAD" class="auto internal xref">Section 4.3</a>, then ead_value = { 0 : access_token}, otherwise ead_value = { 1 : session_id}, copying the session_id from the relevant POST /token response or access token.<a href="#section-4.4.3-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4.4.3-2.2.1">The EAD item EAD_ACCESS_TOKEN = (-ead_label, ead_value) MUST be included in the EAD_3 field. If the access token is provisioned with EDHOC message_3 as specified in <a href="#AT-in-EAD" class="auto internal xref">Section 4.3</a>, then ead_value = { 0 : access_token}, otherwise ead_value = { 1 : session_id}, where session_id is equal to the value of the "session_id" field of the access token response from AS, see <a href="#token-series" class="auto internal xref">Section 3.2</a>.<a href="#section-4.4.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.4.3-2.3">
-              <p id="section-4.4.3-2.3.1">The RS MUST ensure that the access token is valid, potentially first retrieving it using the session_id and authentication credential of C, the validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.2</a>. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR_CODE 1 (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23#section-6" class="relref">Section 6</a> of [<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>), and it MUST abort the EDHOC session. If EDHOC and the validation of the access token has completed successfully, then any old EDHOC session associated to this session_id and authentication credential of C MUST be deleted. RS MUST have successfully completed the processing of the access token before completing the EDHOC session.<a href="#section-4.4.3-2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-4.4.3-2.3.1">The RS MUST ensure that the access token is valid, potentially first retrieving it using session_id and AUTH_CRED_C, the validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.2</a>. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR_CODE 1 (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-23#section-6" class="relref">Section 6</a> of [<a href="#I-D.ietf-lake-edhoc" class="cite xref">I-D.ietf-lake-edhoc</a>]</span>), and it MUST abort the EDHOC session. RS MUST have successfully validated the processing of the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (session_id, AUTH_CRED_C). Any old existing EDHOC session associated with the same access token and with the same pair (session_id, AUTH_CRED_C) MUST be deleted, together with the OSCORE Security Context derived from the EDHOC session.<a href="#section-4.4.3-2.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -2136,7 +2136,8 @@ EDHOC_Information = {
               <p id="section-4.4.4-2.3.1">C and RS MUST use the OSCORE version specified in the "osc_version" field (if present) in the EDHOC_Information of the access token response to C, and of the access token provisioned to RS, respectively.<a href="#section-4.4.4-2.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.4.4-2.4">
-              <p id="section-4.4.4-2.4.1">RS associates the derived OSCORE Security Context from the EDHOC session with its associated session_id and authentication credential (AUTH_CRED_C = CRED_I) used in the EDHOC session, which in turn identifies the access token.<a href="#section-4.4.4-2.4.1" class="pilcrow">¶</a></p>
+              <p id="section-4.4.4-2.4.1">RS associates the latest EDHOC session and the derived OSCORE Security Context
+with the stored access token, which is bound to the authentication credential (AUTH_CRED_C = CRED_I) used in the EDHOC session and with the session_id identifying the token series to which the access token belongs.<a href="#section-4.4.4-2.4.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-4.4.4-3">If supported by C, C MAY use the EDHOC + OSCORE combined request defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>, unless the "comb_req" field of the EDHOC_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see <a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a>. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message_2 and before sending EDHOC message_3.<a href="#section-4.4.4-3" class="pilcrow">¶</a></p>

@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-02-29T00:36:39.047648+00:00",
+  "timestamp": "2024-03-03T00:39:02.077043+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -737,18 +737,33 @@
       "labels": [],
       "body": "",
       "createdAt": "2024-02-22T07:50:55Z",
-      "updatedAt": "2024-02-22T16:34:46Z",
+      "updatedAt": "2024-03-01T14:42:19Z",
       "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
       "baseRefName": "main",
       "baseRefOid": "a56711aea656d210bca6050302405f50c83a74ed",
       "headRepository": "ace-wg/ace-edhoc-oscore-profile",
       "headRefName": "remove-ead-1",
-      "headRefOid": "050b22d377d359ac6cedb1cbfb728bfb9ccbfb72",
+      "headRefOid": "fc555bab87b052e999df5876d54a4db4974ea46a",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@marco-tiloca-sics Please see updates following your review.",
+          "createdAt": "2024-03-01T14:12:11Z",
+          "updatedAt": "2024-03-01T14:12:11Z"
+        },
+        {
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I've checked the commit https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/4/commits/c34735adbfbda878e6309dd70a1b1741ed6b5cd8\r\n\r\nIt looks good, thanks! I see only two nits in Section 4.4:\r\n\r\n* s/to which the access token belongs./which the access token belongs to.\r\n\r\n* s/previous EDHOC session/previous EDHOC sessions\r\n\r\n  For that same sentence, maybe it's better to rephrase as below altogether:\r\n\r\n  OLD\r\n  > When a new EDHOC session is established using this profile, previous EDHOC session associated with the same access token and the same pair (session_id, AUTH_CRED_C), and derived OSCORE Security Context are deleted, see Section 4.4.3.\r\n\r\n  NEW\r\n  > When a new EDHOC session is established using this profile, previous EDHOC sessions associated with the same access token and the same pair (session_id, AUTH_CRED_C) are deleted, see Section 4.4.3. The OSCORE Security Contexts derived from those EDHOC sessions are deleted.",
+          "createdAt": "2024-03-01T14:42:18Z",
+          "updatedAt": "2024-03-01T14:42:18Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOIar0bc5xBDbU",

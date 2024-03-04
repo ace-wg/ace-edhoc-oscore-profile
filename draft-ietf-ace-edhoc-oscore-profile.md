@@ -592,6 +592,13 @@ When an access token becomes invalid (e.g., due to its expiration or revocation)
 
 Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token in EDHOC message\_3 by making use of the External Authorization Data field EAD_3 (see {{Section 3.8 of I-D.ietf-lake-edhoc}}), see example in {{example-with-optimization}}. In this case, the access token is encrypted between C and RS enabling protection of potential sensitive information.
 
+When C is the EDHOC responder (which is typically the case in reverse message flow),
+the same information can also be sent in EAD\_2.
+In this case, it is encrypted to an unauthenticated peer,
+and thus readable by an active attacker.
+If the token contains sensitive information,
+an encrypted token needs to be used.
+
 This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value), where:
 
 * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}} and
@@ -600,7 +607,7 @@ This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value)
    * For label 0, ead\_value = { 0 : access\_token }, where access_token is a CBOR byte string equal to the value of the "access\_token" field of the access token response from AS, see {{as-c}}.
    * For label 1, ead\_value = { 1 : session\_id }, where session_id is a CBOR byte string equal to the value of the "session\_id" field of the access token response from AS, see {{token-series}}.
 
-This EAD item, which is used in EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). A Client or Resource Server supporting the profile of ACE defined in this document MUST support this EAD item. When EDHOC is used with this profile, this EAD item is included in EAD_3, see {{m_3}}.
+This EAD item, which is used in EAD\_2 or EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). A Client or Resource Server supporting the profile of ACE defined in this document MUST support this EAD item. When EDHOC is used with this profile, this EAD item is included in EAD_2 or EAD_3, see {{m_3}}.
 
 Access tokens are transported in EAD fields only for the first access token of a token series, and not for the update of access rights, see {{update-access-rights-c-rs}}.
 

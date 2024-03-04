@@ -147,15 +147,17 @@ This profile also supports the alternative workflow where AS uploads the access 
 
 If C has retrieved an access token, there are two options for C to upload it to RS, as further detailed in this document.
 
-1. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.10 of RFC9200}}. If the access token is valid, RS responds to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol with RS. The communication with the /authz-info endpoint is not protected, except for the update of access rights (see {{update-access-rights-c-rs}}).
+1. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.10 of RFC9200}}. If the access token is valid, RS replies to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol with RS. The communication with the /authz-info endpoint is typically not protected, except for the update of access rights (see {{update-access-rights-c-rs}}).
 
 2. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of I-D.ietf-lake-edhoc}}. In this case, the access token is validated in parallel with the EDHOC session. This option cannot be used for the update of access rights.
 
-When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of I-D.ietf-lake-edhoc}}. Also, RS associates the two used authentication credentials and the completed EDHOC session with the derived Security Context. The latter is in turn associated with the access token and the access rights of C specified therein.
+When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of I-D.ietf-lake-edhoc}}.
 
-From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as the access token is valid. The Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new Security Context for C.
+From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. The Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new Security Context for C.
 
-After the whole procedure has completed and while the access token is valid, C can contact AS to request an update of its access rights, by sending a similar request to the /token endpoint. This request also includes an EDHOC session identifier (see {{edhoc-parameters-object}}), which allows AS to find the data it has previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see {{token-series}}). Upon a successful update of access rights (see {{update-access-rights-c-rs}}), the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
+After the whole procedure has completed and while the access token is valid, C can contact AS to request an update of its access rights, by sending a similar request to the /token endpoint. This request also includes a "session identifier" (see {{edhoc-parameters-object}}) provided by AS in the initial request, which allows AS to find the data it has previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see {{token-series}}). Upon a successful update of access rights (see {{update-access-rights-c-rs}}), the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
+
+When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then the associated session identifier, together with the authentication credential of C used in the EDHOC session, enables the RS to look up the unique access token determining the access rights of C.
 
 An overview of the profile flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}. The names of messages coincide with those of {{RFC9200}} when applicable.
 
@@ -269,14 +271,14 @@ This document refers to "token series" as a series of access tokens sorted in ch
 
 Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.
 
-The general token series concept is defined in {{I-D.ietf-ace-workflow-and-params}}. In this profile, a token series is characterized by the access tokens associated with an EDHOC session between C and RS, and identified by the session\_id of the EDHOC\_Information, see {{edhoc-parameters-object}}. All access tokens belonging to the same token series are associated with the same session\_id, which does not change throughout the series lifetime.
+The general token series concept is defined in {{I-D.ietf-ace-workflow-and-params}}. In this profile, a token series is characterized by access tokens used between a given pair (C, RS) having the same "session\_id" in the EDHOC\_Information, see {{edhoc-parameters-object}}.
 
-AS assigns the session\_id to the EDHOC\_Information when issuing the first access token of a new series. When assigning the identifier, AS MUST ensure that it was not used in a previous series whose access tokens share the following properties with the access tokens of the new series:
+AS assigns the "session\_id" to the EDHOC\_Information when issuing the first access token of a new series and that "session\_id" remains fixed throughout the series lifetime. When assigning the identifier, AS MUST ensure that it was not used in a previous series whose access tokens share the following properties with the access tokens of the new series:
 
 * i) issued for the same RS; and
 * ii) bound to the same authentication credential AUTH_CRED_C of the requesting client (irrespectively of how the AUTH_CRED_C is identified in the access tokens).
 
-In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}),  what is defined above applies, with the difference that the token series is associated with: all the RSs in the group-audience; all the EDHOC sessions between C and each RS; and the AUTH_CRED_RS of each RS.
+In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), what is defined above applies, with the difference that the token series is associated with all the RSs in the group-audience, as indicated by their respective AUTH_CRED_RS.
 
 ## AS-to-C: Response # {#as-c}
 
@@ -409,7 +411,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 |               | label | type     |                |                 |
 +---------------+-------+----------+----------------+-----------------+
 | session_id    | 0     | bstr     |                | Identifier of   |
-|               |       |          |                | EDHOC session   |
+|               |       |          |                | a session       |
 +---------------+-------+----------+----------------+-----------------+
 | methods       | 1     | int /    | EDHOC Method   | Set of          |
 |               |       | array    | Type Registry  | supported       |
@@ -488,7 +490,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 ~~~~~~~~~~~
 {: #fig-cbor-key-edhoc-params title="EDHOC_Information Parameters" artwork-align="center"}
 
-* session\_id: This parameter identifies an EDHOC session and is encoded as a byte string. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and has label 0.
+* session\_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and has label 0.
 
 * methods: This parameter specifies a set of supported EDHOC methods (see {{Section 3.2 of I-D.ietf-lake-edhoc}}). If the set is composed of a single EDHOC method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and has label 1.
 
@@ -582,30 +584,31 @@ If RS fails to find or validate AUTH_CRED_C, then RS MUST respond with an error 
 
 If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "session\_id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
 
-If all validations are successful, RS MUST reply to the POST request with a 2.01 (Created) response.
+If all validations are successful, RS MUST reply to the POST request with a 2.01 (Created) response. The access token is stored such that it is possible to retrieve it based on "session\_id" and AUTH_CRED_C.
 
 When an access token becomes invalid (e.g., due to its expiration or revocation), RS MUST delete the access token and the associated OSCORE Security Context, and MUST notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in {{Section 5.8.3 of RFC9200}}.
 
 ## Access Token in External Authorization Data {#AT-in-EAD}
 
-Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token either in EDHOC message\_1 or message\_3 by making use of the External Authorization Data fields (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). The former is shown by the example in {{example-with-optimization}}. In the latter case, the access token is encrypted between C and RS, which provides an alternative for protecting potential sensitive information in the access token.
-
-Editor's note: Shall we remove the EAD_1 case? The case POST /token offers already early abort, and the EAD_3 case is equally efficient but offers better protection of the access token.
+Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token in EDHOC message\_3 by making use of the External Authorization Data field EAD_3 (see {{Section 3.8 of I-D.ietf-lake-edhoc}}), see example in {{example-with-optimization}}. In this case, the access token is encrypted between C and RS enabling protection of potential sensitive information.
 
 This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value), where:
 
-* ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}, and
-* ead\_value is a CBOR byte string equal to the value of the "access_token" field of the access token response from AS (see {{as-c}}).
+* ead\_label is the integer value TBD registered in {{iana-edhoc-ead}} and
+* ead\_value is a CBOR byte string, with value the binary serialization of a CBOR map. The CBOR map includes one field, whose label is a CBOR unsigned integer with value either 0 or 1, and whose value is a CBOR byte string:
 
-This EAD item, which may be used either in EAD\_1 or EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}).
+   * For label 0, ead\_value = { 0 : access\_token }, where access_token is a CBOR byte string equal to the value of the "access\_token" field of the access token response from AS, see {{as-c}}.
+   * For label 1, ead\_value = { 1 : session\_id }, where session_id is a CBOR byte string equal to the value of the "session\_id" field of the access token response from AS, see {{token-series}}.
 
-Access tokens are only transported in EAD fields for the first access token of a token series and not for the update of access rights.
+This EAD item, which is used in EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). A Client or Resource Server supporting the profile of ACE defined in this document MUST support this EAD item. When EDHOC is used with this profile, this EAD item is included in EAD_3, see {{m_3}}.
+
+Access tokens are transported in EAD fields only for the first access token of a token series, and not for the update of access rights, see {{update-access-rights-c-rs}}.
 
 ## EDHOC Session and OSCORE Security Context # {#edhoc-exec}
 
-In order to mutually authenticate and establish a secure association, C and RS run the EDHOC protocol {{I-D.ietf-lake-edhoc}} with C as EDHOC Initiator and RS as EDHOC Responder.
+In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol {{I-D.ietf-lake-edhoc}} with C as EDHOC Initiator and RS as EDHOC Responder. When a new EDHOC session is established, previous EDHOC sessions associated with the same access token and the same pair (session_id, AUTH_CRED_C) are deleted, see {{m_3}}. The OSCORE Security Contexts derived from those EDHOC sessions are also deleted.
 
-As per {{Section A.2 of I-D.ietf-lake-edhoc}}, C sends EDHOC message_1 and EDHOC message_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message_2 and (optionally) EDHOC message_4 as 2.04 (Changed) CoAP responses. C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present.
+As per {{Section A.2 of I-D.ietf-lake-edhoc}}, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as 2.04 (Changed) CoAP responses. C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present.
 
 In order to seamlessly run EDHOC, a client does not have to first upload to RS an access token whose scope explicitly indicates authorized access to the EDHOC resource. At the same time, RS has to ensure that attackers cannot perform requests on the EDHOC resource, other than sending EDHOC messages. Specifically, it SHOULD NOT be possible to perform anything else than POST on an EDHOC resource.
 
@@ -617,21 +620,22 @@ The processing of EDHOC message\_1 is specified in {{Section 5.2 of I-D.ietf-lak
 
 * The selected cipher suite MUST be an EDHOC cipher suite specified in the "cipher\_suites" field (if present) in the EDHOC\_Information of the access token response to C.
 
-* If the access token is provisioned with EDHOC message\_1 as specified in {{AT-in-EAD}}, then C adds the EAD item EAD\_ACCESS\_TOKEN = (-ead\_label, ead\_value) to the EAD\_1 field. If EAD\_1 includes EAD\_ACCESS\_TOKEN, then RS MUST process the access token carried in ead\_value as specified in {{rs-c}}. If this processing fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. RS MUST have successfully completed the processing of the access token before continuing the EDHOC session by sending EDHOC message\_2.
-
 ### EDHOC message\_2
 
 The processing of EDHOC message\_2 is specified in {{Section 5.3 of I-D.ietf-lake-edhoc}} with the following additions:
 
 * The authentication credential CRED\_R indicated by the message field ID\_CRED\_R is AUTH\_CRED\_RS.
 
-### EDHOC message\_3
+### EDHOC message\_3 {#m_3}
 
 The processing of EDHOC message\_3 is specified in {{Section 5.4 of I-D.ietf-lake-edhoc}} with the following additions:
 
 * The authentication credential CRED\_I indicated by the message field ID\_CRED\_I is AUTH\_CRED\_C.
 
-* If the access token is provisioned with EDHOC message\_3 as specified in {{AT-in-EAD}}, then C adds the EAD item EAD\_ACCESS\_TOKEN = (-ead\_label, ead\_value) to the EAD\_3 field. If EAD\_3 includes EAD\_ACCESS\_TOKEN, then RS MUST process the access token carried in ead\_value as specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. RS MUST have successfully completed the processing of the access token before completing the EDHOC session.
+* The EAD item EAD\_ACCESS\_TOKEN = (-ead\_label, ead\_value) MUST be included in the EAD\_3 field. If the access token is provisioned with EDHOC message\_3 as specified in {{AT-in-EAD}}, then ead\_value = { 0 : access\_token}, otherwise ead\_value = { 1 : session\_id}, where session\_id is equal to the value of the "session_id" field of the access token response from AS, see {{token-series}}.
+
+* The RS MUST ensure that the access token is valid, potentially first retrieving it using session\_id and AUTH\_CRED\_C, the validation follows the procedure specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. RS MUST have successfully validated the processing of the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (session_id, AUTH_CRED_C). Any old existing EDHOC session associated with the same access token and with the same pair (session_id, AUTH_CRED_C) MUST be deleted, together with the OSCORE Security Context derived from the EDHOC session.
+
 
 ### OSCORE Security Context
 
@@ -643,7 +647,8 @@ Once successfully completed the EDHOC session, C and RS derive an OSCORE Securit
 
 * C and RS MUST use the OSCORE version specified in the "osc\_version" field (if present) in the EDHOC\_Information of the access token response to C, and of the access token provisioned to RS, respectively.
 
-* RS associates the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential (AUTH\_CRED\_C = CRED\_I) used in the EDHOC session.
+* RS associates the latest EDHOC session and the derived OSCORE Security Context
+with the stored access token, which is bound to the authentication credential (AUTH_CRED_C = CRED_I) used in the EDHOC session and with the session_id identifying the token series to which the access token belongs.
 
 If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{I-D.ietf-core-oscore-edhoc}}, unless the "comb\_req" field of the EDHOC\_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see {{example-with-optimization}}. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2 and before sending EDHOC message\_3.
 
@@ -1072,7 +1077,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 IANA is asked to add the following entry to the "EDHOC External Authorization Data" registry defined in {{Section 9.5 of I-D.ietf-lake-edhoc}}.
 
-The ead_label = TBD and the ead\_value defines an access token in EAD_1 or EAD_3, with processing specified in {{AT-in-EAD}}.
+The ead\_label = TBD and the ead\_value defines an access token in EAD\_3, with processing specified in {{AT-in-EAD}}.
 
 * Label: TBD
 * Value Type: bstr
@@ -1359,7 +1364,7 @@ M21 |<----------------------------------------------------------------|
 
 The example below builds on the example in {{example-without-optimization}}, while additionally relying on the two following optimizations.
 
-* The access token is not separately uploaded to the /authz-info endpoint at RS, but rather included in the EAD_1 field of EDHOC message_1 sent by C to RS.
+* The access token is not separately uploaded to the /authz-info endpoint at RS, but rather included in the EAD\_3 field of EDHOC message\_3 sent by C to RS.
 
 * The Client uses the EDHOC+OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} is used, when running EDHOC both with AS and with RS.
 
@@ -1424,7 +1429,6 @@ M04 |<---------------------------------|                              |
     |  EDHOC message_1 to /edhoc       |                              |
     |  (no access control is enforced) |                              |
 M05 |---------------------------------------------------------------->|
-    |  Access token specified in EAD_1 |                              |
     |                                  |                              |
 
      Possibly after chain verification, RS adds AUTH_CRED_C
@@ -1442,6 +1446,7 @@ M06 |<----------------------------------------------------------------|
     |  EDHOC+OSCORE request to /r      |                              |
 M07 |---------------------------------------------------------------->|
     |  * EDHOC message_3               |                              |
+    |      EAD_3 contains access token |                              |
     |      ID_CRED_I identifies        |                              |
     |         CRED_I = AUTH_CRED_C     |                              |
     |         by reference             |                              |
@@ -1595,7 +1600,7 @@ This section lists the specifications of this profile based on the requirements 
 
 * Specify how the client and RS mutually authenticate: Explicitly, by successfully executing the EDHOC protocol, after which a common OSCORE Security Context is exported from the EDHOC session. As per the EDHOC authentication method used during the EDHOC session, authentication is provided by digital signatures, or by Message Authentication Codes (MACs) computed from an ephemeral-static ECDH shared secret.
 
-* Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of- possession protocol: proof-of-possession is first achieved by RS when successfully processing EDHOC message_3 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys. Also, proof-of-possession is later achieved by C when receiving from RS: i) the optional EDHOC message_4 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC session with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
+* Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of-possession protocol: proof-of-possession is first achieved by RS when successfully processing EDHOC message\_3 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys. Also, proof-of-possession is later achieved by C when receiving from RS: i) the optional EDHOC message\_4 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC session with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
 
 * Specify a unique ace_profile identifier: coap_edhoc_oscore
 
@@ -1605,11 +1610,19 @@ This section lists the specifications of this profile based on the requirements 
 
 * Specify if/how the authz-info endpoint is protected, including how error responses are protected: Not protected
 
-* Optionally, define methods of token transport other than the authz-info endpoint: C can upload the access token when executing EDHOC with RS, by including the access token in the EAD_1 field of EDHOC message_1 (see {{edhoc-exec}}).
+* Optionally, define methods of token transport other than the authz-info endpoint: C can upload the access token when executing EDHOC with RS, by including the access token in the EAD\_3 field of EDHOC message\_3 (see {{edhoc-exec}}).
 
 # Document Updates # {#sec-document-updates}
 
 RFC EDITOR: PLEASE REMOVE THIS SECTION.
+
+## Version -03 to -04 ## {#sec-04-05}
+
+* Removed the case of transporting access token in EAD_1
+
+* Removed redundant normative text
+
+* Clarifications of association between access token, session_id, EDHOC session and OSCORE security context
 
 ## Version -02 to -03 ## {#sec-03-04}
 

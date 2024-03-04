@@ -1163,15 +1163,19 @@ Table of Contents
       first retrieving it using session_id and AUTH_CRED_C, the
       validation follows the procedure specified in Section 4.2.  If
       such a process fails, RS MUST reply to C with an EDHOC error
-      message with ERR_CODE 1 (see Section 6 of [I-D.ietf-lake-edhoc]),
-      and it MUST abort the EDHOC session.  RS MUST have successfully
-      validated the processing of the access token before completing the
-      EDHOC session.  If completed successfully, then the EDHOC session
-      is associated with both the access token and the pair (session_id,
-      AUTH_CRED_C).  Any old existing EDHOC session associated with the
-      same access token and with the same pair (session_id, AUTH_CRED_C)
-      MUST be deleted, together with the OSCORE Security Context derived
-      from the EDHOC session.
+      message with ERR_CODE = 1 (see Section 6 of
+      [I-D.ietf-lake-edhoc]), and it MUST abort the EDHOC session.  RS
+      MUST have successfully validated the processing of the access
+      token before completing the EDHOC session.  If completed
+      successfully, then the EDHOC session is associated with both the
+      access token and the pair (session_id, AUTH_CRED_C).  Any old
+      existing EDHOC session associated with the same access token and
+      with the same pair (session_id, AUTH_CRED_C) MUST be deleted,
+      together with the OSCORE Security Context derived from the EDHOC
+      session.
+
+   Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3
+   "Access Denied" defined in draft-ietf-lake-authz
 
 4.4.4.  OSCORE Security Context
 
@@ -2124,9 +2128,9 @@ Table of Contents
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-07, 20 October 2023,
+              ietf-cose-cbor-encoded-cert-09, 4 March 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-07>.
+              cbor-encoded-cert-09>.
 
    [I-D.ietf-lake-edhoc]
               Selander, G., Mattsson, J. P., and F. Palombini,

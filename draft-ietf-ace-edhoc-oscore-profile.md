@@ -606,7 +606,7 @@ Access tokens are transported in EAD fields only for the first access token of a
 
 ## EDHOC Session and OSCORE Security Context # {#edhoc-exec}
 
-In order to mutually authenticate and establish secure communication for authorized access, C and RS run the EDHOC protocol {{I-D.ietf-lake-edhoc}}, using the profile described in this document with C as EDHOC Initiator and RS as EDHOC Responder. When a new EDHOC session is established using this profile, previous EDHOC session associated with the same access token and the same pair (session_id, AUTH_CRED_C), and derived OSCORE Security Context are deleted, see {{m_3}}.
+In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol {{I-D.ietf-lake-edhoc}} with C as EDHOC Initiator and RS as EDHOC Responder. When a new EDHOC session is established, previous EDHOC sessions associated with the same access token and the same pair (session_id, AUTH_CRED_C) are deleted, see {{m_3}}. The OSCORE Security Contexts derived from those EDHOC sessions are also deleted.
 
 As per {{Section A.2 of I-D.ietf-lake-edhoc}}, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as 2.04 (Changed) CoAP responses. C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present.
 

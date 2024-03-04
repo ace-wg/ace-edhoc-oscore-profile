@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 2 September 2024                                      M. Tiloca
+Expires: 5 September 2024                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            1 March 2024
+                                                            4 March 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 September 2024.
+   This Internet-Draft will expire on 5 September 2024.
 
 Copyright Notice
 
@@ -1100,13 +1100,13 @@ Table of Contents
 4.4.  EDHOC Session and OSCORE Security Context
 
    In order to mutually authenticate and establish secure communication
-   for authorized access, C and RS run the EDHOC protocol
-   [I-D.ietf-lake-edhoc], using the profile described in this document
-   with C as EDHOC Initiator and RS as EDHOC Responder.  When a new
-   EDHOC session is established using this profile, previous EDHOC
-   session associated with the same access token and the same pair
-   (session_id, AUTH_CRED_C), and derived OSCORE Security Context are
-   deleted, see Section 4.4.3.
+   for authorized access according to the profile described in this
+   document, C and RS run the EDHOC protocol [I-D.ietf-lake-edhoc] with
+   C as EDHOC Initiator and RS as EDHOC Responder.  When a new EDHOC
+   session is established, previous EDHOC sessions associated with the
+   same access token and the same pair (session_id, AUTH_CRED_C) are
+   deleted, see Section 4.4.3.  The OSCORE Security Contexts derived
+   from those EDHOC sessions are also deleted.
 
    As per Appendix A.2 of [I-D.ietf-lake-edhoc], C sends EDHOC message_1
    and EDHOC message_3 to an EDHOC resource at RS, as CoAP POST

@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-03-03T00:39:02.077043+00:00",
+  "timestamp": "2024-03-05T00:36:42.134541+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -730,24 +730,26 @@
       "id": "PR_kwDOIar0bc5nnQzc",
       "title": "EAD_3 related updates",
       "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/4",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "gselander",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-02-22T07:50:55Z",
-      "updatedAt": "2024-03-01T14:42:19Z",
+      "updatedAt": "2024-03-04T08:55:50Z",
       "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
       "baseRefName": "main",
       "baseRefOid": "a56711aea656d210bca6050302405f50c83a74ed",
       "headRepository": "ace-wg/ace-edhoc-oscore-profile",
       "headRefName": "remove-ead-1",
-      "headRefOid": "fc555bab87b052e999df5876d54a4db4974ea46a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "12ae0f40ec97346cf096bbb405ef1cb2f3facffb",
+      "closedAt": "2024-03-04T08:55:50Z",
+      "mergedAt": "2024-03-04T08:55:50Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "60af5d2af7d310f418188e04d6956aa1496e1f85"
+      },
       "comments": [
         {
           "author": "gselander",
@@ -762,6 +764,13 @@
           "body": "I've checked the commit https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/4/commits/c34735adbfbda878e6309dd70a1b1741ed6b5cd8\r\n\r\nIt looks good, thanks! I see only two nits in Section 4.4:\r\n\r\n* s/to which the access token belongs./which the access token belongs to.\r\n\r\n* s/previous EDHOC session/previous EDHOC sessions\r\n\r\n  For that same sentence, maybe it's better to rephrase as below altogether:\r\n\r\n  OLD\r\n  > When a new EDHOC session is established using this profile, previous EDHOC session associated with the same access token and the same pair (session_id, AUTH_CRED_C), and derived OSCORE Security Context are deleted, see Section 4.4.3.\r\n\r\n  NEW\r\n  > When a new EDHOC session is established using this profile, previous EDHOC sessions associated with the same access token and the same pair (session_id, AUTH_CRED_C) are deleted, see Section 4.4.3. The OSCORE Security Contexts derived from those EDHOC sessions are deleted.",
           "createdAt": "2024-03-01T14:42:18Z",
           "updatedAt": "2024-03-01T14:42:18Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks Marco, I did not make the first change, there are other instances of the same construction and I think the wording is fine. For the second proposal I did another change to the paragraph. \r\n\r\nThis should now be sufficiently ready to merge. Additional comments can be made on the main branch.",
+          "createdAt": "2024-03-04T08:55:41Z",
+          "updatedAt": "2024-03-04T08:55:41Z"
         }
       ],
       "reviews": [
@@ -1066,6 +1075,40 @@
           ]
         }
       ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOIar0bc5ooY12",
+      "title": "Allow reverse flow and sending the token in EAD2",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/5",
+      "state": "OPEN",
+      "author": "chrysn",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Coming out of https://www.ietf.org/archive/id/draft-amsuess-core-resource-directory-extensions-10.html#name-ace-edhoc-profile, I'd like to propose that the token can also be sent in EAD2.\r\n\r\nThis present PR is incomplete as it only states this in one place without syncing the rest of the document; I'll need to come back to this.\r\n\r\nAs long as no CoAP role reversal happens, this will be used with the reverse message flow of EDHOC; if we go with this, I'll add more changes:\r\n\r\n* [ ] C (the responder) may not have received identifying information about the RS through EDHOC. (Granted, the same is true when doing a plain POST). Unless it has not received any out of band, it may need to use a token that has a group audience, and compare the precise ID_CRED_I that comes back to the rs_cnf2 that was part of its token response.\r\n\r\n* [ ] Add bit more explicit stating that reverse flow is allowed. That will likely need to talk briefly about vulnerable identities in that context, with two options:\r\n\r\n  * C already knows precisely which RS to talk to. Then AS can create a symmetrically encrypted token, so it doesn't matter if an active attacker can obtain it.\r\n  * C does not already know, and takes a group token. Group tokens are notoriously hard to encrypt (yada yada group key management), but the main information in the token is that C is allowed to do something (in the motivating example, serve as an RD), and we've chosen reverse flow *because* C has the less sensitive identity, and that's usually OK to reveal to an active attacker.",
+      "createdAt": "2024-03-04T19:40:20Z",
+      "updatedAt": "2024-03-04T20:44:06Z",
+      "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "baseRefName": "main",
+      "baseRefOid": "6e36f238e03d6aee0cbbc8dd6242951163496a2d",
+      "headRepository": "chrysn-pull-requests/ace-edhoc-oscore-profile",
+      "headRefName": "ead",
+      "headRefOid": "142ff1515a3a21c894a9260586f756243fce78d6",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks @chrysn! Too late for IETF 119 submission but good start for discussion. Would be good to sketch the use case / trust model to see what is the relevant order of steps. E.g. why not use EAD_4 instead (besides less optimal), in which case the initiator is authenticated and access token becomes encrypted for known recipient.",
+          "createdAt": "2024-03-04T20:44:05Z",
+          "updatedAt": "2024-03-04T20:44:05Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }

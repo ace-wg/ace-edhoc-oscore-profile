@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-03-05T00:36:42.134541+00:00",
+  "timestamp": "2024-03-07T00:30:03.513701+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -1088,7 +1088,7 @@
       "labels": [],
       "body": "Coming out of https://www.ietf.org/archive/id/draft-amsuess-core-resource-directory-extensions-10.html#name-ace-edhoc-profile, I'd like to propose that the token can also be sent in EAD2.\r\n\r\nThis present PR is incomplete as it only states this in one place without syncing the rest of the document; I'll need to come back to this.\r\n\r\nAs long as no CoAP role reversal happens, this will be used with the reverse message flow of EDHOC; if we go with this, I'll add more changes:\r\n\r\n* [ ] C (the responder) may not have received identifying information about the RS through EDHOC. (Granted, the same is true when doing a plain POST). Unless it has not received any out of band, it may need to use a token that has a group audience, and compare the precise ID_CRED_I that comes back to the rs_cnf2 that was part of its token response.\r\n\r\n* [ ] Add bit more explicit stating that reverse flow is allowed. That will likely need to talk briefly about vulnerable identities in that context, with two options:\r\n\r\n  * C already knows precisely which RS to talk to. Then AS can create a symmetrically encrypted token, so it doesn't matter if an active attacker can obtain it.\r\n  * C does not already know, and takes a group token. Group tokens are notoriously hard to encrypt (yada yada group key management), but the main information in the token is that C is allowed to do something (in the motivating example, serve as an RD), and we've chosen reverse flow *because* C has the less sensitive identity, and that's usually OK to reveal to an active attacker.",
       "createdAt": "2024-03-04T19:40:20Z",
-      "updatedAt": "2024-03-04T20:44:06Z",
+      "updatedAt": "2024-03-05T12:26:15Z",
       "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
       "baseRefName": "main",
       "baseRefOid": "6e36f238e03d6aee0cbbc8dd6242951163496a2d",
@@ -1106,6 +1106,13 @@
           "body": "Thanks @chrysn! Too late for IETF 119 submission but good start for discussion. Would be good to sketch the use case / trust model to see what is the relevant order of steps. E.g. why not use EAD_4 instead (besides less optimal), in which case the initiator is authenticated and access token becomes encrypted for known recipient.",
           "createdAt": "2024-03-04T20:44:05Z",
           "updatedAt": "2024-03-04T20:44:05Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "NONE",
+          "body": "ad EAD4: If by message 2 the initiator has not presented something credible, the advantage of protecting the more vulnerable identity is lost. (Else, they could go with the forward message flow). There is a good case for that in 2-stage authentication/authorization, though. (Like, when ID_CRED_2 is a verbatim \"short\" certificate attesting that its subject is part of the domain with some identity, and then the token adds authorizations).\r\n\r\nUsing EAD4 would beg the question of whether for that case, using the EDHOC option with message 4 makes sense; pinging @marco-tiloca-sics as AIU the main corresponding person on that document.",
+          "createdAt": "2024-03-05T12:26:14Z",
+          "updatedAt": "2024-03-05T12:26:14Z"
         }
       ],
       "reviews": []

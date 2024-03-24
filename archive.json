@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-03-21T00:38:27.451498+00:00",
+  "timestamp": "2024-03-24T00:41:26.663376+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -94,7 +94,7 @@
       "labels": [],
       "body": "After today's presentation, @gselander, @marco-tiloca-sics and I discussed the relevance of ACE EDHOC running with EDHOC inverse flow. In this scenario, compared to the \"regular\" flow of the client being the CoAP client, ACE client and the initiator, we are happy with the CoAP and ACE roles, but consider the vulnerable identity of the resource server. (For example, think of an RS that is mobile and person-bound -- it may enable tracking that person).\r\n\r\nMitigation is twofold depending on scenarios:\r\n* If the RS is not part of any group audience, guidance should be to use a small key ID, preferably 0 to maximize the anonymity set. This way, no trackable information is revealed: Message 1 only contains ephemeral data and cipher suites, message 2 contains ephemeral data and a huge-anonymity-set kid=0. The client, which has already requested a token and knows whom it is talking to, finds the expected kid, matches it with the public key provided by the AS, and message 3 can already be sent to an authenticated device. (Of course, this places the larger onus on the client and the network to find out whom it is talking to in the first place\u2026). In such scenarios, the vulnerable identity is well protected even though it is on the responder.\r\n\r\n  I wouldn't be surprised if it turns out that many cases where this is usable turn out to broadcast identifying information earlier anyway, and thus either there's nothing vulnerable left of the RS's identity. When those broadcasts are revisited, the device may find itself in the other situation again.\r\n\r\n* If the RS is part of a group audience, and thus uses a large ID_CRED_x (eg. some thumbprint), it has a vulnerable (trackable) identity.\r\n\r\n  If it turns out that the client's identity is less vulnerable, it may make sense to use inverse message flow.\r\n  The client has ample options to make its identity less vulnerable: It can use short term identity keys (possibly even rolled anew for each token it obtains), and the most identifiable information is in the token it presents to an active attacker (where the token can't easily be encrypted unless the device's identity is known well).\r\n  The client may also have the benefit of only attempting connections on user interaction, which makes it less trackable than the RS that answers to any attempted EDHOC exchange.\r\n\r\n  If trade-offs are taken that way, the client initiates inverse flow. The RS sends a random G_X in message 1, and the client encrypts the token in EAD2 so that it can only be read by the alleged RS. Usual caveats for using tokens under the conditions of EAD2 apply.",
       "createdAt": "2024-03-19T13:15:30Z",
-      "updatedAt": "2024-03-19T13:20:21Z",
+      "updatedAt": "2024-03-21T10:33:05Z",
       "closedAt": null,
       "comments": [
         {
@@ -103,6 +103,27 @@
           "body": "Lingering on this a bit more, I wonder whether the RS can limit the information it publishes to the (possibly hashed) identity of its AS, and an ephemeral-static encrypted piece of information it sends to C. In ACE, this would be similar to the cnonce (it could literally be in there), but in EDHOC that might be equivalent to running authz. Both cnonce and authz share that they are online processes, but the upside is that all one party needs to reveal is the identity of the AS they \"serve\", and everything else is ephemeral. The party W may even not be the individual AS, but just a (possibly distributed) third party that the AS trusts as its anonymity shield.",
           "createdAt": "2024-03-19T13:20:20Z",
           "updatedAt": "2024-03-19T13:20:20Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "NONE",
+          "body": "Summarizing some discussion with @gselander and @marco-tiloca-sics from today:\r\n\r\n* It probably makes sense to generally relax and allow tokens more widely.\r\n* message 3 is usually the preferable message to send the token in: it's fully encrypted against an active attacker, and message 3 is small. This is particularly good if the RS has only few keys, presenting them by a low-entropy/good-privacy Key ID.\r\n* message 2 is worse because an active attacker can see the token, but if the token is encrypted (or otherwise not sensitive), that may not be too big an issue, and it allows the RS more flexibility in choosing / protecting its identity.\r\n* message 4 can be good if there is some initial authentication (say, credentials are sent by value as generic certificates that confirm the party's enrollment in an organization), and the token is sent in message 4. (*Unsure how we concluded there*: How is that better compared to POSTing it to the inner /authz-info? Only because it may be sent in a [single message](https://github.com/core-wg/oscore-edhoc/issues/19) together with app data?)\r\n* We found no good reason to do it in message 1: Yes, the unprotected POST to /authz-info works, and has to work eg. for the [alternative workflow](https://datatracker.ietf.org/doc/draft-ietf-ace-workflow-and-params/) and because ACE works that way, but sending it in message 1 has no advantage over sending it in message 3, which is still early enough in the EDHOC process.",
+          "createdAt": "2024-03-21T09:44:25Z",
+          "updatedAt": "2024-03-21T09:44:25Z"
+        },
+        {
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for the great summary!\r\n\r\nOn one particular point:\r\n\r\n> - message 4 can be good if there is some initial authentication (say, credentials are sent by value as generic certificates that confirm the party's enrollment in an organization), and the token is sent in message 4. (Unsure how we concluded there: How is that better compared to POSTing it to the inner /authz-info? Only because it may be sent in a https://github.com/core-wg/oscore-edhoc/issues/19 together with app data?)\r\n\r\nYes, I think that's the reason, as hoping for a single, ultra combined request whose payload includes OSCORE-protected data prepended by EDHOC message_4, which in turn conveys the access token in its EAD_4.",
+          "createdAt": "2024-03-21T10:15:26Z",
+          "updatedAt": "2024-03-21T10:15:26Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "NONE",
+          "body": "It's probably worth pointing out that when I considered a token in message 2 (which also triggered the message 4 discussions), my assumption was that *forward* message flow would be used -- that is, that the RS is initiating the EDHOC connection.\r\n\r\nThat is fine when one has [role reversal in an OSCORE session established through ACE](https://github.com/ace-wg/ace-workflow-and-params/issues/1), but this document doesn't really cater for it so far, and we haven't really discussed *that* aspect.\r\n\r\nSo I'm wondering: Are there any good reasons to open for tokens in messages 2 / 4, *unless* we consider cases where during EDHOC the CoAP client is not the ACE client? Sure, reverse flow *allows* that the CoAP-client-ACE-client flips things around, but are there cases that motivate that on its own? The best reason that comes to my mind is that it allows the ACE Client to send the token before the ACE RS has to pick its ID_CRED_I, which makes sense if it is part of group audiences, but maybe there are already better ways for the ACE client to tell in the RS in forward flow (maybe in an EAD1 through EDHOC Application Profile id_cred_types) that it already knows which RS it is talking to. Is \"the RS is part of a group audience, I don't know which precisely it is (so I can't tell it to send kid=0), and I want to connect to it even though it will not present its identity to an active attacker\" be a case? Probably, but I'd like to confirm that.",
+          "createdAt": "2024-03-21T10:33:04Z",
+          "updatedAt": "2024-03-21T10:33:04Z"
         }
       ]
     }

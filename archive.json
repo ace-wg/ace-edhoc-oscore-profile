@@ -1,0 +1,1206 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-06-16T00:45:04.563921+00:00",
+  "repo": "ace-wg/ace-edhoc-oscore-profile",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 6,
+      "id": "I_kwDOIar0bc6C01GP",
+      "title": "Link to issue tracker",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/issues/6",
+      "state": "OPEN",
+      "author": "chrysn",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Please consider adding a pointer to the repository to the document (and, in coordination with chairs, [to the data tracker](https://datatracker.ietf.org/doc/draft-ietf-ace-edhoc-oscore-profile/)).\r\n\r\nThe one in the document can easily be done in the latest markdown format by adding to the file's header:\r\n\r\n\r\n```yaml\r\nvenue:\r\n  group: Authentication and Authorization for Constrained Environments (ace) \r\n  mail: ace@ietf.org\r\n  github: ace-wg/ace-edhoc-oscore-profile\r\n```",
+      "createdAt": "2024-03-19T12:50:09Z",
+      "updatedAt": "2024-03-19T12:50:09Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOIar0bc6C04v8",
+      "title": "ead_value: Use separate EADs",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/issues/7",
+      "state": "OPEN",
+      "author": "chrysn",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Packing the token into the EAD as <<{0: 'the-token'}>> adds at least 3 bytes (more for tokens >24 byte) to the token, likewise to the session ID.\r\n\r\n@gselander, @marco-tiloca-sics and I discussed a few options back and forth, and given we want to support arbitrary byte string tokens (not only CWTs), it may get smaller, but not by much without sacrificing the clear distinction between a session ID and a token. (We've played with the session ID being a CCS, and with being some kind of key ID, but that doesn't really make the double encapsulation of the token go away).\r\n\r\nIn the end, we've concluded that for this case it is justified to use one EAD value for a session ID, and a different one (not from 1+0, maybe even from 1+2) for an EAD indicating a session ID. The one bit we take out of that makes up for at least 3 bytes in the payload, and it's not like this is requesting two 1+0 values.",
+      "createdAt": "2024-03-19T12:56:39Z",
+      "updatedAt": "2024-03-19T12:56:39Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOIar0bc6C1D9p",
+      "title": "Using a token in message 2: When and how",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/issues/8",
+      "state": "OPEN",
+      "author": "chrysn",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "After today's presentation, @gselander, @marco-tiloca-sics and I discussed the relevance of ACE EDHOC running with EDHOC inverse flow. In this scenario, compared to the \"regular\" flow of the client being the CoAP client, ACE client and the initiator, we are happy with the CoAP and ACE roles, but consider the vulnerable identity of the resource server. (For example, think of an RS that is mobile and person-bound -- it may enable tracking that person).\r\n\r\nMitigation is twofold depending on scenarios:\r\n* If the RS is not part of any group audience, guidance should be to use a small key ID, preferably 0 to maximize the anonymity set. This way, no trackable information is revealed: Message 1 only contains ephemeral data and cipher suites, message 2 contains ephemeral data and a huge-anonymity-set kid=0. The client, which has already requested a token and knows whom it is talking to, finds the expected kid, matches it with the public key provided by the AS, and message 3 can already be sent to an authenticated device. (Of course, this places the larger onus on the client and the network to find out whom it is talking to in the first place\u2026). In such scenarios, the vulnerable identity is well protected even though it is on the responder.\r\n\r\n  I wouldn't be surprised if it turns out that many cases where this is usable turn out to broadcast identifying information earlier anyway, and thus either there's nothing vulnerable left of the RS's identity. When those broadcasts are revisited, the device may find itself in the other situation again.\r\n\r\n* If the RS is part of a group audience, and thus uses a large ID_CRED_x (eg. some thumbprint), it has a vulnerable (trackable) identity.\r\n\r\n  If it turns out that the client's identity is less vulnerable, it may make sense to use inverse message flow.\r\n  The client has ample options to make its identity less vulnerable: It can use short term identity keys (possibly even rolled anew for each token it obtains), and the most identifiable information is in the token it presents to an active attacker (where the token can't easily be encrypted unless the device's identity is known well).\r\n  The client may also have the benefit of only attempting connections on user interaction, which makes it less trackable than the RS that answers to any attempted EDHOC exchange.\r\n\r\n  If trade-offs are taken that way, the client initiates inverse flow. The RS sends a random G_X in message 1, and the client encrypts the token in EAD2 so that it can only be read by the alleged RS. Usual caveats for using tokens under the conditions of EAD2 apply.",
+      "createdAt": "2024-03-19T13:15:30Z",
+      "updatedAt": "2024-03-21T10:33:05Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "NONE",
+          "body": "Lingering on this a bit more, I wonder whether the RS can limit the information it publishes to the (possibly hashed) identity of its AS, and an ephemeral-static encrypted piece of information it sends to C. In ACE, this would be similar to the cnonce (it could literally be in there), but in EDHOC that might be equivalent to running authz. Both cnonce and authz share that they are online processes, but the upside is that all one party needs to reveal is the identity of the AS they \"serve\", and everything else is ephemeral. The party W may even not be the individual AS, but just a (possibly distributed) third party that the AS trusts as its anonymity shield.",
+          "createdAt": "2024-03-19T13:20:20Z",
+          "updatedAt": "2024-03-19T13:20:20Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "NONE",
+          "body": "Summarizing some discussion with @gselander and @marco-tiloca-sics from today:\r\n\r\n* It probably makes sense to generally relax and allow tokens more widely.\r\n* message 3 is usually the preferable message to send the token in: it's fully encrypted against an active attacker, and message 3 is small. This is particularly good if the RS has only few keys, presenting them by a low-entropy/good-privacy Key ID.\r\n* message 2 is worse because an active attacker can see the token, but if the token is encrypted (or otherwise not sensitive), that may not be too big an issue, and it allows the RS more flexibility in choosing / protecting its identity.\r\n* message 4 can be good if there is some initial authentication (say, credentials are sent by value as generic certificates that confirm the party's enrollment in an organization), and the token is sent in message 4. (*Unsure how we concluded there*: How is that better compared to POSTing it to the inner /authz-info? Only because it may be sent in a [single message](https://github.com/core-wg/oscore-edhoc/issues/19) together with app data?)\r\n* We found no good reason to do it in message 1: Yes, the unprotected POST to /authz-info works, and has to work eg. for the [alternative workflow](https://datatracker.ietf.org/doc/draft-ietf-ace-workflow-and-params/) and because ACE works that way, but sending it in message 1 has no advantage over sending it in message 3, which is still early enough in the EDHOC process.",
+          "createdAt": "2024-03-21T09:44:25Z",
+          "updatedAt": "2024-03-21T09:44:25Z"
+        },
+        {
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for the great summary!\r\n\r\nOn one particular point:\r\n\r\n> - message 4 can be good if there is some initial authentication (say, credentials are sent by value as generic certificates that confirm the party's enrollment in an organization), and the token is sent in message 4. (Unsure how we concluded there: How is that better compared to POSTing it to the inner /authz-info? Only because it may be sent in a https://github.com/core-wg/oscore-edhoc/issues/19 together with app data?)\r\n\r\nYes, I think that's the reason, as hoping for a single, ultra combined request whose payload includes OSCORE-protected data prepended by EDHOC message_4, which in turn conveys the access token in its EAD_4.",
+          "createdAt": "2024-03-21T10:15:26Z",
+          "updatedAt": "2024-03-21T10:15:26Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "NONE",
+          "body": "It's probably worth pointing out that when I considered a token in message 2 (which also triggered the message 4 discussions), my assumption was that *forward* message flow would be used -- that is, that the RS is initiating the EDHOC connection.\r\n\r\nThat is fine when one has [role reversal in an OSCORE session established through ACE](https://github.com/ace-wg/ace-workflow-and-params/issues/1), but this document doesn't really cater for it so far, and we haven't really discussed *that* aspect.\r\n\r\nSo I'm wondering: Are there any good reasons to open for tokens in messages 2 / 4, *unless* we consider cases where during EDHOC the CoAP client is not the ACE client? Sure, reverse flow *allows* that the CoAP-client-ACE-client flips things around, but are there cases that motivate that on its own? The best reason that comes to my mind is that it allows the ACE Client to send the token before the ACE RS has to pick its ID_CRED_I, which makes sense if it is part of group audiences, but maybe there are already better ways for the ACE client to tell in the RS in forward flow (maybe in an EAD1 through EDHOC Application Profile id_cred_types) that it already knows which RS it is talking to. Is \"the RS is part of a group audience, I don't know which precisely it is (so I can't tell it to send kid=0), and I want to connect to it even though it will not present its identity to an active attacker\" be a case? Probably, but I'd like to confirm that.",
+          "createdAt": "2024-03-21T10:33:04Z",
+          "updatedAt": "2024-03-21T10:33:04Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOIar0bc5Lx9iY",
+      "title": "Removing dependence on EDHOC_KeyUpdate",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/1",
+      "state": "MERGED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-03-10T16:19:51Z",
+      "updatedAt": "2023-07-07T14:07:07Z",
+      "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "baseRefName": "main",
+      "baseRefOid": "a7c4ddc77e0f2d401c5113fbb2112a13194930be",
+      "headRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "headRefName": "without-key-update",
+      "headRefOid": "81b6f3ac824fae5df5b4353ae67af1da7d718427",
+      "closedAt": "2023-07-07T14:07:07Z",
+      "mergedAt": "2023-07-07T14:07:07Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "9553745429968abc3fa941ffd965707fc7f23fb0"
+      },
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Two new commits, please review. I think this is ready to merge now.",
+          "createdAt": "2023-07-05T14:21:20Z",
+          "updatedAt": "2023-07-05T14:21:20Z"
+        },
+        {
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Just left the two comments\r\n\r\nhttps://github.com/ace-wg/ace-edhoc-oscore-profile/pull/1#discussion_r1254053436\r\n\r\nhttps://github.com/ace-wg/ace-edhoc-oscore-profile/pull/1#discussion_r1254048198\r\n\r\nThe rest looks good to me.",
+          "createdAt": "2023-07-06T07:38:40Z",
+          "updatedAt": "2023-07-06T07:38:40Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOIar0bc5Pna3v",
+          "commit": {
+            "abbreviatedOid": "f98d9fa"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-03-10T23:14:47Z",
+          "updatedAt": "2023-03-10T23:14:47Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "After this deletion, the values in the second column need to be renumbered. Also, it's an opportunity to fix the column headers by swapping \"CBOR Type\" and \"CBOR value\" :-)",
+              "createdAt": "2023-03-10T23:14:47Z",
+              "updatedAt": "2023-03-10T23:14:48Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5PnbH_",
+          "commit": {
+            "abbreviatedOid": "f98d9fa"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-03-10T23:16:55Z",
+          "updatedAt": "2023-03-10T23:16:56Z",
+          "comments": [
+            {
+              "originalPosition": 51,
+              "body": "s/between the C and RS/between C and RS\r\n\r\nNot sure if it's worth mentioning: for the cases listed below, this same procedure would apply irrespective of having a valid EDHOC session.",
+              "createdAt": "2023-03-10T23:16:56Z",
+              "updatedAt": "2023-03-10T23:16:56Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5PnbwM",
+          "commit": {
+            "abbreviatedOid": "f98d9fa"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-03-10T23:22:04Z",
+          "updatedAt": "2023-03-10T23:22:05Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "Another reason for C or RS to delete the OSCORE Security Context is the EDHOC session having become invalid (e.g., due to the expiration of an authentication credential), with consequent deletion of the application keying material derived from it.",
+              "createdAt": "2023-03-10T23:22:04Z",
+              "updatedAt": "2023-03-10T23:22:05Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5Pnb2f",
+          "commit": {
+            "abbreviatedOid": "f98d9fa"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-03-10T23:22:54Z",
+          "updatedAt": "2023-03-10T23:22:55Z",
+          "comments": [
+            {
+              "originalPosition": 65,
+              "body": "s/independent of ACE/independent of ACE and EDHOC",
+              "createdAt": "2023-03-10T23:22:55Z",
+              "updatedAt": "2023-03-10T23:22:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5XJtcp",
+          "commit": {
+            "abbreviatedOid": "f98d9fa"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-05T09:50:35Z",
+          "updatedAt": "2023-06-05T09:50:35Z",
+          "comments": [
+            {
+              "originalPosition": 51,
+              "body": "I am updating the text, but will omit to point out this specifically, since this is a question you more likely would ask if you had the mindset of the our previous discussion rather than if you read the draft without this background.  ",
+              "createdAt": "2023-06-05T09:50:35Z",
+              "updatedAt": "2023-06-05T09:51:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5XJuE7",
+          "commit": {
+            "abbreviatedOid": "f98d9fa"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-05T09:52:08Z",
+          "updatedAt": "2023-06-05T09:52:09Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "I will add EDHOC session becoming invalid to the set of reasons.",
+              "createdAt": "2023-06-05T09:52:08Z",
+              "updatedAt": "2023-06-05T09:52:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5XJuSP",
+          "commit": {
+            "abbreviatedOid": "f98d9fa"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-06-05T09:52:36Z",
+          "updatedAt": "2023-06-05T09:52:36Z",
+          "comments": [
+            {
+              "originalPosition": 65,
+              "body": "Agree",
+              "createdAt": "2023-06-05T09:52:36Z",
+              "updatedAt": "2023-06-05T09:52:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5aWz_i",
+          "commit": {
+            "abbreviatedOid": "86fc1bf"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-06T07:30:12Z",
+          "updatedAt": "2023-07-06T07:30:13Z",
+          "comments": [
+            {
+              "originalPosition": 197,
+              "body": "The first list above actually already mentions this as a possible reason to invalidate the Security Context.\r\n\r\nThis line and the details that it provides can be merged into that bullet point above, which can become something like:\r\n\r\nOLD\r\n\r\n>  * The associated EDHOC session has become invalid\r\n\r\nNEW\r\n> * The associated EDHOC session from which this OSCORE Security Context was derived has become invalid, e.g., due to the expiration of an authentication credential.",
+              "createdAt": "2023-07-06T07:30:13Z",
+              "updatedAt": "2023-07-06T07:30:13Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5aW16w",
+          "commit": {
+            "abbreviatedOid": "86fc1bf"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-07-06T07:35:16Z",
+          "updatedAt": "2023-07-06T07:35:16Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "The first list above includes reasons to invalidate a Security Context, which is thus supposed to be also deleted. The second list gives one further reason to delete the Security Context (lack of storage). Can the two lists be merged into a single, main one?\r\n\r\nThe focus can be on reasons to delete a Security Context. These are: i) the Security Context has become invalid, which in turn happens if, e.g., the token has expired, the EDHOC session has become invalid, other policies have determined so; ii) lack of storage at the RS and consequent deletion at the RS.",
+              "createdAt": "2023-07-06T07:35:16Z",
+              "updatedAt": "2023-07-06T07:35:16Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOIar0bc5cnd13",
+      "title": "Compiled updates",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/2",
+      "state": "MERGED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "An unstructed bunch of suggested updates following a detailed review. For discussion.\r\n",
+      "createdAt": "2023-10-12T10:13:56Z",
+      "updatedAt": "2023-10-20T14:43:03Z",
+      "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "baseRefName": "main",
+      "baseRefOid": "5e61eb08d656f517fb2163b18a8916068a9271f1",
+      "headRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "headRefName": "overhaul",
+      "headRefOid": "b98663c6084288fdd7ee228d5c6b3934e4dbe8ff",
+      "closedAt": "2023-10-20T14:43:03Z",
+      "mergedAt": "2023-10-20T14:43:03Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "78c9a7d63f9abba40f0d9f15b3d4185e19a1472c"
+      },
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "First commit covers sections 1-3.",
+          "createdAt": "2023-10-12T10:14:20Z",
+          "updatedAt": "2023-10-12T10:14:20Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Merging in preparation of new version.",
+          "createdAt": "2023-10-20T14:42:56Z",
+          "updatedAt": "2023-10-20T14:42:56Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOIar0bc5kRBaW",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:25:27Z",
+          "updatedAt": "2023-10-17T12:25:27Z",
+          "comments": [
+            {
+              "originalPosition": 131,
+              "body": "The access is requested for a scope applied to an audience. That can be more than a resource.\r\n\r\nA middle ground between the new and old sentence can be:\r\n\r\n\"After verifying the POST request to the /token endpoint and that C is authorized to perform the access specified in its request, ...\"",
+              "createdAt": "2023-10-17T12:25:27Z",
+              "updatedAt": "2023-10-17T12:25:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kRB99",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:26:39Z",
+          "updatedAt": "2023-10-17T12:26:39Z",
+          "comments": [
+            {
+              "originalPosition": 174,
+              "body": "This is correct if the upload of the access token by the AS was successful, but it's different if the upload was not successful. Also, we can avoid the normative language, since that is now defined in -ace-workflow-and-params. The second sentence can be:\r\n\r\n\"In case of successful token upload, the access token response to C does not include the parameter \"access_token\", and includes the parameter \"token_uploaded\" encoding the CBOR simple value \"true\" (0xf5).\"\r\n\r\n(we can avoid restating how it works in case of unsuccessful token upload, as it is described in -ace-workflow-and-params anyway)",
+              "createdAt": "2023-10-17T12:26:39Z",
+              "updatedAt": "2023-10-17T12:26:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kRCJb",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:27:03Z",
+          "updatedAt": "2023-10-17T12:27:04Z",
+          "comments": [
+            {
+              "originalPosition": 338,
+              "body": "I think we can remove \"(if present)\", which is applicable specifically to the Content-Format CoAP Option.",
+              "createdAt": "2023-10-17T12:27:03Z",
+              "updatedAt": "2023-10-17T12:27:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kRCr8",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:28:10Z",
+          "updatedAt": "2023-10-17T12:28:11Z",
+          "comments": [
+            {
+              "originalPosition": 377,
+              "body": "Is this EAD item going to be used as critical?",
+              "createdAt": "2023-10-17T12:28:11Z",
+              "updatedAt": "2023-10-17T12:28:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kRDkB",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:29:31Z",
+          "updatedAt": "2023-10-17T12:29:31Z",
+          "comments": [
+            {
+              "originalPosition": 390,
+              "body": "Since this is about OSCORE, it's better to use \"association\" instead of \"connection\".",
+              "createdAt": "2023-10-17T12:29:31Z",
+              "updatedAt": "2023-10-17T12:29:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kREG_",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:30:23Z",
+          "updatedAt": "2023-10-17T12:30:23Z",
+          "comments": [
+            {
+              "originalPosition": 408,
+              "body": "I think that \"the EDHOC cipher suite\" should actually be \"an EDHOC cipher suite\".",
+              "createdAt": "2023-10-17T12:30:23Z",
+              "updatedAt": "2023-10-17T12:30:23Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kREX5",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:30:56Z",
+          "updatedAt": "2023-10-17T12:30:57Z",
+          "comments": [
+            {
+              "originalPosition": 411,
+              "body": "s/then C MUST the EAD item/then C adds the EAD item\r\n\r\n(this would also be consistent with the later sentence about using the item in EAD_3)",
+              "createdAt": "2023-10-17T12:30:56Z",
+              "updatedAt": "2023-10-17T12:30:57Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kREo2",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:31:31Z",
+          "updatedAt": "2023-10-17T12:31:31Z",
+          "comments": [
+            {
+              "originalPosition": 450,
+              "body": "The last sentence can be extended as:\r\n\r\n\"... the received EDHOC message_2 and before sending EDHOC message_3.\"",
+              "createdAt": "2023-10-17T12:31:31Z",
+              "updatedAt": "2023-10-17T12:31:31Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kRE8y",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T12:32:11Z",
+          "updatedAt": "2023-10-17T12:32:12Z",
+          "comments": [
+            {
+              "originalPosition": 459,
+              "body": "After this paragraph, we can add (for now) a placeholder about the alternative when the AS uploads the new access token to RS. This will require some additional explanation, which should be mostly possible to give in a future version of -ace-workflow-and params, as independent of the specifically used transport profile of ACE.",
+              "createdAt": "2023-10-17T12:32:12Z",
+              "updatedAt": "2023-10-17T12:32:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kTV2F",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T16:15:41Z",
+          "updatedAt": "2023-10-17T16:15:59Z",
+          "comments": [
+            {
+              "originalPosition": 338,
+              "body": "I was thinking that the Content-Format, being an option, could be omitted in this profile when it is understood out of band, in the interest of optimization.",
+              "createdAt": "2023-10-17T16:15:42Z",
+              "updatedAt": "2023-10-17T16:15:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kTXVN",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T16:17:51Z",
+          "updatedAt": "2023-10-17T16:17:52Z",
+          "comments": [
+            {
+              "originalPosition": 377,
+              "body": "Good point, should add that.",
+              "createdAt": "2023-10-17T16:17:52Z",
+              "updatedAt": "2023-10-17T16:17:52Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kTvTG",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T16:54:11Z",
+          "updatedAt": "2023-10-17T16:54:11Z",
+          "comments": [
+            {
+              "originalPosition": 338,
+              "body": "In general, it is not ultimately forbidden but it is discouraged.\r\n\r\nFrom RFC 7252, Section 5.5.1\r\n\r\n> The payload of requests or of responses ... Its format is specified by the Internet media type and content coding given by the Content-Format Option.  In the absence of this option, no default value is assumed, and the format will need to be inferred by the application (e.g., from the application context).\r\n>\r\n> Implementation Note:  On a quality-of-implementation level, there is a strong expectation that a Content-Format indication will be provided with resource representations whenever possible.  This is not a \"SHOULD\" level requirement solely because it is not a protocol requirement, and it also would be difficult to outline exactly in what cases this expectation can be violated.\r\n\r\nSpecifically for ACE, Section 5.10.1 of RFC 9200 says:\r\n\r\n> The method consists of an authz-info endpoint, implemented by the RS. A client using this method MUST make a POST request to the authz-info endpoint at the RS with the access token in the payload. The CoAP Content-Format or HTTP media type MUST reflect the format of the token, e.g., \"application/cwt\", for CBOR Web Tokens; if no Content-Format or media type is defined for the token format, \"application/octet-stream\" MUST be used.",
+              "createdAt": "2023-10-17T16:54:11Z",
+              "updatedAt": "2023-10-17T16:54:11Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kUSJ8",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T18:05:54Z",
+          "updatedAt": "2023-10-17T18:05:54Z",
+          "comments": [
+            {
+              "originalPosition": 408,
+              "body": "Adding that.",
+              "createdAt": "2023-10-17T18:05:54Z",
+              "updatedAt": "2023-10-17T18:05:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kUmdj",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T18:41:32Z",
+          "updatedAt": "2023-10-17T18:41:32Z",
+          "comments": [
+            {
+              "originalPosition": 411,
+              "body": "Changed this and some minor related things.",
+              "createdAt": "2023-10-17T18:41:32Z",
+              "updatedAt": "2023-10-17T18:41:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kU3iy",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T19:19:26Z",
+          "updatedAt": "2023-10-17T19:19:26Z",
+          "comments": [
+            {
+              "originalPosition": 338,
+              "body": "I removed \"(if present)\" pending other's comments. ",
+              "createdAt": "2023-10-17T19:19:26Z",
+              "updatedAt": "2023-10-17T19:19:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kU6He",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T19:26:35Z",
+          "updatedAt": "2023-10-17T19:26:35Z",
+          "comments": [
+            {
+              "originalPosition": 131,
+              "body": "The authorization may be different from what is specified in the request. Changed to:\r\n\r\n\"After verifying the POST request to the /token endpoint that C is authorized to access, ...\"",
+              "createdAt": "2023-10-17T19:26:35Z",
+              "updatedAt": "2023-10-17T19:26:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kU74f",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T19:30:42Z",
+          "updatedAt": "2023-10-17T19:30:42Z",
+          "comments": [
+            {
+              "originalPosition": 174,
+              "body": "Done.\r\n",
+              "createdAt": "2023-10-17T19:30:42Z",
+              "updatedAt": "2023-10-17T19:30:42Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kVDnz",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T19:50:58Z",
+          "updatedAt": "2023-10-17T19:50:59Z",
+          "comments": [
+            {
+              "originalPosition": 390,
+              "body": "Done.",
+              "createdAt": "2023-10-17T19:50:58Z",
+              "updatedAt": "2023-10-17T19:50:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5kVD8s",
+          "commit": {
+            "abbreviatedOid": "c6fd193"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2023-10-17T19:51:46Z",
+          "updatedAt": "2023-10-17T19:51:47Z",
+          "comments": [
+            {
+              "originalPosition": 450,
+              "body": "Done",
+              "createdAt": "2023-10-17T19:51:46Z",
+              "updatedAt": "2023-10-17T19:51:48Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOIar0bc5dazsi",
+      "title": "adding back refs",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/3",
+      "state": "CLOSED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-20T20:30:22Z",
+      "updatedAt": "2023-10-20T20:30:26Z",
+      "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "baseRefName": "main",
+      "baseRefOid": "3922b405d87ec615b4f5fa2afee12783b53276b5",
+      "headRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "headRefName": "overhaul",
+      "headRefOid": "cf90b8c45cd7d0e047aebf43c01471e7ee4bc0fc",
+      "closedAt": "2023-10-20T20:30:26Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOIar0bc5nnQzc",
+      "title": "EAD_3 related updates",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/4",
+      "state": "MERGED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-02-22T07:50:55Z",
+      "updatedAt": "2024-03-04T08:55:50Z",
+      "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "baseRefName": "main",
+      "baseRefOid": "a56711aea656d210bca6050302405f50c83a74ed",
+      "headRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "headRefName": "remove-ead-1",
+      "headRefOid": "12ae0f40ec97346cf096bbb405ef1cb2f3facffb",
+      "closedAt": "2024-03-04T08:55:50Z",
+      "mergedAt": "2024-03-04T08:55:50Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "60af5d2af7d310f418188e04d6956aa1496e1f85"
+      },
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@marco-tiloca-sics Please see updates following your review.",
+          "createdAt": "2024-03-01T14:12:11Z",
+          "updatedAt": "2024-03-01T14:12:11Z"
+        },
+        {
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I've checked the commit https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/4/commits/c34735adbfbda878e6309dd70a1b1741ed6b5cd8\r\n\r\nIt looks good, thanks! I see only two nits in Section 4.4:\r\n\r\n* s/to which the access token belongs./which the access token belongs to.\r\n\r\n* s/previous EDHOC session/previous EDHOC sessions\r\n\r\n  For that same sentence, maybe it's better to rephrase as below altogether:\r\n\r\n  OLD\r\n  > When a new EDHOC session is established using this profile, previous EDHOC session associated with the same access token and the same pair (session_id, AUTH_CRED_C), and derived OSCORE Security Context are deleted, see Section 4.4.3.\r\n\r\n  NEW\r\n  > When a new EDHOC session is established using this profile, previous EDHOC sessions associated with the same access token and the same pair (session_id, AUTH_CRED_C) are deleted, see Section 4.4.3. The OSCORE Security Contexts derived from those EDHOC sessions are deleted.",
+          "createdAt": "2024-03-01T14:42:18Z",
+          "updatedAt": "2024-03-01T14:42:18Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks Marco, I did not make the first change, there are other instances of the same construction and I think the wording is fine. For the second proposal I did another change to the paragraph. \r\n\r\nThis should now be sufficiently ready to merge. Additional comments can be made on the main branch.",
+          "createdAt": "2024-03-04T08:55:41Z",
+          "updatedAt": "2024-03-04T08:55:41Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOIar0bc5xBDbU",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:07:07Z",
+          "updatedAt": "2024-02-22T15:07:08Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "s/RS responds to the/RS replies to the",
+              "createdAt": "2024-02-22T15:07:08Z",
+              "updatedAt": "2024-02-22T15:07:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBIBR",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:14:43Z",
+          "updatedAt": "2024-02-22T15:14:43Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "s/the associated session identifier/then the associated session identifier",
+              "createdAt": "2024-02-22T15:14:43Z",
+              "updatedAt": "2024-02-22T15:14:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBKML",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:18:20Z",
+          "updatedAt": "2024-02-22T15:18:20Z",
+          "comments": [
+            {
+              "originalPosition": 30,
+              "body": "s/AS assigns the session\\_id to/AS assigns the \"session\\_id\" to\r\n\r\ns/series and it remains fixed/series, and that \"session\\_id\" remains fixed",
+              "createdAt": "2024-02-22T15:18:20Z",
+              "updatedAt": "2024-02-22T15:18:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBKUs",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:18:34Z",
+          "updatedAt": "2024-02-22T15:18:34Z",
+          "comments": [
+            {
+              "originalPosition": 27,
+              "body": "s/same session\\_id in/same \"session\\_id\" in",
+              "createdAt": "2024-02-22T15:18:34Z",
+              "updatedAt": "2024-02-22T15:18:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBLxG",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:20:58Z",
+          "updatedAt": "2024-02-22T15:20:59Z",
+          "comments": [
+            {
+              "originalPosition": 54,
+              "body": "s/to which the EDHOC information is associated/which the EDHOC information is associated with\r\n\r\ns/session\\_id identifies a/\"session\\_id\" identifies a",
+              "createdAt": "2024-02-22T15:20:59Z",
+              "updatedAt": "2024-02-22T15:20:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBMpd",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:22:23Z",
+          "updatedAt": "2024-02-22T15:22:23Z",
+          "comments": [
+            {
+              "originalPosition": 63,
+              "body": "s/The content of the access token is/The access token is\r\n\r\ns/retrieve based on session\\_id/retrieve it based on session\\_id",
+              "createdAt": "2024-02-22T15:22:23Z",
+              "updatedAt": "2024-02-22T16:04:44Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBRIS",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:29:28Z",
+          "updatedAt": "2024-02-22T15:29:28Z",
+          "comments": [
+            {
+              "originalPosition": 79,
+              "body": "NEW\r\n\r\n> * ead\\_value is a CBOR byte string, with value the binary serialization of a CBOR map. The CBOR map includes one field, whose label is a CBOR unsigned integer with value either 0 or 1, and whose value is a CBOR byte string. In particular:",
+              "createdAt": "2024-02-22T15:29:28Z",
+              "updatedAt": "2024-02-22T15:29:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBT2f",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:34:00Z",
+          "updatedAt": "2024-02-22T15:34:00Z",
+          "comments": [
+            {
+              "originalPosition": 82,
+              "body": "OLD\r\n> * For label 0, ead\\_value = { 0 : access\\_token }, the map value is the CBOR byte string equal to the value of the \"access\\_token\" field of the access token response from AS, see {{as-c}}.\r\n\r\nNEW\r\n> * For label 0, ead\\_value = { 0 : access\\_token }, where access\\_token is a CBOR byte string equal to the value of the \"access\\_token\" field of the access token response from AS, see {{as-c}}.",
+              "createdAt": "2024-02-22T15:34:00Z",
+              "updatedAt": "2024-02-22T15:34:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBUpK",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:35:16Z",
+          "updatedAt": "2024-02-22T15:35:17Z",
+          "comments": [
+            {
+              "originalPosition": 83,
+              "body": "OLD\r\n> * For label 1, ead\\_value = { 1 : session\\_id }, the map value is a CBOR byte string equal to the value of the \"session\\_id\" field of the access token response from AS, see {{token-series}}.\r\n\r\nNEW\r\n> * For label 1, ead\\_value = { 1 : session\\_id },where session\\_id is a CBOR byte string equal to the value of the \"session\\_id\" field of the access token response from AS, see {{token-series}}.",
+              "createdAt": "2024-02-22T15:35:16Z",
+              "updatedAt": "2024-02-22T15:35:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBXZy",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:38:58Z",
+          "updatedAt": "2024-02-22T15:38:58Z",
+          "comments": [
+            {
+              "originalPosition": 86,
+              "body": "s/An endpoint supporting/A node supporting\r\n\r\nAn alternative to \"node\" is \"participant\", or \"Client or Resource Server\". But \"endpoint\" is used to denote resources such as /token and /authz-info (see Section 1.1).",
+              "createdAt": "2024-02-22T15:38:58Z",
+              "updatedAt": "2024-02-22T15:39:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBYk3",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T15:40:40Z",
+          "updatedAt": "2024-02-22T15:40:41Z",
+          "comments": [
+            {
+              "originalPosition": 88,
+              "body": "OLD\r\n> Access tokens are only transported in EAD fields for the first access token of a token series and not for the update of access rights, see {{update-access-rights-c-rs}}.\r\n\r\nNEW\r\n> Access tokens are transported in EAD_3 fields only for the first access token of a token series, and not for the update of access rights, see {{update-access-rights-c-rs}}.",
+              "createdAt": "2024-02-22T15:40:40Z",
+              "updatedAt": "2024-02-22T15:40:41Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBquG",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T16:10:00Z",
+          "updatedAt": "2024-02-22T16:10:00Z",
+          "comments": [
+            {
+              "originalPosition": 93,
+              "body": "s/using the profile/, using the profile\r\n\r\nOLD\r\n> When a new EDHOC session is established using this profile, any previous EDHOC session and derived security context, between the same parties associated to the access token / session_id included in EAD\\_3, is removed.\r\n\r\nNEW\r\n> When a new EDHOC session S_NEW is established using this profile, it is possible that both S_NEW and another, existing session S_OLD between the same parties are associated with the same access token and with the same pair (session\\_id, AUTH_CRED_C). In such a case, S_OLD and the derived OSCORE Security Context MUST be deleted.\r\n\r\n(This explanation does not need to involve EAD_3 and its two possible values)",
+              "createdAt": "2024-02-22T16:10:00Z",
+              "updatedAt": "2024-02-22T16:21:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xBuZp",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T16:15:06Z",
+          "updatedAt": "2024-02-22T16:15:06Z",
+          "comments": [
+            {
+              "originalPosition": 120,
+              "body": "OLD\r\n> copying the session\\_id from the relevant POST /token response or access token.\r\n\r\nNEW\r\n> where session\\_id is equal to the value of the \"session_id\" field of the access token response from AS, see {{token-series}}.",
+              "createdAt": "2024-02-22T16:15:06Z",
+              "updatedAt": "2024-02-22T16:15:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xB3N3",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T16:30:34Z",
+          "updatedAt": "2024-02-22T16:30:34Z",
+          "comments": [
+            {
+              "originalPosition": 122,
+              "body": "s/of C, the/of C, i.e., AUTH_CRED_C. The\r\n\r\nOLD\r\n> If EDHOC and the validation of the access token has completed successfully, then any old EDHOC session associated to this session\\_id and authentication credential of C MUST be deleted. RS MUST have successfully completed the processing of the access token before completing the EDHOC session.\r\n\r\nNEW\r\n> If EDHOC and the validation of the access token have completed successfully, then the new EDHOC session S_NEW is established, and is associated with both the access token and the pair (session\\_id, AUTH_CRED_C). RS MUST have successfully completed the processing of the access token before completing the EDHOC session.\r\n> If there is any existing session S_OLD that is also associated with the same access token and with the same pair (session\\_id, AUTH_CRED_C), then S_OLD and the derived OSCORE Security Context MUST be deleted.",
+              "createdAt": "2024-02-22T16:30:34Z",
+              "updatedAt": "2024-02-22T16:30:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOIar0bc5xB5e_",
+          "commit": {
+            "abbreviatedOid": "050b22d"
+          },
+          "author": "marco-tiloca-sics",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-22T16:34:46Z",
+          "updatedAt": "2024-02-22T16:34:46Z",
+          "comments": [
+            {
+              "originalPosition": 131,
+              "body": "NEW\r\n> RS associates the latest EDHOC session and the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential (AUTH_CRED_C = CRED_I) used in the EDHOC session and with the session\\_id identifying the token series that the access token belongs to.",
+              "createdAt": "2024-02-22T16:34:46Z",
+              "updatedAt": "2024-02-22T16:34:46Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOIar0bc5ooY12",
+      "title": "Allow reverse flow and sending the token in EAD2",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/5",
+      "state": "OPEN",
+      "author": "chrysn",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Coming out of https://www.ietf.org/archive/id/draft-amsuess-core-resource-directory-extensions-10.html#name-ace-edhoc-profile, I'd like to propose that the token can also be sent in EAD2.\r\n\r\nThis present PR is incomplete as it only states this in one place without syncing the rest of the document; I'll need to come back to this.\r\n\r\nAs long as no CoAP role reversal happens, this will be used with the reverse message flow of EDHOC; if we go with this, I'll add more changes:\r\n\r\n* [ ] C (the responder) may not have received identifying information about the RS through EDHOC. (Granted, the same is true when doing a plain POST). Unless it has not received any out of band, it may need to use a token that has a group audience, and compare the precise ID_CRED_I that comes back to the rs_cnf2 that was part of its token response.\r\n\r\n* [ ] Add bit more explicit stating that reverse flow is allowed. That will likely need to talk briefly about vulnerable identities in that context, with two options:\r\n\r\n  * C already knows precisely which RS to talk to. Then AS can create a symmetrically encrypted token, so it doesn't matter if an active attacker can obtain it.\r\n  * C does not already know, and takes a group token. Group tokens are notoriously hard to encrypt (yada yada group key management), but the main information in the token is that C is allowed to do something (in the motivating example, serve as an RD), and we've chosen reverse flow *because* C has the less sensitive identity, and that's usually OK to reveal to an active attacker.",
+      "createdAt": "2024-03-04T19:40:20Z",
+      "updatedAt": "2024-03-19T13:31:45Z",
+      "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "baseRefName": "main",
+      "baseRefOid": "6e36f238e03d6aee0cbbc8dd6242951163496a2d",
+      "headRepository": "chrysn-pull-requests/ace-edhoc-oscore-profile",
+      "headRefName": "ead",
+      "headRefOid": "142ff1515a3a21c894a9260586f756243fce78d6",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks @chrysn! Too late for IETF 119 submission but good start for discussion. Would be good to sketch the use case / trust model to see what is the relevant order of steps. E.g. why not use EAD_4 instead (besides less optimal), in which case the initiator is authenticated and access token becomes encrypted for known recipient.",
+          "createdAt": "2024-03-04T20:44:05Z",
+          "updatedAt": "2024-03-04T20:44:05Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "NONE",
+          "body": "ad EAD4: If by message 2 the initiator has not presented something credible, the advantage of protecting the more vulnerable identity is lost. (Else, they could go with the forward message flow). There is a good case for that in 2-stage authentication/authorization, though. (Like, when ID_CRED_2 is a verbatim \"short\" certificate attesting that its subject is part of the domain with some identity, and then the token adds authorizations).\r\n\r\nUsing EAD4 would beg the question of whether for that case, using the EDHOC option with message 4 makes sense; pinging @marco-tiloca-sics as AIU the main corresponding person on that document.",
+          "createdAt": "2024-03-05T12:26:14Z",
+          "updatedAt": "2024-03-05T12:26:14Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "NONE",
+          "body": "See https://github.com/ace-wg/ace-edhoc-oscore-profile/issues/8 for more high-level discussion.\r\n\r\nAs that indicates that some more guidance would be needed, I'm setting this as \"ready for review\", because it lays the groundwork for a more comprehensive solution to 8.",
+          "createdAt": "2024-03-19T13:31:42Z",
+          "updatedAt": "2024-03-19T13:31:42Z"
+        }
+      ],
+      "reviews": []
+    }
+  ]
+}

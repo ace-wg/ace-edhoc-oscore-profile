@@ -17,9 +17,6 @@ area: Security
 workgroup: ACE Working Group
 keyword: Internet-Draft
 
-stand_alone: yes
-pi: [toc, sortrefs, symrefs]
-
 coding: utf-8
 
 author:
@@ -33,13 +30,11 @@ author:
     name: John Preuß Mattsson
     org: Ericsson
     email: john.mattsson@ericsson.com
-
 -
     ins: M. Tiloca
     name: Marco Tiloca
     org: RISE
     email: marco.tiloca@ri.se
-
 -
     ins: R. Höglund
     name: Rikard Höglund
@@ -47,11 +42,9 @@ author:
     email: rikard.hoglund@ri.se
 
 normative:
-  RFC2119:
   RFC3986:
   RFC4648:
   RFC5280:
-  RFC8174:
   RFC6749:
   RFC7252:
   RFC7515:
@@ -120,7 +113,7 @@ The establishment of an association between RS and AS in an ACE ecosystem is out
 
 ## Terminology # {#terminology}
 
-{::boilerplate bcp14}
+{::boilerplate bcp14-tagged}
 
 Certain security-related terms such as "authentication", "authorization", "confidentiality", "(data) integrity", "Message Authentication Code (MAC)", "Hash-based Message Authentication Code (HMAC)", and "verify" are taken from {{RFC4949}}.
 
@@ -1619,8 +1612,7 @@ This section lists the specifications of this profile based on the requirements 
 * Optionally, define methods of token transport other than the authz-info endpoint: C can upload the access token when executing EDHOC with RS, by including the access token in the EAD\_3 field of EDHOC message\_3 (see {{edhoc-exec}}).
 
 # Document Updates # {#sec-document-updates}
-
-RFC EDITOR: PLEASE REMOVE THIS SECTION.
+{:removeinrfc}
 
 ## Version -03 to -04 ## {#sec-04-05}
 
@@ -1683,7 +1675,7 @@ RFC EDITOR: PLEASE REMOVE THIS SECTION.
 * Clarifications and editorial improvements.
 
 # Acknowledgments # {#acknowldegment}
-{: numbered="no"}
+{:numbered="false"}
 
 The authors sincerely thank {{{Christian Amsüss}}} and {{{Carsten Bormann}}} for their comments and feedback.
 

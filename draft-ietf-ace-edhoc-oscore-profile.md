@@ -7,6 +7,11 @@ docname: draft-ietf-ace-edhoc-oscore-profile-latest
 category: std
 submissiontype: IETF
 
+venue:
+  group: Authentication and Authorization for Constrained Environments (ace)
+  mail: ace@ietf.org
+  github: ace-wg/ace-edhoc-oscore-profile
+
 ipr: trust200902
 area: Security
 workgroup: ACE Working Group

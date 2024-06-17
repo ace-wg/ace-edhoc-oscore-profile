@@ -846,9 +846,9 @@ This document has the following actions for IANA.
 Note to RFC Editor: Please replace all occurrences of "{{&SELF}}" with
 the RFC number of this specification and delete this paragraph.
 
-## ACE OAuth Profile Registry ## {#iana-ace-oauth-profile}
+## ACE Profiles Registry ## {#iana-ace-oauth-profile}
 
-IANA is asked to add the following entry to the "ACE OAuth Profile"
+IANA is asked to add the following entry to the "ACE Profiles"
 Registry following the procedure specified in {{RFC9200}}.
 
 * Profile name: coap_edhoc_oscore
@@ -886,9 +886,9 @@ IANA is asked to add the following entries to the "JSON Web Token Claims" regist
 *  Change Controller: IETF
 *  Reference: {{&SELF}}
 
-## CBOR Web Token Claims Registry ## {#iana-token-cwt-claims}
+## CBOR Web Token (CWT) Claims Registry ## {#iana-token-cwt-claims}
 
-IANA is asked to add the following entries to the "CBOR Web Token Claims" registry following the procedure specified in {{RFC8392}}.
+IANA is asked to add the following entries to the "CBOR Web Token (CWT) Claims" registry following the procedure specified in {{RFC8392}}.
 
 * Claim Name: "edhoc_info"
 * Claim Description: Information for EDHOC session

@@ -64,7 +64,7 @@ normative:
   RFC9201:
   RFC9203:
   RFC9360:
-  I-D.ietf-lake-edhoc:
+  RFC9528:
   I-D.ietf-core-oscore-edhoc:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-ace-workflow-and-params:
@@ -101,13 +101,13 @@ This profile can be used to delegate management of authorization information fro
 
 This document defines the "coap_edhoc_oscore" profile of the ACE-OAuth framework {{RFC9200}}. This profile addresses a "zero-touch" constrained setting where authenticated and authorized operations can be performed with low overhead without endpoint specific configurations.
 
-Like in the "coap_oscore" profile {{RFC9203}}, also in this profile a client (C) and a resource server (RS) use the Constrained Application Protocol (CoAP) {{RFC7252}} to communicate, and Object Security for Constrained RESTful Environments (OSCORE) {{RFC8613}} to protect their communications, but this profile uses the Ephemeral Diffie-Hellman Over COSE (EDHOC) protocol {{I-D.ietf-lake-edhoc}} to establish the OSCORE Security Context. The processing of requests for specific protected resources is identical to what is defined in the "coap_oscore" profile.
+Like in the "coap_oscore" profile {{RFC9203}}, also in this profile a client (C) and a resource server (RS) use the Constrained Application Protocol (CoAP) {{RFC7252}} to communicate, and Object Security for Constrained RESTful Environments (OSCORE) {{RFC8613}} to protect their communications, but this profile uses the Ephemeral Diffie-Hellman Over COSE (EDHOC) protocol {{RFC9528}} to establish the OSCORE Security Context. The processing of requests for specific protected resources is identical to what is defined in the "coap_oscore" profile.
 
 When using this profile, C accesses protected resources hosted at RS with the use of an access token issued by a trusted authorization server (AS) and bound to an authentication credential of C. This differs from the "coap_oscore" profile, where the access token is bound to a symmetric key used to derive the OSCORE Security Context. As recommended in {{RFC9200}}, this document recommends the use of CBOR Web Tokens (CWTs) {{RFC8392}} as access tokens.
 
 An authentication credential can be a raw public key, e.g., encoded as a CWT Claims Set (CCS, {{RFC8392}}); or a public key certificate, e.g., encoded as an X.509 certificate {{RFC5280}} or as a CBOR encoded X.509 certificate (C509, {{I-D.ietf-cose-cbor-encoded-cert}}); or a different type of data structure containing the public key of the peer in question.
 
-The ACE protocol establishes what those authentication credentials are, and may transport the actual authentication credentials by value or uniquely refer to them. If an authentication credential is pre-provisioned or can be obtained over less constrained links, then it suffices that ACE provides a unique reference such as a certificate hash (e.g., by using the COSE header parameter "x5t", see {{RFC9360}}). This is in the same spirit as EDHOC, where the authentication credentials may be transported or referenced in the ID_CRED_x message fields (see {{Section 3.5.3 of I-D.ietf-lake-edhoc}}).
+The ACE protocol establishes what those authentication credentials are, and may transport the actual authentication credentials by value or uniquely refer to them. If an authentication credential is pre-provisioned or can be obtained over less constrained links, then it suffices that ACE provides a unique reference such as a certificate hash (e.g., by using the COSE header parameter "x5t", see {{RFC9360}}). This is in the same spirit as EDHOC, where the authentication credentials may be transported or referenced in the ID_CRED_x message fields (see {{Section 3.5.3 of RFC9528}}).
 
 In general, AS and RS are likely to have trusted access to each other's authentication credentials, since AS acts on behalf of RS as per the trust model of ACE. Also, AS needs to have some information about C, including the relevant authentication credential, in order to identify C when it requests an access token and to determine what access rights it can be granted. However, the authentication credential of C may potentially be conveyed (or uniquely referred to) within the request for access that C makes to AS.
 
@@ -121,7 +121,7 @@ Certain security-related terms such as "authentication", "authorization", "confi
 
 RESTful terminology follows HTTP {{RFC9110}}.
 
-Readers are expected to be familiar with the terms and concepts defined in CoAP {{RFC7252}}, OSCORE {{RFC8613}}, and EDHOC {{I-D.ietf-lake-edhoc}}.
+Readers are expected to be familiar with the terms and concepts defined in CoAP {{RFC7252}}, OSCORE {{RFC8613}}, and EDHOC {{RFC9528}}.
 
 Readers are also expected to be familiar with the terms and concepts of the ACE framework described in {{RFC9200}} and in {{RFC9201}}.
 
@@ -137,7 +137,7 @@ Examples throughout this document are expressed in CBOR diagnostic notation with
 
 # Protocol Overview {#overview}
 
-This section gives an overview of how to use the ACE framework {{RFC9200}} together with the authenticated key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}. By doing so, the client (C) and the resource server (RS) generate an OSCORE Security Context {{RFC8613}} associated with authorization information, and use that Security Context to protect their communications. The parameters needed by C to negotiate the use of this profile with the authorization server (AS), as well as the OSCORE setup process, are described in detail in the following sections.
+This section gives an overview of how to use the ACE framework {{RFC9200}} together with the authenticated key establishment protocol EDHOC {{RFC9528}}. By doing so, the client (C) and the resource server (RS) generate an OSCORE Security Context {{RFC8613}} associated with authorization information, and use that Security Context to protect their communications. The parameters needed by C to negotiate the use of this profile with the authorization server (AS), as well as the OSCORE setup process, are described in detail in the following sections.
 
 RS maintains a collection of authentication credentials. These are associated with OSCORE Security Contexts and with authorization information for all clients that RS is communicating with. The authorization information is used to enforce polices for processing requests from those clients.
 
@@ -149,9 +149,9 @@ If C has retrieved an access token, there are two options for C to upload it to 
 
 1. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.10 of RFC9200}}. If the access token is valid, RS replies to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol with RS. The communication with the /authz-info endpoint is typically not protected, except for the update of access rights (see {{update-access-rights-c-rs}}).
 
-2. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of I-D.ietf-lake-edhoc}}. In this case, the access token is validated in parallel with the EDHOC session. This option cannot be used for the update of access rights.
+2. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of RFC9528}}. In this case, the access token is validated in parallel with the EDHOC session. This option cannot be used for the update of access rights.
 
-When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of I-D.ietf-lake-edhoc}}.
+When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of RFC9528}}.
 
 From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. The Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new Security Context for C.
 
@@ -347,9 +347,9 @@ When issuing any access token of a token series, AS MUST specify the following d
 
 When issuing the first access token of a token series, AS MAY specify the following EDHOC\_Information (see {{edhoc-parameters-object}}) in the claims associated with the access token. If these data are specified in the response to C from the /token endpoint, they MUST be included with the same values in the access token.
 
-* osc\_ms\_len: The size of the OSCORE Master Secret. If it is not included, the default value from {{Section A.1 of I-D.ietf-lake-edhoc}} is assumed.
+* osc\_ms\_len: The size of the OSCORE Master Secret. If it is not included, the default value from {{Section A.1 of RFC9528}} is assumed.
 
-* osc\_salt\_len: The size of the OSCORE Master Salt. If it is not included, the default value from {{Section A.1 of I-D.ietf-lake-edhoc}} is assumed.
+* osc\_salt\_len: The size of the OSCORE Master Salt. If it is not included, the default value from {{Section A.1 of RFC9528}} is assumed.
 
 * osc\_version: The OSCORE version. If it is not included, the default value of 1 (see {{Section 5.4 of RFC8613}}) is assumed.
 
@@ -492,27 +492,27 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * session\_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and has label 0.
 
-* methods: This parameter specifies a set of supported EDHOC methods (see {{Section 3.2 of I-D.ietf-lake-edhoc}}). If the set is composed of a single EDHOC method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and has label 1.
+* methods: This parameter specifies a set of supported EDHOC methods (see {{Section 3.2 of RFC9528}}). If the set is composed of a single EDHOC method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and has label 1.
 
-* cipher\_suites: This parameter specifies a set of supported EDHOC cipher suites (see {{Section 3.6 of I-D.ietf-lake-edhoc}}). If the set is composed of a single EDHOC cipher suite, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC cipher suite. In JSON, the "cipher\_suites" value is an integer or an array of integers. In CBOR, the "cipher\_suites" is an integer or an array of integers, and has label 2.
+* cipher\_suites: This parameter specifies a set of supported EDHOC cipher suites (see {{Section 3.6 of RFC9528}}). If the set is composed of a single EDHOC cipher suite, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC cipher suite. In JSON, the "cipher\_suites" value is an integer or an array of integers. In CBOR, the "cipher\_suites" is an integer or an array of integers, and has label 2.
 
-* message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of I-D.ietf-lake-edhoc}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value "true" or "false", and has label 4.
+* message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of RFC9528}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value "true" or "false", and has label 4.
 
 * comb\_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}}) is supported. In JSON, the "comb\_req" value is a boolean. In CBOR, "comb\_req" is the simple value "true" or "false", and has label 5.
 
 * uri\_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri\_path" value is a string. In CBOR, "uri\_path" is a text string, and has label 6.
 
-* osc\_ms\_len: This parameter specifies the size in bytes of the OSCORE Master Secret to derive after the EDHOC session, as per {{Section A.1 of I-D.ietf-lake-edhoc}}. In JSON, the "osc\_ms\_len" value is an integer. In CBOR, the "osc\_ms\_len" type is unsigned integer, and has label 7.
+* osc\_ms\_len: This parameter specifies the size in bytes of the OSCORE Master Secret to derive after the EDHOC session, as per {{Section A.1 of RFC9528}}. In JSON, the "osc\_ms\_len" value is an integer. In CBOR, the "osc\_ms\_len" type is unsigned integer, and has label 7.
 
-* osc\_salt\_len: This parameter specifies the size in bytes of the OSCORE Master Salt to derive after the EDHOC session, as per {{Section A.1 of I-D.ietf-lake-edhoc}}. In JSON, the "osc\_salt\_len" value is an integer. In CBOR, the "osc\_salt\_len" type is unsigned integer, and has label 8.
+* osc\_salt\_len: This parameter specifies the size in bytes of the OSCORE Master Salt to derive after the EDHOC session, as per {{Section A.1 of RFC9528}}. In JSON, the "osc\_salt\_len" value is an integer. In CBOR, the "osc\_salt\_len" type is unsigned integer, and has label 8.
 
 * osc\_version: This parameter specifies the OSCORE Version number that the two EDHOC peers have to use when using OSCORE. For more information about this parameter, see {{Section 5.4 of RFC8613}}. In JSON, the "osc\_version" value is an integer. In CBOR, the "osc\_version" type is unsigned integer, and has label 9.
 
-* cred\_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see {{Section 3.5.2 of I-D.ietf-lake-edhoc}}). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred\_types" value is an integer or an array of integers. In CBOR, "cred\_types" is an integer or an array of integers, and has label 9. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in {{I-D.ietf-core-oscore-edhoc}}.
+* cred\_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see {{Section 3.5.2 of RFC9528}}). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred\_types" value is an integer or an array of integers. In CBOR, "cred\_types" is an integer or an array of integers, and has label 9. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in {{I-D.ietf-core-oscore-edhoc}}.
 
-* id\_cred\_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see {{Section 3.5.3 of I-D.ietf-lake-edhoc}}). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id\_cred\_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id\_cred\_types" is an integer or a text string, or an array of integers and text strings, and has label 10. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}}.
+* id\_cred\_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see {{Section 3.5.3 of RFC9528}}). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id\_cred\_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id\_cred\_types" is an integer or a text string, or an array of integers and text strings, and has label 10. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}}.
 
-* eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead\_label (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). If the set is composed of a single ead\_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead\_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 11. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in {{I-D.ietf-lake-edhoc}}.
+* eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead\_label (see {{Section 3.8 of RFC9528}}). If the set is composed of a single ead\_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead\_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 11. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in {{RFC9528}}.
 
 * initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value "true" (0xf5) or "false" (0xf4), and has label 12.
 
@@ -560,7 +560,7 @@ In order to upload the access token to RS, C can send a POST request to the /aut
 
 Alternatively, C can upload the access token while executing the EDHOC protocol, by transporting the access token in an EAD field of an EDHOC message sent to RS. This is further discussed in {{AT-in-EAD}} and {{edhoc-exec}}, and shown by the example in {{example-with-optimization}}.
 
-In either case, C and RS run the EDHOC protocol by exchanging POST requests and related responses to a dedicated EDHOC resource at RS (see {{edhoc-exec}}). Once completed the EDHOC session, C and RS have agreed on a common secret key PRK\_out (see {{Section 4.1.3 of I-D.ietf-lake-edhoc}}), from which they establish an OSCORE Security Context (see {{edhoc-exec}}). After that, C and RS use the established OSCORE Security Context to protect their communications when accessing protected resources at RS, as per the access rights specified in the access token (see {{access-rights-verif}}).
+In either case, C and RS run the EDHOC protocol by exchanging POST requests and related responses to a dedicated EDHOC resource at RS (see {{edhoc-exec}}). Once completed the EDHOC session, C and RS have agreed on a common secret key PRK\_out (see {{Section 4.1.3 of RFC9528}}), from which they establish an OSCORE Security Context (see {{edhoc-exec}}). After that, C and RS use the established OSCORE Security Context to protect their communications when accessing protected resources at RS, as per the access rights specified in the access token (see {{access-rights-verif}}).
 
 C and RS are mutually authenticated once they have successfully completed the EDHOC protocol. RS gets key confirmation of PRK\_out by C at the end of the successful EDHOC session. Conversely, C get key confirmation of PRK\_out by RS either when receiving and successfully verifying the optional EDHOC message\_4 from RS, or when successfully verifying a response from RS protected with the generated OSCORE Security Context.
 
@@ -590,7 +590,7 @@ When an access token becomes invalid (e.g., due to its expiration or revocation)
 
 ## Access Token in External Authorization Data {#AT-in-EAD}
 
-Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token in EDHOC message\_3 by making use of the External Authorization Data field EAD_3 (see {{Section 3.8 of I-D.ietf-lake-edhoc}}), see example in {{example-with-optimization}}. In this case, the access token is encrypted between C and RS enabling protection of potential sensitive information.
+Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token in EDHOC message\_3 by making use of the External Authorization Data field EAD_3 (see {{Section 3.8 of RFC9528}}), see example in {{example-with-optimization}}. In this case, the access token is encrypted between C and RS enabling protection of potential sensitive information.
 
 This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value), where:
 
@@ -600,21 +600,21 @@ This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value)
    * For label 0, ead\_value = { 0 : access\_token }, where access_token is a CBOR byte string equal to the value of the "access\_token" field of the access token response from AS, see {{as-c}}.
    * For label 1, ead\_value = { 1 : session\_id }, where session_id is a CBOR byte string equal to the value of the "session\_id" field of the access token response from AS, see {{token-series}}.
 
-This EAD item, which is used in EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of I-D.ietf-lake-edhoc}}). A Client or Resource Server supporting the profile of ACE defined in this document MUST support this EAD item. When EDHOC is used with this profile, this EAD item is included in EAD_3, see {{m_3}}.
+This EAD item, which is used in EAD\_3, is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of RFC9528}}). A Client or Resource Server supporting the profile of ACE defined in this document MUST support this EAD item. When EDHOC is used with this profile, this EAD item is included in EAD_3, see {{m_3}}.
 
 Access tokens are transported in EAD fields only for the first access token of a token series, and not for the update of access rights, see {{update-access-rights-c-rs}}.
 
 ## EDHOC Session and OSCORE Security Context # {#edhoc-exec}
 
-In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol {{I-D.ietf-lake-edhoc}} with C as EDHOC Initiator and RS as EDHOC Responder. When a new EDHOC session is established, previous EDHOC sessions associated with the same access token and the same pair (session_id, AUTH_CRED_C) are deleted, see {{m_3}}. The OSCORE Security Contexts derived from those EDHOC sessions are also deleted.
+In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol {{RFC9528}} with C as EDHOC Initiator and RS as EDHOC Responder. When a new EDHOC session is established, previous EDHOC sessions associated with the same access token and the same pair (session_id, AUTH_CRED_C) are deleted, see {{m_3}}. The OSCORE Security Contexts derived from those EDHOC sessions are also deleted.
 
-As per {{Section A.2 of I-D.ietf-lake-edhoc}}, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as 2.04 (Changed) CoAP responses. C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present.
+As per {{Section A.2 of RFC9528}}, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as 2.04 (Changed) CoAP responses. C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present.
 
 In order to seamlessly run EDHOC, a client does not have to first upload to RS an access token whose scope explicitly indicates authorized access to the EDHOC resource. At the same time, RS has to ensure that attackers cannot perform requests on the EDHOC resource, other than sending EDHOC messages. Specifically, it SHOULD NOT be possible to perform anything else than POST on an EDHOC resource.
 
 ### EDHOC message\_1
 
-The processing of EDHOC message\_1 is specified in {{Section 5.2 of I-D.ietf-lake-edhoc}}. Additionally, the following applies:
+The processing of EDHOC message\_1 is specified in {{Section 5.2 of RFC9528}}. Additionally, the following applies:
 
 * The EDHOC method MUST be one of the EDHOC methods specified in the "methods" field (if present) in the EDHOC\_Information of the access token response to C.
 
@@ -622,29 +622,29 @@ The processing of EDHOC message\_1 is specified in {{Section 5.2 of I-D.ietf-lak
 
 ### EDHOC message\_2
 
-The processing of EDHOC message\_2 is specified in {{Section 5.3 of I-D.ietf-lake-edhoc}} with the following additions:
+The processing of EDHOC message\_2 is specified in {{Section 5.3 of RFC9528}} with the following additions:
 
 * The authentication credential CRED\_R indicated by the message field ID\_CRED\_R is AUTH\_CRED\_RS.
 
 ### EDHOC message\_3 {#m_3}
 
-The processing of EDHOC message\_3 is specified in {{Section 5.4 of I-D.ietf-lake-edhoc}} with the following additions:
+The processing of EDHOC message\_3 is specified in {{Section 5.4 of RFC9528}} with the following additions:
 
 * The authentication credential CRED\_I indicated by the message field ID\_CRED\_I is AUTH\_CRED\_C.
 
 * The EAD item EAD\_ACCESS\_TOKEN = (-ead\_label, ead\_value) MUST be included in the EAD\_3 field. If the access token is provisioned with EDHOC message\_3 as specified in {{AT-in-EAD}}, then ead\_value = { 0 : access\_token}, otherwise ead\_value = { 1 : session\_id}, where session\_id is equal to the value of the "session_id" field of the access token response from AS, see {{token-series}}.
 
-* The RS MUST ensure that the access token is valid, potentially first retrieving it using session\_id and AUTH\_CRED\_C, the validation follows the procedure specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of I-D.ietf-lake-edhoc}}), and it MUST abort the EDHOC session. RS MUST have successfully validated the processing of the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (session_id, AUTH_CRED_C). Any old existing EDHOC session associated with the same access token and with the same pair (session_id, AUTH_CRED_C) MUST be deleted, together with the OSCORE Security Context derived from the EDHOC session.
+* The RS MUST ensure that the access token is valid, potentially first retrieving it using session\_id and AUTH\_CRED\_C, the validation follows the procedure specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}), and it MUST abort the EDHOC session. RS MUST have successfully validated the processing of the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (session_id, AUTH_CRED_C). Any old existing EDHOC session associated with the same access token and with the same pair (session_id, AUTH_CRED_C) MUST be deleted, together with the OSCORE Security Context derived from the EDHOC session.
 
 Editor's note: Instead of ERR\_CODE = 1, consider to use ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz
 
 ### OSCORE Security Context
 
-Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context, as defined in {{Section A.1 of I-D.ietf-lake-edhoc}}. In addition, the following applies.
+Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context, as defined in {{Section A.1 of RFC9528}}. In addition, the following applies.
 
-* The length in bytes of the OSCORE Master Secret (i.e., the oscore\_key\_length parameter, see {{Section A.1 of I-D.ietf-lake-edhoc}}) MUST be the value specified in the "osc\_ms\_size" field (if present) in the EDHOC\_Information of the access token response to C, and of the access token provisioned to RS, respectively.
+* The length in bytes of the OSCORE Master Secret (i.e., the oscore\_key\_length parameter, see {{Section A.1 of RFC9528}}) MUST be the value specified in the "osc\_ms\_size" field (if present) in the EDHOC\_Information of the access token response to C, and of the access token provisioned to RS, respectively.
 
-* The length in bytes of the OSCORE Master Salt (i.e., the oscore\_salt\_length parameter, see {{Section A.1 of I-D.ietf-lake-edhoc}}) MUST be the value specified in the "osc\_salt\_size" field (if present) in the EDHOC\_Information of the access token response to C, and of the access token provisioned to RS, respectively.
+* The length in bytes of the OSCORE Master Salt (i.e., the oscore\_salt\_length parameter, see {{Section A.1 of RFC9528}}) MUST be the value specified in the "osc\_salt\_size" field (if present) in the EDHOC\_Information of the access token response to C, and of the access token provisioned to RS, respectively.
 
 * C and RS MUST use the OSCORE version specified in the "osc\_version" field (if present) in the EDHOC\_Information of the access token response to C, and of the access token provisioned to RS, respectively.
 
@@ -764,11 +764,11 @@ The confirmation method "c5u" specifies the URI {{RFC3986}} of a COSE_C509 conta
 
 ## CWT Containing a COSE_Key # {#ssec-cwt-conf-kcwt}
 
-The confirmation method "kcwt" specifies a CBOR Web Token (CWT) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a 'cnf' claim and possibly other claims. The semantics of "kcwt" is like that of the "kcwt" COSE Header Parameter specified in {{I-D.ietf-lake-edhoc}}.
+The confirmation method "kcwt" specifies a CBOR Web Token (CWT) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a 'cnf' claim and possibly other claims. The semantics of "kcwt" is like that of the "kcwt" COSE Header Parameter specified in {{RFC9528}}.
 
 ## CCS Containing a COSE_Key # {#ssec-cwt-conf-kccs}
 
-The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a 'cnf' claim and possibly other claims. The semantics of "kccs" is like that of the "kccs" COSE Header Parameter specified in {{I-D.ietf-lake-edhoc}}.
+The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a 'cnf' claim and possibly other claims. The semantics of "kccs" is like that of the "kccs" COSE Header Parameter specified in {{RFC9528}}.
 
 # JWT Confirmation Methods
 
@@ -818,7 +818,7 @@ The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} cont
 
 This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}. Thus, the general security considerations from the ACE framework also apply to this profile.
 
-Furthermore, the security considerations from OSCORE {{RFC8613}} and from EDHOC {{I-D.ietf-lake-edhoc}} also apply to this specific use of the OSCORE and EDHOC protocols.
+Furthermore, the security considerations from OSCORE {{RFC8613}} and from EDHOC {{RFC9528}} also apply to this specific use of the OSCORE and EDHOC protocols.
 
 As previously stated, once completed the EDHOC session, C and RS are mutually authenticated through their respective authentication credentials, whose retrieval has been facilitated by AS. Also once completed the EDHOC session, C and RS have established a long-term secret key PRK\_out enjoying forward secrecy. This is in turn used by C and RS to establish an OSCORE Security Context.
 
@@ -832,7 +832,7 @@ When using this profile, it is RECOMMENDED that RS stores only one access token 
 
 This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}. Thus, the general privacy considerations from the ACE framework also apply to this profile.
 
-Furthermore, the privacy considerations from OSCORE {{RFC8613}} and from EDHOC {{I-D.ietf-lake-edhoc}} also apply to this specific use of the OSCORE and EDHOC protocols.
+Furthermore, the privacy considerations from OSCORE {{RFC8613}} and from EDHOC {{RFC9528}} also apply to this specific use of the OSCORE and EDHOC protocols.
 
 An unprotected response to an unauthorized request may disclose information about RS and/or its existing relationship with C. It is advisable to include as little information as possible in an unencrypted response. When an OSCORE Security Context already exists between C and RS, more detailed information may be included.
 
@@ -855,7 +855,7 @@ Registry following the procedure specified in {{RFC9200}}.
 
 * Profile name: coap_edhoc_oscore
 * Profile Description: Profile for delegating client authentication and
-authorization in a constrained environment by establishing an OSCORE Security Context {{RFC8613}} between resource-constrained nodes, through the execution of the authenticated key establishment protocol EDHOC {{I-D.ietf-lake-edhoc}}.
+authorization in a constrained environment by establishing an OSCORE Security Context {{RFC8613}} between resource-constrained nodes, through the execution of the authenticated key establishment protocol EDHOC {{RFC9528}}.
 * Profile ID:  TBD (value between 1 and 255)
 * Change Controller: IESG
 * Reference:  {{&SELF}}
@@ -1076,7 +1076,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 ## EDHOC External Authorization Data Registry # {#iana-edhoc-ead}
 
-IANA is asked to add the following entry to the "EDHOC External Authorization Data" registry defined in {{Section 9.5 of I-D.ietf-lake-edhoc}}.
+IANA is asked to add the following entry to the "EDHOC External Authorization Data" registry defined in {{Section 9.5 of RFC9528}}.
 
 The ead\_label = TBD and the ead\_value defines an access token in EAD\_3, with processing specified in {{AT-in-EAD}}.
 
@@ -1107,7 +1107,7 @@ The columns of the registry are:
 
 * Specification: A pointer to the public specification for the item, if one exists.
 
-This registry will be initially populated by the values in {{fig-cbor-key-edhoc-params}}. The "Specification" column for all of these entries will be this document and {{I-D.ietf-lake-edhoc}}.
+This registry will be initially populated by the values in {{fig-cbor-key-edhoc-params}}. The "Specification" column for all of these entries will be this document and {{RFC9528}}.
 
 ## Expert Review Instructions # {#iana-expert-review}
 

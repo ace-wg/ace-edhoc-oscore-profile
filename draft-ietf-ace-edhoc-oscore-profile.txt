@@ -151,8 +151,8 @@ Table of Contents
      A.3.  Alternative Workflow (AS token posting)
    Appendix B.  Profile Requirements
    Appendix C.  Document Updates
-     C.1.  Version -03 to -04
-     C.2.  Version -02 to -03
+     C.1.  Version -04 to -05
+     C.2.  Version -03 to -04
      C.3.  Version -02 to -03
      C.4.  Version -01 to -02
      C.5.  Version -00 to -01
@@ -2841,7 +2841,17 @@ Appendix C.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-C.1.  Version -03 to -04
+C.1.  Version -04 to -05
+
+   *  Editorial fixes and improvements.
+
+C.2.  Version -03 to -04
+
+   *  Fixed column name and prefilling of the "EDHOC Information"
+      registry.
+
+   *  Added EDHOC_Information Parameters originally in draft-tiloca-
+      lake-app-profiles-00.
 
    *  Removed the case of transporting access token in EAD_1
 
@@ -2849,14 +2859,6 @@ C.1.  Version -03 to -04
 
    *  Clarifications of association between access token, session_id,
       EDHOC session and OSCORE security context
-
-C.2.  Version -02 to -03
-
-   *  Fixed column name and prefilling of the "EDHOC Information"
-      registry.
-
-   *  Added EDHOC_Information Parameters originally in draft-tiloca-
-      lake-app-profiles-00.
 
    *  Updated references.
 

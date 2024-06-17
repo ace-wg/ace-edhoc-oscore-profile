@@ -1433,8 +1433,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-1.1-8">The authorization information (authz-info) resource refers to the authorization information endpoint as specified in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. The term "claim" is used in this document with the same semantics as in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, i.e., it denotes information carried in the access token or returned from introspection.<a href="#section-1.1-8" class="pilcrow">¶</a></p>
 <p id="section-1.1-9">Concise Binary Object Representation (CBOR) <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span><span>[<a href="#RFC8742" class="cite xref">RFC8742</a>]</span> and Concise Data Definition Language (CDDL) <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> are used in this document. CDDL predefined type names, especially bstr for CBOR byte strings and tstr for CBOR text strings, are used extensively in this document.<a href="#section-1.1-9" class="pilcrow">¶</a></p>
 <p id="section-1.1-10">Examples throughout this document are expressed in CBOR diagnostic notation as defined in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-8" class="relref">Section 8</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8610#appendix-G" class="relref">Appendix G</a> of [<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>. Diagnostic notation comments are often used to provide a textual representation of the numeric parameter names and values.<a href="#section-1.1-10" class="pilcrow">¶</a></p>
-<p id="section-1.1-11">In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 8</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. For example, {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2 : 3}.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
-<p id="section-1.1-12">Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 8</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. Finally, please delete this note.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
+<p id="section-1.1-11">In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 7</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. For example, {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2 : 3}.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
+<p id="section-1.1-12">Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 7</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. Finally, please delete this note.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1832,97 +1832,123 @@ When later issuing further access tokens to the same pair (C, RS) using the same
         </h3>
 <p id="section-3.4-1">EDHOC_Information is an object including information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC_Information is defined to be serialized and transported between nodes, as specified by this document, but it can also be used by other specifications if needed.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 <p id="section-3.4-2">The EDHOC_Information can be encoded either as a JSON object or as a CBOR map. The set of common fields that can appear in an EDHOC_Information can be found in the IANA "EDHOC Information" registry (see <a href="#iana-edhoc-parameters" class="auto internal xref">Section 10.9</a>), defined for extensibility, and the initial set of parameters defined in this document is specified below. All parameters are optional.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.4-3"><a href="#fig-cbor-key-edhoc-params" class="auto internal xref">Figure 6</a> provides a summary of the EDHOC_Information parameters defined in this section.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
-<span id="name-edhoc_information-parameter"></span><div id="fig-cbor-key-edhoc-params">
-<figure id="figure-6">
-          <div class="alignCenter art-text artwork" id="section-3.4-4.1">
-<pre>
-+---------------+-------+----------+----------------+-----------------+
-| Name          | CBOR  | CBOR     | Registry       | Description     |
-|               | label | type     |                |                 |
-+---------------+-------+----------+----------------+-----------------+
-| session_id    | 0     | bstr     |                | Identifier of   |
-|               |       |          |                | a session       |
-+---------------+-------+----------+----------------+-----------------+
-| methods       | 1     | int /    | EDHOC Method   | Set of          |
-|               |       | array    | Type Registry  | supported       |
-|               |       |          |                | EDHOC methods   |
-+---------------+-------+----------+----------------+-----------------+
-| cipher_suites | 2     | int /    | EDHOC Cipher   | Set of          |
-|               |       | array    | Suites         | supported EDHOC |
-|               |       |          | Registry       | cipher suites   |
-+---------------+-------+----------+----------------+-----------------+
-| message_4     | 3     | simple   |                | Support for     |
-|               |       | value    |                | EDHOC message_4 |
-|               |       | "true" / |                |                 |
-|               |       | simple   |                |                 |
-|               |       | value    |                |                 |
-|               |       | "false"  |                |                 |
-+---------------+-------+----------+----------------+-----------------+
-| comb_req      | 4     | simple   |                | Support for the |
-|               |       | value    |                | EDHOC + OSCORE  |
-|               |       | "true" / |                | combined        |
-|               |       | simple   |                | request         |
-|               |       | value    |                |                 |
-|               |       | "false"  |                |                 |
-+---------------+-------+----------+----------------+-----------------+
-| uri_path      | 5     | tstr     |                | URI-path of the |
-|               |       |          |                | EDHOC resource  |
-+---------------+-------+----------+----------------+-----------------+
-| osc_ms_len    | 6     | uint     |                | Length in bytes |
-|               |       |          |                | of the OSCORE   |
-|               |       |          |                | Master Secret   |
-|               |       |          |                | to derive       |
-+---------------+-------+----------+----------------+-----------------+
-| osc_salt_len  | 7     | uint     |                | Length in bytes |
-|               |       |          |                | of the OSCORE   |
-|               |       |          |                | Master Salt to  |
-|               |       |          |                | derive          |
-+---------------+-------+----------+----------------+-----------------+
-| osc_version   | 8     | uint     |                | OSCORE version  |
-|               |       |          |                | number to use   |
-+---------------+-------+----------+----------------+-----------------+
-| cred_types    | 9     | int /    | EDHOC          | Set of          |
-|               |       | array    | Authentication | supported       |
-|               |       |          | Credential     | types of        |
-|               |       |          | Types Registry | authentication  |
-|               |       |          |                | credentials     |
-|               |       |          |                | for EDHOC       |
-+---------------+-------+----------+----------------+-----------------+
-| id_cred_types | 10    | int /    | COSE Header    | Set of          |
-|               |       | tstr /   | Parameters     | supported       |
-|               |       | array    | Registry       | types of        |
-|               |       |          |                | authentication  |
-|               |       |          |                | credential      |
-|               |       |          |                | identifiers for |
-|               |       |          |                | EDHOC           |
-+---------------+-------+----------+----------------+-----------------+
-| eads          | 11    | uint /   | EDHOC External | Set of          |
-|               |       | array    | Authorization  | supported EDHOC |
-|               |       |          | Data Registry  | External        |
-|               |       |          |                | Authorization   |
-|               |       |          |                | Data (EAD)      |
-|               |       |          |                | items           |
-+---------------+-------+----------+----------------+-----------------+
-| initiator     | 12    | simple   |                | Support for the |
-|               |       | value    |                | EDHOC Initiator |
-|               |       | "true" / |                | role            |
-|               |       | simple   |                |                 |
-|               |       | value    |                |                 |
-|               |       | "false"  |                |                 |
-+---------------+-------+----------+----------------+-----------------+
-| responder     | 13    | simple   |                | Support for the |
-|               |       | value    |                | EDHOC Responder |
-|               |       | "true" / |                | role            |
-|               |       | simple   |                |                 |
-|               |       | value    |                |                 |
-|               |       | "false"  |                |                 |
-+---------------+-------+----------+----------------+-----------------+
-</pre>
-</div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<p id="section-3.4-3"><a href="#_table-cbor-key-edhoc-params" class="auto internal xref">Table 1</a> provides a summary of the EDHOC_Information parameters defined in this section.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+<span id="name-edhoc_information-parameter"></span><div id="_table-cbor-key-edhoc-params">
+<table class="center" id="table-1">
+          <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
 <a href="#name-edhoc_information-parameter" class="selfRef">EDHOC_Information Parameters</a>
-          </figcaption></figure>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Name</th>
+              <th class="text-left" rowspan="1" colspan="1">CBOR label</th>
+              <th class="text-left" rowspan="1" colspan="1">CBOR type</th>
+              <th class="text-left" rowspan="1" colspan="1">Registry</th>
+              <th class="text-left" rowspan="1" colspan="1">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">session_id</td>
+              <td class="text-left" rowspan="1" colspan="1">0</td>
+              <td class="text-left" rowspan="1" colspan="1">bstr</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">Identifier of a session</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">methods</td>
+              <td class="text-left" rowspan="1" colspan="1">1</td>
+              <td class="text-left" rowspan="1" colspan="1">int or array</td>
+              <td class="text-left" rowspan="1" colspan="1">EDHOC Method Type Registry</td>
+              <td class="text-left" rowspan="1" colspan="1">Set of supported EDHOC methods</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">cipher_suites</td>
+              <td class="text-left" rowspan="1" colspan="1">2</td>
+              <td class="text-left" rowspan="1" colspan="1">int or array</td>
+              <td class="text-left" rowspan="1" colspan="1">EDHOC Cipher Suites Registry</td>
+              <td class="text-left" rowspan="1" colspan="1">Set of supported EDHOC cipher suites</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">message_4</td>
+              <td class="text-left" rowspan="1" colspan="1">3</td>
+              <td class="text-left" rowspan="1" colspan="1">True or False</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">Support for EDHOC message_4</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">comb_req</td>
+              <td class="text-left" rowspan="1" colspan="1">4</td>
+              <td class="text-left" rowspan="1" colspan="1">True or False</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">Support for the EDHOC + OSCORE combined request</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">uri_path</td>
+              <td class="text-left" rowspan="1" colspan="1">5</td>
+              <td class="text-left" rowspan="1" colspan="1">tstr</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">URI-path of the EDHOC resource</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">osc_ms_len</td>
+              <td class="text-left" rowspan="1" colspan="1">6</td>
+              <td class="text-left" rowspan="1" colspan="1">uint</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">Length in bytes of the OSCORE Master Secret to derive</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">osc_salt_len</td>
+              <td class="text-left" rowspan="1" colspan="1">7</td>
+              <td class="text-left" rowspan="1" colspan="1">uint</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">Length in bytes of the OSCORE Master Salt to derive</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">osc_version</td>
+              <td class="text-left" rowspan="1" colspan="1">8</td>
+              <td class="text-left" rowspan="1" colspan="1">uint</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">OSCORE version number to use</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">cred_types</td>
+              <td class="text-left" rowspan="1" colspan="1">9</td>
+              <td class="text-left" rowspan="1" colspan="1">int or array</td>
+              <td class="text-left" rowspan="1" colspan="1">EDHOC Authentication Credential Types Registry</td>
+              <td class="text-left" rowspan="1" colspan="1">Set of supported types of authentication credentials for EDHOC</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">id_cred_types</td>
+              <td class="text-left" rowspan="1" colspan="1">10</td>
+              <td class="text-left" rowspan="1" colspan="1">int or tstr or array</td>
+              <td class="text-left" rowspan="1" colspan="1">COSE Header Parameters Registry</td>
+              <td class="text-left" rowspan="1" colspan="1">Set of supported types of authentication credential identifiers for EDHOC</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">eads</td>
+              <td class="text-left" rowspan="1" colspan="1">11</td>
+              <td class="text-left" rowspan="1" colspan="1">uint or array</td>
+              <td class="text-left" rowspan="1" colspan="1">EDHOC External Authorization Data Registry</td>
+              <td class="text-left" rowspan="1" colspan="1">Set of supported EDHOC External Authorization Data (EAD) items</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">initiator</td>
+              <td class="text-left" rowspan="1" colspan="1">12</td>
+              <td class="text-left" rowspan="1" colspan="1">True or False</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">Support for the EDHOC Initiator role</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">responder</td>
+              <td class="text-left" rowspan="1" colspan="1">13</td>
+              <td class="text-left" rowspan="1" colspan="1">True or False</td>
+              <td class="text-left" rowspan="1" colspan="1"> </td>
+              <td class="text-left" rowspan="1" colspan="1">Support for the EDHOC Responder role</td>
+            </tr>
+          </tbody>
+        </table>
 </div>
 <ul class="normal">
 <li class="normal" id="section-3.4-5.1">
@@ -1968,9 +1994,9 @@ When later issuing further access tokens to the same pair (C, RS) using the same
             <p id="section-3.4-5.14.1">responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value "true" (0xf5) or "false" (0xf4), and has label 13.<a href="#section-3.4-5.14.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.4-6">An example of JSON EDHOC_Information is given in <a href="#fig-edhoc-info-json" class="auto internal xref">Figure 7</a>.<a href="#section-3.4-6" class="pilcrow">¶</a></p>
+<p id="section-3.4-6">An example of JSON EDHOC_Information is given in <a href="#fig-edhoc-info-json" class="auto internal xref">Figure 6</a>.<a href="#section-3.4-6" class="pilcrow">¶</a></p>
 <span id="name-example-of-json-edhoc_infor"></span><div id="fig-edhoc-info-json">
-<figure id="figure-7">
+<figure id="figure-6">
           <div class="alignLeft art-text artwork" id="section-3.4-7.1">
 <pre>
    "edhoc_info" : {
@@ -1980,7 +2006,7 @@ When later issuing further access tokens to the same pair (C, RS) using the same
    }
 </pre>
 </div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-example-of-json-edhoc_infor" class="selfRef">Example of JSON EDHOC_Information</a>
           </figcaption></figure>
 </div>
@@ -3036,7 +3062,7 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
             <p id="section-10.9-3.6.1">Specification: A pointer to the public specification for the item, if one exists.<a href="#section-10.9-3.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-10.9-4">This registry will be initially populated by the values in <a href="#fig-cbor-key-edhoc-params" class="auto internal xref">Figure 6</a>. The "Specification" column for all of these entries will be this document and <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-10.9-4" class="pilcrow">¶</a></p>
+<p id="section-10.9-4">This registry will be initially populated by the values in <a href="#_table-cbor-key-edhoc-params" class="auto internal xref">Table 1</a>. The "Specification" column for all of these entries will be this document and <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-10.9-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-expert-review">
@@ -4410,7 +4436,7 @@ This is relevant in case AS and RS actually require a secure association (e.g., 
       </h2>
 <p id="appendix-C-1">This section is to be removed before publishing as an RFC.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <span id="name-cddl-model-2"></span><div id="fig-cddl-model">
-<figure id="figure-8">
+<figure id="figure-7">
         <div class="alignLeft art-CDDL art-text artwork" id="appendix-C-2.1">
 <pre>
 ; ACE Profiles
@@ -4451,7 +4477,7 @@ initiator = 12
 responder = 13
 </pre>
 </div>
-<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
 <a href="#name-cddl-model-2" class="selfRef">CDDL model</a>
         </figcaption></figure>
 </div>

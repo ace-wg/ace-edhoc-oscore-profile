@@ -271,14 +271,14 @@ Table of Contents
 
    In the CBOR diagnostic notation used in this document, constructs of
    the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME
-   in the CDDL model shown in Figure 8 of Appendix C.  For example,
+   in the CDDL model shown in Figure 7 of Appendix C.  For example,
    {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2
    : 3}.
 
    Note to RFC Editor: Please delete the paragraph immediately preceding
    this note.  Also, in the CBOR diagnostic notation used in this
    document, please replace the constructs of the form e'SOME_NAME' with
-   the value assigned to SOME_NAME in the CDDL model shown in Figure 8
+   the value assigned to SOME_NAME in the CDDL model shown in Figure 7
    of Appendix C.  Finally, please delete this note.
 
 2.  Protocol Overview
@@ -761,92 +761,85 @@ Table of Contents
    initial set of parameters defined in this document is specified
    below.  All parameters are optional.
 
-   Figure 6 provides a summary of the EDHOC_Information parameters
+   Table 1 provides a summary of the EDHOC_Information parameters
    defined in this section.
 
- +---------------+-------+----------+----------------+-----------------+
- | Name          | CBOR  | CBOR     | Registry       | Description     |
- |               | label | type     |                |                 |
- +---------------+-------+----------+----------------+-----------------+
- | session_id    | 0     | bstr     |                | Identifier of   |
- |               |       |          |                | a session       |
- +---------------+-------+----------+----------------+-----------------+
- | methods       | 1     | int /    | EDHOC Method   | Set of          |
- |               |       | array    | Type Registry  | supported       |
- |               |       |          |                | EDHOC methods   |
- +---------------+-------+----------+----------------+-----------------+
- | cipher_suites | 2     | int /    | EDHOC Cipher   | Set of          |
- |               |       | array    | Suites         | supported EDHOC |
- |               |       |          | Registry       | cipher suites   |
- +---------------+-------+----------+----------------+-----------------+
- | message_4     | 3     | simple   |                | Support for     |
- |               |       | value    |                | EDHOC message_4 |
- |               |       | "true" / |                |                 |
- |               |       | simple   |                |                 |
- |               |       | value    |                |                 |
- |               |       | "false"  |                |                 |
- +---------------+-------+----------+----------------+-----------------+
- | comb_req      | 4     | simple   |                | Support for the |
- |               |       | value    |                | EDHOC + OSCORE  |
- |               |       | "true" / |                | combined        |
- |               |       | simple   |                | request         |
- |               |       | value    |                |                 |
- |               |       | "false"  |                |                 |
- +---------------+-------+----------+----------------+-----------------+
- | uri_path      | 5     | tstr     |                | URI-path of the |
- |               |       |          |                | EDHOC resource  |
- +---------------+-------+----------+----------------+-----------------+
- | osc_ms_len    | 6     | uint     |                | Length in bytes |
- |               |       |          |                | of the OSCORE   |
- |               |       |          |                | Master Secret   |
- |               |       |          |                | to derive       |
- +---------------+-------+----------+----------------+-----------------+
- | osc_salt_len  | 7     | uint     |                | Length in bytes |
- |               |       |          |                | of the OSCORE   |
- |               |       |          |                | Master Salt to  |
- |               |       |          |                | derive          |
- +---------------+-------+----------+----------------+-----------------+
- | osc_version   | 8     | uint     |                | OSCORE version  |
- |               |       |          |                | number to use   |
- +---------------+-------+----------+----------------+-----------------+
- | cred_types    | 9     | int /    | EDHOC          | Set of          |
- |               |       | array    | Authentication | supported       |
- |               |       |          | Credential     | types of        |
- |               |       |          | Types Registry | authentication  |
- |               |       |          |                | credentials     |
- |               |       |          |                | for EDHOC       |
- +---------------+-------+----------+----------------+-----------------+
- | id_cred_types | 10    | int /    | COSE Header    | Set of          |
- |               |       | tstr /   | Parameters     | supported       |
- |               |       | array    | Registry       | types of        |
- |               |       |          |                | authentication  |
- |               |       |          |                | credential      |
- |               |       |          |                | identifiers for |
- |               |       |          |                | EDHOC           |
- +---------------+-------+----------+----------------+-----------------+
- | eads          | 11    | uint /   | EDHOC External | Set of          |
- |               |       | array    | Authorization  | supported EDHOC |
- |               |       |          | Data Registry  | External        |
- |               |       |          |                | Authorization   |
- |               |       |          |                | Data (EAD)      |
- |               |       |          |                | items           |
- +---------------+-------+----------+----------------+-----------------+
- | initiator     | 12    | simple   |                | Support for the |
- |               |       | value    |                | EDHOC Initiator |
- |               |       | "true" / |                | role            |
- |               |       | simple   |                |                 |
- |               |       | value    |                |                 |
- |               |       | "false"  |                |                 |
- +---------------+-------+----------+----------------+-----------------+
- | responder     | 13    | simple   |                | Support for the |
- |               |       | value    |                | EDHOC Responder |
- |               |       | "true" / |                | role            |
- |               |       | simple   |                |                 |
- |               |       | value    |                |                 |
- |               |       | "false"  |                |                 |
- +---------------+-------+----------+----------------+-----------------+
+   +===============+=======+=======+================+==================+
+   | Name          | CBOR  | CBOR  | Registry       | Description      |
+   |               | label | type  |                |                  |
+   +===============+=======+=======+================+==================+
+   | session_id    | 0     | bstr  |                | Identifier of    |
+   |               |       |       |                | a session        |
+   +---------------+-------+-------+----------------+------------------+
+   | methods       | 1     | int   | EDHOC Method   | Set of           |
+   |               |       | or    | Type Registry  | supported        |
+   |               |       | array |                | EDHOC methods    |
+   +---------------+-------+-------+----------------+------------------+
+   | cipher_suites | 2     | int   | EDHOC Cipher   | Set of           |
+   |               |       | or    | Suites         | supported        |
+   |               |       | array | Registry       | EDHOC cipher     |
+   |               |       |       |                | suites           |
+   +---------------+-------+-------+----------------+------------------+
+   | message_4     | 3     | True  |                | Support for      |
+   |               |       | or    |                | EDHOC            |
+   |               |       | False |                | message_4        |
+   +---------------+-------+-------+----------------+------------------+
+   | comb_req      | 4     | True  |                | Support for      |
+   |               |       | or    |                | the EDHOC +      |
+   |               |       | False |                | OSCORE           |
+   |               |       |       |                | combined         |
+   |               |       |       |                | request          |
+   +---------------+-------+-------+----------------+------------------+
+   | uri_path      | 5     | tstr  |                | URI-path of      |
+   |               |       |       |                | the EDHOC        |
+   |               |       |       |                | resource         |
+   +---------------+-------+-------+----------------+------------------+
+   | osc_ms_len    | 6     | uint  |                | Length in        |
+   |               |       |       |                | bytes of the     |
+   |               |       |       |                | OSCORE Master    |
+   |               |       |       |                | Secret to        |
+   |               |       |       |                | derive           |
+   +---------------+-------+-------+----------------+------------------+
+   | osc_salt_len  | 7     | uint  |                | Length in        |
+   |               |       |       |                | bytes of the     |
+   |               |       |       |                | OSCORE Master    |
+   |               |       |       |                | Salt to derive   |
+   +---------------+-------+-------+----------------+------------------+
+   | osc_version   | 8     | uint  |                | OSCORE version   |
+   |               |       |       |                | number to use    |
+   +---------------+-------+-------+----------------+------------------+
+   | cred_types    | 9     | int   | EDHOC          | Set of           |
+   |               |       | or    | Authentication | supported        |
+   |               |       | array | Credential     | types of         |
+   |               |       |       | Types Registry | authentication   |
+   |               |       |       |                | credentials      |
+   |               |       |       |                | for EDHOC        |
+   +---------------+-------+-------+----------------+------------------+
+   | id_cred_types | 10    | int   | COSE Header    | Set of           |
+   |               |       | or    | Parameters     | supported        |
+   |               |       | tstr  | Registry       | types of         |
+   |               |       | or    |                | authentication   |
+   |               |       | array |                | credential       |
+   |               |       |       |                | identifiers      |
+   |               |       |       |                | for EDHOC        |
+   +---------------+-------+-------+----------------+------------------+
+   | eads          | 11    | uint  | EDHOC External | Set of           |
+   |               |       | or    | Authorization  | supported        |
+   |               |       | array | Data Registry  | EDHOC External   |
+   |               |       |       |                | Authorization    |
+   |               |       |       |                | Data (EAD)       |
+   |               |       |       |                | items            |
+   +---------------+-------+-------+----------------+------------------+
+   | initiator     | 12    | True  |                | Support for      |
+   |               |       | or    |                | the EDHOC        |
+   |               |       | False |                | Initiator role   |
+   +---------------+-------+-------+----------------+------------------+
+   | responder     | 13    | True  |                | Support for      |
+   |               |       | or    |                | the EDHOC        |
+   |               |       | False |                | Responder role   |
+   +---------------+-------+-------+----------------+------------------+
 
-                 Figure 6: EDHOC_Information Parameters
+                   Table 1: EDHOC_Information Parameters
 
    *  session_id: This parameter identifies a 'session' which the EDHOC
       information is associated with, but does not necessarily identify
@@ -953,7 +946,7 @@ Table of Contents
       In CBOR, "responder" is the simple value "true" (0xf5) or "false"
       (0xf4), and has label 13.
 
-   An example of JSON EDHOC_Information is given in Figure 7.
+   An example of JSON EDHOC_Information is given in Figure 6.
 
       "edhoc_info" : {
           "session_id"    : b64'AQ==',
@@ -961,7 +954,7 @@ Table of Contents
           "cipher_suites" : 0
       }
 
-                Figure 7: Example of JSON EDHOC_Information
+                Figure 6: Example of JSON EDHOC_Information
 
    The CDDL grammar describing the CBOR EDHOC_Information is:
 
@@ -2070,7 +2063,7 @@ Table of Contents
    *  Specification: A pointer to the public specification for the item,
       if one exists.
 
-   This registry will be initially populated by the values in Figure 6.
+   This registry will be initially populated by the values in Table 1.
    The "Specification" column for all of these entries will be this
    document and [RFC9528].
 
@@ -2894,7 +2887,7 @@ Appendix C.  CDDL Model
    initiator = 12
    responder = 13
 
-                            Figure 8: CDDL model
+                            Figure 7: CDDL model
 
 Appendix D.  Document Updates
 

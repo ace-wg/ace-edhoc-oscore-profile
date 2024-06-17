@@ -1614,19 +1614,21 @@ This section lists the specifications of this profile based on the requirements 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
 
-## Version -03 to -04 ## {#sec-04-05}
+## Version -04 to -05 ## {#sec-04-05}
+
+* Editorial fixes and improvements.
+
+## Version -03 to -04 ## {#sec-03-04}
+
+* Fixed column name and prefilling of the "EDHOC Information" registry.
+
+* Added EDHOC_Information Parameters originally in draft-tiloca-lake-app-profiles-00.
 
 * Removed the case of transporting access token in EAD_1
 
 * Removed redundant normative text
 
 * Clarifications of association between access token, session_id, EDHOC session and OSCORE security context
-
-## Version -02 to -03 ## {#sec-03-04}
-
-* Fixed column name and prefilling of the "EDHOC Information" registry.
-
-* Added EDHOC_Information Parameters originally in draft-tiloca-lake-app-profiles-00.
 
 * Updated references.
 

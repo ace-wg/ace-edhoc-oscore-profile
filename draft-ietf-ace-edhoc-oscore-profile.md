@@ -131,7 +131,11 @@ The authorization information (authz-info) resource refers to the authorization 
 
 Concise Binary Object Representation (CBOR) {{RFC8949}}{{RFC8742}} and Concise Data Definition Language (CDDL) {{RFC8610}} are used in this document. CDDL predefined type names, especially bstr for CBOR byte strings and tstr for CBOR text strings, are used extensively in this document.
 
-Examples throughout this document are expressed in CBOR diagnostic notation without the tag and value abbreviations.
+Examples throughout this document are expressed in CBOR diagnostic notation as defined in {{Section 8 of RFC8949}} and {{Appendix G of RFC8610}}. Diagnostic notation comments are often used to provide a textual representation of the numeric parameter names and values.
+
+In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in {{fig-cddl-model}} of {{sec-cddl-model}}. For example, {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2 : 3}.
+
+Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in {{fig-cddl-model}} of {{sec-cddl-model}}. Finally, please delete this note.
 
 # Protocol Overview {#overview}
 
@@ -228,10 +232,10 @@ An example of such a request is shown in {{token-request}}. In this example, C s
    Content-Format: application/ace+cbor
    Payload:
    {
-     "audience" : "tempSensor4711",
-     "scope" : "read",
-     "req_cnf" : {
-       "x5t" : h'822E4879F2A41B510C1F9B'
+     / audience / 5 : "tempSensor4711",
+     / scope /    9 : "read",
+     / req_cnf /  4 : {
+       e'x5t' : h'822E4879F2A41B510C1F9B'
      }
    }
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -250,10 +254,10 @@ AS MUST verify that the received "session\_id" identifies a token series to whic
    Content-Format: application/ace+cbor
    Payload:
    {
-     "audience" : "tempSensor4711",
-     "scope" : "write",
-     "edhoc_info" : {
-        "session_id" : h'01'
+     / audience /      5 : "tempSensor4711",
+     / scope /         9 : "write",
+     e'edhoc_info_param' : {
+        e'session_id' : h'01'
      }
    }
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -312,18 +316,18 @@ When issuing the first access token of a token series, AS MAY send EDHOC\_Inform
       Content-Format: application/ace+cbor
       Payload:
       {
-        "access_token" : h'8343a1010aa2044c53/...
-         (remainder of access token (CWT) omitted for brevity)/',
-        "ace_profile" : "coap_edhoc_oscore",
-        "expires_in" : "3600",
-        "rs_cnf" : {
-          "x5chain" : h'3081ee3081a1a00302/...'
-          (remainder of the access credential omitted for brevity)/'
+        / access_token / 1 : h'8343a1010aa2044c53/...
+          (remainder of access token (CWT) omitted for brevity)/',
+        / ace_profile / 38 : e'coap_edhoc_oscore',
+        / expires_in /   2 : 3600,
+        / rs_cnf /      41 : {
+          e'x5chain' : h'3081ee3081a1a00302/...'
+            (remainder of the access credential omitted for brevity)/'
         }
-        "edhoc_info" : {
-          "session_id" : h'01',
-          "methods" : [0, 1, 2, 3],
-          "cipher_suites": 0
+        e'edhoc_info_param' : {
+          e'session_id'    : h'01',
+          e'methods'       : [0, 1, 2, 3],
+          e'cipher_suites' : 0
         }
       }
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -359,18 +363,18 @@ Since the access token does not contain secret information, only its integrity a
 
 ~~~~~~~~~~~~~~~~~~~~~~~
    {
-    "aud" : "tempSensorInLivingRoom",
-    "iat" : "1360189224",
-    "exp" : "1360289224",
-    "scope" :  "temperature_g firmware_p",
-    "cnf" : {
-      "x5chain" : h'3081ee3081a1a00302/...
-      (remainder of the access credential omitted for brevity)/'
+    / aud /   3 : "tempSensorInLivingRoom",
+    / iat /   6 : 1563451500,
+    / exp /   4 : 1563453000,
+    / scope / 9 :  "temperature_g firmware_p",
+    / cnf /   8 : {
+      e'x5chain' : h'3081ee3081a1a00302/...
+        (remainder of the access credential omitted for brevity)/'
     }
-    "edhoc_info" : {
-      "session_id" : h'01',
-      "methods" : [0, 1, 2, 3],
-      "cipher_suites": 0
+    e'edhoc_info_claim' : {
+      e'session_id'    : h'01',
+      e'methods'       : [0, 1, 2, 3],
+      e'cipher_suites' : 0
     }
   }
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -520,8 +524,8 @@ An example of JSON EDHOC\_Information is given in {{fig-edhoc-info-json}}.
 
 ~~~~~~~~~~~
    "edhoc_info" : {
-       "session_id" : b64'AQ==',
-       "methods" : 1,
+       "session_id"    : b64'AQ==',
+       "methods"       : 1,
        "cipher_suites" : 0
    }
 ~~~~~~~~~~~
@@ -1191,22 +1195,22 @@ M05 |<---------------------------------|                              |
     |  'rs_cnf' specifies              |                              |
     |     AUTH_CRED_RS by value        |                              |
     |                                  |                              |
-    |  'ace_profile' =                 |                              |
-    |             coap_edhoc_oscore    |                              |
+    |  'ace_profile' specifies the     |                              |
+    |  ACE profile "coap_edhoc_oscore" |                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       session_id : h'01',        |                              |
-    |       cipher_suites : 2,         |                              |
-    |       methods : 3                |                              |
+    |       e'session_id' : h'01',     |                              |
+    |       e'cipher_suites' : 2,      |                              |
+    |       e'methods' : 3             |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
-    |    * the 'cnf' claim specifies   |                              |
-    |      AUTH_CRED_C by value        |                              |
-    |    * the 'edhoc_info' claim      |                              |
-    |      specifies the same as       |                              |
-    |      'edhoc_info' above          |                              |
+    |  - the 'cnf' claim specifies     |                              |
+    |    AUTH_CRED_C by value          |                              |
+    |  - the 'edhoc_info' claim        |                              |
+    |    specifies the same as         |                              |
+    |    'edhoc_info' above            |                              |
     |                                  |                              |
 
      Possibly after chain verification, the Client adds AUTH_CRED_RS
@@ -1298,22 +1302,22 @@ M14 |<---------------------------------|                              |
     |  'rs_cnf' identifies             |                              |
     |     AUTH_CRED_RS by reference    |                              |
     |                                  |                              |
-    |  'ace_profile' =                 |                              |
-    |             coap_edhoc_oscore    |                              |
+    |  'ace_profile' specifies the     |                              |
+    |  ACE profile "coap_edhoc_oscore" |                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       session_id : h'05',        |                              |
-    |       cipher_suites : 2,         |                              |
-    |       methods : 3                |                              |
+    |       e'session_id' : h'05',     |                              |
+    |       e'cipher_suites' : 2,      |                              |
+    |       e'methods' : 3             |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
-    |    * the 'cnf' claim specifies   |                              |
-    |      AUTH_CRED_C by reference    |                              |
-    |    * the 'edhoc_info' claim      |                              |
-    |      specifies the same as       |                              |
-    |      'edhoc_info' above          |                              |
+    |  - the 'cnf' claim specifies     |                              |
+    |    AUTH_CRED_C by reference      |                              |
+    |  - the 'edhoc_info' claim        |                              |
+    |    specifies the same as         |                              |
+    |    'edhoc_info' above            |                              |
     |                                  |                              |
     |                                  |                              |
     |  Token upload to /authz-info     |                              |
@@ -1385,12 +1389,12 @@ M02 |<---------------------------------|                              |
     |                                  |                              |
     |  EDHOC+OSCORE request to /token  |                              |
 M03 |--------------------------------->|                              |
-    |  * EDHOC message_3               |                              |
+    |  - EDHOC message_3               |                              |
     |      ID_CRED_I identifies        |                              |
     |         CRED_I = AUTH_CRED_C     |                              |
     |         by reference             |                              |
     |  --- --- ---                     |                              |
-    |  * OSCORE-protected part         |                              |
+    |  - OSCORE-protected part         |                              |
     |      Token request               |                              |
     |         'req_cnf' identifies     |                              |
     |         AUTH_CRED_C by reference |                              |
@@ -1402,22 +1406,22 @@ M04 |<---------------------------------|                              |
     |  'rs_cnf' specifies              |                              |
     |     AUTH_CRED_RS by value        |                              |
     |                                  |                              |
-    |  'ace_profile' =                 |                              |
-    |             coap_edhoc_oscore    |                              |
+    |  'ace_profile' specifies the     |                              |
+    |  ACE profile "coap_edhoc_oscore" |                              |
     |                                  |                              |
     |  'edhoc_info' specifies:         |                              |
     |     {                            |                              |
-    |       session_id : h'01',        |                              |
-    |       cipher_suites : 2,         |                              |
-    |       methods : 3                |                              |
+    |       e'session_id' : h'01',     |                              |
+    |       e'cipher_suites' : 2,      |                              |
+    |       e'methods' : 3             |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
-    |    * the 'cnf' claim specifies   |                              |
-    |      AUTH_CRED_C by value        |                              |
-    |    * the 'edhoc_info' claim      |                              |
-    |      specifies the same as       |                              |
-    |      'edhoc_info' above          |                              |
+    |  - the 'cnf' claim specifies     |                              |
+    |    AUTH_CRED_C by value          |                              |
+    |  - the 'edhoc_info' claim        |                              |
+    |    specifies the same as         |                              |
+    |    'edhoc_info' above            |                              |
     |                                  |                              |
 
      Possibly after chain verification, the Client adds AUTH_CRED_RS
@@ -1444,13 +1448,13 @@ M06 |<----------------------------------------------------------------|
     |                                  |                              |
     |  EDHOC+OSCORE request to /r      |                              |
 M07 |---------------------------------------------------------------->|
-    |  * EDHOC message_3               |                              |
+    |  - EDHOC message_3               |                              |
     |      EAD_3 contains access token |                              |
     |      ID_CRED_I identifies        |                              |
     |         CRED_I = AUTH_CRED_C     |                              |
     |         by reference             |                              |
     |  --- --- ---                     |                              |
-    |  * OSCORE-protected part         |                              |
+    |  - OSCORE-protected part         |                              |
     |      Application request to /r   |                              |
     |                                  |                              |
 
@@ -1489,12 +1493,12 @@ M02 |<---------------------------------|                              |
     |                                  |                              |
     |  EDHOC+OSCORE request to /token  |                              |
 M03 |--------------------------------->|                              |
-    |  * EDHOC message_3               |                              |
+    |  - EDHOC message_3               |                              |
     |      ID_CRED_I identifies        |                              |
     |         CRED_I = AUTH_CRED_C     |                              |
     |         by reference             |                              |
     |  --- --- ---                     |                              |
-    |  * OSCORE-protected part         |                              |
+    |  - OSCORE-protected part         |                              |
     |      Token request               |                              |
     |         'req_cnf' identifies     |                              |
     |         AUTH_CRED_C by reference |                              |
@@ -1502,17 +1506,17 @@ M03 |--------------------------------->|                              |
     |                                  |                              |
     |                                  |  Token upload to /authz-info |
 M04 |                                  |----------------------------->|
-    |                                  |  In the access token:        |
-    |                                  |    * the 'cnf' claim         |
-    |                                  |      specifies AUTH_CRED_C   |
-    |                                  |      by value                |
-    |                                  |    * the 'edhoc_info'        |
-    |                                  |      claim specifies         |
-    |                                  |        {                     |
-    |                                  |          session_id : h'01', |
-    |                                  |          cipher_suites : 2,  |
-    |                                  |          methods: 3          |
-    |                                  |        }                     |
+    |                                  | In the access token:         |
+    |                                  | - the 'cnf' claim            |
+    |                                  |   specifies AUTH_CRED_C      |
+    |                                  |   by value                   |
+    |                                  | - the 'edhoc_info'           |
+    |                                  |   claim specifies            |
+    |                                  |     {                        |
+    |                                  |       e'session_id' : h'01', |
+    |                                  |       e'cipher_suites' : 2,  |
+    |                                  |       e'methods': 3          |
+    |                                  |     }                        |
     |                                  |                              |
 
      Possibly after chain verification, RS adds AUTH_CRED_C
@@ -1562,12 +1566,12 @@ M08 |<----------------------------------------------------------------|
     |                                  |                              |
     |  EDHOC+OSCORE request to /r      |                              |
 M09 |---------------------------------------------------------------->|
-    |  * EDHOC message_3               |                              |
+    |  - EDHOC message_3               |                              |
     |      ID_CRED_I identifies        |                              |
     |         CRED_I = AUTH_CRED_C     |                              |
     |         by reference             |                              |
     |  --- --- ---                     |                              |
-    |  * OSCORE-protected part         |                              |
+    |  - OSCORE-protected part         |                              |
     |      Application request to /r   |                              |
     |                                  |                              |
 
@@ -1580,7 +1584,6 @@ M09 |---------------------------------------------------------------->|
     |  (OSCORE-protected message)      |                              |
 M10 |<----------------------------------------------------------------|
     |                                  |                              |
-
 ~~~~~~~~~~~
 
 # Profile Requirements # {#sec-profile-requirements}
@@ -1611,10 +1614,55 @@ This section lists the specifications of this profile based on the requirements 
 
 * Optionally, define methods of token transport other than the authz-info endpoint: C can upload the access token when executing EDHOC with RS, by including the access token in the EAD\_3 field of EDHOC message\_3 (see {{edhoc-exec}}).
 
+# CDDL Model # {#sec-cddl-model}
+{:removeinrfc}
+
+~~~~~~~~~~~~~~~~~~~~ CDDL
+; ACE Profiles
+coap_edhoc_oscore = 4
+
+; OAuth Parameters CBOR Mappings
+edhoc_info_param = 47
+
+; CBOR Web Token (CWT) Claims
+edhoc_info_claim = 41
+
+; CWT Confirmation Methods
+xchain = 5
+xbag = 6
+x5t = 7
+x5u = 8
+c5c = 9
+c5b = 10
+c5t = 11
+c5u = 12
+kcwt = 13
+kccs = 14
+
+; EDHOC Information
+session_id = 0
+methods = 1
+cipher_suites = 2
+message_4 = 3
+comb_req = 4
+uri_path = 5
+osc_ms_len = 6
+osc_salt_len = 7
+osc_version = 8
+cred_types = 9
+id_cred_types = 10
+eads = 11
+initiator = 12
+responder = 13
+~~~~~~~~~~~~~~~~~~~~
+{: #fig-cddl-model title="CDDL model" artwork-align="left"}
+
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
 
 ## Version -04 to -05 ## {#sec-04-05}
+
+* CBOR diagnostic notation uses placeholders from a CDDL model.
 
 * Editorial fixes and improvements.
 

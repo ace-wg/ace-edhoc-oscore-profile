@@ -132,11 +132,11 @@ Table of Contents
    8.  Security Considerations
    9.  Privacy Considerations
    10. IANA Considerations
-     10.1.  ACE OAuth Profile Registry
+     10.1.  ACE Profiles Registry
      10.2.  OAuth Parameters Registry
      10.3.  OAuth Parameters CBOR Mappings Registry
      10.4.  JSON Web Token Claims Registry
-     10.5.  CBOR Web Token Claims Registry
+     10.5.  CBOR Web Token (CWT) Claims Registry
      10.6.  JWT Confirmation Methods Registry
      10.7.  CWT Confirmation Methods Registry
      10.8.  EDHOC External Authorization Data Registry
@@ -1653,9 +1653,9 @@ Table of Contents
    Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
    with the RFC number of this specification and delete this paragraph.
 
-10.1.  ACE OAuth Profile Registry
+10.1.  ACE Profiles Registry
 
-   IANA is asked to add the following entry to the "ACE OAuth Profile"
+   IANA is asked to add the following entry to the "ACE Profiles"
    Registry following the procedure specified in [RFC9200].
 
    *  Profile name: coap_edhoc_oscore
@@ -1711,10 +1711,11 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-10.5.  CBOR Web Token Claims Registry
+10.5.  CBOR Web Token (CWT) Claims Registry
 
    IANA is asked to add the following entries to the "CBOR Web Token
-   Claims" registry following the procedure specified in [RFC8392].
+   (CWT) Claims" registry following the procedure specified in
+   [RFC8392].
 
    *  Claim Name: "edhoc_info"
 

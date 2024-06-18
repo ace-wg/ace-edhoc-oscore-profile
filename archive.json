@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-06-16T00:45:04.563921+00:00",
+  "timestamp": "2024-06-18T00:42:05.426409+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -55,15 +55,15 @@
       "id": "I_kwDOIar0bc6C01GP",
       "title": "Link to issue tracker",
       "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/issues/6",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "chrysn",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Please consider adding a pointer to the repository to the document (and, in coordination with chairs, [to the data tracker](https://datatracker.ietf.org/doc/draft-ietf-ace-edhoc-oscore-profile/)).\r\n\r\nThe one in the document can easily be done in the latest markdown format by adding to the file's header:\r\n\r\n\r\n```yaml\r\nvenue:\r\n  group: Authentication and Authorization for Constrained Environments (ace) \r\n  mail: ace@ietf.org\r\n  github: ace-wg/ace-edhoc-oscore-profile\r\n```",
       "createdAt": "2024-03-19T12:50:09Z",
-      "updatedAt": "2024-03-19T12:50:09Z",
-      "closedAt": null,
+      "updatedAt": "2024-06-17T15:24:14Z",
+      "closedAt": "2024-06-17T15:24:14Z",
       "comments": []
     },
     {

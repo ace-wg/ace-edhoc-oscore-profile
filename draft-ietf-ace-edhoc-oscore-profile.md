@@ -1561,8 +1561,8 @@ edhoc_info_param = 47
 edhoc_info_claim = 41
 
 ; CWT Confirmation Methods
-xchain = 5
-xbag = 6
+x5chain = 5
+x5bag = 6
 x5t = 7
 x5u = 8
 c5c = 9

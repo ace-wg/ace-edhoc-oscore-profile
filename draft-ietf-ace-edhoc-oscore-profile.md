@@ -778,24 +778,21 @@ The identifiers used in OSCORE, i.e., the OSCORE Sender/Recipient IDs, are negot
 
 This document has the following actions for IANA.
 
-Note to RFC Editor: Please replace all occurrences of "{{&SELF}}" with
-the RFC number of this specification and delete this paragraph.
+Note to RFC Editor: Please replace all occurrences of "{{&SELF}}" with the RFC number of this specification and delete this paragraph.
 
 ## ACE Profiles Registry ## {#iana-ace-oauth-profile}
 
-IANA is asked to add the following entry to the "ACE Profiles"
-Registry following the procedure specified in {{RFC9200}}.
+IANA is asked to add the following entry to the "ACE Profiles" registry, following the procedure specified in {{RFC9200}}.
 
 * Profile name: coap_edhoc_oscore
-* Profile Description: Profile for delegating client authentication and
-authorization in a constrained environment by establishing an OSCORE Security Context {{RFC8613}} between resource-constrained nodes, through the execution of the authenticated key establishment protocol EDHOC {{RFC9528}}.
+* Profile Description: Profile for delegating client authentication and authorization in a constrained environment by establishing an OSCORE Security Context {{RFC8613}} between resource-constrained nodes, through the execution of the authenticated key establishment protocol EDHOC {{RFC9528}}.
 * Profile ID:  TBD (value between 1 and 255)
 * Change Controller: IESG
 * Reference:  {{&SELF}}
 
 ## OAuth Parameters Registry ## {#iana-oauth-params}
 
-IANA is asked to add the following entries to the "OAuth Parameters" registry.
+IANA is asked to add the following entry to the "OAuth Parameters" registry.
 
 * Name: "edhoc_info"
 * Parameter Usage Location: token request, token response
@@ -805,7 +802,7 @@ IANA is asked to add the following entries to the "OAuth Parameters" registry.
 
 ## OAuth Parameters CBOR Mappings Registry ## {#iana-oauth-cbor-mappings}
 
-IANA is asked to add the following entries to the "OAuth Parameters CBOR Mappings" following the procedure specified in {{RFC9200}}.
+IANA is asked to add the following entry to the "OAuth Parameters CBOR Mappings" registry, following the procedure specified in {{RFC9200}}.
 
 * Name: "edhoc_info"
 * CBOR Key: TBD
@@ -814,7 +811,7 @@ IANA is asked to add the following entries to the "OAuth Parameters CBOR Mapping
 
 ## JSON Web Token Claims Registry ## {#iana-token-json-claims}
 
-IANA is asked to add the following entries to the "JSON Web Token Claims" registry following the procedure specified in {{RFC7519}}.
+IANA is asked to add the following entries to the "JSON Web Token Claims" registry, following the procedure specified in {{RFC7519}}.
 
 *  Claim Name: "edhoc_info"
 *  Claim Description: Information for EDHOC session
@@ -823,7 +820,7 @@ IANA is asked to add the following entries to the "JSON Web Token Claims" regist
 
 ## CBOR Web Token (CWT) Claims Registry ## {#iana-token-cwt-claims}
 
-IANA is asked to add the following entries to the "CBOR Web Token (CWT) Claims" registry following the procedure specified in {{RFC8392}}.
+IANA is asked to add the following entries to the "CBOR Web Token (CWT) Claims" registry, following the procedure specified in {{RFC8392}}.
 
 * Claim Name: "edhoc_info"
 * Claim Description: Information for EDHOC session
@@ -835,70 +832,70 @@ IANA is asked to add the following entries to the "CBOR Web Token (CWT) Claims" 
 
 ## JWT Confirmation Methods Registry ## {#iana-jwt-confirmation-methods}
 
-IANA is asked to add the following entries to the "JWT Confirmation Methods" registry following the procedure specified in {{RFC7800}}.
+IANA is asked to add the following entries to the "JWT Confirmation Methods" registry, following the procedure specified in {{RFC7800}}.
 
 * Confirmation Method Value: "x5c"
 * Confirmation Method Description: An ordered chain of X.509 certificates
 * Change Controller: IESG
 * Specification Document(s): {{ssec-jwt-conf-x5c}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Value: "x5b"
 * Confirmation Method Description: An unordered bag of X.509 certificates
 * Change Controller: IESG
 * Specification Document(s): {{ssec-jwt-conf-x5b}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Value: "x5t"
 * Confirmation Method Description: Hash of an X.509 certificate
 * Change Controller: IESG
 * Specification Document(s): {{ssec-jwt-conf-x5t}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Value: "x5u"
 * Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
 * Change Controller: IESG
 * Specification Document(s): {{ssec-jwt-conf-x5u}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Value: "c5c"
 * Confirmation Method Description: An ordered chain of C509 certificates
 * Change Controller: IESG
 * Specification Document(s): {{ssec-jwt-conf-c5c}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Value: "c5b"
 * Confirmation Method Description: An unordered bag of C509 certificates
 * Change Controller: IESG
 * Specification Document(s): {{ssec-jwt-conf-c5b}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Value: "c5t"
 * Confirmation Method Description: Hash of a C509 certificate
 * Change Controller: IESG
 * Specification Document(s): {{ssec-jwt-conf-c5t}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Value: "c5u"
 * Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
 * Change Controller: IESG
 * Specification Document(s): {{ssec-jwt-conf-c5u}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Value: "kcwt"
 * Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * Change Controller: IESG
 * Specification Document(s): {{ssec-jwt-conf-kcwt}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Value: "kccs"
 * Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims
@@ -907,7 +904,7 @@ IANA is asked to add the following entries to the "JWT Confirmation Methods" reg
 
 ## CWT Confirmation Methods Registry ## {#iana-cwt-confirmation-methods}
 
-IANA is asked to add the following entries to the "CWT Confirmation Methods" registry following the procedure specified in {{RFC8747}}.
+IANA is asked to add the following entries to the "CWT Confirmation Methods" registry, following the procedure specified in {{RFC8747}}.
 
 * Confirmation Method Name: x5chain
 * Confirmation Method Description: An ordered chain of X.509 certificates
@@ -917,7 +914,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Change Controller: IESG
 * Specification Document(s): {{ssec-cwt-conf-x5chain}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Name: x5bag
 * Confirmation Method Description: An unordered bag of X.509 certificates
@@ -927,7 +924,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Change Controller: IESG
 * Specification Document(s): {{ssec-cwt-conf-x5bag}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Name: x5t
 * Confirmation Method Description: Hash of an X.509 certificate
@@ -937,7 +934,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Change Controller: IESG
 * Specification Document(s): {{ssec-cwt-conf-x5t}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Name: x5u
 * Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
@@ -947,7 +944,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Change Controller: IESG
 * Specification Document(s): {{ssec-cwt-conf-x5u}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Name: c5c
 * Confirmation Method Description: An ordered chain of C509 certificates
@@ -957,7 +954,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Change Controller: IESG
 * Specification Document(s): {{ssec-cwt-conf-c5c}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Name: c5b
 * Confirmation Method Description: An unordered bag of C509 certificates
@@ -967,7 +964,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Change Controller: IESG
 * Specification Document(s): {{ssec-cwt-conf-c5b}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Name: c5t
 * Confirmation Method Description: Hash of a C509 certificate
@@ -977,7 +974,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Change Controller: IESG
 * Specification Document(s): {{ssec-cwt-conf-c5t}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Name: c5u
 * Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
@@ -987,7 +984,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Change Controller: IESG
 * Specification Document(s): {{ssec-cwt-conf-c5u}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Name: kcwt
 * Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims
@@ -997,7 +994,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Change Controller: IESG
 * Specification Document(s): {{ssec-cwt-conf-kcwt}} of {{&SELF}}
 
-&nbsp;
+<br>
 
 * Confirmation Method Name: kccs
 * Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims
@@ -1009,9 +1006,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 ## EDHOC External Authorization Data Registry # {#iana-edhoc-ead}
 
-IANA is asked to add the following entry to the "EDHOC External Authorization Data" registry defined in {{Section 9.5 of RFC9528}}.
+IANA is asked to add the following entry to the "EDHOC External Authorization Data" registry defined in {{Section 10.5 of RFC9528}}.
 
-The ead\_label = TBD and the ead\_value defines an access token in EAD\_3, with processing specified in {{AT-in-EAD}}.
+The ead\_label = TBD and the ead\_value define an access token transferred in an EAD item of EDHOC message\_3, with processing specified in {{AT-in-EAD}}.
 
 * Label: TBD
 * Value Type: bstr

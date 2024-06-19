@@ -140,7 +140,7 @@ Note to RFC Editor: Please delete the paragraph immediately preceding this note.
 
 # Protocol Overview {#overview}
 
-This section gives an overview of how to use the ACE framework {{RFC9200}} together with the authenticated key establishment protocol EDHOC {{RFC9528}}. By doing so, the client (C) and the resource server (RS) generate an OSCORE Security Context {{RFC8613}} associated with authorization information, and use that Security Context to protect their communications. The parameters needed by C to negotiate the use of this profile with the authorization server (AS), as well as the OSCORE setup process, are described in detail in the following sections.
+This section gives an overview of how to use the ACE framework {{RFC9200}} together with the lightweight authenticated key exchange protocol EDHOC {{RFC9528}}. By doing so, the client (C) and the resource server (RS) generate an OSCORE Security Context {{RFC8613}} associated with authorization information, and use that Security Context to protect their communications. The parameters needed by C to negotiate the use of this profile with the authorization server (AS), as well as the OSCORE setup process, are described in detail in the following sections.
 
 RS maintains a collection of authentication credentials. These are associated with OSCORE Security Contexts and with authorization information for all clients that RS is communicating with. The authorization information is used to enforce polices for processing requests from those clients.
 
@@ -786,7 +786,7 @@ Note to RFC Editor: Please replace all occurrences of "{{&SELF}}" with the RFC n
 IANA is asked to add the following entry to the "ACE Profiles" registry, following the procedure specified in {{RFC9200}}.
 
 * Profile name: coap_edhoc_oscore
-* Profile Description: Profile for delegating client authentication and authorization in a constrained environment by establishing an OSCORE Security Context {{RFC8613}} between resource-constrained nodes, through the execution of the authenticated key establishment protocol EDHOC {{RFC9528}}.
+* Profile Description: Profile for delegating client authentication and authorization in a constrained environment by establishing an OSCORE Security Context {{RFC8613}} between resource-constrained nodes, through the execution of the lightweight authenticated key exchange protocol EDHOC {{RFC9528}}.
 * Profile ID:  TBD (value between 1 and 255)
 * Change Controller: IESG
 * Reference:  {{&SELF}}

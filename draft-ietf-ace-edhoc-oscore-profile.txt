@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 20 December 2024                                      M. Tiloca
+Expires: 21 December 2024                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            18 June 2024
+                                                            19 June 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 December 2024.
+   This Internet-Draft will expire on 21 December 2024.
 
 Copyright Notice
 
@@ -284,14 +284,14 @@ Table of Contents
 2.  Protocol Overview
 
    This section gives an overview of how to use the ACE framework
-   [RFC9200] together with the authenticated key establishment protocol
-   EDHOC [RFC9528].  By doing so, the client (C) and the resource server
-   (RS) generate an OSCORE Security Context [RFC8613] associated with
-   authorization information, and use that Security Context to protect
-   their communications.  The parameters needed by C to negotiate the
-   use of this profile with the authorization server (AS), as well as
-   the OSCORE setup process, are described in detail in the following
-   sections.
+   [RFC9200] together with the lightweight authenticated key exchange
+   protocol EDHOC [RFC9528].  By doing so, the client (C) and the
+   resource server (RS) generate an OSCORE Security Context [RFC8613]
+   associated with authorization information, and use that Security
+   Context to protect their communications.  The parameters needed by C
+   to negotiate the use of this profile with the authorization server
+   (AS), as well as the OSCORE setup process, are described in detail in
+   the following sections.
 
    RS maintains a collection of authentication credentials.  These are
    associated with OSCORE Security Contexts and with authorization
@@ -1671,8 +1671,8 @@ Table of Contents
    *  Profile Description: Profile for delegating client authentication
       and authorization in a constrained environment by establishing an
       OSCORE Security Context [RFC8613] between resource-constrained
-      nodes, through the execution of the authenticated key
-      establishment protocol EDHOC [RFC9528].
+      nodes, through the execution of the lightweight authenticated key
+      exchange protocol EDHOC [RFC9528].
 
    *  Profile ID: TBD (value between 1 and 255)
 

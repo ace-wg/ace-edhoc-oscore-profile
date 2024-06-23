@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 21 December 2024                                      M. Tiloca
+Expires: 25 December 2024                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            19 June 2024
+                                                            23 June 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 December 2024.
+   This Internet-Draft will expire on 25 December 2024.
 
 Copyright Notice
 
@@ -1666,17 +1666,15 @@ Table of Contents
    IANA is asked to add the following entry to the "ACE Profiles"
    registry, following the procedure specified in [RFC9200].
 
-   *  Profile name: coap_edhoc_oscore
+   *  Name: coap_edhoc_oscore
 
-   *  Profile Description: Profile for delegating client authentication
-      and authorization in a constrained environment by establishing an
+   *  Description: Profile for delegating client authentication and
+      authorization in a constrained environment by establishing an
       OSCORE Security Context [RFC8613] between resource-constrained
       nodes, through the execution of the lightweight authenticated key
       exchange protocol EDHOC [RFC9528].
 
-   *  Profile ID: TBD (value between 1 and 255)
-
-   *  Change Controller: IESG
+   *  CBOR Value: TBD (value between 1 and 255)
 
    *  Reference: [RFC-XXXX]
 
@@ -1687,9 +1685,9 @@ Table of Contents
 
    *  Name: "edhoc_info"
 
-   *  Parameter Usage Location: token request, token response
+   *  Parameter Usage Location: token request and token response
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
    *  Reference: [RFC-XXXX]
 
@@ -1734,11 +1732,11 @@ Table of Contents
 
    *  Claim Key: TBD
 
-   *  Claim Value Type(s): map
+   *  Claim Value Type: map
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): [RFC-XXXX]
+   *  Reference: [RFC-XXXX]
 
 10.6.  JWT Confirmation Methods Registry
 
@@ -1750,9 +1748,9 @@ Table of Contents
    *  Confirmation Method Description: An ordered chain of X.509
       certificates
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 7.1 of [RFC-XXXX]
+   *  Reference: Section 7.1 of [RFC-XXXX]
 
 
 
@@ -1761,9 +1759,9 @@ Table of Contents
    *  Confirmation Method Description: An unordered bag of X.509
       certificates
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 7.2 of [RFC-XXXX]
+   *  Reference: Section 7.2 of [RFC-XXXX]
 
 
 
@@ -1771,9 +1769,9 @@ Table of Contents
 
    *  Confirmation Method Description: Hash of an X.509 certificate
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 7.3 of [RFC-XXXX]
+   *  Reference: Section 7.3 of [RFC-XXXX]
 
 
 
@@ -1782,9 +1780,9 @@ Table of Contents
    *  Confirmation Method Description: URI pointing to an ordered chain
       of X.509 certificates
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 7.4 of [RFC-XXXX]
+   *  Reference: Section 7.4 of [RFC-XXXX]
 
 
 
@@ -1793,9 +1791,9 @@ Table of Contents
    *  Confirmation Method Description: An ordered chain of C509
       certificates
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 7.5 of [RFC-XXXX]
+   *  Reference: Section 7.5 of [RFC-XXXX]
 
 
 
@@ -1804,9 +1802,9 @@ Table of Contents
    *  Confirmation Method Description: An unordered bag of C509
       certificates
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 7.6 of [RFC-XXXX]
+   *  Reference: Section 7.6 of [RFC-XXXX]
 
 
 
@@ -1814,9 +1812,9 @@ Table of Contents
 
    *  Confirmation Method Description: Hash of a C509 certificate
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 7.7 of [RFC-XXXX]
+   *  Reference: Section 7.7 of [RFC-XXXX]
 
 
 
@@ -1825,9 +1823,9 @@ Table of Contents
    *  Confirmation Method Description: URI pointing to a COSE_C509
       containing an ordered chain of C509 certificates
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 7.8 of [RFC-XXXX]
+   *  Reference: Section 7.8 of [RFC-XXXX]
 
 
 
@@ -1836,9 +1834,9 @@ Table of Contents
    *  Confirmation Method Description: A CBOR Web Token (CWT) containing
       a COSE_Key in a 'cnf' claim and possibly other claims
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 7.9 of [RFC-XXXX]
+   *  Reference: Section 7.9 of [RFC-XXXX]
 
 
 
@@ -1847,9 +1845,9 @@ Table of Contents
    *  Confirmation Method Description: A CWT Claims Set (CCS) containing
       a COSE_Key in a 'cnf' claim and possibly other claims
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 7.10 of [RFC-XXXX]
+   *  Reference: Section 7.10 of [RFC-XXXX]
 
 10.7.  CWT Confirmation Methods Registry
 
@@ -1865,11 +1863,11 @@ Table of Contents
 
    *  Confirmation Key: TBD
 
-   *  Confirmation Value Type(s): COSE_X509
+   *  Confirmation Value Type: COSE_X509
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 6.1 of [RFC-XXXX]
+   *  Reference: Section 6.1 of [RFC-XXXX]
 
 
 
@@ -1882,11 +1880,11 @@ Table of Contents
 
    *  Confirmation Key: TBD
 
-   *  Confirmation Value Type(s): COSE_X509
+   *  Confirmation Value Type: COSE_X509
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 6.2 of [RFC-XXXX]
+   *  Reference: Section 6.2 of [RFC-XXXX]
 
 
 
@@ -1898,11 +1896,11 @@ Table of Contents
 
    *  Confirmation Key: TBD
 
-   *  Confirmation Value Type(s): COSE_CertHash
+   *  Confirmation Value Type: COSE_CertHash
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 6.3 of [RFC-XXXX]
+   *  Reference: Section 6.3 of [RFC-XXXX]
 
 
 
@@ -1915,11 +1913,11 @@ Table of Contents
 
    *  Confirmation Key: TBD
 
-   *  Confirmation Value Type(s): uri
+   *  Confirmation Value Type: uri
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 6.4 of [RFC-XXXX]
+   *  Reference: Section 6.4 of [RFC-XXXX]
 
 
 
@@ -1932,11 +1930,11 @@ Table of Contents
 
    *  Confirmation Key: TBD
 
-   *  Confirmation Value Type(s): COSE_C509
+   *  Confirmation Value Type: COSE_C509
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 6.5 of [RFC-XXXX]
+   *  Reference: Section 6.5 of [RFC-XXXX]
 
 
 
@@ -1949,11 +1947,11 @@ Table of Contents
 
    *  Confirmation Key: TBD
 
-   *  Confirmation Value Type(s): COSE_C509
+   *  Confirmation Value Type: COSE_C509
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 6.6 of [RFC-XXXX]
+   *  Reference: Section 6.6 of [RFC-XXXX]
 
 
 
@@ -1965,11 +1963,11 @@ Table of Contents
 
    *  Confirmation Key: TBD
 
-   *  Confirmation Value Type(s): COSE_CertHash
+   *  Confirmation Value Type: COSE_CertHash
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 6.7 of [RFC-XXXX]
+   *  Reference: Section 6.7 of [RFC-XXXX]
 
 
 
@@ -1982,11 +1980,11 @@ Table of Contents
 
    *  Confirmation Key: TBD
 
-   *  Confirmation Value Type(s): uri
+   *  Confirmation Value Type: uri
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 6.8 of [RFC-XXXX]
+   *  Reference: Section 6.8 of [RFC-XXXX]
 
 
 
@@ -1999,11 +1997,11 @@ Table of Contents
 
    *  Confirmation Key: TBD
 
-   *  Confirmation Value Type(s): COSE_Messages
+   *  Confirmation Value Type: COSE_Messages
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 6.9 of [RFC-XXXX]
+   *  Reference: Section 6.9 of [RFC-XXXX]
 
 
 
@@ -2016,11 +2014,11 @@ Table of Contents
 
    *  Confirmation Key: TBD
 
-   *  Confirmation Value Type(s): map / #6(map)
+   *  Confirmation Value Type: map / #6(map)
 
-   *  Change Controller: IESG
+   *  Change Controller: IETF
 
-   *  Specification Document(s): Section 6.10 of [RFC-XXXX]
+   *  Reference: Section 6.10 of [RFC-XXXX]
 
 10.8.  EDHOC External Authorization Data Registry
 
@@ -2031,11 +2029,12 @@ Table of Contents
    transferred in an EAD item of EDHOC message_3, with processing
    specified in Section 4.3.
 
+   *  Name: ACE-OAuth Access Token
+
    *  Label: TBD
 
-   *  Value Type: bstr
-
-   *  Description: Access Token
+   *  Description: An Access Token as used in the ACE-OAuth framework
+      [RFC9200]
 
    *  Reference: [RFC-XXXX]
 

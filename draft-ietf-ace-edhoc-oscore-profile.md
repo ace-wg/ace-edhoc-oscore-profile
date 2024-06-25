@@ -785,10 +785,9 @@ Note to RFC Editor: Please replace all occurrences of "{{&SELF}}" with the RFC n
 
 IANA is asked to add the following entry to the "ACE Profiles" registry, following the procedure specified in {{RFC9200}}.
 
-* Profile name: coap_edhoc_oscore
-* Profile Description: Profile for delegating client authentication and authorization in a constrained environment by establishing an OSCORE Security Context {{RFC8613}} between resource-constrained nodes, through the execution of the lightweight authenticated key exchange protocol EDHOC {{RFC9528}}.
-* Profile ID:  TBD (value between 1 and 255)
-* Change Controller: IESG
+* Name: coap_edhoc_oscore
+* Description: Profile for delegating client authentication and authorization in a constrained environment by establishing an OSCORE Security Context {{RFC8613}} between resource-constrained nodes, through the execution of the lightweight authenticated key exchange protocol EDHOC {{RFC9528}}.
+* CBOR Value:  TBD (value between 1 and 255)
 * Reference:  {{&SELF}}
 
 ## OAuth Parameters Registry ## {#iana-oauth-params}
@@ -796,10 +795,9 @@ IANA is asked to add the following entry to the "ACE Profiles" registry, followi
 IANA is asked to add the following entry to the "OAuth Parameters" registry.
 
 * Name: "edhoc_info"
-* Parameter Usage Location: token request, token response
-* Change Controller: IESG
+* Parameter Usage Location: token request and token response
+* Change Controller: IETF
 * Reference: {{&SELF}}
-
 
 ## OAuth Parameters CBOR Mappings Registry ## {#iana-oauth-cbor-mappings}
 
@@ -827,9 +825,9 @@ IANA is asked to add the following entries to the "CBOR Web Token (CWT) Claims" 
 * Claim Description: Information for EDHOC session
 * JWT Claim Name: "edhoc_info"
 * Claim Key: TBD
-* Claim Value Type(s): map
-* Change Controller: IESG
-* Specification Document(s): {{&SELF}}
+* Claim Value Type: map
+* Change Controller: IETF
+* Reference: {{&SELF}}
 
 ## JWT Confirmation Methods Registry ## {#iana-jwt-confirmation-methods}
 
@@ -837,71 +835,71 @@ IANA is asked to add the following entries to the "JWT Confirmation Methods" reg
 
 * Confirmation Method Value: "x5c"
 * Confirmation Method Description: An ordered chain of X.509 certificates
-* Change Controller: IESG
-* Specification Document(s): {{ssec-jwt-conf-x5c}} of {{&SELF}}
+* Change Controller: IETF
+* Reference: {{ssec-jwt-conf-x5c}} of {{&SELF}}
 
 <br>
 
 * Confirmation Method Value: "x5b"
 * Confirmation Method Description: An unordered bag of X.509 certificates
-* Change Controller: IESG
-* Specification Document(s): {{ssec-jwt-conf-x5b}} of {{&SELF}}
+* Change Controller: IETF
+* Reference: {{ssec-jwt-conf-x5b}} of {{&SELF}}
 
 <br>
 
 * Confirmation Method Value: "x5t"
 * Confirmation Method Description: Hash of an X.509 certificate
-* Change Controller: IESG
-* Specification Document(s): {{ssec-jwt-conf-x5t}} of {{&SELF}}
+* Change Controller: IETF
+* Reference: {{ssec-jwt-conf-x5t}} of {{&SELF}}
 
 <br>
 
 * Confirmation Method Value: "x5u"
 * Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
-* Change Controller: IESG
-* Specification Document(s): {{ssec-jwt-conf-x5u}} of {{&SELF}}
+* Change Controller: IETF
+* Reference: {{ssec-jwt-conf-x5u}} of {{&SELF}}
 
 <br>
 
 * Confirmation Method Value: "c5c"
 * Confirmation Method Description: An ordered chain of C509 certificates
-* Change Controller: IESG
-* Specification Document(s): {{ssec-jwt-conf-c5c}} of {{&SELF}}
+* Change Controller: IETF
+* Reference: {{ssec-jwt-conf-c5c}} of {{&SELF}}
 
 <br>
 
 * Confirmation Method Value: "c5b"
 * Confirmation Method Description: An unordered bag of C509 certificates
-* Change Controller: IESG
-* Specification Document(s): {{ssec-jwt-conf-c5b}} of {{&SELF}}
+* Change Controller: IETF
+* Reference: {{ssec-jwt-conf-c5b}} of {{&SELF}}
 
 <br>
 
 * Confirmation Method Value: "c5t"
 * Confirmation Method Description: Hash of a C509 certificate
-* Change Controller: IESG
-* Specification Document(s): {{ssec-jwt-conf-c5t}} of {{&SELF}}
+* Change Controller: IETF
+* Reference: {{ssec-jwt-conf-c5t}} of {{&SELF}}
 
 <br>
 
 * Confirmation Method Value: "c5u"
 * Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
-* Change Controller: IESG
-* Specification Document(s): {{ssec-jwt-conf-c5u}} of {{&SELF}}
+* Change Controller: IETF
+* Reference: {{ssec-jwt-conf-c5u}} of {{&SELF}}
 
 <br>
 
 * Confirmation Method Value: "kcwt"
 * Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims
-* Change Controller: IESG
-* Specification Document(s): {{ssec-jwt-conf-kcwt}} of {{&SELF}}
+* Change Controller: IETF
+* Reference: {{ssec-jwt-conf-kcwt}} of {{&SELF}}
 
 <br>
 
 * Confirmation Method Value: "kccs"
 * Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims
-* Change Controller: IESG
-* Specification Document(s): {{ssec-jwt-conf-kccs}} of {{&SELF}}
+* Change Controller: IETF
+* Reference: {{ssec-jwt-conf-kccs}} of {{&SELF}}
 
 ## CWT Confirmation Methods Registry ## {#iana-cwt-confirmation-methods}
 
@@ -911,9 +909,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Description: An ordered chain of X.509 certificates
 * JWT Confirmation Method Name: "x5c"
 * Confirmation Key: TBD
-* Confirmation Value Type(s): COSE_X509
-* Change Controller: IESG
-* Specification Document(s): {{ssec-cwt-conf-x5chain}} of {{&SELF}}
+* Confirmation Value Type: COSE_X509
+* Change Controller: IETF
+* Reference: {{ssec-cwt-conf-x5chain}} of {{&SELF}}
 
 <br>
 
@@ -921,9 +919,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Description: An unordered bag of X.509 certificates
 * JWT Confirmation Method Name: "x5b"
 * Confirmation Key: TBD
-* Confirmation Value Type(s): COSE_X509
-* Change Controller: IESG
-* Specification Document(s): {{ssec-cwt-conf-x5bag}} of {{&SELF}}
+* Confirmation Value Type: COSE_X509
+* Change Controller: IETF
+* Reference: {{ssec-cwt-conf-x5bag}} of {{&SELF}}
 
 <br>
 
@@ -931,9 +929,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Description: Hash of an X.509 certificate
 * JWT Confirmation Method Name: "x5t"
 * Confirmation Key: TBD
-* Confirmation Value Type(s): COSE_CertHash
-* Change Controller: IESG
-* Specification Document(s): {{ssec-cwt-conf-x5t}} of {{&SELF}}
+* Confirmation Value Type: COSE_CertHash
+* Change Controller: IETF
+* Reference: {{ssec-cwt-conf-x5t}} of {{&SELF}}
 
 <br>
 
@@ -941,9 +939,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
 * JWT Confirmation Method Name: "x5u"
 * Confirmation Key: TBD
-* Confirmation Value Type(s): uri
-* Change Controller: IESG
-* Specification Document(s): {{ssec-cwt-conf-x5u}} of {{&SELF}}
+* Confirmation Value Type: uri
+* Change Controller: IETF
+* Reference: {{ssec-cwt-conf-x5u}} of {{&SELF}}
 
 <br>
 
@@ -951,9 +949,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Description: An ordered chain of C509 certificates
 * JWT Confirmation Method Name: "c5c"
 * Confirmation Key: TBD
-* Confirmation Value Type(s): COSE_C509
-* Change Controller: IESG
-* Specification Document(s): {{ssec-cwt-conf-c5c}} of {{&SELF}}
+* Confirmation Value Type: COSE_C509
+* Change Controller: IETF
+* Reference: {{ssec-cwt-conf-c5c}} of {{&SELF}}
 
 <br>
 
@@ -961,9 +959,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Description: An unordered bag of C509 certificates
 * JWT Confirmation Method Name: "c5b"
 * Confirmation Key: TBD
-* Confirmation Value Type(s): COSE_C509
-* Change Controller: IESG
-* Specification Document(s): {{ssec-cwt-conf-c5b}} of {{&SELF}}
+* Confirmation Value Type: COSE_C509
+* Change Controller: IETF
+* Reference: {{ssec-cwt-conf-c5b}} of {{&SELF}}
 
 <br>
 
@@ -971,9 +969,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Description: Hash of a C509 certificate
 * JWT Confirmation Method Name: "c5t"
 * Confirmation Key: TBD
-* Confirmation Value Type(s): COSE_CertHash
-* Change Controller: IESG
-* Specification Document(s): {{ssec-cwt-conf-c5t}} of {{&SELF}}
+* Confirmation Value Type: COSE_CertHash
+* Change Controller: IETF
+* Reference: {{ssec-cwt-conf-c5t}} of {{&SELF}}
 
 <br>
 
@@ -981,9 +979,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
 * JWT Confirmation Method Name: "c5u"
 * Confirmation Key: TBD
-* Confirmation Value Type(s): uri
-* Change Controller: IESG
-* Specification Document(s): {{ssec-cwt-conf-c5u}} of {{&SELF}}
+* Confirmation Value Type: uri
+* Change Controller: IETF
+* Reference: {{ssec-cwt-conf-c5u}} of {{&SELF}}
 
 <br>
 
@@ -991,9 +989,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * JWT Confirmation Method Name: "kcwt"
 * Confirmation Key: TBD
-* Confirmation Value Type(s): COSE_Messages
-* Change Controller: IESG
-* Specification Document(s): {{ssec-cwt-conf-kcwt}} of {{&SELF}}
+* Confirmation Value Type: COSE_Messages
+* Change Controller: IETF
+* Reference: {{ssec-cwt-conf-kcwt}} of {{&SELF}}
 
 <br>
 
@@ -1001,9 +999,9 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * JWT Confirmation Method Name: "kccs"
 * Confirmation Key: TBD
-* Confirmation Value Type(s): map / #6(map)
-* Change Controller: IESG
-* Specification Document(s): {{ssec-cwt-conf-kccs}} of {{&SELF}}
+* Confirmation Value Type: map / #6(map)
+* Change Controller: IETF
+* Reference: {{ssec-cwt-conf-kccs}} of {{&SELF}}
 
 ## EDHOC External Authorization Data Registry # {#iana-edhoc-ead}
 
@@ -1011,9 +1009,9 @@ IANA is asked to add the following entry to the "EDHOC External Authorization Da
 
 The ead\_label = TBD and the ead\_value define an access token transferred in an EAD item of EDHOC message\_3, with processing specified in {{AT-in-EAD}}.
 
+* Name: ACE-OAuth Access Token
 * Label: TBD
-* Value Type: bstr
-* Description: Access Token
+* Description: An Access Token as used in the ACE-OAuth framework {{RFC9200}}
 * Reference: {{&SELF}}
 
 ## EDHOC Information Registry # {#iana-edhoc-parameters}

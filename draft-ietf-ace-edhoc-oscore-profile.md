@@ -162,7 +162,7 @@ After the whole procedure has completed and while the access token is valid, C c
 
 When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then the associated session identifier, together with the authentication credential of C used in the EDHOC session, enables the RS to look up the unique access token determining the access rights of C.
 
-An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}. The names of messages coincide with those of {{RFC9200}} when applicable. Examples of message flows in case of option 2 are given in {{examples}}.
+An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}. The names of messages coincide with those of {{RFC9200}} when applicable. Examples of message flows in case of option 2 are given in {{example-with-optimization}}.
 
 ~~~~~~~~~~~ aasvg
 

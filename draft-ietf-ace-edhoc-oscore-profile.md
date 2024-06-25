@@ -152,7 +152,7 @@ If C has retrieved an access token, there are two options for C to upload it to 
 
 1. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.10 of RFC9200}}. If the access token is valid, RS replies to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol with RS. The communication with the /authz-info endpoint is typically not protected, except for the update of access rights (see {{update-access-rights-c-rs}}).
 
-2. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of RFC9528}}. In this case, the access token is validated in parallel with the EDHOC session. This option cannot be used for the update of access rights.
+2. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of RFC9528}}. In this case, the access token is validated in parallel with the EDHOC session. This option has less messages exchanged and allows both EDHOC, access token upload and access request & response to be completed in two round trips, see {{example-with-optimization}}. Option 2 also allows the access token to be protected by EDHOC, but relies of option 1 for the update of access rights without re-running EDHOC.
 
 When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of RFC9528}}.
 
@@ -162,7 +162,7 @@ After the whole procedure has completed and while the access token is valid, C c
 
 When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then the associated session identifier, together with the authentication credential of C used in the EDHOC session, enables the RS to look up the unique access token determining the access rights of C.
 
-An overview of the profile flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}. The names of messages coincide with those of {{RFC9200}} when applicable.
+An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}. The names of messages coincide with those of {{RFC9200}} when applicable. Examples of message flows in case of option 2 are given in {{examples}}.
 
 ~~~~~~~~~~~ aasvg
 

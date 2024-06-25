@@ -365,7 +365,7 @@ Table of Contents
    An overview of the message flow for the "coap_edhoc_oscore" profile
    in case of option 1 above is given in Figure 1.  The names of
    messages coincide with those of [RFC9200] when applicable.  Examples
-   of message flows in case of option 2 are given in Appendix A.
+   of message flows in case of option 2 are given in Appendix A.2.
 
       C                            RS                       AS
       |                            |                         |

@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 25 December 2024                                      M. Tiloca
+Expires: 27 December 2024                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            23 June 2024
+                                                            25 June 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 December 2024.
+   This Internet-Draft will expire on 27 December 2024.
 
 Copyright Notice
 
@@ -322,8 +322,12 @@ Table of Contents
    2.  C initiates the EDHOC protocol and includes the access token as
        External Authorization Data (EAD), see Section 3.8 of [RFC9528].
        In this case, the access token is validated in parallel with the
-       EDHOC session.  This option cannot be used for the update of
-       access rights.
+       EDHOC session.  This option has less messages exchanged and
+       allows both EDHOC, access token upload and access request &
+       response to be completed in two round trips, see Appendix A.2.
+       Option 2 also allows the access token to be protected by EDHOC,
+       but relies of option 1 for the update of access rights without
+       re-running EDHOC.
 
    When running the EDHOC protocol, C uses the authentication credential
    of RS specified by AS together with the access token, while RS uses
@@ -358,9 +362,10 @@ Table of Contents
    credential of C used in the EDHOC session, enables the RS to look up
    the unique access token determining the access rights of C.
 
-   An overview of the profile flow for the "coap_edhoc_oscore" profile
+   An overview of the message flow for the "coap_edhoc_oscore" profile
    in case of option 1 above is given in Figure 1.  The names of
-   messages coincide with those of [RFC9200] when applicable.
+   messages coincide with those of [RFC9200] when applicable.  Examples
+   of message flows in case of option 2 are given in Appendix A.
 
       C                            RS                       AS
       |                            |                         |

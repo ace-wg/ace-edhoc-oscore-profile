@@ -748,6 +748,9 @@ Table of Contents
 
 3.3.3.  Update of Access Rights
 
+   Editor's note: This section should allow for access rights being
+   updated by AS posting to RS.
+
    If C has requested an update to its access rights using the same
    OSCORE Security Context, which is valid and authorized, then:
 
@@ -1247,6 +1250,9 @@ Table of Contents
    received EDHOC message_2 and before sending EDHOC message_3.
 
 4.5.  Update of Access Rights
+
+   Editor's note: This section should allow for access rights being
+   updated by AS posting to RS.
 
    If C has already established access rights and an OSCORE Security
    Context with RS, then C can update its access rights by posting a new

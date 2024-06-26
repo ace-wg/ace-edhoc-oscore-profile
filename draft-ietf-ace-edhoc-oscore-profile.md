@@ -58,6 +58,7 @@ normative:
   RFC8742:
   RFC8747:
   RFC8949:
+  RFC9052:
   RFC9053:
   RFC9200:
   RFC9201:
@@ -293,12 +294,7 @@ After verifying the POST request to the /token endpoint and that C is authorized
 
 AS can signal that the use of EDHOC and OSCORE as per this profile is REQUIRED for a specific access token, by including the "ace_profile" parameter with the value "coap_edhoc_oscore" in the access token response. This means that C MUST use EDHOC with RS and derive an OSCORE Security Context, as specified in {{edhoc-exec}}. After that, C MUST use the established OSCORE Security Context to protect communications with RS, when accessing protected resources at RS according to the authorization information indicated in the access token. Usually, it is assumed that constrained devices will be pre-configured with the necessary profile, so that this kind of profile signaling can be omitted.
 
-The access token may be sent in the access token response to C for subsequent provisioning to RS, or the access token may be uploaded by AS directly to RS, as specified in {{I-D.ietf-ace-workflow-and-params}}.
-
-* In the former case, AS provides the access token to C, by specifying it in the "access\_token" parameter of the access token response.
-
-* In the latter case, AS uploads the access token to the /authz-info endpoint at RS, similarly to what is defined for C in {{c-rs}} and {{rs-c}}. In case of successful token upload, the access token response to C does not include the parameter "access\_token", and includes the parameter "token_uploaded" encoding the CBOR simple value "true" (0xf5). An example is given in {{example-without-optimization-as-posting}}.
-
+ According to this document, the AS provides the access token to C, by specifying it in the "access\_token" parameter of the access token response. An alternative workflow where the access token is uploaded by AS directly to RS is described in {{I-D.ietf-ace-workflow-and-params}}.
 
 When issuing any access token, AS MUST send the following data in the response to C.
 
@@ -360,9 +356,11 @@ When issuing the first access token of a token series, AS MAY specify the follow
 
 * osc\_version: The OSCORE version. If it is not included, the default value of 1 (see {{Section 5.4 of RFC8613}}) is assumed.
 
-When CWTs are used as access tokens, EDHOC\_Information MUST be transported in the "edhoc\_info" claim, defined in {{iana-token-cwt-claims}}.
+To avoid the complexity of different encodings, an access token of this profile SHALL be a CBOR Web Token (CWT), see {{RFC8392}}. EDHOC\_Information MUST be transported in the "edhoc\_info" claim, defined in {{iana-token-cwt-claims}}.
 
-Since the access token does not contain secret information, only its integrity and source authentication are strictly necessary to ensure. Therefore, AS can protect the access token with either of the means discussed in {{Section 6.1 of RFC9200}}. Nevertheless, when using this profile, it is RECOMMENDED that the access token is a CBOR web token (CWT) protected with COSE_Encrypt/COSE_Encrypt0 as specified in {{RFC8392}}.
+The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. RS needs to be able to verify that the access token is issued by a trusted AS (source authentication). Depending on use case and deployment, the access token may need to be confidentiality protected, for example, for privacy reasons.
+
+AS can protect the access token by different means as discussed in {{Section 6.1 of RFC9200}}. It is RECOMMENDED that a COSE method is used as specified in {{RFC8392}}. Depending on audience there may be different ways to most appropriately confidentiality protected the access token. For a single RS, the CWT may be wrapped in COSE_Encrypt / COSE_Encrypt0, but if it needs to be read by multiple RSs then confidentiality protection may be better applied during transport, e.g., using EDHOC EAD_3 from C to RS.
 
 {{fig-token}} shows an example CWT Claims Set, including the relevant EDHOC parameters in the "edhoc\_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.
 
@@ -494,11 +492,11 @@ EDHOC_Information = {
 
 # Client-RS Communication # {#c-rs-comm}
 
-This section describes the exchanges between C and RS, which comprise the token uploading to RS, and the execution of the EDHOC protocol. Note that AS may have uploaded the access token directly to RS (see {{as-c}}).
+This section describes the exchange between C and RS, including the token uploading to RS, and the execution of the EDHOC protocol. The alternative workflow where AS uploads the access token directly to RS is described in {{I-D.ietf-ace-workflow-and-params}}.
 
-In order to upload the access token to RS, C can send a POST request to the /authz-info endpoint at RS. This is detailed in {{c-rs}} and {{rs-c}}, and shown by the example in {{example-without-optimization}}.
+The case where C sends a POST request to the /authz-info endpoint at RS is detailed in {{c-rs}} and {{rs-c}}, and shown by the example in {{example-without-optimization}}.
 
-Alternatively, C can upload the access token while executing the EDHOC protocol, by transporting the access token in an EAD field of an EDHOC message sent to RS. This is further discussed in {{AT-in-EAD}} and {{edhoc-exec}}, and shown by the example in {{example-with-optimization}}.
+The case where C uploads the access token in an EAD field of an EDHOC message while executing the EDHOC protocol with RS is discussed in {{AT-in-EAD}} and {{edhoc-exec}}, and shown by the example in {{example-with-optimization}}.
 
 In either case, C and RS run the EDHOC protocol by exchanging POST requests and related responses to a dedicated EDHOC resource at RS (see {{edhoc-exec}}). Once completed the EDHOC session, C and RS have agreed on a common secret key PRK\_out (see {{Section 4.1.3 of RFC9528}}), from which they establish an OSCORE Security Context (see {{edhoc-exec}}). After that, C and RS use the established OSCORE Security Context to protect their communications when accessing protected resources at RS, as per the access rights specified in the access token (see {{access-rights-verif}}).
 
@@ -506,7 +504,7 @@ C and RS are mutually authenticated once they have successfully completed the ED
 
 ## C-to-RS: POST to /authz-info endpoint # {#c-rs}
 
-The access token can be uploaded to RS by using the /authz-info endpoint at RS. To this end, C uses CoAP {{RFC7252}} and the Authorization Information endpoint described in {{Section 5.10.1 of RFC9200}} in order to transport the access token.
+The access token can be uploaded to RS using CoAP {{RFC7252}} and the Authorization Information endpoint as described in {{Section 5.10.1 of RFC9200}}.
 
 That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload conveying the access token without any CBOR wrapping. As per {{Section 5.10.1 of RFC9200}}, the Content-Format of the POST request has to reflect the format of the transported access token. In particular, if the access token is a CWT, the Content-Format MUST be "application/cwt".
 

@@ -393,6 +393,8 @@ If this is not the case, C retrieves AUTH\_CRED\_RS, either using the "rs_cnf" p
 
 ### Update of Access Rights
 
+Editor's note: This section should allow for access rights being updated by AS posting to RS.
+
 If C has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, then:
 
 * The response MUST NOT include the "rs\_cnf" parameter.
@@ -592,6 +594,8 @@ with the stored access token, which is bound to the authentication credential (A
 If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{I-D.ietf-core-oscore-edhoc}}, unless the "comb\_req" field of the EDHOC\_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see {{example-with-optimization}}. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2 and before sending EDHOC message\_3.
 
 ## Update of Access Rights {#update-access-rights-c-rs}
+
+Editor's note: This section should allow for access rights being updated by AS posting to RS.
 
 If C has already established access rights and an OSCORE Security Context with RS, then C can update its access rights by posting a new access token to the /authz-info endpoint.
 

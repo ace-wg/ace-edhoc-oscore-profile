@@ -155,19 +155,18 @@ If C has retrieved an access token, there are two options for C to upload it to 
 
 2. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of RFC9528}}. In this case, the access token is validated in parallel with the EDHOC session.  The use of EAD enables certain protection of the access token depending on in which EDHOC message the EAD item is carried, see {{Section 9.1 of RFC9528}}.
 
-Option 1 performs token upload and EDHOC in series which requires more messages than option 2. In the latter case EDHOC, access token upload, and access request & response can be completed in two round trips, see {{example-with-optimization}}.
-
-  Option 1 supports update of access rights protected with the existing security context, see {{update-access-rights-c-rs}} whereas option 2 always generates a new security context. In case of option 2, in order to support update of access rights without changing security context, C need to also implement option 1 or rely on some other method, such as the alternative workflow, see {{I-D.ietf-ace-workflow-and-params}}.
-
 When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of RFC9528}}.
 
 From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. The Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new Security Context for C.
 
-After the whole procedure has completed and while the access token is valid, C can contact AS to request an update of its access rights, by sending a similar request to the /token endpoint. This request also includes a "session identifier" (see {{edhoc-parameters-object}}) provided by AS in the initial request, which allows AS to find the data it has previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see {{token-series}}). Upon a successful update of access rights (see {{update-access-rights-c-rs}}), the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
+While the security context and access token are valid, C can contact AS to request an update of its access rights, by sending a similar request to the /token endpoint. This request also includes a "session identifier" (see {{edhoc-parameters-object}}) provided by AS in the initial request, which allows AS to find the data it has previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see {{token-series}}). Upon successful update of access rights (see {{update-access-rights-c-rs}}), the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
 
 When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then the associated session identifier, together with the authentication credential of C used in the EDHOC session, enables the RS to look up the unique access token determining the access rights of C.
 
-An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}. The names of messages coincide with those of {{RFC9200}} when applicable. Examples of message flows in case of option 2 are given in {{example-with-optimization}}.
+Option 1 above performs token upload and the EDHOC protocol in series, which requires more messages than option 2. An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}, and more a more detailed protocol is provided in {{example-without-optimization}}. For option 2, the EDHOC protocol, access token upload, and access request & response can be completed in two round trips, see {{example-with-optimization}}.
+
+Option 1 supports update of access rights protected with the existing security context, see {{update-access-rights-c-rs}}, whereas option 2 always generates a new security context. In case of option 2, in order to support update of access rights without changing security context, C need to also implement option 1 or rely on some other method, such as the alternative workflow, see {{I-D.ietf-ace-workflow-and-params}}.
+
 
 ~~~~~~~~~~~ aasvg
 
@@ -208,7 +207,7 @@ storage (latest)/               |                         |
    |           ...              |                         |
 
 ~~~~~~~~~~~
-{: #protocol-overview title="Protocol Overview Example"}
+{: #protocol-overview title="Protocol Overview Example. Names of messages coincide with those of RFC 9200 when applicable."}
 
 
 # Client-AS Communication # {#c-as-comm}

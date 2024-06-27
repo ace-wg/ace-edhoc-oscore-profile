@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 28 December 2024                                      M. Tiloca
+Expires: 29 December 2024                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            26 June 2024
+                                                            27 June 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 December 2024.
+   This Internet-Draft will expire on 29 December 2024.
 
 Copyright Notice
 
@@ -331,18 +331,6 @@ Table of Contents
        access token depending on in which EDHOC message the EAD item is
        carried, see Section 9.1 of [RFC9528].
 
-   Option 1 performs token upload and EDHOC in series which requires
-   more messages than option 2.  In the latter case EDHOC, access token
-   upload, and access request & response can be completed in two round
-   trips, see Appendix A.2.
-
-   Option 1 supports update of access rights protected with the existing
-   security context, see Section 4.5 whereas option 2 always generates a
-   new security context.  In case of option 2, in order to support
-   update of access rights without changing security context, C need to
-   also implement option 1 or rely on some other method, such as the
-   alternative workflow, see [I-D.ietf-ace-workflow-and-params].
-
    When running the EDHOC protocol, C uses the authentication credential
    of RS specified by AS together with the access token, while RS uses
    the authentication credential of C bound to and specified within the
@@ -357,18 +345,18 @@ Table of Contents
    different one) is used to successfully derive a new Security Context
    for C.
 
-   After the whole procedure has completed and while the access token is
-   valid, C can contact AS to request an update of its access rights, by
-   sending a similar request to the /token endpoint.  This request also
-   includes a "session identifier" (see Section 3.4) provided by AS in
-   the initial request, which allows AS to find the data it has
-   previously shared with C.  The session identifier is assigned by AS
-   and used to identify a series of access tokens, called a "token
-   series" (see Section 3.2).  Upon a successful update of access rights
-   (see Section 4.5), the new issued access token becomes the latest in
-   its token series, but the session identifier remains the same.  When
-   the latest access token of a token series becomes invalid (e.g., when
-   it expires or gets revoked), that token series ends.
+   While the security context and access token are valid, C can contact
+   AS to request an update of its access rights, by sending a similar
+   request to the /token endpoint.  This request also includes a
+   "session identifier" (see Section 3.4) provided by AS in the initial
+   request, which allows AS to find the data it has previously shared
+   with C.  The session identifier is assigned by AS and used to
+   identify a series of access tokens, called a "token series" (see
+   Section 3.2).  Upon successful update of access rights (see
+   Section 4.5), the new issued access token becomes the latest in its
+   token series, but the session identifier remains the same.  When the
+   latest access token of a token series becomes invalid (e.g., when it
+   expires or gets revoked), that token series ends.
 
    When RS receives a request from C protected with an OSCORE Security
    Context derived from an EDHOC session implementing this profile, then
@@ -376,10 +364,20 @@ Table of Contents
    credential of C used in the EDHOC session, enables the RS to look up
    the unique access token determining the access rights of C.
 
-   An overview of the message flow for the "coap_edhoc_oscore" profile
-   in case of option 1 above is given in Figure 1.  The names of
-   messages coincide with those of [RFC9200] when applicable.  Examples
-   of message flows in case of option 2 are given in Appendix A.2.
+   Option 1 above performs token upload and the EDHOC protocol in
+   series, which requires more messages than option 2.  An overview of
+   the message flow for the "coap_edhoc_oscore" profile in case of
+   option 1 above is given in Figure 1, and more a more detailed
+   protocol is provided in Appendix A.1.  For option 2, the EDHOC
+   protocol, access token upload, and access request & response can be
+   completed in two round trips, see Appendix A.2.
+
+   Option 1 supports update of access rights protected with the existing
+   security context, see Section 4.5, whereas option 2 always generates
+   a new security context.  In case of option 2, in order to support
+   update of access rights without changing security context, C need to
+   also implement option 1 or rely on some other method, such as the
+   alternative workflow, see [I-D.ietf-ace-workflow-and-params].
 
       C                            RS                       AS
       |                            |                         |
@@ -417,7 +415,8 @@ Table of Contents
       |                            |                         |
       |           ...              |                         |
 
-                    Figure 1: Protocol Overview Example
+      Figure 1: Protocol Overview Example.  Names of messages coincide
+                  with those of RFC 9200 when applicable.
 
 3.  Client-AS Communication
 

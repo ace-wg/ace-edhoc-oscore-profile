@@ -621,27 +621,27 @@ Table of Contents
    token and the authentication credential of RS have been truncated for
    readability.
 
-     Header: Created (Code=2.01)
-        Content-Format: application/ace+cbor
-        Payload:
-        {
-          / access_token / 1 : h'8343a1010aa2044c53/...
-            (remainder of access token (CWT) omitted for brevity)/',
-          / ace_profile / 38 : e'coap_edhoc_oscore',
-          / expires_in /   2 : 3600,
-          / rs_cnf /      41 : {
-            e'x5chain' : h'3081ee3081a1a00302/...'
-              (remainder of the access credential omitted for brevity)/'
-          }
-          e'edhoc_info_param' : {
-            e'session_id'    : h'01',
-            e'methods'       : [0, 1, 2, 3],
-            e'cipher_suites' : 0
-          }
-        }
+      Header: Created (Code=2.01)
+         Content-Format: application/ace+cbor
+         Payload:
+         {
+           / access_token / 1 : h'8343a1010aa2044c53/...
+             (remainder of access token (CWT) omitted for brevity)/',
+           / ace_profile / 38 : e'coap_edhoc_oscore',
+           / expires_in /   2 : 3600,
+           / rs_cnf /      41 : {
+             e'x5chain' : h'3081ee3081a1a00302/...'
+               (remainder of the credential omitted for brevity)/'
+           }
+           e'edhoc_info_param' : {
+             e'session_id'    : h'01',
+             e'methods'       : [0, 1, 2, 3],
+             e'cipher_suites' : 0
+           }
+         }
 
-    Figure 4: Example of AS-to-C Access Token response with EDHOC and
-                             OSCORE profile.
+     Figure 4: Example of AS-to-C Access Token response with EDHOC and
+                              OSCORE profile.
 
 3.3.1.  Access Token
 
@@ -723,7 +723,7 @@ Table of Contents
        / scope / 9 :  "temperature_g firmware_p",
        / cnf /   8 : {
          e'x5chain' : h'3081ee3081a1a00302/...
-           (remainder of the access credential omitted for brevity)/'
+           (remainder of the credential omitted for brevity)/'
        }
        e'edhoc_info_claim' : {
          e'session_id'    : h'01',

@@ -149,11 +149,11 @@ The ACE framework describes how the authorization information propagates from AS
 
 If the request is granted then AS may send back an access token in a response to C, or upload the access token directly to RS as described in the alternative workflow defined in {{I-D.ietf-ace-workflow-and-params}}. The latter is not detailed further here.
 
-If C has retrieved an access token, there are two options for C to upload it to RS, as further detailed in this document.
+If C has retrieved an access token, there are two options for C to upload it to RS, as further detailed later in the document.
 
 1. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.10 of RFC9200}}. If the access token is valid, RS replies to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol with RS. The communication with the /authz-info endpoint may not be protected unless there is previously established security context, for example in the case of update of access rights, see {{update-access-rights-c-rs}}.
 
-2. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of RFC9528}}. In this case, the access token is validated in parallel with the EDHOC session.  The use of EAD enables certain protection of the access token depending on in which EDHOC message the EAD item is carried, see {{Section 9.1 of RFC9528}}.
+2. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of RFC9528}}. In this case, the access token is validated in parallel with the EDHOC session. The EAD item containing the access token is protected in different ways depending on which EDHOC message it is carried in, see {{Section 9.1 of RFC9528}}.
 
 When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of RFC9528}}.
 
@@ -163,7 +163,7 @@ While the OSCORE Security Context and access token are valid, C can contact AS t
 
 When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then the associated session identifier, together with the authentication credential of C used in the EDHOC session, enables the RS to look up the unique access token determining the access rights of C.
 
-Option 1 above performs token upload and the EDHOC protocol in series, which requires more messages than option 2. An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}, and more a more detailed protocol is provided in {{example-without-optimization}}. For option 2, the EDHOC protocol, access token upload, and access request & response can be completed in two round trips, see {{example-with-optimization}}.
+Comparing the options above: In option 1 the token upload and the EDHOC protocol is performed in series, which requires more messages exchanged than option 2. An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}, and a more detailed protocol is provided in {{example-without-optimization}}. For option 2, the EDHOC protocol, access token upload, and access request & response can be completed in two round trips, see {{example-with-optimization}}.
 
 Option 1 supports update of access rights protected with the existing OSCORE Security Context, see {{update-access-rights-c-rs}}, whereas option 2 always generates a new OSCORE Security Context. In case of option 2, in order to support update of access rights without changing OSCORE Security Context, C need to also implement option 1 or rely on some other method, such as the alternative workflow, see {{I-D.ietf-ace-workflow-and-params}}.
 

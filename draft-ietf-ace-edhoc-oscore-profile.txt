@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 29 December 2024                                      M. Tiloca
+Expires: 3 January 2025                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            27 June 2024
+                                                             2 July 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 December 2024.
+   This Internet-Draft will expire on 3 January 2025.
 
 Copyright Notice
 
@@ -313,7 +313,7 @@ Table of Contents
    further here.
 
    If C has retrieved an access token, there are two options for C to
-   upload it to RS, as further detailed in this document.
+   upload it to RS, as further detailed later in the document.
 
    1.  C posts the access token to the /authz-info endpoint by using the
        mechanisms specified in Section 5.10 of [RFC9200].  If the access
@@ -327,9 +327,9 @@ Table of Contents
    2.  C initiates the EDHOC protocol and includes the access token as
        External Authorization Data (EAD), see Section 3.8 of [RFC9528].
        In this case, the access token is validated in parallel with the
-       EDHOC session.  The use of EAD enables certain protection of the
-       access token depending on in which EDHOC message the EAD item is
-       carried, see Section 9.1 of [RFC9528].
+       EDHOC session.  The EAD item containing the access token is
+       protected in different ways depending on which EDHOC message it
+       is carried in, see Section 9.1 of [RFC9528].
 
    When running the EDHOC protocol, C uses the authentication credential
    of RS specified by AS together with the access token, while RS uses
@@ -364,13 +364,14 @@ Table of Contents
    credential of C used in the EDHOC session, enables the RS to look up
    the unique access token determining the access rights of C.
 
-   Option 1 above performs token upload and the EDHOC protocol in
-   series, which requires more messages than option 2.  An overview of
-   the message flow for the "coap_edhoc_oscore" profile in case of
-   option 1 above is given in Figure 1, and more a more detailed
-   protocol is provided in Appendix A.1.  For option 2, the EDHOC
-   protocol, access token upload, and access request & response can be
-   completed in two round trips, see Appendix A.2.
+   Comparing the options above: In option 1 the token upload and the
+   EDHOC protocol is performed in series, which requires more messages
+   exchanged than option 2.  An overview of the message flow for the
+   "coap_edhoc_oscore" profile in case of option 1 above is given in
+   Figure 1, and a more detailed protocol is provided in Appendix A.1.
+   For option 2, the EDHOC protocol, access token upload, and access
+   request & response can be completed in two round trips, see
+   Appendix A.2.
 
    Option 1 supports update of access rights protected with the existing
    OSCORE Security Context, see Section 4.5, whereas option 2 always

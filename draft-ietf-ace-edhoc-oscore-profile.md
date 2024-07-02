@@ -322,7 +322,7 @@ When issuing the first access token of a token series, AS MAY send EDHOC\_Inform
         / expires_in /   2 : 3600,
         / rs_cnf /      41 : {
           e'x5chain' : h'3081ee3081a1a00302/...'
-            (remainder of the access credential omitted for brevity)/'
+            (remainder of the credential omitted for brevity)/'
         }
         e'edhoc_info_param' : {
           e'session_id'    : h'01',
@@ -371,7 +371,7 @@ AS can protect the access token by different means as discussed in {{Section 6.1
     / scope / 9 :  "temperature_g firmware_p",
     / cnf /   8 : {
       e'x5chain' : h'3081ee3081a1a00302/...
-        (remainder of the access credential omitted for brevity)/'
+        (remainder of the credential omitted for brevity)/'
     }
     e'edhoc_info_claim' : {
       e'session_id'    : h'01',

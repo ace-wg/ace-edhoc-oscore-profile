@@ -181,8 +181,9 @@ Table of Contents
    server (AS) and bound to an authentication credential of C.  This
    differs from the "coap_oscore" profile, where the access token is
    bound to a symmetric key used to derive the OSCORE Security Context.
-   As recommended in [RFC9200], this document recommends the use of CBOR
-   Web Tokens (CWTs) [RFC8392] as access tokens.
+   Whereas [RFC9200] recommends the use of CBOR Web Tokens (CWTs)
+   [RFC8392] as access tokens, this profile requires it, see
+   Section 3.3.1.
 
    An authentication credential can be a raw public key, e.g., encoded
    as a CWT Claims Set (CCS, [RFC8392]); or a public key certificate,
@@ -651,9 +652,8 @@ Table of Contents
    *  The "session_id" field of EDHOC_Information, with the same value
       specified in the response to C from the /token endpoint.
 
-   *  The authentication credential that C specified in its POST request
-      to the /token endpoint (see Section 3.1), AUTH_CRED_C.  If the
-      access token is a CWT, this information MUST be specified in the
+   *  The authentication credential AUTH_CRED_C that C specified in its
+      POST request to the /token endpoint (see Section 3.1), in the
       "cnf" claim.
 
       In the access token, AUTH_CRED_C can be transported by value or
@@ -708,7 +708,8 @@ Table of Contents
    access token.  For a single RS, the CWT may be wrapped in
    COSE_Encrypt / COSE_Encrypt0, but if it needs to be read by multiple
    RSs then confidentiality protection may be better applied during
-   transport, e.g., using EDHOC EAD_3 from C to RS.
+   transport, e.g., included in EAD_3 from C to RS in the case of the
+   EDHOC forward flow.
 
    Figure 5 shows an example CWT Claims Set, including the relevant
    EDHOC parameters in the "edhoc_info" claim.  The "cnf" claim

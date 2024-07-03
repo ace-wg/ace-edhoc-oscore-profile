@@ -1044,13 +1044,12 @@ Table of Contents
    That is, C sends a POST request to the /authz-info endpoint at RS,
    with the request payload conveying the access token without any CBOR
    wrapping.  As per Section 5.10.1 of [RFC9200], the Content-Format of
-   the POST request has to reflect the format of the transported access
-   token.  In particular, if the access token is a CWT, the Content-
-   Format MUST be "application/cwt".
+   the POST request MUST be "application/cwt" to reflect the format of
+   the transported access token.
 
-   The communication with the /authz-info endpoint is in general not
-   protected, except in the case of updating the access rights (see
-   Section 4.5).
+   The communication with the /authz-info endpoint may not be protected
+   unless there is previously established security context, for example
+   in the case of update of access rights, see Section 4.5.
 
 4.2.  RS-to-C: 2.01 (Created)
 

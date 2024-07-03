@@ -751,7 +751,7 @@ Table of Contents
 3.3.3.  Update of Access Rights
 
    If C has a valid OSCORE Security Context associated to a valid access
-   token, then C can send a request to AS for updating of its access
+   token, then C can send a request to AS for updating its access
    rights.
 
    If the request is granted then AS generates a new access token, where

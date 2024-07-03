@@ -1094,42 +1094,31 @@ Table of Contents
 4.3.  Access Token in External Authorization Data
 
    Instead of uploading the access token to the /authz-info endpoint at
-   RS as described in Section 4.1, C MAY include the access token in
-   EDHOC message_3 by making use of the External Authorization Data
-   field EAD_3 (see Section 3.8 of [RFC9528]), see example in
-   Appendix A.2.  In this case, the access token is encrypted between C
-   and RS enabling protection of potential sensitive information.
+   RS as described in Section 4.1, C MAY include the access token in an
+   EDHOC External Authorization Data field (see Section 3.8 of
+   [RFC9528]), see example in Appendix A.2.
 
    This document defines the EAD item EAD_ACCESS_TOKEN = (ead_label,
    ead_value), where:
 
-   *  ead_label is the integer value TBD registered in Section 10.8 and
+   *  ead_label is the integer value TBD registered in Section 10.8, and
 
-   *  ead_value is a CBOR byte string, with value the binary
-      serialization of a CBOR map.  The CBOR map includes one field,
-      whose label is a CBOR unsigned integer with value either 0 or 1,
-      and whose value is a CBOR byte string:
+   *  ead_value is a CBOR byte string equal to the value of the
+      "access_token" field of the access token response from AS, see
+      Section 3.3.
 
-      -  For label 0, ead_value = { 0 : access_token }, where
-         access_token is a CBOR byte string equal to the value of the
-         "access_token" field of the access token response from AS, see
-         Section 3.3.
-
-      -  For label 1, ead_value = { 1 : session_id }, where session_id
-         is a CBOR byte string equal to the value of the "session_id"
-         field of the access token response from AS, see Section 3.2.
-
-   This EAD item, which is used in EAD_3, is critical, i.e., it is used
-   only with the negative value of its ead_label, indicating that the
-   receiving RS must either process the access token or abort the EDHOC
-   session (see Section 3.8 of [RFC9528]).  A Client or Resource Server
-   supporting the profile of ACE defined in this document MUST support
-   this EAD item.  When EDHOC is used with this profile, this EAD item
-   is included in EAD_3, see Section 4.4.3.
+   This EAD item is critical, i.e., it is used only with the negative
+   value of its ead_label, indicating that the receiving RS must either
+   process the access token or abort the EDHOC session (see Section 3.8
+   of [RFC9528]).  A Client or Resource Server supporting the profile of
+   ACE defined in this document MUST support this EAD item.
 
    Access tokens are transported in EAD fields only for the first access
    token of a token series, and not for the update of access rights, see
    Section 4.5.
+
+   Editor's notes: Add example.  Value for ead_label not from lowest
+   range, suggested value 26.
 
 4.4.  EDHOC Session and OSCORE Security Context
 

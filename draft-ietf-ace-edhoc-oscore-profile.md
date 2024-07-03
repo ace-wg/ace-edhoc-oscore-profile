@@ -337,9 +337,11 @@ When issuing the first access token of a token series, AS MAY send EDHOC\_Inform
 
 ### Access Token {#access-token}
 
-When issuing any access token of a token series, AS MUST specify the following data in the claims associated with the access token.
+To avoid the complexity of different encodings, an access token of this profile SHALL be a CBOR Web Token (CWT), see {{RFC8392}}. When issuing any access token of a token series, AS MUST specify the following data in the claims associated with the access token:
 
 * The "session\_id" field of EDHOC\_Information, with the same value specified in the response to C from the /token endpoint.
+
+   EDHOC\_Information MUST be transported in the "edhoc\_info" claim, defined in {{iana-token-cwt-claims}}.
 
 * The authentication credential AUTH\_CRED\_C that C specified in its POST request to the /token endpoint (see {{c-as}}), in the "cnf" claim.
 
@@ -357,11 +359,9 @@ When issuing the first access token of a token series, AS MAY specify the follow
 
 * osc\_version: The OSCORE version. If it is not included, the default value of 1 (see {{Section 5.4 of RFC8613}}) is assumed.
 
-To avoid the complexity of different encodings, an access token of this profile SHALL be a CBOR Web Token (CWT), see {{RFC8392}}. EDHOC\_Information MUST be transported in the "edhoc\_info" claim, defined in {{iana-token-cwt-claims}}.
-
 The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. RS needs to be able to verify that the access token is issued by a trusted AS (source authentication). Depending on use case and deployment, the access token may need to be confidentiality protected, for example, for privacy reasons.
 
-AS can protect the access token by different means as discussed in {{Section 6.1 of RFC9200}}. It is RECOMMENDED that a COSE method is used as specified in {{RFC8392}}. Depending on audience there may be different ways to most appropriately confidentiality protected the access token. For a single RS, the CWT may be wrapped in COSE_Encrypt / COSE_Encrypt0, but if it needs to be read by multiple RSs then confidentiality protection may be better applied during transport, e.g., included in EAD_3 from C to RS in the case of the EDHOC forward flow.
+AS protects the access token using a COSE method (see {{RFC9052}}) as specified in {{RFC8392}}. Depending on audience there may be different ways to most appropriately confidentiality protected the access token. For a single RS, the CWT may be wrapped in COSE_Encrypt / COSE_Encrypt0, but if the access token needs to be read by multiple RSs then confidentiality protection may be better applied during transport, e.g., included in EAD_3 from C to RS in the case of the EDHOC forward flow.
 
 {{fig-token}} shows an example CWT Claims Set, including the relevant EDHOC parameters in the "edhoc\_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.
 

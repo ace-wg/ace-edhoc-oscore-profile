@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 3 January 2025                                        M. Tiloca
+Expires: 4 January 2025                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                             2 July 2024
+                                                             3 July 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 January 2025.
+   This Internet-Draft will expire on 4 January 2025.
 
 Copyright Notice
 
@@ -749,20 +749,21 @@ Table of Contents
 
 3.3.3.  Update of Access Rights
 
-   Editor's note: This section should allow for access rights being
-   updated by AS posting to RS.
+   If C has a valid OSCORE Security Context associated to a valid access
+   token, then C can send a request to AS for updating of its access
+   rights.
 
-   If C has requested an update to its access rights using the same
-   OSCORE Security Context, which is valid and authorized, then:
+   If the request is granted then AS generates a new access token, where
+   the "edhoc_info" claim MUST include only the "session_id" field.  The
+   access token is provisioned to RS either via C as specified in this
+   document, or directly as described in
+   [I-D.ietf-ace-workflow-and-params].  In either case, AS responds to C
+   such that:
 
    *  The response MUST NOT include the "rs_cnf" parameter.
 
    *  The EDHOC_Information in the response MUST include only the
       "session_id" field.
-
-   *  The EDHOC_Information in the access token MUST include only the
-      "session_id" field.  In particular, if the access token is a CWT,
-      the "edhoc_info" claim MUST include only the "session_id" field.
 
    The "session_id" needs to be included in the new access token in
    order for RS to identify the old access token to supersede, as well

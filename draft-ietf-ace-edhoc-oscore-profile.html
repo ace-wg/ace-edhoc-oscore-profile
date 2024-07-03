@@ -1361,9 +1361,6 @@ This profile can be used to delegate management of authorization information fro
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
                 <p id="section-toc.1-1.12.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-workflow-with-optimizations" class="internal xref">Workflow with Optimizations</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3">
-                <p id="section-toc.1-1.12.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-alternative-workflow-as-tok" class="internal xref">Alternative Workflow (AS token posting)</a></p>
-</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
@@ -1821,9 +1818,10 @@ When later issuing further access tokens to the same pair (C, RS) using the same
         <h3 id="name-edhoc_information">
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-edhoc_information" class="section-name selfRef">EDHOC_Information</a>
         </h3>
-<p id="section-3.4-1">EDHOC_Information is an object including information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC_Information is defined to be serialized and transported between nodes, as specified by this document, but it can also be used by other specifications if needed.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">The EDHOC_Information can be encoded either as a JSON object or as a CBOR map. The set of common fields that can appear in an EDHOC_Information can be found in the IANA "EDHOC Information" registry (see <a href="#iana-edhoc-parameters" class="auto internal xref">Section 10.9</a>), defined for extensibility, and the initial set of parameters defined in this document is specified below. All parameters are optional.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.4-3"><a href="#_table-cbor-key-edhoc-params" class="auto internal xref">Table 1</a> provides a summary of the EDHOC_Information parameters defined in this section.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">Editor's note: Remove the JSON option<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">EDHOC_Information is an object including information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC_Information is defined to be serialized and transported between nodes, as specified by this document, but it can also be used by other specifications if needed.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">The EDHOC_Information can be encoded either as a JSON object or as a CBOR map. The set of common fields that can appear in an EDHOC_Information can be found in the IANA "EDHOC Information" registry (see <a href="#iana-edhoc-parameters" class="auto internal xref">Section 10.9</a>), defined for extensibility, and the initial set of parameters defined in this document is specified below. All parameters are optional.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.4-4"><a href="#_table-cbor-key-edhoc-params" class="auto internal xref">Table 1</a> provides a summary of the EDHOC_Information parameters defined in this section.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
 <span id="name-edhoc_information-parameter"></span><div id="_table-cbor-key-edhoc-params">
 <table class="center" id="table-1">
           <caption>
@@ -1942,53 +1940,53 @@ When later issuing further access tokens to the same pair (C, RS) using the same
         </table>
 </div>
 <ul class="normal">
-<li class="normal" id="section-3.4-5.1">
-            <p id="section-3.4-5.1.1">session_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session_id" identifies a token series. In JSON, the "session_id" value is a Base64 encoded byte string. In CBOR, the "session_id" type is a byte string, and has label 0.<a href="#section-3.4-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.4-6.1">
+            <p id="section-3.4-6.1.1">session_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session_id" identifies a token series. In JSON, the "session_id" value is a Base64 encoded byte string. In CBOR, the "session_id" type is a byte string, and has label 0.<a href="#section-3.4-6.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.2">
-            <p id="section-3.4-5.2.1">methods: This parameter specifies a set of supported EDHOC methods (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.2" class="relref">Section 3.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single EDHOC method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and has label 1.<a href="#section-3.4-5.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.2">
+            <p id="section-3.4-6.2.1">methods: This parameter specifies a set of supported EDHOC methods (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.2" class="relref">Section 3.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single EDHOC method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and has label 1.<a href="#section-3.4-6.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.3">
-            <p id="section-3.4-5.3.1">cipher_suites: This parameter specifies a set of supported EDHOC cipher suites (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.6" class="relref">Section 3.6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single EDHOC cipher suite, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC cipher suite. In JSON, the "cipher_suites" value is an integer or an array of integers. In CBOR, the "cipher_suites" is an integer or an array of integers, and has label 2.<a href="#section-3.4-5.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.3">
+            <p id="section-3.4-6.3.1">cipher_suites: This parameter specifies a set of supported EDHOC cipher suites (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.6" class="relref">Section 3.6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single EDHOC cipher suite, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC cipher suite. In JSON, the "cipher_suites" value is an integer or an array of integers. In CBOR, the "cipher_suites" is an integer or an array of integers, and has label 2.<a href="#section-3.4-6.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.4">
-            <p id="section-3.4-5.4.1">message_4: This parameter indicates whether the EDHOC message_4 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.5" class="relref">Section 5.5</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) is supported. In JSON, the "message_4" value is a boolean. In CBOR, "message_4" is the simple value "true" or "false", and has label 4.<a href="#section-3.4-5.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.4">
+            <p id="section-3.4-6.4.1">message_4: This parameter indicates whether the EDHOC message_4 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.5" class="relref">Section 5.5</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) is supported. In JSON, the "message_4" value is a boolean. In CBOR, "message_4" is the simple value "true" or "false", and has label 4.<a href="#section-3.4-6.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.5">
-            <p id="section-3.4-5.5.1">comb_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>) is supported. In JSON, the "comb_req" value is a boolean. In CBOR, "comb_req" is the simple value "true" or "false", and has label 5.<a href="#section-3.4-5.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.5">
+            <p id="section-3.4-6.5.1">comb_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>) is supported. In JSON, the "comb_req" value is a boolean. In CBOR, "comb_req" is the simple value "true" or "false", and has label 5.<a href="#section-3.4-6.5.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.6">
-            <p id="section-3.4-5.6.1">uri_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri_path" value is a string. In CBOR, "uri_path" is a text string, and has label 6.<a href="#section-3.4-5.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.6">
+            <p id="section-3.4-6.6.1">uri_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri_path" value is a string. In CBOR, "uri_path" is a text string, and has label 6.<a href="#section-3.4-6.6.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.7">
-            <p id="section-3.4-5.7.1">osc_ms_len: This parameter specifies the size in bytes of the OSCORE Master Secret to derive after the EDHOC session, as per <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. In JSON, the "osc_ms_len" value is an integer. In CBOR, the "osc_ms_len" type is unsigned integer, and has label 7.<a href="#section-3.4-5.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.7">
+            <p id="section-3.4-6.7.1">osc_ms_len: This parameter specifies the size in bytes of the OSCORE Master Secret to derive after the EDHOC session, as per <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. In JSON, the "osc_ms_len" value is an integer. In CBOR, the "osc_ms_len" type is unsigned integer, and has label 7.<a href="#section-3.4-6.7.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.8">
-            <p id="section-3.4-5.8.1">osc_salt_len: This parameter specifies the size in bytes of the OSCORE Master Salt to derive after the EDHOC session, as per <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. In JSON, the "osc_salt_len" value is an integer. In CBOR, the "osc_salt_len" type is unsigned integer, and has label 8.<a href="#section-3.4-5.8.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.8">
+            <p id="section-3.4-6.8.1">osc_salt_len: This parameter specifies the size in bytes of the OSCORE Master Salt to derive after the EDHOC session, as per <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. In JSON, the "osc_salt_len" value is an integer. In CBOR, the "osc_salt_len" type is unsigned integer, and has label 8.<a href="#section-3.4-6.8.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.9">
-            <p id="section-3.4-5.9.1">osc_version: This parameter specifies the OSCORE Version number that the two EDHOC peers have to use when using OSCORE. For more information about this parameter, see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-5.4" class="relref">Section 5.4</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. In JSON, the "osc_version" value is an integer. In CBOR, the "osc_version" type is unsigned integer, and has label 9.<a href="#section-3.4-5.9.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.9">
+            <p id="section-3.4-6.9.1">osc_version: This parameter specifies the OSCORE Version number that the two EDHOC peers have to use when using OSCORE. For more information about this parameter, see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-5.4" class="relref">Section 5.4</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. In JSON, the "osc_version" value is an integer. In CBOR, the "osc_version" type is unsigned integer, and has label 9.<a href="#section-3.4-6.9.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.10">
-            <p id="section-3.4-5.10.1">cred_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.5.2" class="relref">Section 3.5.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred_types" value is an integer or an array of integers. In CBOR, "cred_types" is an integer or an array of integers, and has label 9. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>.<a href="#section-3.4-5.10.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.10">
+            <p id="section-3.4-6.10.1">cred_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.5.2" class="relref">Section 3.5.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred_types" value is an integer or an array of integers. In CBOR, "cred_types" is an integer or an array of integers, and has label 9. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>.<a href="#section-3.4-6.10.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.11">
-            <p id="section-3.4-5.11.1">id_cred_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.5.3" class="relref">Section 3.5.3</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id_cred_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id_cred_types" is an integer or a text string, or an array of integers and text strings, and has label 10. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry <span>[<a href="#COSE.Header.Parameters" class="cite xref">COSE.Header.Parameters</a>]</span>.<a href="#section-3.4-5.11.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.11">
+            <p id="section-3.4-6.11.1">id_cred_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.5.3" class="relref">Section 3.5.3</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id_cred_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id_cred_types" is an integer or a text string, or an array of integers and text strings, and has label 10. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry <span>[<a href="#COSE.Header.Parameters" class="cite xref">COSE.Header.Parameters</a>]</span>.<a href="#section-3.4-6.11.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.12">
-            <p id="section-3.4-5.12.1">eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead_label (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single ead_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 11. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-3.4-5.12.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.12">
+            <p id="section-3.4-6.12.1">eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead_label (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single ead_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 11. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-3.4-6.12.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.13">
-            <p id="section-3.4-5.13.1">initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value "true" (0xf5) or "false" (0xf4), and has label 12.<a href="#section-3.4-5.13.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.13">
+            <p id="section-3.4-6.13.1">initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value "true" (0xf5) or "false" (0xf4), and has label 12.<a href="#section-3.4-6.13.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.4-5.14">
-            <p id="section-3.4-5.14.1">responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value "true" (0xf5) or "false" (0xf4), and has label 13.<a href="#section-3.4-5.14.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.4-6.14">
+            <p id="section-3.4-6.14.1">responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value "true" (0xf5) or "false" (0xf4), and has label 13.<a href="#section-3.4-6.14.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.4-6">An example of JSON EDHOC_Information is given in <a href="#fig-edhoc-info-json" class="auto internal xref">Figure 6</a>.<a href="#section-3.4-6" class="pilcrow">¶</a></p>
+<p id="section-3.4-7">An example of JSON EDHOC_Information is given in <a href="#fig-edhoc-info-json" class="auto internal xref">Figure 6</a>.<a href="#section-3.4-7" class="pilcrow">¶</a></p>
 <span id="name-example-of-json-edhoc_infor"></span><div id="fig-edhoc-info-json">
 <figure id="figure-6">
-          <div class="alignLeft art-text artwork" id="section-3.4-7.1">
+          <div class="alignLeft art-text artwork" id="section-3.4-8.1">
 <pre>
    "edhoc_info" : {
        "session_id"    : b64'AQ==',
@@ -2001,8 +1999,8 @@ When later issuing further access tokens to the same pair (C, RS) using the same
 <a href="#name-example-of-json-edhoc_infor" class="selfRef">Example of JSON EDHOC_Information</a>
           </figcaption></figure>
 </div>
-<p id="section-3.4-8">The CDDL grammar describing the CBOR EDHOC_Information is:<a href="#section-3.4-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.4-9">
+<p id="section-3.4-9">The CDDL grammar describing the CBOR EDHOC_Information is:<a href="#section-3.4-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.4-10">
 <pre>
 EDHOC_Information = {
   ?  0 =&gt; bstr,                   ; id
@@ -2021,7 +2019,7 @@ EDHOC_Information = {
   ? 13 =&gt; true / false,           ; responder
   * int / tstr =&gt; any
 }
-</pre><a href="#section-3.4-9" class="pilcrow">¶</a>
+</pre><a href="#section-3.4-10" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2258,8 +2256,8 @@ with the stored access token, which is bound to the authentication credential (A
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-secure-communication-with-a" class="section-name selfRef">Secure Communication with AS</a>
       </h2>
 <p id="section-5-1">As specified in the ACE framework (see Sections <a href="https://rfc-editor.org/rfc/rfc9200#section-5.8" class="relref">5.8</a> and <a href="https://rfc-editor.org/rfc/rfc9200#section-5.9" class="relref">5.9</a> of <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), the requesting entity (RS and/or C) and AS communicates via the /token or /introspect endpoint. When using this profile, the use of CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> and OSCORE <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> for this communication is <span class="bcp14">RECOMMENDED</span>. Other protocols fulfilling the security requirements defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5" class="relref">Section 5</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> (such as HTTP and DTLS <span>[<a href="#RFC9147" class="cite xref">RFC9147</a>]</span> or TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>) <span class="bcp14">MAY</span> be used instead.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in <a href="#example-without-optimization" class="auto internal xref">Appendix A.1</a>, <a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a>, and <a href="#example-without-optimization-as-posting" class="auto internal xref">Appendix A.3</a>.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">Furthermore, as discussed in <a href="#as-c" class="auto internal xref">Section 3.3</a> and shown by the example in <a href="#example-without-optimization-as-posting" class="auto internal xref">Appendix A.3</a>, AS may upload an access token directly to the /authz-info endpoint at RS. Unless encryption is applied, that exchange between AS and RS discloses the plain text token, just like when C uses the /authz-info endpoint at RS to upload a first token in a series.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-2">If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in <a href="#example-without-optimization" class="auto internal xref">Appendix A.1</a> and <a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a>.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">Furthermore, as discussed in <a href="#as-c" class="auto internal xref">Section 3.3</a>, AS may upload an access token directly to the /authz-info endpoint at RS. Unless encryption is applied, that exchange between AS and RS discloses the plain text token, just like when C uses the /authz-info endpoint at RS to upload a first token in a series.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <p id="section-5-4">Editor's note: Elaborate on how to encrypt the token from AS to RS, since there is a pre-established security context.<a href="#section-5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3255,9 +3253,6 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
         <li class="normal" id="appendix-A-2.2">
           <p id="appendix-A-2.2.1"><a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a> makes use of the optimizations defined in this specification, hence reducing the roundtrips of the interactions between the Client and the Resource Server.<a href="#appendix-A-2.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="appendix-A-2.3">
-          <p id="appendix-A-2.3.1"><a href="#example-without-optimization-as-posting" class="auto internal xref">Appendix A.3</a> considers an alternative workflow where AS uploads the access token to RS.<a href="#appendix-A-2.3.1" class="pilcrow">¶</a></p>
-</li>
       </ul>
 <p id="appendix-A-3">All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of RSs by the respective Resource Owners as well as the registrations of Clients authorized to request access token for those RSs.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -4095,285 +4090,6 @@ This is relevant in case AS and RS actually require a secure association (e.g., 
                 <text x="320" y="1508">|</text>
               </g>
             </svg><a href="#appendix-A.2-4.1" class="pilcrow">¶</a>
-</div>
-</div>
-</section>
-</div>
-<div id="example-without-optimization-as-posting">
-<section id="appendix-A.3">
-        <h3 id="name-alternative-workflow-as-tok">
-<a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-alternative-workflow-as-tok" class="section-name selfRef">Alternative Workflow (AS token posting)</a>
-        </h3>
-<p id="appendix-A.3-1">Editor's note: Move this section to workflow and params.<a href="#appendix-A.3-1" class="pilcrow">¶</a></p>
-<p id="appendix-A.3-2">The example below builds on the example in <a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a>, but assumes that AS is uploading the access token to RS as specified in <span>[<a href="#I-D.ietf-ace-workflow-and-params" class="cite xref">I-D.ietf-ace-workflow-and-params</a>]</span>.<a href="#appendix-A.3-2" class="pilcrow">¶</a></p>
-<div id="appendix-A.3-3">
-          <div class="alignLeft art-svg artwork" id="appendix-A.3-3.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1760" width="576" viewBox="0 0 576 1760" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-              <path d="M 40,48 L 40,688" fill="none" stroke="black"></path>
-              <path d="M 40,784 L 40,1136" fill="none" stroke="black"></path>
-              <path d="M 40,1232 L 40,1584" fill="none" stroke="black"></path>
-              <path d="M 40,1680 L 40,1744" fill="none" stroke="black"></path>
-              <path d="M 320,48 L 320,688" fill="none" stroke="black"></path>
-              <path d="M 320,784 L 320,1136" fill="none" stroke="black"></path>
-              <path d="M 320,1232 L 320,1272" fill="none" stroke="black"></path>
-              <path d="M 320,1288 L 320,1336" fill="none" stroke="black"></path>
-              <path d="M 320,1352 L 320,1448" fill="none" stroke="black"></path>
-              <path d="M 320,1464 L 320,1584" fill="none" stroke="black"></path>
-              <path d="M 320,1680 L 320,1720" fill="none" stroke="black"></path>
-              <path d="M 568,48 L 568,688" fill="none" stroke="black"></path>
-              <path d="M 568,784 L 568,1136" fill="none" stroke="black"></path>
-              <path d="M 568,1232 L 568,1584" fill="none" stroke="black"></path>
-              <path d="M 568,1680 L 568,1744" fill="none" stroke="black"></path>
-              <path d="M 48,112 L 312,112" fill="none" stroke="black"></path>
-              <path d="M 48,176 L 312,176" fill="none" stroke="black"></path>
-              <path d="M 48,288 L 312,288" fill="none" stroke="black"></path>
-              <path d="M 64,368 L 80,368" fill="none" stroke="black"></path>
-              <path d="M 96,368 L 112,368" fill="none" stroke="black"></path>
-              <path d="M 128,368 L 144,368" fill="none" stroke="black"></path>
-              <path d="M 328,496 L 560,496" fill="none" stroke="black"></path>
-              <path d="M 328,816 L 560,816" fill="none" stroke="black"></path>
-              <path d="M 48,896 L 312,896" fill="none" stroke="black"></path>
-              <path d="M 48,1280 L 560,1280" fill="none" stroke="black"></path>
-              <path d="M 48,1344 L 560,1344" fill="none" stroke="black"></path>
-              <path d="M 48,1456 L 560,1456" fill="none" stroke="black"></path>
-              <path d="M 64,1536 L 80,1536" fill="none" stroke="black"></path>
-              <path d="M 96,1536 L 112,1536" fill="none" stroke="black"></path>
-              <path d="M 128,1536 L 144,1536" fill="none" stroke="black"></path>
-              <path d="M 48,1728 L 560,1728" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="568,1456 556,1450.4 556,1461.6" fill="black" transform="rotate(0,560,1456)"></polygon>
-              <polygon class="arrowhead" points="568,1280 556,1274.4 556,1285.6" fill="black" transform="rotate(0,560,1280)"></polygon>
-              <polygon class="arrowhead" points="568,496 556,490.4 556,501.6" fill="black" transform="rotate(0,560,496)"></polygon>
-              <polygon class="arrowhead" points="336,816 324,810.4 324,821.6" fill="black" transform="rotate(180,328,816)"></polygon>
-              <polygon class="arrowhead" points="320,288 308,282.4 308,293.6" fill="black" transform="rotate(0,312,288)"></polygon>
-              <polygon class="arrowhead" points="320,112 308,106.4 308,117.6" fill="black" transform="rotate(0,312,112)"></polygon>
-              <polygon class="arrowhead" points="56,1728 44,1722.4 44,1733.6" fill="black" transform="rotate(180,48,1728)"></polygon>
-              <polygon class="arrowhead" points="56,1344 44,1338.4 44,1349.6" fill="black" transform="rotate(180,48,1344)"></polygon>
-              <polygon class="arrowhead" points="56,896 44,890.4 44,901.6" fill="black" transform="rotate(180,48,896)"></polygon>
-              <polygon class="arrowhead" points="56,176 44,170.4 44,181.6" fill="black" transform="rotate(180,48,176)"></polygon>
-              <g class="text">
-                <text x="40" y="36">C</text>
-                <text x="316" y="36">AS</text>
-                <text x="564" y="36">RS</text>
-                <text x="80" y="100">EDHOC</text>
-                <text x="144" y="100">message_1</text>
-                <text x="196" y="100">to</text>
-                <text x="236" y="100">/edhoc</text>
-                <text x="16" y="116">M01</text>
-                <text x="80" y="164">EDHOC</text>
-                <text x="144" y="164">message_2</text>
-                <text x="16" y="180">M02</text>
-                <text x="96" y="196">ID_CRED_R</text>
-                <text x="180" y="196">identifies</text>
-                <text x="108" y="212">CRED_R</text>
-                <text x="144" y="212">=</text>
-                <text x="204" y="212">AUTH_CRED_AS</text>
-                <text x="92" y="228">by</text>
-                <text x="144" y="228">reference</text>
-                <text x="108" y="276">EDHOC+OSCORE</text>
-                <text x="192" y="276">request</text>
-                <text x="236" y="276">to</text>
-                <text x="276" y="276">/token</text>
-                <text x="16" y="292">M03</text>
-                <text x="64" y="308">-</text>
-                <text x="96" y="308">EDHOC</text>
-                <text x="160" y="308">message_3</text>
-                <text x="128" y="324">ID_CRED_I</text>
-                <text x="212" y="324">identifies</text>
-                <text x="140" y="340">CRED_I</text>
-                <text x="176" y="340">=</text>
-                <text x="232" y="340">AUTH_CRED_C</text>
-                <text x="124" y="356">by</text>
-                <text x="176" y="356">reference</text>
-                <text x="64" y="388">-</text>
-                <text x="140" y="388">OSCORE-protected</text>
-                <text x="228" y="388">part</text>
-                <text x="112" y="404">Token</text>
-                <text x="168" y="404">request</text>
-                <text x="152" y="420">'req_cnf'</text>
-                <text x="236" y="420">identifies</text>
-                <text x="160" y="436">AUTH_CRED_C</text>
-                <text x="220" y="436">by</text>
-                <text x="272" y="436">reference</text>
-                <text x="360" y="484">Token</text>
-                <text x="412" y="484">upload</text>
-                <text x="452" y="484">to</text>
-                <text x="512" y="484">/authz-info</text>
-                <text x="16" y="500">M04</text>
-                <text x="340" y="516">In</text>
-                <text x="368" y="516">the</text>
-                <text x="412" y="516">access</text>
-                <text x="468" y="516">token:</text>
-                <text x="336" y="532">-</text>
-                <text x="360" y="532">the</text>
-                <text x="400" y="532">'cnf'</text>
-                <text x="448" y="532">claim</text>
-                <text x="384" y="548">specifies</text>
-                <text x="472" y="548">AUTH_CRED_C</text>
-                <text x="356" y="564">by</text>
-                <text x="392" y="564">value</text>
-                <text x="336" y="580">-</text>
-                <text x="360" y="580">the</text>
-                <text x="428" y="580">'edhoc_info'</text>
-                <text x="368" y="596">claim</text>
-                <text x="432" y="596">specifies</text>
-                <text x="368" y="612">{</text>
-                <text x="432" y="628">e'session_id'</text>
-                <text x="496" y="628">:</text>
-                <text x="532" y="628">h'01',</text>
-                <text x="444" y="644">e'cipher_suites'</text>
-                <text x="520" y="644">:</text>
-                <text x="540" y="644">2,</text>
-                <text x="424" y="660">e'methods':</text>
-                <text x="480" y="660">3</text>
-                <text x="368" y="676">}</text>
-                <text x="76" y="724">Possibly</text>
-                <text x="136" y="724">after</text>
-                <text x="184" y="724">chain</text>
-                <text x="264" y="724">verification,</text>
-                <text x="332" y="724">RS</text>
-                <text x="364" y="724">adds</text>
-                <text x="432" y="724">AUTH_CRED_C</text>
-                <text x="52" y="740">to</text>
-                <text x="80" y="740">the</text>
-                <text x="112" y="740">set</text>
-                <text x="140" y="740">of</text>
-                <text x="168" y="740">its</text>
-                <text x="216" y="740">trusted</text>
-                <text x="268" y="740">peer</text>
-                <text x="348" y="740">authentication</text>
-                <text x="460" y="740">credentials,</text>
-                <text x="72" y="756">relying</text>
-                <text x="116" y="756">on</text>
-                <text x="140" y="756">AS</text>
-                <text x="164" y="756">as</text>
-                <text x="208" y="756">trusted</text>
-                <text x="276" y="756">provider</text>
-                <text x="356" y="804">2.01</text>
-                <text x="416" y="804">(Created)</text>
-                <text x="16" y="820">M05</text>
-                <text x="80" y="868">Token</text>
-                <text x="140" y="868">response</text>
-                <text x="128" y="884">(OSCORE-protected</text>
-                <text x="236" y="884">message)</text>
-                <text x="16" y="900">M06</text>
-                <text x="92" y="916">'rs_cnf'</text>
-                <text x="168" y="916">specifies</text>
-                <text x="132" y="932">AUTH_CRED_RS</text>
-                <text x="196" y="932">by</text>
-                <text x="232" y="932">value</text>
-                <text x="112" y="964">'ace_profile'</text>
-                <text x="176" y="964">=</text>
-                <text x="216" y="980">coap_edhoc_oscore</text>
-                <text x="124" y="1012">'token_uploaded'</text>
-                <text x="200" y="1012">=</text>
-                <text x="228" y="1012">true</text>
-                <text x="108" y="1044">'edhoc_info'</text>
-                <text x="204" y="1044">specifies:</text>
-                <text x="88" y="1060">{</text>
-                <text x="140" y="1076">session_id</text>
-                <text x="192" y="1076">:</text>
-                <text x="228" y="1076">h'01',</text>
-                <text x="152" y="1092">cipher_suites</text>
-                <text x="224" y="1092">:</text>
-                <text x="244" y="1092">2,</text>
-                <text x="128" y="1108">methods</text>
-                <text x="168" y="1108">:</text>
-                <text x="184" y="1108">3</text>
-                <text x="88" y="1124">}</text>
-                <text x="76" y="1172">Possibly</text>
-                <text x="136" y="1172">after</text>
-                <text x="184" y="1172">chain</text>
-                <text x="264" y="1172">verification,</text>
-                <text x="336" y="1172">the</text>
-                <text x="380" y="1172">Client</text>
-                <text x="428" y="1172">adds</text>
-                <text x="500" y="1172">AUTH_CRED_RS</text>
-                <text x="52" y="1188">to</text>
-                <text x="80" y="1188">the</text>
-                <text x="112" y="1188">set</text>
-                <text x="140" y="1188">of</text>
-                <text x="168" y="1188">its</text>
-                <text x="216" y="1188">trusted</text>
-                <text x="268" y="1188">peer</text>
-                <text x="348" y="1188">authentication</text>
-                <text x="460" y="1188">credentials,</text>
-                <text x="72" y="1204">relying</text>
-                <text x="116" y="1204">on</text>
-                <text x="140" y="1204">AS</text>
-                <text x="164" y="1204">as</text>
-                <text x="208" y="1204">trusted</text>
-                <text x="276" y="1204">provider</text>
-                <text x="80" y="1252">EDHOC</text>
-                <text x="144" y="1252">message_1</text>
-                <text x="196" y="1252">to</text>
-                <text x="236" y="1252">/edhoc</text>
-                <text x="72" y="1268">(no</text>
-                <text x="116" y="1268">access</text>
-                <text x="176" y="1268">control</text>
-                <text x="220" y="1268">is</text>
-                <text x="272" y="1268">enforced)</text>
-                <text x="16" y="1284">M07</text>
-                <text x="80" y="1332">EDHOC</text>
-                <text x="144" y="1332">message_2</text>
-                <text x="16" y="1348">M08</text>
-                <text x="96" y="1364">ID_CRED_R</text>
-                <text x="180" y="1364">identifies</text>
-                <text x="108" y="1380">CRED_R</text>
-                <text x="144" y="1380">=</text>
-                <text x="204" y="1380">AUTH_CRED_RS</text>
-                <text x="92" y="1396">by</text>
-                <text x="144" y="1396">reference</text>
-                <text x="108" y="1444">EDHOC+OSCORE</text>
-                <text x="192" y="1444">request</text>
-                <text x="236" y="1444">to</text>
-                <text x="260" y="1444">/r</text>
-                <text x="16" y="1460">M09</text>
-                <text x="64" y="1476">-</text>
-                <text x="96" y="1476">EDHOC</text>
-                <text x="160" y="1476">message_3</text>
-                <text x="128" y="1492">ID_CRED_I</text>
-                <text x="212" y="1492">identifies</text>
-                <text x="140" y="1508">CRED_I</text>
-                <text x="176" y="1508">=</text>
-                <text x="232" y="1508">AUTH_CRED_C</text>
-                <text x="124" y="1524">by</text>
-                <text x="176" y="1524">reference</text>
-                <text x="64" y="1556">-</text>
-                <text x="140" y="1556">OSCORE-protected</text>
-                <text x="228" y="1556">part</text>
-                <text x="136" y="1572">Application</text>
-                <text x="216" y="1572">request</text>
-                <text x="260" y="1572">to</text>
-                <text x="284" y="1572">/r</text>
-                <text x="64" y="1620">After</text>
-                <text x="104" y="1620">the</text>
-                <text x="144" y="1620">EDHOC</text>
-                <text x="212" y="1620">processing</text>
-                <text x="268" y="1620">is</text>
-                <text x="324" y="1620">completed,</text>
-                <text x="396" y="1620">access</text>
-                <text x="456" y="1620">control</text>
-                <text x="52" y="1636">is</text>
-                <text x="100" y="1636">enforced</text>
-                <text x="148" y="1636">on</text>
-                <text x="176" y="1636">the</text>
-                <text x="224" y="1636">rebuilt</text>
-                <text x="324" y="1636">OSCORE-protected</text>
-                <text x="428" y="1636">request,</text>
-                <text x="60" y="1652">like</text>
-                <text x="92" y="1652">if</text>
-                <text x="116" y="1652">it</text>
-                <text x="144" y="1652">had</text>
-                <text x="180" y="1652">been</text>
-                <text x="220" y="1652">sent</text>
-                <text x="288" y="1652">stand-alone</text>
-                <text x="92" y="1700">Response</text>
-                <text x="128" y="1716">(OSCORE-protected</text>
-                <text x="236" y="1716">message)</text>
-                <text x="16" y="1732">M10</text>
-                <text x="320" y="1748">|</text>
-              </g>
-            </svg><a href="#appendix-A.3-3.1" class="pilcrow">¶</a>
 </div>
 </div>
 </section>

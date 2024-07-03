@@ -659,11 +659,7 @@ If OSCORE verification succeeds and the target resource requires authorization, 
 
 As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicates via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED. Other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} (such as HTTP and DTLS {{RFC9147}} or TLS {{RFC8446}}) MAY be used instead.
 
-If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{example-without-optimization}} and {{example-with-optimization}}.
-
-Furthermore, as discussed in {{as-c}}, AS may upload an access token directly to the /authz-info endpoint at RS. Unless encryption is applied, that exchange between AS and RS discloses the plain text token, just like when C uses the /authz-info endpoint at RS to upload a first token in a series.
-
-Editor's note: Elaborate on how to encrypt the token from AS to RS, since there is a pre-established security context.
+If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{example-without-optimization}} and {{example-with-optimization}}. This also applies for communication between RS and AS, for example to protect the upload of access token from AS directly to RS as described in {{I-D.ietf-ace-workflow-and-params}}.
 
 # CWT Confirmation Methods
 

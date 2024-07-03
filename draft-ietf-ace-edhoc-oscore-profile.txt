@@ -298,12 +298,12 @@ Table of Contents
    authorization information is used to enforce polices for processing
    requests from those clients.
 
-   The ACE framework describes how the authorization information
-   propagates from AS to RS.  This profile specifies how C requests an
-   access token, including authorization information, from AS for the
-   resources it wants to access on RS, by sending an access token
-   request to the /token endpoint, as specified in Section 5.8 of
-   [RFC9200].
+   The ACE framework describes how integrity protected authorization
+   information propagates from AS to RS.  This profile describes how C
+   requests from AS an access token, including authorization
+   information, for the resources it wants to access on RS, by sending
+   an access token request to the /token endpoint, as specified in
+   Section 5.8 of [RFC9200].
 
    If the request is granted then AS may send back an access token in a
    response to C, or upload the access token directly to RS as described
@@ -311,8 +311,8 @@ Table of Contents
    [I-D.ietf-ace-workflow-and-params].  The latter is not detailed
    further here.
 
-   If C has retrieved an access token, there are two options for C to
-   upload it to RS, as further detailed later in the document.
+   If C has retrieved an access token then there are two options for C
+   to upload it to RS, as further compared below.
 
    1.  C posts the access token to the /authz-info endpoint by using the
        mechanisms specified in Section 5.10 of [RFC9200].  If the access
@@ -363,22 +363,23 @@ Table of Contents
    credential of C used in the EDHOC session, enables the RS to look up
    the unique access token determining the access rights of C.
 
-   Comparing the options above: In option 1 the token upload and the
-   EDHOC protocol is performed in series, which requires more messages
-   exchanged than option 2.  An overview of the message flow for the
-   "coap_edhoc_oscore" profile in case of option 1 above is given in
-   Figure 1, and a more detailed protocol is provided in Appendix A.1.
-   For option 2, the EDHOC protocol, access token upload, and access
-   request & response can be completed in two round trips, see
-   Appendix A.2.
+   Comparing the options above:
 
-   Option 1 supports update of access rights protected with the existing
-   OSCORE Security Context, see Section 4.5, whereas option 2 always
-   generates a new OSCORE Security Context.  In case of option 2, in
-   order to support update of access rights without changing OSCORE
-   Security Context, C need to also implement option 1 or rely on some
-   other method, such as the alternative workflow, see
-   [I-D.ietf-ace-workflow-and-params].
+   *  In option 1 the token upload and the EDHOC protocol is performed
+      in series, which requires more messages exchanged than option 2.
+      An overview of the message flow for the "coap_edhoc_oscore"
+      profile in case of option 1 above is given in Figure 1, and a more
+      detailed protocol is provided in Appendix A.1.  For option 2, the
+      EDHOC protocol, access token upload, and access request & response
+      can be completed in two round trips, see Appendix A.2.
+
+   *  Option 1 supports update of access rights protected with the
+      existing OSCORE Security Context, see Section 4.5, whereas option
+      2 always generates a new OSCORE Security Context.  In case of
+      option 2, in order to support update of access rights without
+      changing OSCORE Security Context, C need to also implement option
+      1 or rely on some other method, such as the alternative workflow,
+      see [I-D.ietf-ace-workflow-and-params].
 
       C                            RS                       AS
       |                            |                         |

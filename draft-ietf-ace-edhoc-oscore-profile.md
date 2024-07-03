@@ -505,9 +505,10 @@ C and RS are mutually authenticated once they have successfully completed the ED
 
 The access token can be uploaded to RS using CoAP {{RFC7252}} and the Authorization Information endpoint as described in {{Section 5.10.1 of RFC9200}}.
 
-That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload conveying the access token without any CBOR wrapping. As per {{Section 5.10.1 of RFC9200}}, the Content-Format of the POST request has to reflect the format of the transported access token. In particular, if the access token is a CWT, the Content-Format MUST be "application/cwt".
+That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload conveying the access token without any CBOR wrapping. As per {{Section 5.10.1 of RFC9200}}, the Content-Format of the POST request MUST be "application/cwt" to reflect the format of the transported access token.
 
-The communication with the /authz-info endpoint is in general not protected, except in the case of updating the access rights (see {{update-access-rights-c-rs}}).
+The communication with the /authz-info endpoint may not be protected unless there is previously established security context, for example in the case of update of access rights, see {{update-access-rights-c-rs}}.
+
 
 ##  RS-to-C: 2.01 (Created) {#rs-c}
 

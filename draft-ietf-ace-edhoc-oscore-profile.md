@@ -404,9 +404,9 @@ The "session\_id" needs to be included in the new access token in order for RS t
 
 ## EDHOC_Information # {#edhoc-parameters-object}
 
-Editor's note: Remove the JSON option
+EDHOC\_Information is an object which includes information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC\_Information is defined to be serialized and transported between nodes, as specified by this document, but it can also be used by other specifications.
 
-EDHOC\_Information is an object including information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC\_Information is defined to be serialized and transported between nodes, as specified by this document, but it can also be used by other specifications if needed.
+In the "coap_edhoc_oscore" profile of the ACE-OAuth framework, which is specified in this document, the EDHOC\_Information object MUST be encoded as CBOR. However, for easy applicability to other contexts we define also the JSON encoding.
 
 The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. The set of common fields that can appear in an EDHOC\_Information can be found in the IANA "EDHOC Information" registry (see {{iana-edhoc-parameters}}), defined for extensibility, and the initial set of parameters defined in this document is specified below. All parameters are optional.
 

@@ -390,15 +390,13 @@ If this is not the case, C retrieves AUTH\_CRED\_RS, either using the "rs_cnf" p
 
 ### Update of Access Rights
 
-Editor's note: This section should allow for access rights being updated by AS posting to RS.
+If C has a valid OSCORE Security Context associated to a valid access token, then C can send a request to AS for updating of its access rights.
 
-If C has requested an update to its access rights using the same OSCORE Security Context, which is valid and authorized, then:
+If the request is granted then AS generates a new access token, where the "edhoc\_info" claim MUST include only the "session\_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in {{I-D.ietf-ace-workflow-and-params}}. In either case, AS responds to C such that:
 
 * The response MUST NOT include the "rs\_cnf" parameter.
 
 * The EDHOC\_Information in the response MUST include only the "session\_id" field.
-
-* The EDHOC\_Information in the access token MUST include only the "session\_id" field. In particular, if the access token is a CWT, the "edhoc\_info" claim MUST include only the "session\_id" field.
 
 The "session\_id" needs to be included in the new access token in order for RS to identify the old access token to supersede, as well as the OSCORE Security Context already shared between C and RS and to be associated with the new access token.
 

@@ -392,7 +392,7 @@ If this is not the case, C retrieves AUTH\_CRED\_RS, either using the "rs_cnf" p
 
 ### Update of Access Rights
 
-If C has a valid OSCORE Security Context associated to a valid access token, then C can send a request to AS for updating of its access rights.
+If C has a valid OSCORE Security Context associated to a valid access token, then C can send a request to AS for updating its access rights.
 
 If the request is granted then AS generates a new access token, where the "edhoc\_info" claim MUST include only the "session\_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in {{I-D.ietf-ace-workflow-and-params}}. In either case, AS responds to C such that:
 

@@ -1047,7 +1047,7 @@ Table of Contents
    [RFC9200].
 
    That is, C sends a POST request to the /authz-info endpoint at RS,
-   with the request payload conveying the access token without any CBOR
+   with the request payload containing the access token without any CBOR
    wrapping.  As per Section 5.10.1 of [RFC9200], the Content-Format of
    the POST request MUST be "application/cwt" to reflect the format of
    the transported access token.

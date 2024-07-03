@@ -1413,16 +1413,10 @@ Table of Contents
    OSCORE Security Context in place.  While this can be pre-installed,
    the requesting entity and AS can establish such an OSCORE Security
    Context, for example, by running the EDHOC protocol, as shown between
-   C and AS by the examples in Appendix A.1 and Appendix A.2.
-
-   Furthermore, as discussed in Section 3.3, AS may upload an access
-   token directly to the /authz-info endpoint at RS.  Unless encryption
-   is applied, that exchange between AS and RS discloses the plain text
-   token, just like when C uses the /authz-info endpoint at RS to upload
-   a first token in a series.
-
-   Editor's note: Elaborate on how to encrypt the token from AS to RS,
-   since there is a pre-established security context.
+   C and AS by the examples in Appendix A.1 and Appendix A.2.  This also
+   applies for communication between RS and AS, for example to protect
+   the upload of access token from AS directly to RS as described in
+   [I-D.ietf-ace-workflow-and-params].
 
 6.  CWT Confirmation Methods
 

@@ -337,7 +337,7 @@ When issuing the first access token of a token series, AS MAY send EDHOC\_Inform
 
 ### Access Token {#access-token}
 
-To avoid the complexity of different encodings, an access token of this profile SHALL be a CBOR Web Token (CWT), see {{RFC8392}}. When issuing any access token of a token series, AS MUST specify the following data in the claims associated with the access token:
+To avoid the complexity of different encodings, an access token of this profile SHALL be a CBOR Web Token (CWT), see {{RFC8392}}. When issuing any access token of a token series, AS MUST specify the following data in the associated claims of the access token:
 
 * The "session\_id" field of EDHOC\_Information, with the same value specified in the response to C from the /token endpoint.
 
@@ -351,7 +351,7 @@ To avoid the complexity of different encodings, an access token of this profile 
 
    When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_C, it is expected that AUTH\_CRED\_C is identified by reference.
 
-When issuing the first access token of a token series, AS MAY specify the following EDHOC\_Information (see {{edhoc-parameters-object}}) in the claims associated with the access token. If these data are specified in the response to C from the /token endpoint, they MUST be included with the same values in the access token.
+When issuing the first access token of a token series, AS MAY specify additional EDHOC\_Information data (see {{edhoc-parameters-object}}) in the "edhoc\_info" claim of the access token. Specifically, if the following EDHOC\_Information data are specified in the response to C from the /token endpoint, they MUST be included with the same values in the access token.
 
 * osc\_ms\_len: The size of the OSCORE Master Secret. If it is not included, the default value from {{Section A.1 of RFC9528}} is assumed.
 

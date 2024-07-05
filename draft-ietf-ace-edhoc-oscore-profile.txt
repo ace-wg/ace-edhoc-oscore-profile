@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 5 January 2025                                        M. Tiloca
+Expires: 6 January 2025                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                             4 July 2024
+                                                             5 July 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 January 2025.
+   This Internet-Draft will expire on 6 January 2025.
 
 Copyright Notice
 
@@ -649,7 +649,7 @@ Table of Contents
    To avoid the complexity of different encodings, an access token of
    this profile SHALL be a CBOR Web Token (CWT), see [RFC8392].  When
    issuing any access token of a token series, AS MUST specify the
-   following data in the claims associated with the access token:
+   following data in the associated claims of the access token:
 
    *  The "session_id" field of EDHOC_Information, with the same value
       specified in the response to C from the /token endpoint.
@@ -678,10 +678,11 @@ Table of Contents
       identified by reference.
 
    When issuing the first access token of a token series, AS MAY specify
-   the following EDHOC_Information (see Section 3.4) in the claims
-   associated with the access token.  If these data are specified in the
-   response to C from the /token endpoint, they MUST be included with
-   the same values in the access token.
+   additional EDHOC_Information data (see Section 3.4) in the
+   "edhoc_info" claim of the access token.  Specifically, if the
+   following EDHOC_Information data are specified in the response to C
+   from the /token endpoint, they MUST be included with the same values
+   in the access token.
 
    *  osc_ms_len: The size of the OSCORE Master Secret.  If it is not
       included, the default value from Appendix A.1 of [RFC9528] is

@@ -1034,7 +1034,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 5 January 2025</td>
+<td class="center">Expires 6 January 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1047,12 +1047,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-07-04" class="published">4 July 2024</time>
+<time datetime="2024-07-05" class="published">5 July 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-01-05">5 January 2025</time></dd>
+<dd class="expires"><time datetime="2025-01-06">6 January 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1116,7 +1116,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 6 January 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1733,7 +1733,7 @@ When later issuing further access tokens to the same pair (C, RS) using the same
           <h4 id="name-access-token">
 <a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-access-token" class="section-name selfRef">Access Token</a>
           </h4>
-<p id="section-3.3.1-1">To avoid the complexity of different encodings, an access token of this profile <span class="bcp14">SHALL</span> be a CBOR Web Token (CWT), see <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>. When issuing any access token of a token series, AS <span class="bcp14">MUST</span> specify the following data in the claims associated with the access token:<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-1">To avoid the complexity of different encodings, an access token of this profile <span class="bcp14">SHALL</span> be a CBOR Web Token (CWT), see <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>. When issuing any access token of a token series, AS <span class="bcp14">MUST</span> specify the following data in the associated claims of the access token:<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3.1-2.1">
               <p id="section-3.3.1-2.1.1">The "session_id" field of EDHOC_Information, with the same value specified in the response to C from the /token endpoint.<a href="#section-3.3.1-2.1.1" class="pilcrow">¶</a></p>
@@ -1750,7 +1750,7 @@ When issuing the first access token ever to a pair (C, RS) using a pair of corre
 When later issuing further access tokens to the same pair (C, RS) using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is identified by reference.<a href="#section-3.3.1-2.2.4" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-3.3.1-3">When issuing the first access token of a token series, AS <span class="bcp14">MAY</span> specify the following EDHOC_Information (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) in the claims associated with the access token. If these data are specified in the response to C from the /token endpoint, they <span class="bcp14">MUST</span> be included with the same values in the access token.<a href="#section-3.3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-3">When issuing the first access token of a token series, AS <span class="bcp14">MAY</span> specify additional EDHOC_Information data (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) in the "edhoc_info" claim of the access token. Specifically, if the following EDHOC_Information data are specified in the response to C from the /token endpoint, they <span class="bcp14">MUST</span> be included with the same values in the access token.<a href="#section-3.3.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3.1-4.1">
               <p id="section-3.3.1-4.1.1">osc_ms_len: The size of the OSCORE Master Secret. If it is not included, the default value from <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span> is assumed.<a href="#section-3.3.1-4.1.1" class="pilcrow">¶</a></p>

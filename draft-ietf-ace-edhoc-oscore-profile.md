@@ -167,7 +167,7 @@ Comparing the options above:
 
 * In option 1 the token upload and the EDHOC protocol is performed in series, which requires more messages exchanged than option 2. An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}, and a more detailed protocol is provided in {{example-without-optimization}}. For option 2, the EDHOC protocol, access token upload, and access request & response can be completed in two round trips, see {{example-with-optimization}}.
 
-* Option 1 supports update of access rights protected with the existing OSCORE Security Context, see {{update-access-rights-c-rs}}, whereas option 2 always generates a new OSCORE Security Context. In case of option 2, in order to support update of access rights without changing OSCORE Security Context, C need to also implement option 1 or rely on some other method, such as the alternative workflow, see {{I-D.ietf-ace-workflow-and-params}}.
+* Option 1 supports update of access rights protected with the existing OSCORE Security Context, see {{update-access-rights-c-rs}}, whereas option 2 always generates a new OSCORE Security Context. If option 2 is implemented and there is a need to perform an update of access rights without changing OSCORE Security Context, then C needs to also implement option 1 or to rely on some other method, such as the alternative workflow of the ACE framework (see {{I-D.ietf-ace-workflow-and-params}}).
 
 
 ~~~~~~~~~~~ aasvg

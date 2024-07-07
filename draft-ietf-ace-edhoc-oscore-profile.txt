@@ -386,15 +386,15 @@ Table of Contents
       |                            |                         |
       | <==== Mutual authentication and secure channel ====> |
       |                            |                         |
-      | ------- POST /token  ------------------------------> |
+      +-------- POST /token  ------------------------------->|
       |                            |                         |
-      | <-------------------------------- Access Token ----- |
+      |<--------------------------------- Access Token ------+
       |                               + Access Information   |
       |                            |                         |
-      | ---- POST /authz-info ---> |                         |
+      +----- POST /authz-info ---->|                         |
       |       (access_token)       |                         |
       |                            |                         |
-      | <----- 2.01 Created ------ |                         |
+      |<------ 2.01 Created -------+                         |
       |                            |                         |
       | <========= EDHOC ========> |                         |
       |  Mutual authentication     |                         |
@@ -404,17 +404,17 @@ Table of Contents
       |                /Proof-of-possession and              |
       |                Security Context storage/             |
       |                            |                         |
-      | ---- OSCORE Request -----> |                         |
+      +----- OSCORE Request ------>|                         |
       |                            |                         |
-      | <--- OSCORE Response ----- |                         |
+      |<---- OSCORE Response ------|                         |
       |                            |                         |
    /Proof-of-possession            |                         |
    and Security Context            |                         |
    storage (latest)/               |                         |
       |                            |                         |
-      | ---- OSCORE Request -----> |                         |
+      +----- OSCORE Request ------>|                         |
       |                            |                         |
-      | <--- OSCORE Response ----- |                         |
+      |<---- OSCORE Response ------|                         |
       |                            |                         |
       |           ...              |                         |
 
@@ -2433,18 +2433,18 @@ A.1.  Workflow without Optimizations
      C                                 AS                             RS
      |                                  |                              |
      |  EDHOC message_1 to /edhoc       |                              |
- M01 |--------------------------------->|                              |
+ M01 +--------------------------------->|                              |
      |                                  |                              |
      |                                  |                              |
      |  EDHOC message_2                 |                              |
- M02 |<---------------------------------|                              |
+ M02 |<---------------------------------+                              |
      |  ID_CRED_R identifies            |                              |
      |     CRED_R = AUTH_CRED_AS        |                              |
      |     by reference                 |                              |
      |                                  |                              |
      |                                  |                              |
      |  EDHOC message_3 to /edhoc       |                              |
- M03 |--------------------------------->|                              |
+ M03 +--------------------------------->|                              |
      |  ID_CRED_I identifies            |                              |
      |     CRED_I = AUTH_CRED_C         |                              |
      |     by reference                 |                              |
@@ -2452,14 +2452,14 @@ A.1.  Workflow without Optimizations
      |                                  |                              |
      |  Token request to /token         |                              |
      |  (OSCORE-protected message)      |                              |
- M04 |--------------------------------->|                              |
+ M04 +--------------------------------->|                              |
      |  'req_cnf' identifies            |                              |
      |     AUTH_CRED_C by reference     |                              |
      |                                  |                              |
      |                                  |                              |
      |  Token response                  |                              |
      |  (OSCORE-protected message)      |                              |
- M05 |<---------------------------------|                              |
+ M05 |<---------------------------------+                              |
      |  'rs_cnf' specifies              |                              |
      |     AUTH_CRED_RS by value        |                              |
      |                                  |                              |
@@ -2488,7 +2488,7 @@ A.1.  Workflow without Optimizations
      |                                  |                              |
      |  Token upload to /authz-info     |                              |
      |  (unprotected message)           |                              |
- M06 |---------------------------------------------------------------->|
+ M06 +---------------------------------------------------------------->|
      |                                  |                              |
 
       Possibly after chain verification, RS adds AUTH_CRED_C
@@ -2498,16 +2498,16 @@ A.1.  Workflow without Optimizations
      |                                  |                              |
      |   2.01 (Created)                 |                              |
      |   (unprotected message)          |                              |
- M07 |<----------------------------------------------------------------|
+ M07 |<----------------------------------------------------------------+
      |                                  |                              |
      |                                  |                              |
      |  EDHOC message_1 to /edhoc       |                              |
      |  (no access control is enforced) |                              |
- M08 |---------------------------------------------------------------->|
+ M08 +---------------------------------------------------------------->|
      |                                  |                              |
      |                                  |                              |
      |  EDHOC message_2                 |                              |
- M09 |<----------------------------------------------------------------|
+ M09 |<----------------------------------------------------------------+
      |  ID_CRED_R identifies            |                              |
      |     CRED_R = AUTH_CRED_RS        |                              |
      |     by reference                 |                              |
@@ -2515,7 +2515,7 @@ A.1.  Workflow without Optimizations
      |                                  |                              |
      |  EDHOC message_3 to /edhoc       |                              |
      |  (no access control is enforced) |                              |
- M10 |---------------------------------------------------------------->|
+ M10 +---------------------------------------------------------------->|
      |  ID_CRED_I identifies            |                              |
      |     CRED_I = AUTH_CRED_C         |                              |
      |     by reference                 |                              |
@@ -2524,11 +2524,11 @@ A.1.  Workflow without Optimizations
      |  Access to protected resource    |                              |
      |  (OSCORE-protected message)      |                              |
      |  (access control is enforced)    |                              |
- M11 |---------------------------------------------------------------->|
+ M11 +---------------------------------------------------------------->|
      |                                  |                              |
      |  Response                        |                              |
      |  (OSCORE-protected message)      |                              |
- M12 |<----------------------------------------------------------------|
+ M12 |<----------------------------------------------------------------+
      |                                  |                              |
 
       Later on, the access token expires ...
@@ -2558,7 +2558,7 @@ A.1.  Workflow without Optimizations
      |                                  |                              |
      |  Token request to /token         |                              |
      |  (OSCORE-protected message)      |                              |
- M13 |--------------------------------->|                              |
+ M13 +--------------------------------->|                              |
      |  'req_cnf' identifies            |                              |
      |     CRED_I = AUTH_CRED_C         |                              |
      |     by reference                 |                              |
@@ -2566,7 +2566,7 @@ A.1.  Workflow without Optimizations
      |                                  |                              |
      |  Token response                  |                              |
      |  (OSCORE-protected message)      |                              |
- M14 |<---------------------------------|                              |
+ M14 |<---------------------------------+                              |
      |  'rs_cnf' identifies             |                              |
      |     AUTH_CRED_RS by reference    |                              |
      |                                  |                              |
@@ -2590,22 +2590,22 @@ A.1.  Workflow without Optimizations
      |                                  |                              |
      |  Token upload to /authz-info     |                              |
      |  (unprotected message)           |                              |
- M15 |---------------------------------------------------------------->|
+ M15 +---------------------------------------------------------------->|
      |                                  |                              |
      |                                  |                              |
      |  2.01 (Created)                  |                              |
      |  (unprotected message)           |                              |
- M16 |<----------------------------------------------------------------|
+ M16 |<----------------------------------------------------------------+
      |                                  |                              |
      |                                  |                              |
      |  EDHOC message_1 to /edhoc       |                              |
      |  (no access control is enforced) |                              |
- M17 |---------------------------------------------------------------->|
+ M17 +---------------------------------------------------------------->|
      |                                  |                              |
      |                                  |                              |
      |  EDHOC message_2                 |                              |
      |  (no access control is enforced) |                              |
- M18 |<----------------------------------------------------------------|
+ M18 |<----------------------------------------------------------------+
      |  ID_CRED_R specifies             |                              |
      |     CRED_R = AUTH_CRED_RS        |                              |
      |     by reference                 |                              |
@@ -2613,7 +2613,7 @@ A.1.  Workflow without Optimizations
      |                                  |                              |
      |  EDHOC message_3 to /edhoc       |                              |
      |  (no access control is enforced) |                              |
- M19 |---------------------------------------------------------------->|
+ M19 +---------------------------------------------------------------->|
      |  ID_CRED_I identifies            |                              |
      |     CRED_I = AUTH_CRED_C         |                              |
      |     by reference                 |                              |
@@ -2622,12 +2622,12 @@ A.1.  Workflow without Optimizations
      |  Access to protected resource /r |                              |
      |  (OSCORE-protected message)      |                              |
      |  (access control is enforced)    |                              |
- M20 |---------------------------------------------------------------->|
+ M20 +---------------------------------------------------------------->|
      |                                  |                              |
      |                                  |                              |
      |  Response                        |                              |
      |  (OSCORE-protected message)      |                              |
- M21 |<----------------------------------------------------------------|
+ M21 |<----------------------------------------------------------------+
      |                                  |                              |
 
 A.2.  Workflow with Optimizations
@@ -2651,18 +2651,18 @@ A.2.  Workflow with Optimizations
      C                                 AS                             RS
      |                                  |                              |
      |  EDHOC message_1 to /edhoc       |                              |
- M01 |--------------------------------->|                              |
+ M01 +--------------------------------->|                              |
      |                                  |                              |
      |                                  |                              |
      |  EDHOC message_2                 |                              |
- M02 |<---------------------------------|                              |
+ M02 |<---------------------------------+                              |
      |  ID_CRED_R identifies            |                              |
      |     CRED_R = AUTH_CRED_AS        |                              |
      |     by reference                 |                              |
      |                                  |                              |
      |                                  |                              |
      |  EDHOC+OSCORE request to /token  |                              |
- M03 |--------------------------------->|                              |
+ M03 +--------------------------------->|                              |
      |  - EDHOC message_3               |                              |
      |      ID_CRED_I identifies        |                              |
      |         CRED_I = AUTH_CRED_C     |                              |
@@ -2676,7 +2676,7 @@ A.2.  Workflow with Optimizations
      |                                  |                              |
      |  Token response                  |                              |
      |  (OSCORE-protected message)      |                              |
- M04 |<---------------------------------|                              |
+ M04 |<---------------------------------+                              |
      |  'rs_cnf' specifies              |                              |
      |     AUTH_CRED_RS by value        |                              |
      |                                  |                              |
@@ -2705,7 +2705,7 @@ A.2.  Workflow with Optimizations
      |                                  |                              |
      |  EDHOC message_1 to /edhoc       |                              |
      |  (no access control is enforced) |                              |
- M05 |---------------------------------------------------------------->|
+ M05 +---------------------------------------------------------------->|
      |                                  |                              |
 
       Possibly after chain verification, RS adds AUTH_CRED_C
@@ -2714,14 +2714,14 @@ A.2.  Workflow with Optimizations
 
      |                                  |                              |
      |  EDHOC message_2                 |                              |
- M06 |<----------------------------------------------------------------|
+ M06 |<----------------------------------------------------------------+
      |  ID_CRED_R identifies            |                              |
      |     CRED_R = AUTH_CRED_RS        |                              |
      |     by reference                 |                              |
      |                                  |                              |
      |                                  |                              |
      |  EDHOC+OSCORE request to /r      |                              |
- M07 |---------------------------------------------------------------->|
+ M07 +---------------------------------------------------------------->|
      |  - EDHOC message_3               |                              |
      |      EAD_3 contains access token |                              |
      |      ID_CRED_I identifies        |                              |
@@ -2739,7 +2739,7 @@ A.2.  Workflow with Optimizations
      |                                  |                              |
      |  Response                        |                              |
      |  (OSCORE-protected message)      |                              |
- M08 |<----------------------------------------------------------------|
+ M08 |<----------------------------------------------------------------+
      |                                  |                              |
 
 Appendix B.  Profile Requirements

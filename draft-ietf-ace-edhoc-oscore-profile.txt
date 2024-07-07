@@ -376,11 +376,12 @@ Table of Contents
 
    *  Option 1 supports update of access rights protected with the
       existing OSCORE Security Context, see Section 4.5, whereas option
-      2 always generates a new OSCORE Security Context.  In case of
-      option 2, in order to support update of access rights without
-      changing OSCORE Security Context, C need to also implement option
-      1 or rely on some other method, such as the alternative workflow,
-      see [I-D.ietf-ace-workflow-and-params].
+      2 always generates a new OSCORE Security Context.  If option 2 is
+      implemented and there is a need to perform an update of access
+      rights without changing OSCORE Security Context, then C needs to
+      also implement option 1 or to rely on some other method, such as
+      the alternative workflow of the ACE framework (see
+      [I-D.ietf-ace-workflow-and-params]).
 
       C                            RS                       AS
       |                            |                         |

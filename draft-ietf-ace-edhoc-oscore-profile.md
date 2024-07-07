@@ -1497,7 +1497,17 @@ responder = 13
 
 * CBOR diagnostic notation uses placeholders from a CDDL model.
 
+* Only CWTs are supported as access tokens in this profile.
+
+* The alternative workflow of ACE is only mentioned as an example.
+
+* Clarified that both the EDHOC forward and reverse message flows are possible.
+
+* Consistent with the used EDHOC message flow, the access token can be in the EAD item of any EDHOC message.
+
 * Explicit registration policies for the new IANA registry.
+
+* Fixes in the IANA considerations.
 
 * Editorial fixes and improvements.
 

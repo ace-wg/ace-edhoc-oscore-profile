@@ -165,9 +165,9 @@ When RS receives a request from C protected with an OSCORE Security Context deri
 
 Comparing the options above:
 
-* In option 1 the token upload and the EDHOC protocol is performed in series, which requires more messages exchanged than option 2. An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}, and a more detailed protocol is provided in {{example-without-optimization}}. For option 2, the EDHOC protocol, access token upload, and access request & response can be completed in two round trips, see {{example-with-optimization}}.
+* In option 1, the access token upload and the EDHOC protocol are performed in series, which requires more messages exchanged than option 2. An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}, and a more detailed protocol is provided in {{example-without-optimization}}. For option 2, the EDHOC protocol, the access token upload, and access request & response can be completed in two round trips (see {{example-with-optimization}}).
 
-* Option 1 supports update of access rights protected with the existing OSCORE Security Context, see {{update-access-rights-c-rs}}, whereas option 2 always generates a new OSCORE Security Context. If option 2 is implemented and there is a need to perform an update of access rights without changing OSCORE Security Context, then C needs to also implement option 1 or to rely on some other method, such as the alternative workflow of the ACE framework (see {{I-D.ietf-ace-workflow-and-params}}).
+* Option 1 supports update of access rights protected with the existing OSCORE Security Context (see {{update-access-rights-c-rs}}), whereas option 2 always generates a new OSCORE Security Context. If option 2 is implemented and there is a need to perform an update of access rights without changing OSCORE Security Context, then C needs to also implement option 1 or to rely on some other method, such as the alternative workflow of the ACE framework (see {{I-D.ietf-ace-workflow-and-params}}).
 
 
 ~~~~~~~~~~~ aasvg
@@ -359,9 +359,9 @@ When issuing the first access token of a token series, AS MAY specify additional
 
 * osc\_version: The OSCORE version. If it is not included, the default value of 1 (see {{Section 5.4 of RFC8613}}) is assumed.
 
-The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. RS needs to be able to verify that the access token is issued by a trusted AS (source authentication). Depending on use case and deployment, the access token may need to be confidentiality protected, for example, for privacy reasons.
+The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. RS needs to be able to verify that the access token is issued by a trusted AS (source authentication). Depending on the use case and deployment, the access token may need to be confidentiality protected, for example, for privacy reasons.
 
-AS protects the access token using a COSE method (see {{RFC9052}}) as specified in {{RFC8392}}. Depending on audience there may be different ways to most appropriately confidentiality protected the access token. For a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0, but if the access token needs to be read by multiple RSs then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection applied during transport, e.g., included in EAD_3 from C to RS when using the EDHOC forward flow, see {{edhoc-exec}}.
+AS protects the access token using a COSE method (see {{RFC9052}}) as specified in {{RFC8392}}. Depending on the audience, there may be different ways to most appropriately ensure the confidentiality of an access token. For an audience comprising a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0. Instead, if the access token needs to be read by multiple RSs, then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection can be applied during transport, e.g., by including the access token in the EAD_3 field of EDHOC message_3 sent by C to RS, when using the EDHOC forward message flow (see {{edhoc-exec}}).
 
 {{fig-token}} shows an example CWT Claims Set, including the relevant EDHOC parameters in the "edhoc\_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.
 
@@ -392,9 +392,9 @@ If this is not the case, C retrieves AUTH\_CRED\_RS, either using the "rs_cnf" p
 
 ### Update of Access Rights
 
-If C has a valid OSCORE Security Context associated to a valid access token, then C can send a request to AS for updating its access rights.
+If C has a valid OSCORE Security Context associated with a valid access token, then C can send a request to AS for updating its access rights.
 
-If the request is granted then AS generates a new access token, where the "edhoc\_info" claim MUST include only the "session\_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in {{I-D.ietf-ace-workflow-and-params}}. In either case, AS responds to C such that:
+If the request is granted, then AS generates a new access token, where the "edhoc\_info" claim MUST include only the "session\_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in {{I-D.ietf-ace-workflow-and-params}}. In either case, AS responds to C such that:
 
 * The response MUST NOT include the "rs\_cnf" parameter.
 
@@ -404,9 +404,9 @@ The "session\_id" needs to be included in the new access token in order for RS t
 
 ## EDHOC_Information # {#edhoc-parameters-object}
 
-EDHOC\_Information is an object which includes information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC\_Information is defined to be serialized and transported between nodes, as specified by this document, but it can also be used by other specifications.
+EDHOC\_Information is an object including information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC\_Information is defined to be serialized and transported between nodes, as specified by this document, but it can also be used by other specifications.
 
-In the "coap_edhoc_oscore" profile of the ACE-OAuth framework, which is specified in this document, the EDHOC\_Information object MUST be encoded as CBOR. However, for easy applicability to other contexts we define also the JSON encoding.
+In the "coap_edhoc_oscore" profile of the ACE-OAuth framework, which is specified in this document, the EDHOC\_Information object MUST be encoded as CBOR. However, for easy applicability to other contexts, we define also the JSON encoding.
 
 The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. The set of common fields that can appear in an EDHOC\_Information can be found in the IANA "EDHOC Information" registry (see {{iana-edhoc-parameters}}), defined for extensibility, and the initial set of parameters defined in this document is specified below. All parameters are optional.
 
@@ -509,7 +509,7 @@ The access token can be uploaded to RS using CoAP {{RFC7252}} and the Authorizat
 
 That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload containing the access token without any CBOR wrapping. As per {{Section 5.10.1 of RFC9200}}, the Content-Format of the POST request MUST be "application/cwt" to reflect the format of the transported access token.
 
-The communication with the /authz-info endpoint may not be protected unless there is previously established security context, for example in the case of update of access rights, see {{update-access-rights-c-rs}}.
+The communication between C and the /authz-info endpoint is not protected, unless there is a previously established OSCORE Security Context, for example in the case of update of access rights (see {{update-access-rights-c-rs}}).
 
 
 ##  RS-to-C: 2.01 (Created) {#rs-c}
@@ -547,15 +547,17 @@ Editor's notes: Add example. Value for ead_label not from lowest range, suggeste
 
 In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol {{RFC9528}}. When a new EDHOC session is established, previous EDHOC sessions associated with the same access token and the same pair (session_id, AUTH_CRED_C) are deleted, see {{m_3}}. The OSCORE Security Contexts derived from those EDHOC sessions are also deleted.
 
-As per {{Section A.2 of RFC9528}}, EDHOC may be transferred over CoAP using either the forward or the reverse message flow, manifesting the mapping between ACE roles Client / Resource Server and the EDHOC roles Initiator / Responder. The choice of mapping depend on deployment setting, for example which identity to protect, since EDHOC protects the identity of the Initiator against active attackers.
+As per {{Section A.2 of RFC9528}}, EDHOC may be transferred over CoAP using either the forward or the reverse message flow, manifesting the mapping between ACE roles Client / Resource Server and the EDHOC roles Initiator / Responder. The choice of mapping depends on the deployment setting, for example on which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers.
 
-This section details the forward message flow where C = I, RS = R, and the converse mapping is described in TODO.
+This section details the case where the EDHOC forward message flow is used, i.e., where C = I, RS = R. The converse mapping is described in TODO.
 
-In this case, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as 2.04 (Changed) CoAP responses. Either EAD\_1 or EAD\_3 MUST contain the EAD item EAD\_ACCESS\_TOKEN. It is RECOMMENDED that EAD\_ACCESS\_TOKEN is carried in EAD\_3, i.e. EDHOC message\_3. This provides confidentiality protection against active attackers. EAD\_ACCESS\_TOKEN MAY be carried in EAD\_1, e.g., if the CWT access token is encrypted for RS by AS using COSE_Encrypt0.
+Consistent with the EDHOC forward message flow, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as 2.04 (Changed) CoAP responses.
 
-C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present.
+If the access token is transported during the EDHOC execution, then either EAD\_1 or EAD\_3 MUST contain the EAD item EAD\_ACCESS\_TOKEN. It is RECOMMENDED that EAD\_ACCESS\_TOKEN is carried in EAD\_3, i.e., in EDHOC message\_3. This provides confidentiality protection against active attackers. EAD\_ACCESS\_TOKEN MAY be carried in EAD\_1, e.g., if the CWT access token is encrypted for RS by AS using COSE_Encrypt0.
 
-RS has to ensure that attackers cannot perform requests on the EDHOC resource, other than sending EDHOC messages. Specifically, it SHOULD NOT be possible to perform anything else than POST on an EDHOC resource.
+C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present. Otherwise, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.
+
+RS has to ensure that attackers cannot perform requests on the EDHOC resource, other than sending EDHOC messages. Specifically, it SHOULD NOT be possible to perform any other operation than POST on an EDHOC resource.
 
 
 
@@ -567,7 +569,7 @@ The processing of EDHOC message\_1 is specified in {{Section 5.2 of RFC9528}}. A
 
 * The selected cipher suite MUST be an EDHOC cipher suite specified in the "cipher\_suites" field (if present) in the EDHOC\_Information of the access token response to C.
 
-If EAD\_1 contains the EAD item EAD\_ACCESS\_TOKEN then the RS MUST ensure that the access token is valid before completing the EDHOC processing, as specified in {{rs-c}}. The verification can take place after reception of message\_1 or after reception of message_3. If this process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}), and it MUST abort the EDHOC session.
+If EAD\_1 contains the EAD item EAD\_ACCESS\_TOKEN, then the RS MUST ensure that the access token is valid before completing the EDHOC processing, as specified in {{rs-c}}. The verification can take place after reception of message\_1 or after reception of message_3. If this process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}), and it MUST abort the EDHOC session.
 
 ### EDHOC message\_2
 
@@ -583,7 +585,7 @@ The processing of EDHOC message\_3 is specified in {{Section 5.4 of RFC9528}} wi
 
 * The EAD item EAD\_ACCESS\_TOKEN = (-ead\_label, ead\_value) MUST be included in the EAD\_3 field. If the access token is provisioned with EDHOC message\_3 as specified in {{AT-in-EAD}}, then ead\_value = { 0 : access\_token}, otherwise ead\_value = { 1 : session\_id}, where session\_id is equal to the value of the "session_id" field of the access token response from AS, see {{token-series}}.
 
-* If EAD\_3 contains the EAD item EAD\_ACCESS\_TOKEN then the RS MUST ensure that the access token is valid. The validation follows the procedure specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}), and it MUST abort the EDHOC session.
+* If EAD\_3 contains the EAD item EAD\_ACCESS\_TOKEN, then the RS MUST ensure that the access token is valid. The validation follows the procedure specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}), and it MUST abort the EDHOC session.
 
 
 RS MUST have successfully validated the processing of the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (session_id, AUTH_CRED_C). Any old existing EDHOC session associated with the same access token and with the same pair (session_id, AUTH_CRED_C) MUST be deleted, together with the OSCORE Security Context derived from the EDHOC session.
@@ -1147,7 +1149,8 @@ M05 |<---------------------------------+                              |
     |     {                            |                              |
     |       e'session_id' : h'01',     |                              |
     |       e'cipher_suites' : 2,      |                              |
-    |       e'methods' : 3             |                              |
+    |       e'methods' : 3,            |                              |
+    |       e'uri_path' : "/edhoc"     |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
@@ -1254,7 +1257,8 @@ M14 |<---------------------------------+                              |
     |     {                            |                              |
     |       e'session_id' : h'05',     |                              |
     |       e'cipher_suites' : 2,      |                              |
-    |       e'methods' : 3             |                              |
+    |       e'methods' : 3,            |                              |
+    |       e'uri_path' : "/edhoc"     |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
@@ -1358,7 +1362,8 @@ M04 |<---------------------------------+                              |
     |     {                            |                              |
     |       e'session_id' : h'01',     |                              |
     |       e'cipher_suites' : 2,      |                              |
-    |       e'methods' : 3             |                              |
+    |       e'methods' : 3,            |                              |
+    |       e'uri_path' : "/edhoc"     |                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |

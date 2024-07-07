@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 6 January 2025                                        M. Tiloca
+Expires: 8 January 2025                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                             5 July 2024
+                                                             7 July 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 January 2025.
+   This Internet-Draft will expire on 8 January 2025.
 
 Copyright Notice
 
@@ -2179,15 +2179,6 @@ Table of Contents
               <https://www.iana.org/assignments/cose/cose.xhtml#header-
               parameters>.
 
-   [I-D.ietf-ace-workflow-and-params]
-              Tiloca, M. and G. Selander, "Alternative Workflow and
-              OAuth Parameters for the Authentication and Authorization
-              for Constrained Environments (ACE) Framework", Work in
-              Progress, Internet-Draft, draft-ietf-ace-workflow-and-
-              params-01, 4 March 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              workflow-and-params-01>.
-
    [I-D.ietf-core-oscore-edhoc]
               Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
               G. Selander, "Using Ephemeral Diffie-Hellman Over COSE
@@ -2336,6 +2327,15 @@ Table of Contents
               04, 4 March 2024, <https://datatracker.ietf.org/doc/html/
               draft-ietf-ace-coap-est-oscore-04>.
 
+   [I-D.ietf-ace-workflow-and-params]
+              Tiloca, M. and G. Selander, "Alternative Workflow and
+              OAuth Parameters for the Authentication and Authorization
+              for Constrained Environments (ACE) Framework", Work in
+              Progress, Internet-Draft, draft-ietf-ace-workflow-and-
+              params-01, 4 March 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
+              workflow-and-params-01>.
+
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
@@ -2347,9 +2347,9 @@ Table of Contents
               Selander, G., Mattsson, J. P., Vučinić, M., Fedrecheski,
               G., and M. Richardson, "Lightweight Authorization using
               Ephemeral Diffie-Hellman Over COSE", Work in Progress,
-              Internet-Draft, draft-ietf-lake-authz-01, 4 March 2024,
+              Internet-Draft, draft-ietf-lake-authz-02, 5 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
-              authz-01>.
+              authz-02>.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,

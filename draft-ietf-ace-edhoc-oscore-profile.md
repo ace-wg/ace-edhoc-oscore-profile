@@ -67,7 +67,6 @@ normative:
   RFC9528:
   I-D.ietf-core-oscore-edhoc:
   I-D.ietf-cose-cbor-encoded-cert:
-  I-D.ietf-ace-workflow-and-params:
   COSE.Header.Parameters:
     author:
       org: IANA
@@ -80,6 +79,7 @@ informative:
   RFC8446:
   RFC9110:
   RFC9147:
+  I-D.ietf-ace-workflow-and-params:
   I-D.ietf-core-oscore-key-update:
   I-D.ietf-lake-authz:
   I-D.ietf-ace-coap-est-oscore:

@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 8 January 2025                                        M. Tiloca
+Expires: 19 March 2025                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                             7 July 2024
+                                                       15 September 2024
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 January 2025.
+   This Internet-Draft will expire on 19 March 2025.
 
 Copyright Notice
 
@@ -2203,9 +2203,9 @@ Table of Contents
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-09, 4 March 2024,
+              ietf-cose-cbor-encoded-cert-11, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-09>.
+              cbor-encoded-cert-11>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2334,24 +2334,24 @@ Table of Contents
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              04, 4 March 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-coap-est-oscore-04>.
+              05, 8 July 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-coap-est-oscore-05>.
 
    [I-D.ietf-ace-workflow-and-params]
               Tiloca, M. and G. Selander, "Alternative Workflow and
               OAuth Parameters for the Authentication and Authorization
               for Constrained Environments (ACE) Framework", Work in
               Progress, Internet-Draft, draft-ietf-ace-workflow-and-
-              params-01, 4 March 2024,
+              params-02, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              workflow-and-params-01>.
+              workflow-and-params-02>.
 
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-key-update-07, 4 March 2024,
+              core-oscore-key-update-08, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-key-update-07>.
+              oscore-key-update-08>.
 
    [I-D.ietf-lake-authz]
               Selander, G., Mattsson, J. P., Vučinić, M., Fedrecheski,

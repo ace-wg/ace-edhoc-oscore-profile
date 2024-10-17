@@ -149,11 +149,11 @@ The ACE framework describes how integrity protected authorization information pr
 
 If the request is granted then AS may send back an access token in a response to C, or upload the access token directly to RS as described in the alternative workflow defined in {{I-D.ietf-ace-workflow-and-params}}. The latter is not detailed further here.
 
-Now C and RS executes the EDHOC protocol. C uses the authentication credential of RS provided by AS. If C has retrieved an access token, it is included as External Authorization Data (EAD) in the EDHOC protocol, see {{Section 3.8 of RFC9528}}. RS uses the authentication credential of C bound to and provided in the access token.
+Now C and RS executes the EDHOC protocol. C uses the authentication credential of RS provided by AS. If C has retrieved an access token, it is included as External Authorization Data (EAD) in the EDHOC protocol, see {{Section 3.8 of RFC9528}}. RS uses the authentication credential of C bound to and provided in the access token. The EDHOC session is detailed in {{edhoc-exec}}.
 
-In case of EDHOC forward message flow, see {{Section A.2 of RFC9528}}, the access token MUST be included in EAD in EDHOC message_3 (EAD_3). In case of EDHOC reverse message flow, the access token MUST be included in EAD in EDHOC message_2 (EAD_2). This way the access token gets at least the same confidentiality protection as the authentication credential used by C, see {{Section 9.1 of RFC9528}}.
+If C and RS successfully complete the EDHOC protocol and the validations of authentication credentials, they are mutually authenticated and derive the OSCORE Security Context as per {{Section A.1 of RFC9528}}. RS gets key confirmation of C after verifying message\_3. C get key confirmation of RS either when receiving and successfully verifying the optional EDHOC message\_4 from RS, or when successfully verifying an OSCORE response from RS protected with the derived OSCORE Security Context.
 
-If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of RFC9528}}, an example is given in {{protocol-overview}}. A more detailed description of an optimized message flow is shown in {{example-with-optimization}}.
+The example in {{protocol-overview}} outlines the protocol. A more detailed description of an optimized message flow is shown in {{example-with-optimization}}.
 
 From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. The OSCORE Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new OSCORE Security Context for C.
 
@@ -488,49 +488,20 @@ EDHOC_Information = {
 
 # Client-RS Communication # {#c-rs-comm}
 
-This section describes the exchange between C and RS, including the token uploading to RS, and the execution of the EDHOC protocol. The alternative workflow where AS uploads the access token directly to RS is described in {{I-D.ietf-ace-workflow-and-params}}.
+This section describes the exchange between C and RS, including the execution of the EDHOC protocol, and the uploading of the access token from C to RS. The alternative workflow, where AS uploads the access token directly to RS, is described in {{I-D.ietf-ace-workflow-and-params}}.
 
-The case where C sends a POST request to the /authz-info endpoint at RS is detailed in {{c-rs}} and {{rs-c}}, and shown by the example in {{example-without-optimization}}.
+C and RS run the EDHOC protocol (see {{edhoc-exec}}), and C uploads the access token in an EAD field (see {{AT-in-EAD}}) of an EDHOC message. Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context (see {{oscore-security-context}}). OSCORE protects the communication when C accesses resources at RS, as per the access rights specified in the access token (see {{access-rights-verif}}).
 
-The case where C uploads the access token in an EAD field of an EDHOC message while executing the EDHOC protocol with RS is discussed in {{AT-in-EAD}} and {{edhoc-exec}}, and shown by the example in {{example-with-optimization}}.
-
-In either case, C and RS run the EDHOC protocol by exchanging POST requests and related responses to a dedicated EDHOC resource at RS (see {{edhoc-exec}}). Once completed the EDHOC session, C and RS have agreed on a common secret key PRK\_out (see {{Section 4.1.3 of RFC9528}}), from which they establish an OSCORE Security Context (see {{edhoc-exec}}). After that, C and RS use the established OSCORE Security Context to protect their communications when accessing protected resources at RS, as per the access rights specified in the access token (see {{access-rights-verif}}).
-
-C and RS are mutually authenticated once they have successfully completed the EDHOC protocol. RS gets key confirmation of PRK\_out by C at the end of the successful EDHOC session. Conversely, C get key confirmation of PRK\_out by RS either when receiving and successfully verifying the optional EDHOC message\_4 from RS, or when successfully verifying a response from RS protected with the generated OSCORE Security Context.
-
-## C-to-RS: POST to /authz-info endpoint # {#c-rs}
-
-The access token can be uploaded to RS using CoAP {{RFC7252}} and the Authorization Information endpoint as described in {{Section 5.10.1 of RFC9200}}.
-
-That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload containing the access token without any CBOR wrapping. As per {{Section 5.10.1 of RFC9200}}, the Content-Format of the POST request MUST be "application/cwt" to reflect the format of the transported access token.
-
-The communication between C and the /authz-info endpoint is not protected, unless there is a previously established OSCORE Security Context, for example in the case of update of access rights (see {{update-access-rights-c-rs}}).
-
-
-##  RS-to-C: 2.01 (Created) {#rs-c}
-
-Upon receiving an access token from C, RS MUST follow the procedures defined in {{Section 5.10.1 of RFC9200}}. That is, RS must verify the validity of the access token. RS may make an introspection request (see {{Section 5.9.1 of RFC9200}}) to validate the access token.
-
-If the access token is valid, RS proceeds as follows.
-
-RS checks whether it is already storing the authentication credential of C, AUTH_CRED_C, specified in the "cnf" claim of the access token by value or by reference. If not, RS retrieves AUTH_CRED_C, either using the "cnf" claim or some other trusted source.
-
-If RS fails to find or validate AUTH_CRED_C, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
-
-If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "session\_id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
-
-If all validations are successful, RS MUST reply to the POST request with a 2.01 (Created) response. The access token is stored such that it is possible to retrieve it based on "session\_id" and AUTH_CRED_C.
-
-When an access token becomes invalid (e.g., due to its expiration or revocation), RS MUST delete the access token and the associated OSCORE Security Context, and MUST notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in {{Section 5.8.3 of RFC9200}}.
+A detailed example is given in {{example-with-optimization}}.
 
 ## Access Token in External Authorization Data {#AT-in-EAD}
 
-Instead of uploading the access token to the /authz-info endpoint at RS as described in {{c-rs}}, C MAY include the access token in an EDHOC External Authorization Data field (see {{Section 3.8 of RFC9528}}), see example in {{example-with-optimization}}.
+ This document defines the External Authorization Data (EAD) item  EAD\_ACCESS\_TOKEN for transporting access tokens in EDHOC. (EAD items are specified in {{Section 3.8 of RFC9528}}.)
 
-This document defines the EAD item EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value), where:
+* EAD\_ACCESS\_TOKEN  = (ead\_label, ead\_value), where:
 
-* ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}, and
-* ead\_value is a CBOR byte string equal to the value of the "access\_token" field of the access token response from AS, see {{as-c}}.
+    * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}, and
+    * ead\_value is a CBOR byte string equal to the value of the "access\_token" field of the access token response from AS, see {{as-c}}.
 
 This EAD item is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must either process the access token or abort the EDHOC session (see {{Section 3.8 of RFC9528}}). A Client or Resource Server supporting the profile of ACE defined in this document MUST support this EAD item.
 
@@ -538,23 +509,26 @@ Access tokens are transported in EAD fields only for the first access token of a
 
 Editor's notes: Add example. Value for ead_label not from lowest range, suggested value 26.
 
-## EDHOC Session and OSCORE Security Context # {#edhoc-exec}
+## EDHOC Session {#edhoc-exec}
 
-In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol {{RFC9528}}. When a new EDHOC session is established, previous EDHOC sessions associated with the same access token and the same pair (session_id, AUTH_CRED_C) are deleted, see {{m_3}}. The OSCORE Security Contexts derived from those EDHOC sessions are also deleted.
+In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol {{RFC9528}}.
 
-As per {{Section A.2 of RFC9528}}, EDHOC may be transferred over CoAP using either the forward or the reverse message flow, manifesting the mapping between ACE roles Client / Resource Server and the EDHOC roles Initiator / Responder. The choice of mapping depends on the deployment setting, for example on which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers.
+As per {{Section A.2 of RFC9528}}, EDHOC may be transferred over CoAP using either the forward or the reverse message flow, manifesting the different mappings between ACE roles Client / Resource Server and the EDHOC roles Initiator / Responder. The choice of mapping depends on the deployment setting, in particular which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers.
 
-This section details the case where the EDHOC forward message flow is used, i.e., where C = I, RS = R. The converse mapping is described in TODO.
+In case of the forward message flow, the access token MUST be included in EAD in EDHOC message\_3 (EAD\_3). In case of EDHOC reverse message flow, the access token MUST be included in EAD in EDHOC message\_2 (EAD\_2). This way the access token gets at least the same confidentiality protection as the authentication credential used by C, see {{Section 9.1 of RFC9528}}.
+
+If the access token is transported during the EDHOC execution, then EAD\_3 MUST contain the EAD item EAD\_ACCESS\_TOKEN. This provides confidentiality protection against active attackers.
+
+## Forward Message Flow {#forward}
+
+This section details the case where the EDHOC forward message flow is used, i.e., where C = I, RS = R. The reverse message flow is described in {{reverse}}.
 
 Consistent with the EDHOC forward message flow, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as 2.04 (Changed) CoAP responses.
 
-If the access token is transported during the EDHOC execution, then either EAD\_1 or EAD\_3 MUST contain the EAD item EAD\_ACCESS\_TOKEN. It is RECOMMENDED that EAD\_ACCESS\_TOKEN is carried in EAD\_3, i.e., in EDHOC message\_3. This provides confidentiality protection against active attackers. EAD\_ACCESS\_TOKEN MAY be carried in EAD\_1, e.g., if the CWT access token is encrypted for RS by AS using COSE_Encrypt0.
 
 C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present. Otherwise, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.
 
 RS has to ensure that attackers cannot perform requests on the EDHOC resource, other than sending EDHOC messages. Specifically, it SHOULD NOT be possible to perform any other operation than POST on an EDHOC resource.
-
-
 
 ### EDHOC message\_1
 
@@ -582,12 +556,15 @@ The processing of EDHOC message\_3 is specified in {{Section 5.4 of RFC9528}} wi
 
 * If EAD\_3 contains the EAD item EAD\_ACCESS\_TOKEN, then the RS MUST ensure that the access token is valid. The validation follows the procedure specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}), and it MUST abort the EDHOC session.
 
-
-RS MUST have successfully validated the processing of the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (session_id, AUTH_CRED_C). Any old existing EDHOC session associated with the same access token and with the same pair (session_id, AUTH_CRED_C) MUST be deleted, together with the OSCORE Security Context derived from the EDHOC session.
+RS MUST have successfully validated the processing of the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (session_id, AUTH_CRED_C). Any previous EDHOC session associated with the same access token and with the same pair (session_id, AUTH_CRED_C) MUST be deleted. The OSCORE Security Context derived from that EDHOC session MUST also be deleted.
 
 Editor's note: Instead of ERR\_CODE = 1, consider to use ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz
 
-### OSCORE Security Context
+## Reverse Message Flow {#reverse}
+
+TODO
+
+## OSCORE Security Context {#oscore-security-context}
 
 Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context, as defined in {{Section A.1 of RFC9528}}. In addition, the following applies.
 
@@ -601,6 +578,33 @@ Once successfully completed the EDHOC session, C and RS derive an OSCORE Securit
 with the stored access token, which is bound to the authentication credential (AUTH_CRED_C = CRED_I) used in the EDHOC session and with the session_id identifying the token series to which the access token belongs.
 
 If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{I-D.ietf-core-oscore-edhoc}}, unless the "comb\_req" field of the EDHOC\_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see {{example-with-optimization}}. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2 and before sending EDHOC message\_3.
+
+
+## C-to-RS: POST to /authz-info endpoint # {#c-rs}
+
+The access token can be uploaded to RS using CoAP {{RFC7252}} and the Authorization Information endpoint as described in {{Section 5.10.1 of RFC9200}}.
+
+That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload containing the access token without any CBOR wrapping. As per {{Section 5.10.1 of RFC9200}}, the Content-Format of the POST request MUST be "application/cwt" to reflect the format of the transported access token.
+
+The communication between C and the /authz-info endpoint is not protected, unless there is a previously established OSCORE Security Context, for example in the case of update of access rights (see {{update-access-rights-c-rs}}).
+
+
+##  RS-to-C: 2.01 (Created) {#rs-c}
+
+Upon receiving an access token from C, RS MUST follow the procedures defined in {{Section 5.10.1 of RFC9200}}. That is, RS must verify the validity of the access token. RS may make an introspection request (see {{Section 5.9.1 of RFC9200}}) to validate the access token.
+
+If the access token is valid, RS proceeds as follows.
+
+RS checks whether it is already storing the authentication credential of C, AUTH_CRED_C, specified in the "cnf" claim of the access token by value or by reference. If not, RS retrieves AUTH_CRED_C, either using the "cnf" claim or some other trusted source.
+
+If RS fails to find or validate AUTH_CRED_C, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
+
+If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "session\_id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
+
+If all validations are successful, RS MUST reply to the POST request with a 2.01 (Created) response. The access token is stored such that it is possible to retrieve it based on "session\_id" and AUTH_CRED_C.
+
+When an access token becomes invalid (e.g., due to its expiration or revocation), RS MUST delete the access token and the associated OSCORE Security Context, and MUST notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in {{Section 5.8.3 of RFC9200}}.
+
 
 ## Update of Access Rights {#update-access-rights-c-rs}
 

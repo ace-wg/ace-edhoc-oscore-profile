@@ -393,35 +393,28 @@ Table of Contents
       |<--------------------------------- Access Token ------+
       |                               + Access Information   |
       |                            |                         |
-      +----- POST /authz-info ---->|                         |
-      |       (access_token)       |                         |
+      +------- POST /edhoc  ------>|                         |
+      |     (EDHOC message_1)      |                         |
       |                            |                         |
-      |<------ 2.01 Created -------+                         |
+      |<------ 2.04 Changed -------+                         |
+      |     (EDHOC message_2)      |                         |
       |                            |                         |
-      | <========= EDHOC ========> |                         |
-      |  Mutual authentication     |                         |
-      |  and derivation of an      |                         |
-      |  OSCORE Security Context   |                         |
+   / Derivation of OSCORE          |                         |
+   Security Context /              |                         |
       |                            |                         |
-      |                /Proof-of-possession and              |
-      |                Security Context storage/             |
+      +------- POST /edhoc  ------>|                         |
+      |   (EDHOC message_3 with    |                         |
+      |   access_token in EAD_3)   |                         |
       |                            |                         |
-      +----- OSCORE Request ------>|                         |
-      |                            |                         |
-      |<---- OSCORE Response ------|                         |
-      |                            |                         |
-   /Proof-of-possession            |                         |
-   and Security Context            |                         |
-   storage (latest)/               |                         |
+      |                / Derivation of OSCORE                |
+      |                  Security Context /                  |
       |                            |                         |
       +----- OSCORE Request ------>|                         |
       |                            |                         |
       |<---- OSCORE Response ------|                         |
       |                            |                         |
-      |           ...              |                         |
 
-      Figure 1: Protocol Overview Example.  Names of messages coincide
-                  with those of RFC 9200 when applicable.
+        Figure 1: Protocol Outline using EDHOC Forward Message Flow.
 
 3.  Client-AS Communication
 

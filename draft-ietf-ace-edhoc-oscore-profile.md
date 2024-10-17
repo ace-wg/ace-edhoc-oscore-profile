@@ -149,13 +149,13 @@ The ACE framework describes how integrity protected authorization information pr
 
 If the request is granted then AS may send back an access token in a response to C, or upload the access token directly to RS as described in the alternative workflow defined in {{I-D.ietf-ace-workflow-and-params}}. The latter is not detailed further here.
 
-If C has retrieved an access token then there are two options for C to upload it to RS, as further compared below.
+If C has retrieved an access token then there are two options for C to upload it to RS:
 
-1. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.10 of RFC9200}}. If the access token is valid, RS replies to the request with a 2.01 (Created) response, after which C initiates the EDHOC protocol with RS. The communication with the /authz-info endpoint may not be protected unless there is previously established security context, for example in the case of update of access rights, see {{update-access-rights-c-rs}}.
+1. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of RFC9528}}. In case of EDHOC forward message flow, see {{Section A.2 of RFC9528}}, the access token MUST be included in EAD_3. In case of EDHOC reverse message flow, the access token MUST be included in EAD_2. This way the access token gets the same confidentiality protection as the authentication credential used by C, see {{Section 9.1 of RFC9528}}.
 
-2. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of RFC9528}}. In this case, the access token is validated in parallel with the EDHOC session. The EAD item containing the access token is protected in different ways depending on which EDHOC message it is carried in, see {{Section 9.1 of RFC9528}}.
+2. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.10 of RFC9200}} with a CoAP exchange protected by OSCORE. If the access token is valid, RS replies to the request with a 2.01 (Created) response. This case requires a previously established OSCORE security context, for example in the case of update of access rights, see {{update-access-rights-c-rs}}.
 
-When running the EDHOC protocol, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of RFC9528}}.
+In case 1, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of RFC9528}}.
 
 From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. The OSCORE Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new OSCORE Security Context for C.
 

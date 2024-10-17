@@ -149,26 +149,13 @@ The ACE framework describes how integrity protected authorization information pr
 
 If the request is granted then AS may send back an access token in a response to C, or upload the access token directly to RS as described in the alternative workflow defined in {{I-D.ietf-ace-workflow-and-params}}. The latter is not detailed further here.
 
-If C has retrieved an access token then there are two options for C to upload it to RS:
+Now C and RS executes the EDHOC protocol. C uses the authentication credential of RS provided by AS. If C has retrieved an access token, it is included as External Authorization Data (EAD) in the EDHOC protocol, see {{Section 3.8 of RFC9528}}. RS uses the authentication credential of C bound to and provided in the access token.
 
-1. C initiates the EDHOC protocol and includes the access token as External Authorization Data (EAD), see {{Section 3.8 of RFC9528}}. In case of EDHOC forward message flow, see {{Section A.2 of RFC9528}}, the access token MUST be included in EAD_3. In case of EDHOC reverse message flow, the access token MUST be included in EAD_2. This way the access token gets the same confidentiality protection as the authentication credential used by C, see {{Section 9.1 of RFC9528}}.
+In case of EDHOC forward message flow, see {{Section A.2 of RFC9528}}, the access token MUST be included in EAD in EDHOC message_3 (EAD_3). In case of EDHOC reverse message flow, the access token MUST be included in EAD in EDHOC message_2 (EAD_2). This way the access token gets at least the same confidentiality protection as the authentication credential used by C, see {{Section 9.1 of RFC9528}}.
 
-2. C posts the access token to the /authz-info endpoint by using the mechanisms specified in {{Section 5.10 of RFC9200}} with a CoAP exchange protected by OSCORE. If the access token is valid, RS replies to the request with a 2.01 (Created) response. This case requires a previously established OSCORE security context, for example in the case of update of access rights, see {{update-access-rights-c-rs}}.
-
-In case 1, C uses the authentication credential of RS specified by AS together with the access token, while RS uses the authentication credential of C bound to and specified within the access token. If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of RFC9528}}.
+If C and RS complete the EDHOC session successfully, they are mutually authenticated and they derive an OSCORE Security Context as per {{Section A.1 of RFC9528}}, an example is given in {{protocol-overview}}. A more detailed description of an optimized message flow is shown in {{example-with-optimization}}.
 
 From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. The OSCORE Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new OSCORE Security Context for C.
-
-While the OSCORE Security Context and access token are valid, C can contact AS to request an update of its access rights, by sending a similar request to the /token endpoint. This request also includes a "session identifier" (see {{edhoc-parameters-object}}) provided by AS in the initial request, which allows AS to find the data it has previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see {{token-series}}). Upon successful update of access rights (see {{update-access-rights-c-rs}}), the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
-
-When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then the associated session identifier, together with the authentication credential of C used in the EDHOC session, enables the RS to look up the unique access token determining the access rights of C.
-
-Comparing the options above:
-
-* In option 1, the access token upload and the EDHOC protocol are performed in series, which requires more messages exchanged than option 2. An overview of the message flow for the "coap_edhoc_oscore" profile in case of option 1 above is given in {{protocol-overview}}, and a more detailed protocol is provided in {{example-without-optimization}}. For option 2, the EDHOC protocol, the access token upload, and access request & response can be completed in two round trips (see {{example-with-optimization}}).
-
-* Option 1 supports update of access rights protected with the existing OSCORE Security Context (see {{update-access-rights-c-rs}}), whereas option 2 always generates a new OSCORE Security Context. If option 2 is implemented and there is a need to perform an update of access rights without changing OSCORE Security Context, then C needs to also implement option 1 or to rely on some other method, such as the alternative workflow of the ACE framework (see {{I-D.ietf-ace-workflow-and-params}}).
-
 
 ~~~~~~~~~~~ aasvg
 
@@ -204,6 +191,21 @@ Security Context /              |                         |
 
 ~~~~~~~~~~~
 {: #protocol-overview title="Protocol Outline using EDHOC Forward Message Flow."}
+
+
+While the OSCORE Security Context and access token are valid, C can contact AS to request an update of its access rights, by sending a similar request to the /token endpoint as described above. This request also includes a "session identifier" (see {{edhoc-parameters-object}}) provided by AS in the initial access request, which allows AS to find the data it has previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see {{token-series}}).
+
+If C has retrieved an updated access token, it posts the access token to the /authz-info endpoint using the mechanisms specified in {{Section 5.10 of RFC9200}} where the CoAP exchange is protected by the previously established OSCORE security context, see {{update-access-rights-c-rs}}. If the access token is valid, RS replies to the request with a 2.01 (Created) response.
+
+  Upon successful update of access rights, the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
+
+When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then the associated session identifier, together with the authentication credential of C used in the EDHOC session, enables the RS to look up the unique access token determining the access rights of C.
+
+Comparing the options described in this section: The EDHOC EAD field is used when there is no OSCORE Security Context such as for first access, whereas the OSCORE protected POST to /authz-info is used for updating access rights when there is an existing OSCORE Security Context.
+
+
+
+Editor's note: Add figure of update of access rights using POST to /authz-info
 
 # Client-AS Communication # {#c-as-comm}
 

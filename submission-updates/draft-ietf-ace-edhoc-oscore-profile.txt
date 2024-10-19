@@ -1031,7 +1031,7 @@ Table of Contents
    supporting the profile of ACE defined in this document MUST support
    this EAD item.
 
-   EAD_ACCESS_TOKEN is only used when uploading the first access token
+   EAD_ACCESS_TOKEN is used only when uploading the first access token
    of a token series, but not for the update of access rights, see
    Section 4.8.
 
@@ -1054,9 +1054,9 @@ Table of Contents
    server supporting the profile of ACE defined in this document MUST
    support this EAD item.
 
-   EAD_SESSION_ID is used if the access token is provisioned to the RS
-   and valid, but there is a need to establish a new OSCORE Security
-   Context between C and RS.
+   EAD_SESSION_ID is used only if the access token has been provisioned
+   to the RS and is valid, but there is a need to establish a (new)
+   OSCORE Security Context with EDHOC between C and RS.
 
    Editor's note: Add example.  Value for ead_label from lowest range.
 

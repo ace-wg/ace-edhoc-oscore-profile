@@ -2055,7 +2055,7 @@ EDHOC_Information = {
 </li>
         </ul>
 <p id="section-4.1-3">This EAD item is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must process the protocol with the received access token, or else abort the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). A Client or Resource Server supporting the profile of ACE defined in this document <span class="bcp14">MUST</span> support this EAD item.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.1-4">EAD_ACCESS_TOKEN is only used when uploading the first access token of a token series, but not for the update of access rights, see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.8</a>.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.1-4">EAD_ACCESS_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights, see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.8</a>.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
 <p id="section-4.1-5">Editor's note: Add example. Value for ead_label not from lowest range, suggested value 26.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-6.1">
@@ -2071,7 +2071,7 @@ EDHOC_Information = {
 </li>
         </ul>
 <p id="section-4.1-7">This EAD item is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must process the protocol with the access token associated with this session_id and with the AUTH_CRED_C used in the EDHOC session, or else abort the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). A client or resource server supporting the profile of ACE defined in this document <span class="bcp14">MUST</span> support this EAD item.<a href="#section-4.1-7" class="pilcrow">¶</a></p>
-<p id="section-4.1-8">EAD_SESSION_ID is used if the access token is provisioned to the RS and valid, but there is a need to establish a new OSCORE Security Context between C and RS.<a href="#section-4.1-8" class="pilcrow">¶</a></p>
+<p id="section-4.1-8">EAD_SESSION_ID is used only if the access token has been provisioned to the RS and is valid, but there is a need to establish a (new) OSCORE Security Context with EDHOC between C and RS.<a href="#section-4.1-8" class="pilcrow">¶</a></p>
 <p id="section-4.1-9">Editor's note: Add example. Value for ead_label from lowest range.<a href="#section-4.1-9" class="pilcrow">¶</a></p>
 </section>
 </div>

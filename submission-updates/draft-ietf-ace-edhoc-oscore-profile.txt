@@ -159,11 +159,12 @@ Table of Contents
    Appendix B.  Profile Requirements
    Appendix C.  CDDL Model
    Appendix D.  Document Updates
-     D.1.  Version -04 to -05
-     D.2.  Version -03 to -04
-     D.3.  Version -02 to -03
-     D.4.  Version -01 to -02
-     D.5.  Version -00 to -01
+     D.1.  Version -05 to -06
+     D.2.  Version -04 to -05
+     D.3.  Version -03 to -04
+     D.4.  Version -02 to -03
+     D.5.  Version -01 to -02
+     D.6.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -1178,7 +1179,7 @@ Table of Contents
    (session_id, AUTH_CRED_C).  Any previous EDHOC session associated
    with the same access token and with the same pair (session_id,
    AUTH_CRED_C) MUST be deleted.  The OSCORE Security Context derived
-   from that EDHOC session MUST also be aborted.
+   from that EDHOC session MUST also be deleted.
 
    Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3
    "Access Denied" defined in draft-ietf-lake-authz
@@ -2146,12 +2147,8 @@ Table of Contents
 
 10.8.  EDHOC External Authorization Data Registry
 
-   IANA is asked to add the following entry to the "EDHOC External
+   IANA is asked to add the following entries to the "EDHOC External
    Authorization Data" registry defined in Section 10.5 of [RFC9528].
-
-   The ead_label = TBD and the ead_value define an access token
-   transferred in an EAD item of EDHOC message_3, with processing
-   specified in Section 4.1.
 
    *  Name: ACE-OAuth Access Token
 
@@ -2160,7 +2157,17 @@ Table of Contents
    *  Description: An Access Token as used in the ACE-OAuth framework
       [RFC9200]
 
-   *  Reference: [RFC-XXXX]
+   *  Reference: [RFC-XXXX], Section 4.1
+
+
+
+   *  Name: Session ID
+
+   *  Label: TBD
+
+   *  Description: The identifier of an EDHOC session
+
+   *  Reference: [RFC-XXXX], Section 4.1
 
 10.9.  EDHOC Information Registry
 
@@ -2921,7 +2928,28 @@ Appendix D.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-D.1.  Version -04 to -05
+D.1.  Version -05 to -06
+
+   *  The access token can be uploaded through EDHOC in EAD_3, EAD_2, or
+      EAD_4.
+
+   *  Ruled out the upload of the access token to the /authz-info
+      endpoint over an unprotected channel.
+
+   *  Defined an EDHOC EAD item for transporting a Session ID.
+
+   *  Provided more details and added example of dynamic update of
+      access rights.
+
+   *  Defined in detail the use of the EDHOC reverse message flow.
+
+   *  Provided details on access token invalidity.
+
+   *  Revised examples with message exchanges.
+
+   *  Clarifications and editorial improvements.
+
+D.2.  Version -04 to -05
 
    *  CBOR diagnostic notation uses placeholders from a CDDL model.
 
@@ -2941,7 +2969,7 @@ D.1.  Version -04 to -05
 
    *  Editorial fixes and improvements.
 
-D.2.  Version -03 to -04
+D.3.  Version -03 to -04
 
    *  Fixed column name and prefilling of the "EDHOC Information"
       registry.
@@ -2960,7 +2988,7 @@ D.2.  Version -03 to -04
 
    *  Editorial fixes and improvements.
 
-D.3.  Version -02 to -03
+D.4.  Version -02 to -03
 
    *  Restructured presentation of content.
 
@@ -2976,7 +3004,7 @@ D.3.  Version -02 to -03
 
    *  Clarifications and editorial improvements.
 
-D.4.  Version -01 to -02
+D.5.  Version -01 to -02
 
    *  Removed use of EDHOC_KeyUpdate.
 
@@ -2990,7 +3018,7 @@ D.4.  Version -01 to -02
 
    *  Editorial improvements.
 
-D.5.  Version -00 to -01
+D.6.  Version -00 to -01
 
    *  Fixed semantics of the ead_value for transporting an Access Token
       in the EAD_1 field.

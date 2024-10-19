@@ -501,7 +501,7 @@ A detailed example is given in {{example-with-optimization}}.
 
 This EAD item is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must process the protocol with the received access token, or else abort the EDHOC session (see {{Section 3.8 of RFC9528}}). A Client or Resource Server supporting the profile of ACE defined in this document MUST support this EAD item.
 
-EAD\_ACCESS\_TOKEN is only used when uploading the first access token of a token series, but not for the update of access rights, see {{update-access-rights-c-rs}}.
+EAD\_ACCESS\_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights, see {{update-access-rights-c-rs}}.
 
 Editor's note: Add example. Value for ead_label not from lowest range, suggested value 26.
 
@@ -513,7 +513,7 @@ Editor's note: Add example. Value for ead_label not from lowest range, suggested
 
 This EAD item is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must process the protocol with the access token associated with this session_id and with the AUTH_CRED_C used in the EDHOC session, or else abort the EDHOC session (see {{Section 3.8 of RFC9528}}). A client or resource server supporting the profile of ACE defined in this document MUST support this EAD item.
 
-EAD\_SESSION\_ID is used if the access token is provisioned to the RS and valid, but there is a need to establish a new OSCORE Security Context between C and RS.
+EAD\_SESSION\_ID is used only if the access token has been provisioned to the RS and is valid, but there is a need to establish a (new) OSCORE Security Context with EDHOC between C and RS.
 
 Editor's note: Add example. Value for ead_label from lowest range.
 

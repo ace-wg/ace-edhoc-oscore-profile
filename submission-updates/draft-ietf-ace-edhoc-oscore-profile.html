@@ -1231,22 +1231,27 @@ This profile can be used to delegate management of authorization information fro
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-oscore-security-context" class="internal xref">OSCORE Security Context</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
-                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-c-to-rs-post-to-authz-info-" class="internal xref">C-to-RS: POST to /authz-info endpoint</a></p>
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-update-of-access-rights-2" class="internal xref">Update of Access Rights</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6.2.1">
+                    <p id="section-toc.1-1.4.2.6.2.1.1"><a href="#section-4.6.1" class="auto internal xref">4.6.1</a>.  <a href="#name-c-to-rs-post-to-authz-info-" class="internal xref">C-to-RS: POST to /authz-info endpoint</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6.2.2">
+                    <p id="section-toc.1-1.4.2.6.2.2.1"><a href="#section-4.6.2" class="auto internal xref">4.6.2</a>.  <a href="#name-rs-to-c-201-created" class="internal xref">RS-to-C: 2.01 (Created)</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
-                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-rs-to-c-201-created" class="internal xref">RS-to-C: 2.01 (Created)</a></p>
+                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-discarding-the-oscore-secur" class="internal xref">Discarding the OSCORE Security Context</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.8">
-                <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="auto internal xref">4.8</a>.  <a href="#name-update-of-access-rights-2" class="internal xref">Update of Access Rights</a></p>
+                <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="auto internal xref">4.8</a>.  <a href="#name-establishing-a-new-oscore-s" class="internal xref">Establishing a New OSCORE Security Context</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.9">
-                <p id="section-toc.1-1.4.2.9.1"><a href="#section-4.9" class="auto internal xref">4.9</a>.  <a href="#name-discarding-the-oscore-secur" class="internal xref">Discarding the OSCORE Security Context</a></p>
+                <p id="section-toc.1-1.4.2.9.1"><a href="#section-4.9" class="auto internal xref">4.9</a>.  <a href="#name-access-rights-verification" class="internal xref">Access Rights Verification</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10">
-                <p id="section-toc.1-1.4.2.10.1"><a href="#section-4.10" class="auto internal xref">4.10</a>. <a href="#name-establishing-a-new-oscore-s" class="internal xref">Establishing a New OSCORE Security Context</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.11">
-                <p id="section-toc.1-1.4.2.11.1"><a href="#section-4.11" class="auto internal xref">4.11</a>. <a href="#name-access-rights-verification" class="internal xref">Access Rights Verification</a></p>
+                <p id="section-toc.1-1.4.2.10.1"><a href="#section-4.10" class="auto internal xref">4.10</a>. <a href="#name-access-token-invalidity" class="internal xref">Access Token Invalidity</a></p>
 </li>
             </ul>
 </li>
@@ -1570,7 +1575,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
         </figcaption></figure>
 </div>
 <p id="section-2-10">While the OSCORE Security Context and access token are valid, C can contact AS to request an update of its access rights, by sending a similar request as described above to the /token endpoint. This request also includes a "session identifier" (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) provided by AS in the response to the initial access request, which allows AS to retrieve the data it previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see <a href="#token-series" class="auto internal xref">Section 3.2</a>).<a href="#section-2-10" class="pilcrow">¶</a></p>
-<p id="section-2-11">If C has retrieved an access token for updating its access rights belonging to the same token series, then it transfers the access token to RS using the /authz-info endpoint as specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10" class="relref">Section 5.10</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> where the CoAP exchange is protected by the previously established OSCORE security context, see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.8</a>. If the access token is valid, RS replies to the request with a 2.01 (Created) response.<a href="#section-2-11" class="pilcrow">¶</a></p>
+<p id="section-2-11">If C has retrieved an access token for updating its access rights belonging to the same token series, then it transfers the access token to RS using the /authz-info endpoint as specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10" class="relref">Section 5.10</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> where the CoAP exchange is protected by the previously established OSCORE security context, see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.6</a>. If the access token is valid, RS replies to the request with a 2.01 (Created) response.<a href="#section-2-11" class="pilcrow">¶</a></p>
 <p id="section-2-12">Upon successful update of access rights, the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.<a href="#section-2-12" class="pilcrow">¶</a></p>
 <p id="section-2-13">When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then that OSCORE Security Context is used to retrieve the uniquely associated access token determining the access rights of C.<a href="#section-2-13" class="pilcrow">¶</a></p>
 <p id="section-2-14">Editor's note: The content of the paragraph above should be re-iterated in the detailed description<a href="#section-2-14" class="pilcrow">¶</a></p>
@@ -1799,17 +1804,17 @@ When later issuing further access tokens to the same pair (C, RS) using the same
           <h4 id="name-processing-in-c">
 <a href="#section-3.3.2" class="section-number selfRef">3.3.2. </a><a href="#name-processing-in-c" class="section-name selfRef">Processing in C</a>
           </h4>
-<p id="section-3.3.2-1">When receiving an Access Token response including the "rs_cnf" parameter, C checks whether it is already storing the authentication credential of RS, namely AUTH_CRED_RS, specified in "rs_cnf" by value or reference.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.3.2-1">When receiving an access token response including the "rs_cnf" parameter, C checks whether it is already storing the authentication credential of RS, namely AUTH_CRED_RS, specified in "rs_cnf" by value or reference.<a href="#section-3.3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.3.2-2">If this is not the case, C retrieves AUTH_CRED_RS, either using the "rs_cnf" parameter or some other trusted source. After that, C validates the actual AUTH_CRED_RS. In case of successful validation, C stores AUTH_CRED_RS as a valid authentication credential. Otherwise, C <span class="bcp14">MUST</span> delete the access token.<a href="#section-3.3.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="update-of-access-rights">
+<div id="update-access-rights-c-as">
 <section id="section-3.3.3">
           <h4 id="name-update-of-access-rights">
 <a href="#section-3.3.3" class="section-number selfRef">3.3.3. </a><a href="#name-update-of-access-rights" class="section-name selfRef">Update of Access Rights</a>
           </h4>
 <p id="section-3.3.3-1">If C has a valid OSCORE Security Context associated with a valid access token, then C can send a request to AS for updating its access rights while preserving the same OSCORE Security Context.<a href="#section-3.3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3.3-2">If the request is granted, then AS generates a new access token, where the "edhoc_info" claim <span class="bcp14">MUST</span> include only the "session_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in <span>[<a href="#I-D.ietf-ace-workflow-and-params" class="cite xref">I-D.ietf-ace-workflow-and-params</a>]</span>. In either case, the Access Token Response from the AS to C <span class="bcp14">MUST NOT</span> include the "rs_cnf" parameter.<a href="#section-3.3.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.3.3-2">If the request is granted, then AS generates a new access token, where the "edhoc_info" claim <span class="bcp14">MUST</span> include only the "session_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in <span>[<a href="#I-D.ietf-ace-workflow-and-params" class="cite xref">I-D.ietf-ace-workflow-and-params</a>]</span>. In either case, the access token response from the AS to C <span class="bcp14">MUST NOT</span> include the "rs_cnf" parameter.<a href="#section-3.3.3-2" class="pilcrow">¶</a></p>
 <p id="section-3.3.3-3">EDHOC_Information including the "session_id" field needs to be specified in the new access token in order for RS to identify the old access token to supersede, as well as the OSCORE Security Context already shared between C and RS and to be associated with the new access token.<a href="#section-3.3.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2033,7 +2038,7 @@ EDHOC_Information = {
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-client-rs-communication" class="section-name selfRef">Client-RS Communication</a>
       </h2>
 <p id="section-4-1">This section describes the exchange between C and RS, including the execution of the EDHOC protocol, and the uploading of the access token from C to RS. The alternative workflow, where AS uploads the access token directly to RS, is described in <span>[<a href="#I-D.ietf-ace-workflow-and-params" class="cite xref">I-D.ietf-ace-workflow-and-params</a>]</span>.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">C and RS run the EDHOC protocol (see <a href="#edhoc-exec" class="auto internal xref">Section 4.2</a>), and C uploads the access token in an EAD field (see <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a>) of an EDHOC message. Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context (see <a href="#oscore-security-context" class="auto internal xref">Section 4.5</a>). OSCORE protects the communication when C accesses resources at RS, as per the access rights specified in the access token (see <a href="#access-rights-verif" class="auto internal xref">Section 4.11</a>).<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-2">C and RS run the EDHOC protocol (see <a href="#edhoc-exec" class="auto internal xref">Section 4.2</a>), and C uploads the access token in an EAD field (see <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a>) of an EDHOC message. Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context (see <a href="#oscore-security-context" class="auto internal xref">Section 4.5</a>). OSCORE protects the communication when C accesses resources at RS, as per the access rights specified in the access token (see <a href="#access-rights-verif" class="auto internal xref">Section 4.9</a>).<a href="#section-4-2" class="pilcrow">¶</a></p>
 <p id="section-4-3">Detailed examples are given in <a href="#examples" class="auto internal xref">Appendix A</a>.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <div id="AT-in-EAD">
 <section id="section-4.1">
@@ -2055,7 +2060,7 @@ EDHOC_Information = {
 </li>
         </ul>
 <p id="section-4.1-3">This EAD item is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must process the protocol with the received access token, or else abort the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). A Client or Resource Server supporting the profile of ACE defined in this document <span class="bcp14">MUST</span> support this EAD item.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.1-4">EAD_ACCESS_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights, see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.8</a>.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.1-4">EAD_ACCESS_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights, see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.6</a>.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
 <p id="section-4.1-5">Editor's note: Add example. Value for ead_label not from lowest range, suggested value 26.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-6.1">
@@ -2138,7 +2143,7 @@ EDHOC_Information = {
               <p id="section-4.3.3-2.2.1">According to this profile, one of the EAD items EAD_ACCESS_TOKEN or EAD_SESSION_ID <span class="bcp14">MUST</span> be included in EAD_3.<a href="#section-4.3.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.3.3-2.3">
-              <p id="section-4.3.3-2.3.1">If EAD_3 includes the EAD item EAD_ACCESS_TOKEN then RS <span class="bcp14">MUST</span> ensure that the included access token is valid. If EAD_3 includes the EAD item EAD_SESSION_ID then RS <span class="bcp14">MUST</span> ensure that the access token associated with the included session_id and with the AUTH_CRED_C used in the EDHOC session is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.7</a>. If such a process fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>), and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.3.3-2.3.1" class="pilcrow">¶</a></p>
+              <p id="section-4.3.3-2.3.1">If EAD_3 includes the EAD item EAD_ACCESS_TOKEN then RS <span class="bcp14">MUST</span> ensure that the included access token is valid. If EAD_3 includes the EAD item EAD_SESSION_ID then RS <span class="bcp14">MUST</span> ensure that the access token associated with the included session_id and with the AUTH_CRED_C used in the EDHOC session is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such a process fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>), and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.3.3-2.3.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-4.3.3-3">RS <span class="bcp14">MUST</span> have successfully validated the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (session_id, AUTH_CRED_C). Any previous EDHOC session associated with the same access token and with the same pair (session_id, AUTH_CRED_C) <span class="bcp14">MUST</span> be deleted. The OSCORE Security Context derived from that EDHOC session <span class="bcp14">MUST</span> also be aborted.<a href="#section-4.3.3-3" class="pilcrow">¶</a></p>
@@ -2184,7 +2189,7 @@ EDHOC_Information = {
               <p id="section-4.4.3-2.1.1">The authentication credential CRED_R indicated by the message field ID_CRED_R is AUTH_CRED_C.<a href="#section-4.4.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.4.3-2.2">
-              <p id="section-4.4.3-2.2.1">If EAD_2 includes the EAD item EAD_ACCESS_TOKEN then RS <span class="bcp14">MUST</span> ensure that the included access token is valid. If EAD_2 includes the EAD item EAD_SESSION_ID then RS <span class="bcp14">MUST</span> ensure that the access token associated with the included session_id and with the AUTH_CRED_C used in the EDHOC session is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.7</a>. If such a process fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>), and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.3-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4.4.3-2.2.1">If EAD_2 includes the EAD item EAD_ACCESS_TOKEN then RS <span class="bcp14">MUST</span> ensure that the included access token is valid. If EAD_2 includes the EAD item EAD_SESSION_ID then RS <span class="bcp14">MUST</span> ensure that the access token associated with the included session_id and with the AUTH_CRED_C used in the EDHOC session is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such a process fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>), and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -2210,7 +2215,7 @@ EDHOC_Information = {
 <p id="section-4.4.5-1">The processing of EDHOC message_4 is specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.5" class="relref">Section 5.5</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span> with the following additions:<a href="#section-4.4.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4.5-2.1">
-              <p id="section-4.4.5-2.1.1">If EAD_4 includes the EAD item EAD_ACCESS_TOKEN then RS <span class="bcp14">MUST</span> ensure that the included access token is valid. If EAD_4 includes the EAD item EAD_SESSION_ID then RS <span class="bcp14">MUST</span> ensure that the access token associated to the included session_id and AUTH_CRED_C is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.7</a>. If such a process fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>), and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.5-2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-4.4.5-2.1.1">If EAD_4 includes the EAD item EAD_ACCESS_TOKEN then RS <span class="bcp14">MUST</span> ensure that the included access token is valid. If EAD_4 includes the EAD item EAD_SESSION_ID then RS <span class="bcp14">MUST</span> ensure that the access token associated to the included session_id and AUTH_CRED_C is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such a process fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>), and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.5-2.1.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-4.4.5-3">Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.5-3" class="pilcrow">¶</a></p>
@@ -2242,107 +2247,114 @@ with the stored access token, which is bound to the authentication credential AU
 <p id="section-4.5-3">If supported by C, C <span class="bcp14">MAY</span> use the EDHOC + OSCORE combined request defined in <span>[<a href="#I-D.ietf-core-oscore-edhoc" class="cite xref">I-D.ietf-core-oscore-edhoc</a>]</span>, unless the "comb_req" field of the EDHOC_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see <a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a>. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message_2 and before sending EDHOC message_3.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="c-rs">
+<div id="update-access-rights-c-rs">
 <section id="section-4.6">
-        <h3 id="name-c-to-rs-post-to-authz-info-">
-<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-c-to-rs-post-to-authz-info-" class="section-name selfRef">C-to-RS: POST to /authz-info endpoint</a>
+        <h3 id="name-update-of-access-rights-2">
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-update-of-access-rights-2" class="section-name selfRef">Update of Access Rights</a>
         </h3>
-<p id="section-4.6-1">The access token can be uploaded to RS using CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> and the Authorization Information endpoint as described in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.1" class="relref">Section 5.10.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
-<p id="section-4.6-2">That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload containing the access token without any CBOR wrapping. As per <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.1" class="relref">Section 5.10.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, the Content-Format of the POST request <span class="bcp14">MUST</span> be "application/cwt" to reflect the format of the transported access token.<a href="#section-4.6-2" class="pilcrow">¶</a></p>
-<p id="section-4.6-3">The communication between C and the /authz-info endpoint is not protected, unless there is a previously established OSCORE Security Context, for example in the case of update of access rights (see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.8</a>).<a href="#section-4.6-3" class="pilcrow">¶</a></p>
+<p id="section-4.6-1">If C has a valid OSCORE Security Context associated with a valid access token at RS, then C can request from AS an update of the access rights as described in <a href="#c-as" class="auto internal xref">Section 3.1</a>.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<p id="section-4.6-2">If the request is granted then AS generates a new access token containing updated access rights for C (see <a href="#update-access-rights-c-as" class="auto internal xref">Section 3.3.3</a>) in the same token series of the current access token (see <a href="#token-series" class="auto internal xref">Section 3.2</a>).<a href="#section-4.6-2" class="pilcrow">¶</a></p>
+<p id="section-4.6-3">According to this document, AS provides the access token to C (see <a href="#as-c" class="auto internal xref">Section 3.3</a>) for further uploading to RS. Alternatively, the access token may be uploaded by AS directly to RS, as described in <span>[<a href="#I-D.ietf-ace-workflow-and-params" class="cite xref">I-D.ietf-ace-workflow-and-params</a>]</span>. If all validations are successful, C can access protected resources at RS according to the updated access rights using the previously established OSCORE Security Context.<a href="#section-4.6-3" class="pilcrow">¶</a></p>
+<p id="section-4.6-4">The rest of this section describes the message exchange for the uploading of the access token from C to RS.<a href="#section-4.6-4" class="pilcrow">¶</a></p>
+<div id="c-rs">
+<section id="section-4.6.1">
+          <h4 id="name-c-to-rs-post-to-authz-info-">
+<a href="#section-4.6.1" class="section-number selfRef">4.6.1. </a><a href="#name-c-to-rs-post-to-authz-info-" class="section-name selfRef">C-to-RS: POST to /authz-info endpoint</a>
+          </h4>
+<p id="section-4.6.1-1">C can update its access rights by uploading the updated access token to RS using CoAP <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> and the Authorization Information endpoint as described in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.1" class="relref">Section 5.10.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-4.6.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.6.1-2">That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload containing the access token without any CBOR wrapping. As per <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.1" class="relref">Section 5.10.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, the Content-Format of the POST request <span class="bcp14">MUST</span> be "application/cwt" to reflect the format of the transported access token.<a href="#section-4.6.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.6.1-3">C <span class="bcp14">MUST</span> protect the POST request using the current OSCORE Security Context shared with RS.<a href="#section-4.6.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.6.1-4">Upon receiving an access token from C, RS <span class="bcp14">MUST</span> follow the procedures defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.1" class="relref">Section 5.10.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. That is, RS must verify the validity of the access token. RS may make an introspection request (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.9.1" class="relref">Section 5.9.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>) to validate the access token.<a href="#section-4.6.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.6.1-5">RS <span class="bcp14">MUST</span> check the following conditions:<a href="#section-4.6.1-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6.1-6.1">
+              <p id="section-4.6.1-6.1.1">RS checks whether it stores an access token T_OLD, such that the "session_id" field of EDHOC_Information matches the "session_id" field of EDHOC_Information in the new access token T_NEW.<a href="#section-4.6.1-6.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4.6.1-6.2">
+              <p id="section-4.6.1-6.2.1">RS checks whether the OSCORE Security Context CTX used to protect the request matches the OSCORE Security Context associated with the stored access token T_OLD.<a href="#section-4.6.1-6.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-4.6.1-7">If both the conditions above hold, RS <span class="bcp14">MUST</span> replace the old access token T_OLD with the new access token T_NEW, and associate T_NEW with the OSCORE Security Context CTX.<a href="#section-4.6.1-7" class="pilcrow">¶</a></p>
+<p id="section-4.6.1-8">Note that C and RS do not execute the EDHOC protocol, they do not establish a new OSCORE Security Context, and AUTH_CRED_C remains the same.<a href="#section-4.6.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="rs-c">
-<section id="section-4.7">
-        <h3 id="name-rs-to-c-201-created">
-<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-rs-to-c-201-created" class="section-name selfRef">RS-to-C: 2.01 (Created)</a>
-        </h3>
-<p id="section-4.7-1">Upon receiving an access token from C, RS <span class="bcp14">MUST</span> follow the procedures defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.1" class="relref">Section 5.10.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. That is, RS must verify the validity of the access token. RS may make an introspection request (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.9.1" class="relref">Section 5.9.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>) to validate the access token.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
-<p id="section-4.7-2">If the access token is valid, RS proceeds as follows.<a href="#section-4.7-2" class="pilcrow">¶</a></p>
-<p id="section-4.7-3">RS checks whether it is already storing the authentication credential of C, AUTH_CRED_C, specified in the "cnf" claim of the access token by value or by reference. If not, RS retrieves AUTH_CRED_C, either using the "cnf" claim or some other trusted source.<a href="#section-4.7-3" class="pilcrow">¶</a></p>
-<p id="section-4.7-4">If RS fails to find or validate AUTH_CRED_C, then RS <span class="bcp14">MUST</span> respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). RS may provide additional information in the payload of the error response, in order to clarify what went wrong.<a href="#section-4.7-4" class="pilcrow">¶</a></p>
-<p id="section-4.7-5">If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "session_id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS <span class="bcp14">MUST</span> respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.<a href="#section-4.7-5" class="pilcrow">¶</a></p>
-<p id="section-4.7-6">If all validations are successful, RS <span class="bcp14">MUST</span> reply to the POST request with a 2.01 (Created) response. The access token is stored such that it is possible to retrieve it based on "session_id" and AUTH_CRED_C.<a href="#section-4.7-6" class="pilcrow">¶</a></p>
-<p id="section-4.7-7">When an access token becomes invalid (e.g., due to its expiration or revocation), RS <span class="bcp14">MUST</span> delete the access token and the associated OSCORE Security Context, and <span class="bcp14">MUST</span> notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-4.7-7" class="pilcrow">¶</a></p>
+<section id="section-4.6.2">
+          <h4 id="name-rs-to-c-201-created">
+<a href="#section-4.6.2" class="section-number selfRef">4.6.2. </a><a href="#name-rs-to-c-201-created" class="section-name selfRef">RS-to-C: 2.01 (Created)</a>
+          </h4>
+<p id="section-4.6.2-1">If all validations are successful, RS <span class="bcp14">MUST</span> reply to the POST request with a 2.01 (Created) response protected with the same OSCORE Security Context, with no payload. The access token is stored such that it is possible to retrieve it based on "session_id" and AUTH_CRED_C.<a href="#section-4.6.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.6.2-2">After that, C can access to protected resources at RS according to the updated access rights using the previously established OSCORE Security Context.<a href="#section-4.6.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.6.2-3">Otherwise, RS <span class="bcp14">MUST</span> respond with a 4.01 (Unauthorized) error response. RS may provide additional information in the payload of the error response, in order to clarify what went wrong.<a href="#section-4.6.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.6.2-4">As specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.1" class="relref">Section 5.10.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, when receiving a valid access token with updated authorization information from C (see <a href="#c-rs" class="auto internal xref">Section 4.6.1</a>), it is recommended that RS overwrites the previous access token. That is, only the latest authorization information in the access token received by RS is valid. This simplifies the process needed by RS to keep track of authorization information for a given client.<a href="#section-4.6.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.6.2-5">Editor's note: The following error case was described for unprotected POST /authz-info. It seems not relevant anymore.<a href="#section-4.6.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.6.2-6">If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "session_id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS <span class="bcp14">MUST</span> respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.<a href="#section-4.6.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="update-access-rights-c-rs">
-<section id="section-4.8">
-        <h3 id="name-update-of-access-rights-2">
-<a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-update-of-access-rights-2" class="section-name selfRef">Update of Access Rights</a>
-        </h3>
-<p id="section-4.8-1">Editor's note: This section should allow for access rights being updated by AS posting to RS.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
-<p id="section-4.8-2">If C has already established access rights and an OSCORE Security Context with RS, then C can update its access rights by posting a new access token to the /authz-info endpoint.<a href="#section-4.8-2" class="pilcrow">¶</a></p>
-<p id="section-4.8-3">The new access token contains the updated access rights for C to access protected resources at RS, and C has to obtain it from AS as a new access token in the same token series of the current one (see <a href="#c-as-comm" class="auto internal xref">Section 3</a>). When posting the new access token to the /authz-info endpoint, C <span class="bcp14">MUST</span> protect the POST request using the current OSCORE Security Context shared with RS. After successful verification (see <a href="#rs-c" class="auto internal xref">Section 4.7</a>), RS will replace the old access token with the new one, while preserving the same OSCORE Security Context. In particular, C and RS do not re-run the EDHOC protocol and they do not establish a new OSCORE Security Context.<a href="#section-4.8-3" class="pilcrow">¶</a></p>
-<p id="section-4.8-4">Editor's note: Mention the alternative when the AS uploads the new access token to RS.<a href="#section-4.8-4" class="pilcrow">¶</a></p>
-<p id="section-4.8-5">If RS receives an access token in an OSCORE protected request, it means that C is requesting an update of access rights. In this case, RS <span class="bcp14">MUST</span> check the following conditions:<a href="#section-4.8-5" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.8-6.1">
-            <p id="section-4.8-6.1.1">RS checks whether it stores an access token T_OLD, such that the "session_id" field of EDHOC_Information matches the "session_id" field of EDHOC_Information in the new access token T_NEW.<a href="#section-4.8-6.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-4.8-6.2">
-            <p id="section-4.8-6.2.1">RS checks whether the OSCORE Security Context CTX used to protect the request matches the OSCORE Security Context associated with the stored access token T_OLD.<a href="#section-4.8-6.2.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-4.8-7">If both the conditions above hold, RS <span class="bcp14">MUST</span> replace the old access token T_OLD with the new access token T_NEW, and associate T_NEW with the OSCORE Security Context CTX. Then, RS <span class="bcp14">MUST</span> respond with a 2.01 (Created) response protected with the same OSCORE Security Context, with no payload.<a href="#section-4.8-7" class="pilcrow">¶</a></p>
-<p id="section-4.8-8">Otherwise, RS <span class="bcp14">MUST</span> respond with a 4.01 (Unauthorized) error response. RS may provide additional information in the payload of the error response, in order to clarify what went wrong.<a href="#section-4.8-8" class="pilcrow">¶</a></p>
-<p id="section-4.8-9">As specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.1" class="relref">Section 5.10.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, when receiving an updated access token with updated authorization information from C (see <a href="#c-rs" class="auto internal xref">Section 4.6</a>), it is recommended that RS overwrites the previous access token. That is, only the latest authorization information in the access token received by RS is valid. This simplifies the process needed by RS to keep track of authorization information for a given client.<a href="#section-4.8-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="discard-context">
-<section id="section-4.9">
+<section id="section-4.7">
         <h3 id="name-discarding-the-oscore-secur">
-<a href="#section-4.9" class="section-number selfRef">4.9. </a><a href="#name-discarding-the-oscore-secur" class="section-name selfRef">Discarding the OSCORE Security Context</a>
+<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-discarding-the-oscore-secur" class="section-name selfRef">Discarding the OSCORE Security Context</a>
         </h3>
-<p id="section-4.9-1">There are a number of cases where C or RS have to discard the OSCORE Security Context, and may establish a new one (see <a href="#establish-new-context" class="auto internal xref">Section 4.10</a>).<a href="#section-4.9-1" class="pilcrow">¶</a></p>
-<p id="section-4.9-2">C <span class="bcp14">MUST</span> discard the current OSCORE Security Context shared with RS when any of the following occurs.<a href="#section-4.9-2" class="pilcrow">¶</a></p>
+<p id="section-4.7-1">There are a number of cases where C or RS have to discard the OSCORE Security Context, and may establish a new one (see <a href="#establish-new-context" class="auto internal xref">Section 4.8</a>).<a href="#section-4.7-1" class="pilcrow">¶</a></p>
+<p id="section-4.7-2">C <span class="bcp14">MUST</span> discard the current OSCORE Security Context shared with RS when any of the following occurs.<a href="#section-4.7-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.9-3.1">
-            <p id="section-4.9-3.1.1">The OSCORE Sender Sequence Number space of C is exhausted.<a href="#section-4.9-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.7-3.1">
+            <p id="section-4.7-3.1.1">The OSCORE Sender Sequence Number space of C is exhausted.<a href="#section-4.7-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.9-3.2">
-            <p id="section-4.9-3.2.1">The access token associated with the OSCORE Security Context becomes invalid, for example due to expiration or revocation.<a href="#section-4.9-3.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.7-3.2">
+            <p id="section-4.7-3.2.1">The access token associated with the OSCORE Security Context becomes invalid, for example due to expiration or revocation.<a href="#section-4.7-3.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.9-3.3">
-            <p id="section-4.9-3.3.1">C receives a number of unprotected 4.01 (Unauthorized) responses to OSCORE-protected requests, which are sent to RS and protected using the same OSCORE Security Context. The exact number of such received responses needs to be specified by the application. This may for example happen due to lack of storage in RS, which then sends the "AS Request Creation Hints" message (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>).<a href="#section-4.9-3.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.7-3.3">
+            <p id="section-4.7-3.3.1">C receives a number of unprotected 4.01 (Unauthorized) responses to OSCORE-protected requests, which are sent to RS and protected using the same OSCORE Security Context. The exact number of such received responses needs to be specified by the application. This may for example happen due to lack of storage in RS, which then sends the "AS Request Creation Hints" message (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>).<a href="#section-4.7-3.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.9-3.4">
-            <p id="section-4.9-3.4.1">The authentication credential of C (of RS) becomes invalid, e.g., due to expiration or revocation, and it was used as CRED_I (CRED_R) in the EDHOC session to establish the OSCORE Security Context.<a href="#section-4.9-3.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.7-3.4">
+            <p id="section-4.7-3.4.1">The authentication credential of C (of RS) becomes invalid, e.g., due to expiration or revocation, and it was used as CRED_I (CRED_R) in the EDHOC session to establish the OSCORE Security Context.<a href="#section-4.7-3.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.9-4">RS <span class="bcp14">MUST</span> discard the current OSCORE Security Context shared with C when any of the following occurs:<a href="#section-4.9-4" class="pilcrow">¶</a></p>
+<p id="section-4.7-4">RS <span class="bcp14">MUST</span> discard the current OSCORE Security Context shared with C when any of the following occurs:<a href="#section-4.7-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.9-5.1">
-            <p id="section-4.9-5.1.1">The OSCORE Sender Sequence Number space of RS is exhausted.<a href="#section-4.9-5.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.7-5.1">
+            <p id="section-4.7-5.1.1">The OSCORE Sender Sequence Number space of RS is exhausted.<a href="#section-4.7-5.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.9-5.2">
-            <p id="section-4.9-5.2.1">The access token associated with the OSCORE Security Context becomes invalid, for example due to expiration or revocation.<a href="#section-4.9-5.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.7-5.2">
+            <p id="section-4.7-5.2.1">The access token associated with the OSCORE Security Context becomes invalid, for example due to expiration or revocation.<a href="#section-4.7-5.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.9-5.3">
-            <p id="section-4.9-5.3.1">The authentication credential of C (of RS) becomes invalid (e.g., due to expiration or revocation), and it was used as CRED_I (CRED_R) in the EDHOC session to establish the OSCORE Security Context.<a href="#section-4.9-5.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.7-5.3">
+            <p id="section-4.7-5.3.1">The authentication credential of C (of RS) becomes invalid (e.g., due to expiration or revocation), and it was used as CRED_I (CRED_R) in the EDHOC session to establish the OSCORE Security Context.<a href="#section-4.7-5.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.9-6">After a new access token is successfully uploaded to RS, and a new OSCORE Security Context is established between C and RS, messages still in transit that were protected with the previous OSCORE Security Context might not be successfully verified by the recipient, since the old OSCORE Security Context might have been discarded. This means that messages sent shortly before C has uploaded the new access token to RS might not be successfully accepted by the recipient.<a href="#section-4.9-6" class="pilcrow">¶</a></p>
-<p id="section-4.9-7">Furthermore, implementations may want to cancel CoAP observations at RS, if registered before the new OSCORE Security Context has been established. Alternatively, applications need to implement a mechanism to ensure that, from then on, messages exchanged within those observations are going to be protected with the newly derived OSCORE Security Context.<a href="#section-4.9-7" class="pilcrow">¶</a></p>
+<p id="section-4.7-6">After a new access token is successfully uploaded to RS, and a new OSCORE Security Context is established between C and RS, messages still in transit that were protected with the previous OSCORE Security Context might not be successfully verified by the recipient, since the old OSCORE Security Context might have been discarded. This means that messages sent shortly before C has uploaded the new access token to RS might not be successfully accepted by the recipient.<a href="#section-4.7-6" class="pilcrow">¶</a></p>
+<p id="section-4.7-7">Furthermore, implementations may want to cancel CoAP observations at RS, if registered before the new OSCORE Security Context has been established. Alternatively, applications need to implement a mechanism to ensure that, from then on, messages exchanged within those observations are going to be protected with the newly derived OSCORE Security Context.<a href="#section-4.7-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="establish-new-context">
-<section id="section-4.10">
+<section id="section-4.8">
         <h3 id="name-establishing-a-new-oscore-s">
-<a href="#section-4.10" class="section-number selfRef">4.10. </a><a href="#name-establishing-a-new-oscore-s" class="section-name selfRef">Establishing a New OSCORE Security Context</a>
+<a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-establishing-a-new-oscore-s" class="section-name selfRef">Establishing a New OSCORE Security Context</a>
         </h3>
-<p id="section-4.10-1">The procedure of provisioning a new access token to RS specified in this section applies to various cases when an OSCORE Security Context shared between C and RS has been deleted, for example as described in <a href="#discard-context" class="auto internal xref">Section 4.9</a>.<a href="#section-4.10-1" class="pilcrow">¶</a></p>
-<p id="section-4.10-2">Another exceptional case is when there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS <span class="bcp14">SHALL</span> attempt to run the KUDOS key update protocol <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>, which is a lightweight alternative independent of ACE and EDHOC that does not require the posting of an access token. If KUDOS is not supported, then C and RS falls back to EDHOC as outlined above.<a href="#section-4.10-2" class="pilcrow">¶</a></p>
-<p id="section-4.10-3">In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS <span class="bcp14">MUST</span> associate the new OSCORE Security Context with the current (potentially re-posted) access token. Moreover, the session identifier, which is associated to the token series, remains unchanged even if C and RS have established a new EDHOC session. Unless C and RS re-run the EDHOC protocol, they preserve their OSCORE identifiers, i.e., the OSCORE Sender/Recipient IDs.<a href="#section-4.10-3" class="pilcrow">¶</a></p>
+<p id="section-4.8-1">The procedure of provisioning a new access token to RS specified in this section applies to various cases when an OSCORE Security Context shared between C and RS has been deleted, for example as described in <a href="#discard-context" class="auto internal xref">Section 4.7</a>.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
+<p id="section-4.8-2">Another exceptional case is when there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS <span class="bcp14">SHALL</span> attempt to run the KUDOS key update protocol <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>, which is a lightweight alternative independent of ACE and EDHOC that does not require the posting of an access token. If KUDOS is not supported, then C and RS falls back to EDHOC as outlined above.<a href="#section-4.8-2" class="pilcrow">¶</a></p>
+<p id="section-4.8-3">In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS <span class="bcp14">MUST</span> associate the new OSCORE Security Context with the current (potentially re-posted) access token. Moreover, the session identifier, which is associated to the token series, remains unchanged even if C and RS have established a new EDHOC session. Unless C and RS re-run the EDHOC protocol, they preserve their OSCORE identifiers, i.e., the OSCORE Sender/Recipient IDs.<a href="#section-4.8-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="access-rights-verif">
-<section id="section-4.11">
+<section id="section-4.9">
         <h3 id="name-access-rights-verification">
-<a href="#section-4.11" class="section-number selfRef">4.11. </a><a href="#name-access-rights-verification" class="section-name selfRef">Access Rights Verification</a>
+<a href="#section-4.9" class="section-number selfRef">4.9. </a><a href="#name-access-rights-verification" class="section-name selfRef">Access Rights Verification</a>
         </h3>
-<p id="section-4.11-1">RS <span class="bcp14">MUST</span> follow the procedures defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. That is, if RS receives an OSCORE-protected request targeting a protected resource from C, then RS processes the request according to <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, when Version 1 of OSCORE is used. Future specifications may define new versions of OSCORE, which AS can indicate C and RS to use by means of the "osc_version" field of EDHOC_Information (see <a href="#c-as-comm" class="auto internal xref">Section 3</a>).<a href="#section-4.11-1" class="pilcrow">¶</a></p>
-<p id="section-4.11-2">If OSCORE verification succeeds and the target resource requires authorization, RS retrieves the authorization information using the access token associated with the OSCORE Security Context. Then, RS must verify that the authorization information covers the target resource and the action intended by C on it.<a href="#section-4.11-2" class="pilcrow">¶</a></p>
+<p id="section-4.9-1">RS <span class="bcp14">MUST</span> follow the procedures defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. That is, if RS receives an OSCORE-protected request targeting a protected resource from C, then RS processes the request according to <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, when Version 1 of OSCORE is used. Future specifications may define new versions of OSCORE, which AS can indicate C and RS to use by means of the "osc_version" field of EDHOC_Information (see <a href="#c-as-comm" class="auto internal xref">Section 3</a>).<a href="#section-4.9-1" class="pilcrow">¶</a></p>
+<p id="section-4.9-2">If OSCORE verification succeeds and the target resource requires authorization, RS retrieves the authorization information using the access token associated with the OSCORE Security Context. Then, RS must verify that the authorization information covers the target resource and the action intended by C on it.<a href="#section-4.9-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="access-token-invalidity">
+<section id="section-4.10">
+        <h3 id="name-access-token-invalidity">
+<a href="#section-4.10" class="section-number selfRef">4.10. </a><a href="#name-access-token-invalidity" class="section-name selfRef">Access Token Invalidity</a>
+        </h3>
+<p id="section-4.10-1">When an access token becomes invalid (e.g., due to its expiration or revocation), RS <span class="bcp14">MUST</span> delete the access token and the associated OSCORE Security Context, and <span class="bcp14">MUST</span> notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-4.10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

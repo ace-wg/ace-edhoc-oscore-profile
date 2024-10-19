@@ -1457,8 +1457,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-1.1-8">The authorization information (authz-info) resource refers to the authorization information endpoint as specified in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. The term "claim" is used in this document with the same semantics as in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, i.e., it denotes information carried in the access token or returned from introspection.<a href="#section-1.1-8" class="pilcrow">¶</a></p>
 <p id="section-1.1-9">Concise Binary Object Representation (CBOR) <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span><span>[<a href="#RFC8742" class="cite xref">RFC8742</a>]</span> and Concise Data Definition Language (CDDL) <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> are used in this document. CDDL predefined type names, especially bstr for CBOR byte strings and tstr for CBOR text strings, are used extensively in this document.<a href="#section-1.1-9" class="pilcrow">¶</a></p>
 <p id="section-1.1-10">Examples throughout this document are expressed in CBOR diagnostic notation as defined in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-8" class="relref">Section 8</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8610#appendix-G" class="relref">Appendix G</a> of [<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>. Diagnostic notation comments are often used to provide a textual representation of the numeric parameter names and values.<a href="#section-1.1-10" class="pilcrow">¶</a></p>
-<p id="section-1.1-11">In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 7</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. For example, {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2 : 3}.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
-<p id="section-1.1-12">Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 7</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. Finally, please delete this note.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
+<p id="section-1.1-11">In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 8</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. For example, {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2 : 3}.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
+<p id="section-1.1-12">Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 8</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. Finally, please delete this note.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1475,12 +1475,13 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-2-5">After that, C and RS executes the EDHOC protocol. C uses the authentication credential of RS provided by AS. If C has retrieved an access token, it is included as External Authorization Data (EAD) in the EDHOC protocol, see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. RS uses the authentication credential of C bound to and provided in the access token. The EDHOC session is detailed in <a href="#edhoc-exec" class="auto internal xref">Section 4.2</a>.<a href="#section-2-5" class="pilcrow">¶</a></p>
 <p id="section-2-6">If C and RS successfully complete the EDHOC protocol and the validations of authentication credentials, they are mutually authenticated and derive the OSCORE Security Context as per <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-2-6" class="pilcrow">¶</a></p>
 <p id="section-2-7"><a href="#protocol-overview" class="auto internal xref">Figure 1</a> outlines an example of the message flow. A more detailed description of the message flow is shown in <a href="#example-without-optimization" class="auto internal xref">Appendix A.1</a>.<a href="#section-2-7" class="pilcrow">¶</a></p>
-<p id="section-2-8">From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. The OSCORE Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new OSCORE Security Context for C.<a href="#section-2-8" class="pilcrow">¶</a></p>
+<p id="section-2-8">From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then that OSCORE Security Context is used to retrieve the uniquely associated access token determining the access rights of C.<a href="#section-2-8" class="pilcrow">¶</a></p>
+<p id="section-2-9">The OSCORE Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new OSCORE Security Context for C.<a href="#section-2-9" class="pilcrow">¶</a></p>
 <span id="name-protocol-outline-using-the-"></span><div id="protocol-overview">
 <figure id="figure-1">
-        <div id="section-2-9.1">
-          <div class="alignLeft art-svg artwork" id="section-2-9.1.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="512" width="480" viewBox="0 0 480 512" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+        <div id="section-2-10.1">
+          <div class="alignLeft art-svg artwork" id="section-2-10.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="496" width="480" viewBox="0 0 480 496" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
               <path d="M 32,48 L 32,256" fill="none" stroke="black"></path>
               <path d="M 32,304 L 32,480" fill="none" stroke="black"></path>
               <path d="M 264,160 L 264,368" fill="none" stroke="black"></path>
@@ -1567,19 +1568,94 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
                 <text x="108" y="468">OSCORE</text>
                 <text x="172" y="468">Response</text>
               </g>
-            </svg><a href="#section-2-9.1.1" class="pilcrow">¶</a>
+            </svg><a href="#section-2-10.1.1" class="pilcrow">¶</a>
 </div>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
 <a href="#name-protocol-outline-using-the-" class="selfRef">Protocol Outline using the EDHOC Forward Message Flow.</a>
         </figcaption></figure>
 </div>
-<p id="section-2-10">While the OSCORE Security Context and access token are valid, C can contact AS to request an update of its access rights, by sending a similar request as described above to the /token endpoint. This request also includes a "session identifier" (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) provided by AS in the response to the initial access request, which allows AS to retrieve the data it previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see <a href="#token-series" class="auto internal xref">Section 3.2</a>).<a href="#section-2-10" class="pilcrow">¶</a></p>
-<p id="section-2-11">If C has retrieved an access token for updating its access rights belonging to the same token series, then it transfers the access token to RS using the /authz-info endpoint as specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10" class="relref">Section 5.10</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> where the CoAP exchange is protected by the previously established OSCORE security context, see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.6</a>. If the access token is valid, RS replies to the request with a 2.01 (Created) response.<a href="#section-2-11" class="pilcrow">¶</a></p>
-<p id="section-2-12">Upon successful update of access rights, the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.<a href="#section-2-12" class="pilcrow">¶</a></p>
-<p id="section-2-13">When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then that OSCORE Security Context is used to retrieve the uniquely associated access token determining the access rights of C.<a href="#section-2-13" class="pilcrow">¶</a></p>
-<p id="section-2-14">Editor's note: The content of the paragraph above should be re-iterated in the detailed description<a href="#section-2-14" class="pilcrow">¶</a></p>
-<p id="section-2-15">Editor's note: Add figure of update of access rights using POST to /authz-info<a href="#section-2-15" class="pilcrow">¶</a></p>
+<p id="section-2-11">While the OSCORE Security Context and access token are valid, C can contact AS to request an update of its access rights, by sending a similar request as described above to the /token endpoint. This request also includes a "session identifier" (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) provided by AS in the response to the initial access request, which allows AS to retrieve the data it previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see <a href="#token-series" class="auto internal xref">Section 3.2</a>).<a href="#section-2-11" class="pilcrow">¶</a></p>
+<p id="section-2-12">If C has retrieved an access token for updating its access rights belonging to the same token series, then it transfers the access token to RS using the /authz-info endpoint as specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10" class="relref">Section 5.10</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span> where the CoAP exchange is protected by the previously established OSCORE security context, see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.6</a>. If the access token is valid, RS replies to the request with a 2.01 (Created) response.<a href="#section-2-12" class="pilcrow">¶</a></p>
+<p id="section-2-13">Upon successful update of access rights, the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.<a href="#section-2-13" class="pilcrow">¶</a></p>
+<p id="section-2-14"><a href="#update-overview" class="auto internal xref">Figure 2</a> outlines the message flow for updating access rights.<a href="#section-2-14" class="pilcrow">¶</a></p>
+<span id="name-protocol-outline-for-updati"></span><div id="update-overview">
+<figure id="figure-2">
+        <div id="section-2-15.1">
+          <div class="alignLeft art-svg artwork" id="section-2-15.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="400" width="456" viewBox="0 0 456 400" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 8,48 L 8,368" fill="none" stroke="black"></path>
+              <path d="M 240,160 L 240,224" fill="none" stroke="black"></path>
+              <path d="M 240,256 L 240,368" fill="none" stroke="black"></path>
+              <path d="M 448,48 L 448,368" fill="none" stroke="black"></path>
+              <path d="M 24,62 L 56,62" fill="none" stroke="black"></path>
+              <path d="M 24,66 L 56,66" fill="none" stroke="black"></path>
+              <path d="M 400,62 L 432,62" fill="none" stroke="black"></path>
+              <path d="M 400,66 L 432,66" fill="none" stroke="black"></path>
+              <path d="M 8,96 L 72,96" fill="none" stroke="black"></path>
+              <path d="M 192,96 L 440,96" fill="none" stroke="black"></path>
+              <path d="M 16,128 L 280,128" fill="none" stroke="black"></path>
+              <path d="M 400,128 L 448,128" fill="none" stroke="black"></path>
+              <path d="M 8,176 L 32,176" fill="none" stroke="black"></path>
+              <path d="M 192,176 L 232,176" fill="none" stroke="black"></path>
+              <path d="M 16,272 L 64,272" fill="none" stroke="black"></path>
+              <path d="M 184,272 L 240,272" fill="none" stroke="black"></path>
+              <path d="M 8,320 L 48,320" fill="none" stroke="black"></path>
+              <path d="M 184,320 L 232,320" fill="none" stroke="black"></path>
+              <path d="M 16,352 L 48,352" fill="none" stroke="black"></path>
+              <path d="M 192,352 L 232,352" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="448,96 436,90.4 436,101.6" fill="black" transform="rotate(0,440,96)"></polygon>
+              <polygon class="arrowhead" points="440,64 428,58.4 428,69.6" fill="black" transform="rotate(0,432,64)"></polygon>
+              <polygon class="arrowhead" points="240,320 228,314.4 228,325.6" fill="black" transform="rotate(0,232,320)"></polygon>
+              <polygon class="arrowhead" points="240,176 228,170.4 228,181.6" fill="black" transform="rotate(0,232,176)"></polygon>
+              <polygon class="arrowhead" points="32,64 20,58.4 20,69.6" fill="black" transform="rotate(180,24,64)"></polygon>
+              <polygon class="arrowhead" points="24,352 12,346.4 12,357.6" fill="black" transform="rotate(180,16,352)"></polygon>
+              <polygon class="arrowhead" points="24,272 12,266.4 12,277.6" fill="black" transform="rotate(180,16,272)"></polygon>
+              <polygon class="arrowhead" points="24,128 12,122.4 12,133.6" fill="black" transform="rotate(180,16,128)"></polygon>
+              <g class="text">
+                <text x="8" y="36">C</text>
+                <text x="244" y="36">RS</text>
+                <text x="444" y="36">AS</text>
+                <text x="240" y="52">|</text>
+                <text x="164" y="68">Existing</text>
+                <text x="236" y="68">security</text>
+                <text x="304" y="68">context</text>
+                <text x="240" y="84">|</text>
+                <text x="100" y="100">POST</text>
+                <text x="148" y="100">/token</text>
+                <text x="240" y="116">|</text>
+                <text x="316" y="132">Access</text>
+                <text x="368" y="132">Token</text>
+                <text x="264" y="148">+</text>
+                <text x="300" y="148">Access</text>
+                <text x="376" y="148">Information</text>
+                <text x="60" y="180">POST</text>
+                <text x="128" y="180">/authz-info</text>
+                <text x="56" y="196">(OSCORE</text>
+                <text x="128" y="196">protected</text>
+                <text x="188" y="196">with</text>
+                <text x="84" y="212">access_token</text>
+                <text x="148" y="212">in</text>
+                <text x="196" y="212">payload)</text>
+                <text x="136" y="244">/</text>
+                <text x="176" y="244">Updated</text>
+                <text x="236" y="244">access</text>
+                <text x="292" y="244">rights</text>
+                <text x="328" y="244">/</text>
+                <text x="92" y="276">2.04</text>
+                <text x="144" y="276">Changed</text>
+                <text x="84" y="324">OSCORE</text>
+                <text x="144" y="324">Request</text>
+                <text x="84" y="356">OSCORE</text>
+                <text x="148" y="356">Response</text>
+              </g>
+            </svg><a href="#section-2-15.1.1" class="pilcrow">¶</a>
+</div>
+</div>
+<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<a href="#name-protocol-outline-for-updati" class="selfRef">Protocol Outline for Updating Access Rights.</a>
+        </figcaption></figure>
+</div>
 </section>
 </div>
 <div id="c-as-comm">
@@ -1599,9 +1675,9 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
         </h3>
 <p id="section-3.1-1">The client-to-AS request is specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.1" class="relref">Section 5.8.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">The client <span class="bcp14">MUST</span> send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see <a href="#secure-comm-as" class="auto internal xref">Section 5</a>). When using this profile, it is <span class="bcp14">RECOMMENDED</span> to use CoAP, EDHOC, and OSCORE in order to reduce the number of libraries that C has to support.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">An example of such a request is shown in <a href="#token-request" class="auto internal xref">Figure 2</a>. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req_cnf" parameter.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">An example of such a request is shown in <a href="#token-request" class="auto internal xref">Figure 3</a>. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req_cnf" parameter.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <span id="name-example-of-c-to-as-post-tok"></span><div id="token-request">
-<figure id="figure-2">
+<figure id="figure-3">
           <div class="alignLeft art-text artwork" id="section-3.1-4.1">
 <pre>
    Header: POST (Code=0.02)
@@ -1618,16 +1694,16 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
    }
 </pre>
 </div>
-<figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
+<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
 <a href="#name-example-of-c-to-as-post-tok" class="selfRef">Example of C-to-AS POST /token request for an access token.</a>
           </figcaption></figure>
 </div>
-<p id="section-3.1-5">If C wants to update its access rights without changing an existing OSCORE Security Context, it <span class="bcp14">MUST</span> include EDHOC_Information in its POST request to the /token endpoint. The EDHOC_Information <span class="bcp14">MUST</span> include the "session_id" field. This POST request <span class="bcp14">MUST</span> omit the "req_cnf" parameter. An example of such a request is shown in <a href="#token-request-update" class="auto internal xref">Figure 3</a>.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">If C wants to update its access rights without changing an existing OSCORE Security Context, it <span class="bcp14">MUST</span> include EDHOC_Information in its POST request to the /token endpoint. The EDHOC_Information <span class="bcp14">MUST</span> include the "session_id" field. This POST request <span class="bcp14">MUST</span> omit the "req_cnf" parameter. An example of such a request is shown in <a href="#token-request-update" class="auto internal xref">Figure 4</a>.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
 <p id="section-3.1-6">The identifier "session_id" is assigned by AS as discussed in <a href="#token-series" class="auto internal xref">Section 3.2</a>, and, together with other information such as audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.1" class="relref">Section 5.8.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), can be used by AS to determine the token series to which the new requested access token has to be added. Therefore, the session_id <span class="bcp14">MUST</span> identify the pair (AUTH_CRED_C, AUTH_CRED_RS) associated with a still valid access token previously issued for C and RS by AS.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
 <p id="section-3.1-7">Editor's note: When retrieving the access token it is required to consider the pair (session id, AUTH_CRED_C). Here it is stated that the session id identifies the pair (AUTH_CRED_C,AUTH_CRED_RS). Why then isn't the session id sufficient for retrieving the access token, considering it identifies AUTH_CRED_C?<a href="#section-3.1-7" class="pilcrow">¶</a></p>
 <p id="section-3.1-8">AS <span class="bcp14">MUST</span> verify that the received "session_id" identifies a token series to which a still valid access token issued for C and RS belongs. If that is not the case, the Client-to-AS request <span class="bcp14">MUST</span> be declined with the error code "invalid_request" as defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
 <span id="name-example-of-c-to-as-post-toke"></span><div id="token-request-update">
-<figure id="figure-3">
+<figure id="figure-4">
           <div class="alignLeft art-text artwork" id="section-3.1-9.1">
 <pre>
    Header: POST (Code=0.02)
@@ -1644,7 +1720,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
    }
 </pre>
 </div>
-<figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
 <a href="#name-example-of-c-to-as-post-toke" class="selfRef">Example of C-to-AS POST /token request for updating access rights to an access token.</a>
           </figcaption></figure>
 </div>
@@ -1706,9 +1782,9 @@ When later issuing further access tokens to the same pair (C, RS) using the same
 </li>
         </ul>
 <p id="section-3.3-8">When issuing the first access token of a token series, AS <span class="bcp14">MAY</span> send EDHOC_Information related to RS, see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>, in corresponding fields of the response to C. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.<a href="#section-3.3-8" class="pilcrow">¶</a></p>
-<p id="section-3.3-9"><a href="#fig-token-response" class="auto internal xref">Figure 4</a> shows an example of an AS response. The "rs_cnf" parameter specifies the authentication credential of RS, as an X.509 certificate transported by value in the "x5chain" field. The access token and the authentication credential of RS have been truncated for readability.<a href="#section-3.3-9" class="pilcrow">¶</a></p>
+<p id="section-3.3-9"><a href="#fig-token-response" class="auto internal xref">Figure 5</a> shows an example of an AS response. The "rs_cnf" parameter specifies the authentication credential of RS, as an X.509 certificate transported by value in the "x5chain" field. The access token and the authentication credential of RS have been truncated for readability.<a href="#section-3.3-9" class="pilcrow">¶</a></p>
 <span id="name-example-of-as-to-c-access-t"></span><div id="fig-token-response">
-<figure id="figure-4">
+<figure id="figure-5">
           <div class="alignLeft art-text artwork" id="section-3.3-10.1">
 <pre>
    Header: Created (Code=2.01)
@@ -1731,7 +1807,7 @@ When later issuing further access tokens to the same pair (C, RS) using the same
       }
 </pre>
 </div>
-<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
+<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
 <a href="#name-example-of-as-to-c-access-t" class="selfRef">Example of AS-to-C Access Token response with EDHOC and OSCORE profile.</a>
           </figcaption></figure>
 </div>
@@ -1771,9 +1847,9 @@ When later issuing further access tokens to the same pair (C, RS) using the same
           </ul>
 <p id="section-3.3.1-5">The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. RS needs to be able to verify that the access token is issued by a trusted AS (source authentication). Depending on the use case and deployment, the access token may need to be confidentiality protected, for example, for privacy reasons.<a href="#section-3.3.1-5" class="pilcrow">¶</a></p>
 <p id="section-3.3.1-6">AS protects the access token using a COSE method (see <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span>) as specified in <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>. Depending on the audience, there may be different ways to most appropriately ensure the confidentiality of an access token. For an audience comprising a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0. Instead, if the access token needs to be read by multiple RSs, then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection is applied during transport, by including the access token in the EAD_3 field of EDHOC message_3 sent by C to RS, when using the EDHOC forward message flow (see <a href="#edhoc-exec" class="auto internal xref">Section 4.2</a>).<a href="#section-3.3.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.3.1-7"><a href="#fig-token" class="auto internal xref">Figure 5</a> shows an example CWT Claims Set, including the relevant EDHOC parameters in the "edhoc_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.<a href="#section-3.3.1-7" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-7"><a href="#fig-token" class="auto internal xref">Figure 6</a> shows an example CWT Claims Set, including the relevant EDHOC parameters in the "edhoc_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.<a href="#section-3.3.1-7" class="pilcrow">¶</a></p>
 <span id="name-example-of-cwt-claims-set-w"></span><div id="fig-token">
-<figure id="figure-5">
+<figure id="figure-6">
             <div class="alignLeft art-text artwork" id="section-3.3.1-8.1">
 <pre>
    {
@@ -1793,7 +1869,7 @@ When later issuing further access tokens to the same pair (C, RS) using the same
   }
 </pre>
 </div>
-<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
+<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-example-of-cwt-claims-set-w" class="selfRef">Example of CWT Claims Set with EDHOC parameters.</a>
             </figcaption></figure>
 </div>
@@ -1990,9 +2066,9 @@ When later issuing further access tokens to the same pair (C, RS) using the same
             <p id="section-3.4-6.14.1">responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value "true" (0xf5) or "false" (0xf4), and has label 13.<a href="#section-3.4-6.14.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.4-7">An example of JSON EDHOC_Information is given in <a href="#fig-edhoc-info-json" class="auto internal xref">Figure 6</a>.<a href="#section-3.4-7" class="pilcrow">¶</a></p>
+<p id="section-3.4-7">An example of JSON EDHOC_Information is given in <a href="#fig-edhoc-info-json" class="auto internal xref">Figure 7</a>.<a href="#section-3.4-7" class="pilcrow">¶</a></p>
 <span id="name-example-of-json-edhoc_infor"></span><div id="fig-edhoc-info-json">
-<figure id="figure-6">
+<figure id="figure-7">
           <div class="alignLeft art-text artwork" id="section-3.4-8.1">
 <pre>
    "edhoc_info" : {
@@ -2002,7 +2078,7 @@ When later issuing further access tokens to the same pair (C, RS) using the same
    }
 </pre>
 </div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
 <a href="#name-example-of-json-edhoc_infor" class="selfRef">Example of JSON EDHOC_Information</a>
           </figcaption></figure>
 </div>
@@ -4232,7 +4308,7 @@ This is relevant in case AS and RS actually require a secure association (e.g., 
       </h2>
 <p id="appendix-C-1">This section is to be removed before publishing as an RFC.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <span id="name-cddl-model-2"></span><div id="fig-cddl-model">
-<figure id="figure-7">
+<figure id="figure-8">
         <div class="alignLeft art-CDDL art-text artwork" id="appendix-C-2.1">
 <pre>
 ; ACE Profiles
@@ -4273,7 +4349,7 @@ initiator = 12
 responder = 13
 </pre>
 </div>
-<figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
+<figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
 <a href="#name-cddl-model-2" class="selfRef">CDDL model</a>
         </figcaption></figure>
 </div>

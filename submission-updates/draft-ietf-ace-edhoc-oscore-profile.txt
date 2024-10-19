@@ -279,14 +279,14 @@ Table of Contents
 
    In the CBOR diagnostic notation used in this document, constructs of
    the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME
-   in the CDDL model shown in Figure 7 of Appendix C.  For example,
+   in the CDDL model shown in Figure 8 of Appendix C.  For example,
    {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2
    : 3}.
 
    Note to RFC Editor: Please delete the paragraph immediately preceding
    this note.  Also, in the CBOR diagnostic notation used in this
    document, please replace the constructs of the form e'SOME_NAME' with
-   the value assigned to SOME_NAME in the CDDL model shown in Figure 7
+   the value assigned to SOME_NAME in the CDDL model shown in Figure 8
    of Appendix C.  Finally, please delete this note.
 
 2.  Protocol Overview
@@ -337,10 +337,15 @@ Table of Contents
 
    From then on, C effectively gains authorized and secure access to
    protected resources on RS with the established OSCORE Security
-   Context, for as long as there is a valid access token.  The OSCORE
-   Security Context is discarded when an access token (whether the same
-   or a different one) is used to successfully derive a new OSCORE
-   Security Context for C.
+   Context, for as long as there is a valid access token.  When RS
+   receives a request from C protected with an OSCORE Security Context
+   derived from an EDHOC session implementing this profile, then that
+   OSCORE Security Context is used to retrieve the uniquely associated
+   access token determining the access rights of C.
+
+   The OSCORE Security Context is discarded when an access token
+   (whether the same or a different one) is used to successfully derive
+   a new OSCORE Security Context for C.
 
       C                            RS                       AS
       |                            |                         |
@@ -397,16 +402,32 @@ Table of Contents
    becomes invalid (e.g., when it expires or gets revoked), that token
    series ends.
 
-   When RS receives a request from C protected with an OSCORE Security
-   Context derived from an EDHOC session implementing this profile, then
-   that OSCORE Security Context is used to retrieve the uniquely
-   associated access token determining the access rights of C.
+   Figure 2 outlines the message flow for updating access rights.
 
-   Editor's note: The content of the paragraph above should be re-
-   iterated in the detailed description
+      C                            RS                       AS
+      |                            |                         |
+      | <====         Existing security context        ====> |
+      |                            |                         |
+      +-------- POST /token  ------------------------------->|
+      |                            |                         |
+      |<--------------------------------- Access Token ------+
+      |                               + Access Information   |
+      |                            |                         |
+      +--- POST /authz-info  ----->|                         |
+      |  (OSCORE protected with    |                         |
+      |   access_token in payload) |                         |
+      |                            |                         |
+      |               / Updated access rights /              |
+      |                            |                         |
+      |<------ 2.04 Changed -------+                         |
+      |                            |                         |
+      |                            |                         |
+      +----- OSCORE Request ------>|                         |
+      |                            |                         |
+      |<---- OSCORE Response ------|                         |
+      |                            |                         |
 
-   Editor's note: Add figure of update of access rights using POST to
-   /authz-info
+           Figure 2: Protocol Outline for Updating Access Rights.
 
 3.  Client-AS Communication
 
@@ -443,7 +464,7 @@ Table of Contents
    RECOMMENDED to use CoAP, EDHOC, and OSCORE in order to reduce the
    number of libraries that C has to support.
 
-   An example of such a request is shown in Figure 2.  In this example,
+   An example of such a request is shown in Figure 3.  In this example,
    C specifies its own authentication credential by reference, as the
    hash of an X.509 certificate carried in the "x5t" field of the
    "req_cnf" parameter.
@@ -461,14 +482,14 @@ Table of Contents
         }
       }
 
-   Figure 2: Example of C-to-AS POST /token request for an access token.
+   Figure 3: Example of C-to-AS POST /token request for an access token.
 
    If C wants to update its access rights without changing an existing
    OSCORE Security Context, it MUST include EDHOC_Information in its
    POST request to the /token endpoint.  The EDHOC_Information MUST
    include the "session_id" field.  This POST request MUST omit the
    "req_cnf" parameter.  An example of such a request is shown in
-   Figure 3.
+   Figure 4.
 
    The identifier "session_id" is assigned by AS as discussed in
    Section 3.2, and, together with other information such as audience
@@ -503,7 +524,7 @@ Table of Contents
         }
       }
 
-       Figure 3: Example of C-to-AS POST /token request for updating
+       Figure 4: Example of C-to-AS POST /token request for updating
                      access rights to an access token.
 
 3.2.  Token Series
@@ -604,7 +625,7 @@ Table of Contents
    that AS has about RS, e.g., from a previous onboarding process, with
    particular reference to what RS supports as EDHOC peer.
 
-   Figure 4 shows an example of an AS response.  The "rs_cnf" parameter
+   Figure 5 shows an example of an AS response.  The "rs_cnf" parameter
    specifies the authentication credential of RS, as an X.509
    certificate transported by value in the "x5chain" field.  The access
    token and the authentication credential of RS have been truncated for
@@ -629,7 +650,7 @@ Table of Contents
            }
          }
 
-     Figure 4: Example of AS-to-C Access Token response with EDHOC and
+     Figure 5: Example of AS-to-C Access Token response with EDHOC and
                               OSCORE profile.
 
 3.3.1.  Access Token
@@ -701,7 +722,7 @@ Table of Contents
    in the EAD_3 field of EDHOC message_3 sent by C to RS, when using the
    EDHOC forward message flow (see Section 4.2).
 
-   Figure 5 shows an example CWT Claims Set, including the relevant
+   Figure 6 shows an example CWT Claims Set, including the relevant
    EDHOC parameters in the "edhoc_info" claim.  The "cnf" claim
    specifies the authentication credential of C, as an X.509 certificate
    transported by value in the "x5chain" field.  The authentication
@@ -723,7 +744,7 @@ Table of Contents
        }
      }
 
-         Figure 5: Example of CWT Claims Set with EDHOC parameters.
+         Figure 6: Example of CWT Claims Set with EDHOC parameters.
 
 3.3.2.  Processing in C
 
@@ -962,7 +983,7 @@ Table of Contents
       In CBOR, "responder" is the simple value "true" (0xf5) or "false"
       (0xf4), and has label 13.
 
-   An example of JSON EDHOC_Information is given in Figure 6.
+   An example of JSON EDHOC_Information is given in Figure 7.
 
       "edhoc_info" : {
           "session_id"    : b64'AQ==',
@@ -970,7 +991,7 @@ Table of Contents
           "cipher_suites" : 0
       }
 
-                Figure 6: Example of JSON EDHOC_Information
+                Figure 7: Example of JSON EDHOC_Information
 
    The CDDL grammar describing the CBOR EDHOC_Information is:
 
@@ -2894,7 +2915,7 @@ Appendix C.  CDDL Model
    initiator = 12
    responder = 13
 
-                            Figure 7: CDDL model
+                            Figure 8: CDDL model
 
 Appendix D.  Document Updates
 

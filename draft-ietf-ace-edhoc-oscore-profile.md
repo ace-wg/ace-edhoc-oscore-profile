@@ -381,15 +381,15 @@ AS protects the access token using a COSE method (see {{RFC9052}}) as specified 
 
 ### Processing in C
 
-When receiving an Access Token response including the "rs\_cnf" parameter, C checks whether it is already storing the authentication credential of RS, namely AUTH\_CRED\_RS, specified in "rs\_cnf" by value or reference.
+When receiving an access token response including the "rs\_cnf" parameter, C checks whether it is already storing the authentication credential of RS, namely AUTH\_CRED\_RS, specified in "rs\_cnf" by value or reference.
 
 If this is not the case, C retrieves AUTH\_CRED\_RS, either using the "rs_cnf" parameter or some other trusted source. After that, C validates the actual AUTH\_CRED\_RS. In case of successful validation, C stores AUTH\_CRED\_RS as a valid authentication credential. Otherwise, C MUST delete the access token.
 
-### Update of Access Rights
+### Update of Access Rights {#update-access-rights-c-as}
 
 If C has a valid OSCORE Security Context associated with a valid access token, then C can send a request to AS for updating its access rights while preserving the same OSCORE Security Context.
 
-If the request is granted, then AS generates a new access token, where the "edhoc\_info" claim MUST include only the "session\_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in {{I-D.ietf-ace-workflow-and-params}}. In either case, the Access Token Response from the AS to C MUST NOT include the "rs\_cnf" parameter.
+If the request is granted, then AS generates a new access token, where the "edhoc\_info" claim MUST include only the "session\_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in {{I-D.ietf-ace-workflow-and-params}}. In either case, the access token response from the AS to C MUST NOT include the "rs\_cnf" parameter.
 
 EDHOC\_Information including the "session\_id" field needs to be specified in the new access token in order for RS to identify the old access token to supersede, as well as the OSCORE Security Context already shared between C and RS and to be associated with the new access token.
 
@@ -623,54 +623,50 @@ with the stored access token, which is bound to the authentication credential AU
 
 If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{I-D.ietf-core-oscore-edhoc}}, unless the "comb\_req" field of the EDHOC\_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see {{example-with-optimization}}. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2 and before sending EDHOC message\_3.
 
+## Update of Access Rights {#update-access-rights-c-rs}
 
-## C-to-RS: POST to /authz-info endpoint # {#c-rs}
+If C has a valid OSCORE Security Context associated with a valid access token at RS, then C can request from AS an update of the access rights as described in {{c-as}}.
 
-The access token can be uploaded to RS using CoAP {{RFC7252}} and the Authorization Information endpoint as described in {{Section 5.10.1 of RFC9200}}.
+If the request is granted then AS generates a new access token containing updated access rights for C (see {{update-access-rights-c-as}}) in the same token series of the current access token (see {{token-series}}).
+
+According to this document, AS provides the access token to C (see {{as-c}}) for further uploading to RS. Alternatively, the access token may be uploaded by AS directly to RS, as described in {{I-D.ietf-ace-workflow-and-params}}. If all validations are successful, C can access protected resources at RS according to the updated access rights using the previously established OSCORE Security Context.
+
+The rest of this section describes the message exchange for the uploading of the access token from C to RS.
+
+### C-to-RS: POST to /authz-info endpoint # {#c-rs}
+
+C can update its access rights by uploading the updated access token to RS using CoAP {{RFC7252}} and the Authorization Information endpoint as described in {{Section 5.10.1 of RFC9200}}.
 
 That is, C sends a POST request to the /authz-info endpoint at RS, with the request payload containing the access token without any CBOR wrapping. As per {{Section 5.10.1 of RFC9200}}, the Content-Format of the POST request MUST be "application/cwt" to reflect the format of the transported access token.
 
-The communication between C and the /authz-info endpoint is not protected, unless there is a previously established OSCORE Security Context, for example in the case of update of access rights (see {{update-access-rights-c-rs}}).
-
-
-##  RS-to-C: 2.01 (Created) {#rs-c}
+C MUST protect the POST request using the current OSCORE Security Context shared with RS.
 
 Upon receiving an access token from C, RS MUST follow the procedures defined in {{Section 5.10.1 of RFC9200}}. That is, RS must verify the validity of the access token. RS may make an introspection request (see {{Section 5.9.1 of RFC9200}}) to validate the access token.
 
-If the access token is valid, RS proceeds as follows.
-
-RS checks whether it is already storing the authentication credential of C, AUTH_CRED_C, specified in the "cnf" claim of the access token by value or by reference. If not, RS retrieves AUTH_CRED_C, either using the "cnf" claim or some other trusted source.
-
-If RS fails to find or validate AUTH_CRED_C, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
-
-If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "session\_id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
-
-If all validations are successful, RS MUST reply to the POST request with a 2.01 (Created) response. The access token is stored such that it is possible to retrieve it based on "session\_id" and AUTH_CRED_C.
-
-When an access token becomes invalid (e.g., due to its expiration or revocation), RS MUST delete the access token and the associated OSCORE Security Context, and MUST notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in {{Section 5.8.3 of RFC9200}}.
-
-
-## Update of Access Rights {#update-access-rights-c-rs}
-
-Editor's note: This section should allow for access rights being updated by AS posting to RS.
-
-If C has already established access rights and an OSCORE Security Context with RS, then C can update its access rights by posting a new access token to the /authz-info endpoint.
-
-The new access token contains the updated access rights for C to access protected resources at RS, and C has to obtain it from AS as a new access token in the same token series of the current one (see {{c-as-comm}}). When posting the new access token to the /authz-info endpoint, C MUST protect the POST request using the current OSCORE Security Context shared with RS. After successful verification (see {{rs-c}}), RS will replace the old access token with the new one, while preserving the same OSCORE Security Context. In particular, C and RS do not re-run the EDHOC protocol and they do not establish a new OSCORE Security Context.
-
-Editor's note: Mention the alternative when the AS uploads the new access token to RS.
-
-If RS receives an access token in an OSCORE protected request, it means that C is requesting an update of access rights. In this case, RS MUST check the following conditions:
+RS MUST check the following conditions:
 
 * RS checks whether it stores an access token T_OLD, such that the "session\_id" field of EDHOC_Information matches the "session\_id" field of EDHOC_Information in the new access token T_NEW.
 
 * RS checks whether the OSCORE Security Context CTX used to protect the request matches the OSCORE Security Context associated with the stored access token T_OLD.
 
-If both the conditions above hold, RS MUST replace the old access token T_OLD with the new access token T_NEW, and associate T_NEW with the OSCORE Security Context CTX. Then, RS MUST respond with a 2.01 (Created) response protected with the same OSCORE Security Context, with no payload.
+If both the conditions above hold, RS MUST replace the old access token T_OLD with the new access token T_NEW, and associate T_NEW with the OSCORE Security Context CTX.
+
+Note that C and RS do not execute the EDHOC protocol, they do not establish a new OSCORE Security Context, and AUTH_CRED_C remains the same.
+
+###  RS-to-C: 2.01 (Created) {#rs-c}
+
+If all validations are successful, RS MUST reply to the POST request with a 2.01 (Created) response protected with the same OSCORE Security Context, with no payload. The access token is stored such that it is possible to retrieve it based on "session\_id" and AUTH_CRED_C.
+
+After that, C can access to protected resources at RS according to the updated access rights using the previously established OSCORE Security Context.
 
 Otherwise, RS MUST respond with a 4.01 (Unauthorized) error response. RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
 
-As specified in {{Section 5.10.1 of RFC9200}}, when receiving an updated access token with updated authorization information from C (see {{c-rs}}), it is recommended that RS overwrites the previous access token. That is, only the latest authorization information in the access token received by RS is valid. This simplifies the process needed by RS to keep track of authorization information for a given client.
+As specified in {{Section 5.10.1 of RFC9200}}, when receiving a valid access token with updated authorization information from C (see {{c-rs}}), it is recommended that RS overwrites the previous access token. That is, only the latest authorization information in the access token received by RS is valid. This simplifies the process needed by RS to keep track of authorization information for a given client.
+
+Editor's note: The following error case was described for unprotected POST /authz-info. It seems not relevant anymore.
+
+If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "session\_id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
+
 
 ## Discarding the OSCORE Security Context # {#discard-context}
 
@@ -713,6 +709,9 @@ RS MUST follow the procedures defined in {{Section 5.10.2 of RFC9200}}. That is,
 
 If OSCORE verification succeeds and the target resource requires authorization, RS retrieves the authorization information using the access token associated with the OSCORE Security Context. Then, RS must verify that the authorization information covers the target resource and the action intended by C on it.
 
+## Access Token Invalidity
+
+When an access token becomes invalid (e.g., due to its expiration or revocation), RS MUST delete the access token and the associated OSCORE Security Context, and MUST notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in {{Section 5.8.3 of RFC9200}}.
 
 # Secure Communication with AS # {#secure-comm-as}
 

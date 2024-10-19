@@ -1087,14 +1087,19 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 ## EDHOC External Authorization Data Registry # {#iana-edhoc-ead}
 
-IANA is asked to add the following entry to the "EDHOC External Authorization Data" registry defined in {{Section 10.5 of RFC9528}}.
-
-The ead\_label = TBD and the ead\_value define an access token transferred in an EAD item of EDHOC message\_3, with processing specified in {{AT-in-EAD}}.
+IANA is asked to add the following entries to the "EDHOC External Authorization Data" registry defined in {{Section 10.5 of RFC9528}}.
 
 * Name: ACE-OAuth Access Token
 * Label: TBD
 * Description: An Access Token as used in the ACE-OAuth framework {{RFC9200}}
-* Reference: {{&SELF}}
+* Reference: {{&SELF}}, {{AT-in-EAD}}
+
+<br>
+
+* Name: Session ID
+* Label: TBD
+* Description: The identifier of an EDHOC session
+* Reference: {{&SELF}}, {{AT-in-EAD}}
 
 ## EDHOC Information Registry # {#iana-edhoc-parameters}
 

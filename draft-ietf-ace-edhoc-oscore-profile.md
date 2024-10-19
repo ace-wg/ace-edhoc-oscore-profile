@@ -211,7 +211,7 @@ The following subsections describe the details of the POST request and response 
 
 In this exchange, AS provides C with the access token, together with a set of parameters that enable C to run EDHOC with RS. In particular, these include information about the authorization credential of RS, AUTH\_CRED\_RS, transported by value or uniquely referred to.
 
-The access token is securely associated with the authentication credential of C, AUTH\_CRED\_C, by including it or uniquely referring to it in the access token.
+The access token is securely bound to the authentication credential of C, AUTH\_CRED\_C, by including it or uniquely referring to it in the access token.
 
 AUTH\_CRED\_C is specified in the "req_cnf" parameter defined in {{RFC9201}} of the POST request to the /token endpoint from C to AS, either transported by value or uniquely referred to.
 
@@ -223,9 +223,9 @@ Editor's note: Text like the one above makes the name "session_id" questionable.
 
 The client-to-AS request is specified in {{Section 5.8.1 of RFC9200}}.
 
-The client MUST send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see {{secure-comm-as}}). This document describes the use of CoAP, EDHOC and OSCORE to reduce the number of libraries that C has to support.
+The client MUST send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see {{secure-comm-as}}). When using this profile, it is RECOMMENDED to use CoAP, EDHOC, and OSCORE in order to reduce the number of libraries that C has to support.
 
-An example of such a request is shown in {{token-request}}. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req\_cnf" parameter. In fact, it is expected that C can typically specify its own authentication credential by reference, since AS is expected to obtain the actual authentication credential during a previous client registration process or secure association establishment with C.
+An example of such a request is shown in {{token-request}}. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req\_cnf" parameter.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
    Header: POST (Code=0.02)
@@ -275,7 +275,7 @@ This document refers to "token series" as a series of access tokens sorted in ch
 
 Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.
 
-The general token series concept is defined in {{I-D.ietf-ace-workflow-and-params}}. In this profile, a token series is characterized by access tokens used between a given pair (C, RS) having the same "session\_id" in the EDHOC\_Information, see {{edhoc-parameters-object}}.
+In this profile, a token series is characterized by access tokens used between a given pair (C, RS) having the same "session\_id" in the EDHOC\_Information (see {{edhoc-parameters-object}}) and bound to the same authentication credential AUTH\_CRED\_C of C.
 
 AS assigns the "session\_id" to the EDHOC\_Information when issuing the first access token of a new series and that "session\_id" remains fixed throughout the series lifetime. When assigning the identifier, AS MUST ensure that it was not used in a previous series whose access tokens share the following properties with the access tokens of the new series:
 
@@ -286,7 +286,7 @@ In case the access token is issued for a group-audience (see {{Section 6.9 of RF
 
 ## AS-to-C: Response # {#as-c}
 
-After verifying the POST request to the /token endpoint and that C is authorized to access, AS responds as defined in {{Section 5.8.2 of RFC9200}}, with potential modifications as detailed below. If the request from C was invalid, or not authorized, AS returns an error response as described in {{Section 5.8.3 of RFC9200}}.
+After verifying the POST request to the /token endpoint and that C is authorized to access, AS responds as defined in {{Section 5.8.2 of RFC9200}}, with potential modifications as detailed below. If the request from C was invalid or not authorized, AS returns an error response as described in {{Section 5.8.3 of RFC9200}}.
 
 AS can signal that the use of EDHOC and OSCORE as per this profile is REQUIRED for a specific access token, by including the "ace_profile" parameter with the value "coap_edhoc_oscore" in the access token response. This means that C MUST use EDHOC with RS and derive an OSCORE Security Context, as specified in {{edhoc-exec}}. After that, C MUST use the established OSCORE Security Context to protect communications with RS, when accessing protected resources at RS according to the authorization information indicated in the access token. Usually, it is assumed that constrained devices will be pre-configured with the necessary profile, so that this kind of profile signaling can be omitted.
 
@@ -304,7 +304,7 @@ When issuing the first access token of a token series, AS MUST send the followin
 
    When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_RS, it is expected that the response to C includes AUTH\_CRED\_RS by reference.
 
-When issuing the first access token of a token series, AS MAY send EDHOC\_Information related to RS, see {{edhoc-parameters-object}}, in corresponding fields of the response to C. This information is based on knowledge that AS have about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.
+When issuing the first access token of a token series, AS MAY send EDHOC\_Information related to RS, see {{edhoc-parameters-object}}, in corresponding fields of the response to C. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.
 
 {{fig-token-response}} shows an example of an AS response. The "rs_cnf" parameter specifies the authentication credential of RS, as an X.509 certificate transported by value in the "x5chain" field. The access token and the authentication credential of RS have been truncated for readability.
 
@@ -356,7 +356,7 @@ When issuing the first access token of a token series, AS MAY specify additional
 
 The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. RS needs to be able to verify that the access token is issued by a trusted AS (source authentication). Depending on the use case and deployment, the access token may need to be confidentiality protected, for example, for privacy reasons.
 
-AS protects the access token using a COSE method (see {{RFC9052}}) as specified in {{RFC8392}}. Depending on the audience, there may be different ways to most appropriately ensure the confidentiality of an access token. For an audience comprising a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0. Instead, if the access token needs to be read by multiple RSs, then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection can be applied during transport, e.g., by including the access token in the EAD_3 field of EDHOC message_3 sent by C to RS, when using the EDHOC forward message flow (see {{edhoc-exec}}).
+AS protects the access token using a COSE method (see {{RFC9052}}) as specified in {{RFC8392}}. Depending on the audience, there may be different ways to most appropriately ensure the confidentiality of an access token. For an audience comprising a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0. Instead, if the access token needs to be read by multiple RSs, then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection is applied during transport, by including the access token in the EAD\_3 field of EDHOC message_3 sent by C to RS, when using the EDHOC forward message flow (see {{edhoc-exec}}).
 
 {{fig-token}} shows an example CWT Claims Set, including the relevant EDHOC parameters in the "edhoc\_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.
 
@@ -387,15 +387,11 @@ If this is not the case, C retrieves AUTH\_CRED\_RS, either using the "rs_cnf" p
 
 ### Update of Access Rights
 
-If C has a valid OSCORE Security Context associated with a valid access token, then C can send a request to AS for updating its access rights.
+If C has a valid OSCORE Security Context associated with a valid access token, then C can send a request to AS for updating its access rights while preserving the same OSCORE Security Context.
 
-If the request is granted, then AS generates a new access token, where the "edhoc\_info" claim MUST include only the "session\_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in {{I-D.ietf-ace-workflow-and-params}}. In either case, AS responds to C such that:
+If the request is granted, then AS generates a new access token, where the "edhoc\_info" claim MUST include only the "session\_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in {{I-D.ietf-ace-workflow-and-params}}. In either case, the Access Token Response from the AS to C MUST NOT include the "rs\_cnf" parameter.
 
-* The response MUST NOT include the "rs\_cnf" parameter.
-
-* The EDHOC\_Information in the response MUST include only the "session\_id" field.
-
-The "session\_id" needs to be included in the new access token in order for RS to identify the old access token to supersede, as well as the OSCORE Security Context already shared between C and RS and to be associated with the new access token.
+EDHOC\_Information including the "session\_id" field needs to be specified in the new access token in order for RS to identify the old access token to supersede, as well as the OSCORE Security Context already shared between C and RS and to be associated with the new access token.
 
 ## EDHOC_Information # {#edhoc-parameters-object}
 

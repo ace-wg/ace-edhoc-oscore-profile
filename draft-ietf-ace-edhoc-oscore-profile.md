@@ -584,7 +584,7 @@ The processing of EDHOC message\_3 is specified in {{Section 5.4 of RFC9528}} wi
 
 * If EAD\_3 includes the EAD item EAD\_ACCESS\_TOKEN then RS MUST ensure that the included access token is valid. If EAD\_3 includes the EAD item EAD\_SESSION\_ID then RS MUST ensure that the access token associated with the included session_id and with the AUTH_CRED_C used in the EDHOC session is valid. The validation follows the procedure specified in {{rs-c}}. If such a process fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}), and it MUST abort the EDHOC session.
 
-RS MUST have successfully validated the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (session_id, AUTH_CRED_C). Any previous EDHOC session associated with the same access token and with the same pair (session_id, AUTH_CRED_C) MUST be deleted. The OSCORE Security Context derived from that EDHOC session MUST also be aborted.
+RS MUST have successfully validated the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (session_id, AUTH_CRED_C). Any previous EDHOC session associated with the same access token and with the same pair (session_id, AUTH_CRED_C) MUST be deleted. The OSCORE Security Context derived from that EDHOC session MUST also be deleted.
 
 Editor's note: Instead of ERR\_CODE = 1, consider to use ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz
 
@@ -1543,6 +1543,24 @@ responder = 13
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -05 to -06 ## {#sec-05-06}
+
+* The access token can be uploaded through EDHOC in EAD_3, EAD_2, or EAD_4.
+
+* Ruled out the upload of the access token to the /authz-info endpoint over an unprotected channel.
+
+* Defined an EDHOC EAD item for transporting a Session ID.
+
+* Provided more details and added example of dynamic update of access rights.
+
+* Defined in detail the use of the EDHOC reverse message flow.
+
+* Provided details on access token invalidity.
+
+* Revised examples with message exchanges.
+
+* Clarifications and editorial improvements.
 
 ## Version -04 to -05 ## {#sec-04-05}
 

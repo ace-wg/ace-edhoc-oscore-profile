@@ -215,9 +215,7 @@ The access token is securely bound to the authentication credential of C, AUTH\_
 
 AUTH\_CRED\_C is specified in the "req_cnf" parameter defined in {{RFC9201}} of the POST request to the /token endpoint from C to AS, either transported by value or uniquely referred to.
 
-The request to the /token endpoint and the corresponding response can include EDHOC\_Information, which is a CBOR map object containing information related to an EDHOC session, in particular the identifier "session\_id", see {{edhoc-parameters-object}}. This object is transported in the "edhoc\_info" parameter registered in {{iana-oauth-params}} and {{iana-oauth-cbor-mappings}}.
-
-Editor's note: Text like the one above makes the name "session_id" questionable. If the access token is provisioned to RS and valid but OSCORE context is lost, then the same session_id is maintained even if after EDHOC is executed betwen C and RS again. New EDHOC session, same session_id. What we want to give a name to is "authorization information context", which typically changes when EDHOC is re-run, but not always.
+The request to the /token endpoint and the corresponding response can include EDHOC\_Information, which is a CBOR map object containing information related to an EDHOC implementation, see {{edhoc-parameters-object}}. This object is transported in the "edhoc\_info" parameter registered in {{iana-oauth-params}} and {{iana-oauth-cbor-mappings}}.
 
 ## C-to-AS: POST to /token endpoint # {#c-as}
 
@@ -246,6 +244,8 @@ An example of such a request is shown in {{token-request}}. In this example, C s
 If C wants to update its access rights without changing an existing OSCORE Security Context, it MUST include EDHOC\_Information in its POST request to the /token endpoint. The EDHOC\_Information MUST include the "session\_id" field. This POST request MUST omit the "req_cnf" parameter. An example of such a request is shown in {{token-request-update}}.
 
 The identifier "session\_id" is assigned by AS as discussed in {{token-series}}, and, together with other information such as audience (see {{Section 5.8.1 of RFC9200}}), can be used by AS to determine the token series to which the new requested access token has to be added. Therefore, the session\_id MUST identify the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS) associated with a still valid access token previously issued for C and RS by AS.
+
+Editor's note: When retrieving the access token it is required to consider the pair (session id, AUTH_CRED_C). Here it is stated that the session id identifies the pair (AUTH_CRED_C,AUTH_CRED_RS). Why then isn't the session id sufficient for retrieving the access token, considering it identifies AUTH_CRED_C?
 
 AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token issued for C and RS belongs. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid_request" as defined in {{Section 5.8.3 of RFC9200}}.
 
@@ -519,7 +519,7 @@ Editor's note: Add example. Value for ead_label from lowest range.
 
 ## EDHOC Session {#edhoc-exec}
 
-In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol augmented with an access token, or reference thereof - a session identifier, carried in an EAD item, either EAD\_ACCESS\_TOKEN or EAD\_SESSION\_ID, see {{AT-in-EAD}}.
+In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol augmented with an access token, or reference thereof - the session identifier, carried in an EAD item, either EAD\_ACCESS\_TOKEN or EAD\_SESSION\_ID, see {{AT-in-EAD}}.
 
 As per {{Section A.2 of RFC9528}}, EDHOC may be transferred over CoAP using either the forward or the reverse message flow, manifesting the two possible mappings between the ACE roles client / resource server and the EDHOC roles Initiator / Responder (whereas the CoAP client/server roles remain the same). The choice of mapping depends on the deployment setting, in particular which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers.
 
@@ -672,9 +672,9 @@ Otherwise, RS MUST respond with a 4.01 (Unauthorized) error response. RS may pro
 
 As specified in {{Section 5.10.1 of RFC9200}}, when receiving an updated access token with updated authorization information from C (see {{c-rs}}), it is recommended that RS overwrites the previous access token. That is, only the latest authorization information in the access token received by RS is valid. This simplifies the process needed by RS to keep track of authorization information for a given client.
 
-## Discarding the Security Context # {#discard-context}
+## Discarding the OSCORE Security Context # {#discard-context}
 
-There are a number of cases where C or RS have to discard the OSCORE Security Context, and possibly establish a new one.
+There are a number of cases where C or RS have to discard the OSCORE Security Context, and may establish a new one (see {{establish-new-context}}).
 
 C MUST discard the current OSCORE Security Context shared with RS when any of the following occurs.
 
@@ -699,14 +699,13 @@ After a new access token is successfully uploaded to RS, and a new OSCORE Securi
 Furthermore, implementations may want to cancel CoAP observations at RS, if registered before the new OSCORE Security Context has been established. Alternatively, applications need to implement a mechanism to ensure that, from then on, messages exchanged within those observations are going to be protected with the newly derived OSCORE Security Context.
 
 
-## Cases of Establishing a New OSCORE Security Context
+## Establishing a New OSCORE Security Context {#establish-new-context}
 
 The procedure of provisioning a new access token to RS specified in this section applies to various cases when an OSCORE Security Context shared between C and RS has been deleted, for example as described in {{discard-context}}.
 
 Another exceptional case is when there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS SHALL attempt to run the KUDOS key update protocol {{I-D.ietf-core-oscore-key-update}}, which is a lightweight alternative independent of ACE and EDHOC that does not require the posting of an access token. If KUDOS is not supported, then C and RS falls back to EDHOC as outlined above.
 
-In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS MUST associate the new OSCORE Security Context with the current (potentially re-posted) access token. Unless C and RS re-run the EDHOC protocol, they preserve their OSCORE identifiers, i.e., the OSCORE Sender/Recipient IDs.
-
+In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS MUST associate the new OSCORE Security Context with the current (potentially re-posted) access token. Moreover, the session identifier, which is associated to the token series, remains unchanged even if C and RS have established a new EDHOC session. Unless C and RS re-run the EDHOC protocol, they preserve their OSCORE identifiers, i.e., the OSCORE Sender/Recipient IDs.
 
 ## Access Rights Verification # {#access-rights-verif}
 

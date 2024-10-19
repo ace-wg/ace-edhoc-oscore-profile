@@ -155,7 +155,9 @@ If C and RS successfully complete the EDHOC protocol and the validations of auth
 
 {{protocol-overview}} outlines an example of the message flow. A more detailed description of the message flow is shown in {{example-without-optimization}}.
 
-From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. The OSCORE Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new OSCORE Security Context for C.
+From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then that OSCORE Security Context is used to retrieve the uniquely associated access token determining the access rights of C.
+
+The OSCORE Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new OSCORE Security Context for C.
 
 ~~~~~~~~~~~ aasvg
 
@@ -188,10 +190,8 @@ Security Context /              |                         |
    |                            |                         |
    |<---- OSCORE Response ------|                         |
    |                            |                         |
-
 ~~~~~~~~~~~
 {: #protocol-overview title="Protocol Outline using the EDHOC Forward Message Flow."}
-
 
 While the OSCORE Security Context and access token are valid, C can contact AS to request an update of its access rights, by sending a similar request as described above to the /token endpoint. This request also includes a "session identifier" (see {{edhoc-parameters-object}}) provided by AS in the response to the initial access request, which allows AS to retrieve the data it previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see {{token-series}}).
 
@@ -199,11 +199,34 @@ If C has retrieved an access token for updating its access rights belonging to t
 
 Upon successful update of access rights, the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
 
-When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then that OSCORE Security Context is used to retrieve the uniquely associated access token determining the access rights of C.
+{{update-overview}} outlines the message flow for updating access rights.
 
-Editor's note: The content of the paragraph above should be re-iterated in the detailed description
+~~~~~~~~~~~ aasvg
 
-Editor's note: Add figure of update of access rights using POST to /authz-info
+   C                            RS                       AS
+   |                            |                         |
+   | <====         Existing security context        ====> |
+   |                            |                         |
+   +-------- POST /token  ------------------------------->|
+   |                            |                         |
+   |<--------------------------------- Access Token ------+
+   |                               + Access Information   |
+   |                            |                         |
+   +--- POST /authz-info  ----->|                         |
+   |  (OSCORE protected with    |                         |
+   |   access_token in payload) |                         |
+   |                            |                         |
+   |               / Updated access rights /              |
+   |                            |                         |
+   |<------ 2.04 Changed -------+                         |
+   |                            |                         |
+   |                            |                         |
+   +----- OSCORE Request ------>|                         |
+   |                            |                         |
+   |<---- OSCORE Response ------|                         |
+   |                            |                         |
+~~~~~~~~~~~
+{: #update-overview title="Protocol Outline for Updating Access Rights."}
 
 # Client-AS Communication # {#c-as-comm}
 

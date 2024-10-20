@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-17T00:50:37.195669+00:00",
+  "timestamp": "2024-10-20T00:55:08.031236+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -1198,6 +1198,40 @@
           "body": "See https://github.com/ace-wg/ace-edhoc-oscore-profile/issues/8 for more high-level discussion.\r\n\r\nAs that indicates that some more guidance would be needed, I'm setting this as \"ready for review\", because it lays the groundwork for a more comprehensive solution to 8.",
           "createdAt": "2024-03-19T13:31:42Z",
           "updatedAt": "2024-03-19T13:31:42Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOIar0bc5-6b4f",
+      "title": "Proposed changes before submission",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/9",
+      "state": "OPEN",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-17T04:30:26Z",
+      "updatedAt": "2024-10-19T22:16:33Z",
+      "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "baseRefName": "main",
+      "baseRefOid": "71f9e64aa410f7aeb425026d512b744ea71b67a1",
+      "headRepository": "ace-wg/ace-edhoc-oscore-profile",
+      "headRefName": "submission-updates",
+      "headRefOid": "165395976365a8bca12cc12d450a45d3fb77f176",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I've started making updates, no need to review yet.",
+          "createdAt": "2024-10-17T04:31:01Z",
+          "updatedAt": "2024-10-17T04:31:01Z"
         }
       ],
       "reviews": []

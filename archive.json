@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-20T00:55:08.031236+00:00",
+  "timestamp": "2024-10-22T00:51:25.912805+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -1207,24 +1207,26 @@
       "id": "PR_kwDOIar0bc5-6b4f",
       "title": "Proposed changes before submission",
       "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/pull/9",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "gselander",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-10-17T04:30:26Z",
-      "updatedAt": "2024-10-19T22:16:33Z",
+      "updatedAt": "2024-10-20T15:15:23Z",
       "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
       "baseRefName": "main",
       "baseRefOid": "71f9e64aa410f7aeb425026d512b744ea71b67a1",
       "headRepository": "ace-wg/ace-edhoc-oscore-profile",
       "headRefName": "submission-updates",
       "headRefOid": "165395976365a8bca12cc12d450a45d3fb77f176",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-10-20T15:15:23Z",
+      "mergedAt": "2024-10-20T15:15:23Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "648d6027cdea2739711ff13f1b11b738d9721a2f"
+      },
       "comments": [
         {
           "author": "gselander",
@@ -1232,6 +1234,13 @@
           "body": "I've started making updates, no need to review yet.",
           "createdAt": "2024-10-17T04:31:01Z",
           "updatedAt": "2024-10-17T04:31:01Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Merging since no further comments",
+          "createdAt": "2024-10-20T15:15:15Z",
+          "updatedAt": "2024-10-20T15:15:15Z"
         }
       ],
       "reviews": []

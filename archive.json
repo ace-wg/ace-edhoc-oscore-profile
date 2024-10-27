@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-24T00:50:26.944091+00:00",
+  "timestamp": "2024-10-27T00:54:48.849505+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -71,15 +71,15 @@
       "id": "I_kwDOIar0bc6C04v8",
       "title": "ead_value: Use separate EADs",
       "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/issues/7",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "chrysn",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "Packing the token into the EAD as <<{0: 'the-token'}>> adds at least 3 bytes (more for tokens >24 byte) to the token, likewise to the session ID.\r\n\r\n@gselander, @marco-tiloca-sics and I discussed a few options back and forth, and given we want to support arbitrary byte string tokens (not only CWTs), it may get smaller, but not by much without sacrificing the clear distinction between a session ID and a token. (We've played with the session ID being a CCS, and with being some kind of key ID, but that doesn't really make the double encapsulation of the token go away).\r\n\r\nIn the end, we've concluded that for this case it is justified to use one EAD value for a session ID, and a different one (not from 1+0, maybe even from 1+2) for an EAD indicating a session ID. The one bit we take out of that makes up for at least 3 bytes in the payload, and it's not like this is requesting two 1+0 values.",
       "createdAt": "2024-03-19T12:56:39Z",
-      "updatedAt": "2024-10-22T08:05:10Z",
-      "closedAt": null,
+      "updatedAt": "2024-10-24T12:36:50Z",
+      "closedAt": "2024-10-24T12:36:50Z",
       "comments": [
         {
           "author": "gselander",
@@ -87,6 +87,13 @@
           "body": "There are separate EADs defined in -06. Does that address this issue?",
           "createdAt": "2024-10-22T08:05:09Z",
           "updatedAt": "2024-10-22T08:05:09Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Marco's comment: Can be closed.",
+          "createdAt": "2024-10-24T12:36:41Z",
+          "updatedAt": "2024-10-24T12:36:41Z"
         }
       ]
     },
@@ -102,7 +109,7 @@
       "labels": [],
       "body": "After today's presentation, @gselander, @marco-tiloca-sics and I discussed the relevance of ACE EDHOC running with EDHOC inverse flow. In this scenario, compared to the \"regular\" flow of the client being the CoAP client, ACE client and the initiator, we are happy with the CoAP and ACE roles, but consider the vulnerable identity of the resource server. (For example, think of an RS that is mobile and person-bound -- it may enable tracking that person).\r\n\r\nMitigation is twofold depending on scenarios:\r\n* If the RS is not part of any group audience, guidance should be to use a small key ID, preferably 0 to maximize the anonymity set. This way, no trackable information is revealed: Message 1 only contains ephemeral data and cipher suites, message 2 contains ephemeral data and a huge-anonymity-set kid=0. The client, which has already requested a token and knows whom it is talking to, finds the expected kid, matches it with the public key provided by the AS, and message 3 can already be sent to an authenticated device. (Of course, this places the larger onus on the client and the network to find out whom it is talking to in the first place\u2026). In such scenarios, the vulnerable identity is well protected even though it is on the responder.\r\n\r\n  I wouldn't be surprised if it turns out that many cases where this is usable turn out to broadcast identifying information earlier anyway, and thus either there's nothing vulnerable left of the RS's identity. When those broadcasts are revisited, the device may find itself in the other situation again.\r\n\r\n* If the RS is part of a group audience, and thus uses a large ID_CRED_x (eg. some thumbprint), it has a vulnerable (trackable) identity.\r\n\r\n  If it turns out that the client's identity is less vulnerable, it may make sense to use inverse message flow.\r\n  The client has ample options to make its identity less vulnerable: It can use short term identity keys (possibly even rolled anew for each token it obtains), and the most identifiable information is in the token it presents to an active attacker (where the token can't easily be encrypted unless the device's identity is known well).\r\n  The client may also have the benefit of only attempting connections on user interaction, which makes it less trackable than the RS that answers to any attempted EDHOC exchange.\r\n\r\n  If trade-offs are taken that way, the client initiates inverse flow. The RS sends a random G_X in message 1, and the client encrypts the token in EAD2 so that it can only be read by the alleged RS. Usual caveats for using tokens under the conditions of EAD2 apply.",
       "createdAt": "2024-03-19T13:15:30Z",
-      "updatedAt": "2024-10-22T08:10:11Z",
+      "updatedAt": "2024-10-24T12:37:41Z",
       "closedAt": null,
       "comments": [
         {
@@ -139,6 +146,13 @@
           "body": "In -06 the access token allowed to transport in message 2 & 4 in the reverse flow. Does that address this issue?\r\n\r\nWe were considering to recommend something but since message 2 is only protected against passive attackers, and there is more information than AUTH_CRED_C in the access token, this may not be one-size-fits-all.",
           "createdAt": "2024-10-22T08:10:09Z",
           "updatedAt": "2024-10-22T08:10:09Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Comment from Marco: Wait with closing until motivation is in.",
+          "createdAt": "2024-10-24T12:37:40Z",
+          "updatedAt": "2024-10-24T12:37:40Z"
         }
       ]
     }
@@ -1181,7 +1195,7 @@
       "labels": [],
       "body": "Coming out of https://www.ietf.org/archive/id/draft-amsuess-core-resource-directory-extensions-10.html#name-ace-edhoc-profile, I'd like to propose that the token can also be sent in EAD2.\r\n\r\nThis present PR is incomplete as it only states this in one place without syncing the rest of the document; I'll need to come back to this.\r\n\r\nAs long as no CoAP role reversal happens, this will be used with the reverse message flow of EDHOC; if we go with this, I'll add more changes:\r\n\r\n* [ ] C (the responder) may not have received identifying information about the RS through EDHOC. (Granted, the same is true when doing a plain POST). Unless it has not received any out of band, it may need to use a token that has a group audience, and compare the precise ID_CRED_I that comes back to the rs_cnf2 that was part of its token response.\r\n\r\n* [ ] Add bit more explicit stating that reverse flow is allowed. That will likely need to talk briefly about vulnerable identities in that context, with two options:\r\n\r\n  * C already knows precisely which RS to talk to. Then AS can create a symmetrically encrypted token, so it doesn't matter if an active attacker can obtain it.\r\n  * C does not already know, and takes a group token. Group tokens are notoriously hard to encrypt (yada yada group key management), but the main information in the token is that C is allowed to do something (in the motivating example, serve as an RD), and we've chosen reverse flow *because* C has the less sensitive identity, and that's usually OK to reveal to an active attacker.",
       "createdAt": "2024-03-04T19:40:20Z",
-      "updatedAt": "2024-10-22T07:58:29Z",
+      "updatedAt": "2024-10-24T12:36:00Z",
       "baseRepository": "ace-wg/ace-edhoc-oscore-profile",
       "baseRefName": "main",
       "baseRefOid": "6e36f238e03d6aee0cbbc8dd6242951163496a2d",
@@ -1220,6 +1234,13 @@
           "body": "There is a separate section about reverse flow in -06. Does that replace the need for this PR? ",
           "createdAt": "2024-10-22T07:58:27Z",
           "updatedAt": "2024-10-22T07:58:27Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Comment from Marco: Still remains to add motivation and pros and cons of forward/reverse flow.",
+          "createdAt": "2024-10-24T12:35:59Z",
+          "updatedAt": "2024-10-24T12:35:59Z"
         }
       ],
       "reviews": []

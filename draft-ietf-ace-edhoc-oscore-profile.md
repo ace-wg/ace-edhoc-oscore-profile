@@ -258,7 +258,7 @@ An example of such a request is shown in {{token-request}}. In this example, C s
      / audience / 5 : "tempSensor4711",
      / scope /    9 : "read",
      / req_cnf /  4 : {
-       e'x5t' : h'822E4879F2A41B510C1F9B'
+       e'x5t' : << [-15, h'79F2A41B510C1F9B'] >>
      }
    }
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -1546,7 +1546,9 @@ responder = 13
 
 ## Version -06 to -07 ## {#sec-06-07}
 
-Changed CBOR abbreviations to not collide with existing codepoints.
+* Revised examples in CBOR diagnostic notation.
+
+* Changed CBOR abbreviations to not collide with existing codepoints.
 
 * Clarifications and editorial improvements.
 

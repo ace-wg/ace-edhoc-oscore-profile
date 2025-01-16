@@ -480,7 +480,7 @@ Table of Contents
         / audience / 5 : "tempSensor4711",
         / scope /    9 : "read",
         / req_cnf /  4 : {
-          e'x5t' : h'822E4879F2A41B510C1F9B'
+          e'x5t' : << [-15, h'79F2A41B510C1F9B'] >>
         }
       }
 
@@ -2932,7 +2932,10 @@ Appendix D.  Document Updates
 
 D.1.  Version -06 to -07
 
-   Changed CBOR abbreviations to not collide with existing codepoints.
+   *  Revised examples in CBOR diagnostic notation.
+
+   *  Changed CBOR abbreviations to not collide with existing
+      codepoints.
 
    *  Clarifications and editorial improvements.
 

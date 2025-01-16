@@ -232,11 +232,7 @@ Upon successful update of access rights, the new issued access token becomes the
 
 The following subsections describe the details of the POST request and response to the /token endpoint between C and AS.
 
-In this exchange, AS provides C with the access token, together with a set of parameters that enable C to run EDHOC with RS. In particular, these include information about the authorization credential of RS, AUTH\_CRED\_RS, transported by value or uniquely referred to.
-
-The access token is securely bound to the authentication credential of C, AUTH\_CRED\_C, by including it or uniquely referring to it in the access token.
-
-AUTH\_CRED\_C is specified in the "req_cnf" parameter defined in {{RFC9201}} of the POST request to the /token endpoint from C to AS, either transported by value or uniquely referred to.
+In this exchange, C provides AS with its own authentication credential AUTH\_CRED\_C. Then, AS issues the access token as securely bound to AUTH\_CRED\_C, by including it or uniquely referring to it in the access token. Together with the access token, AS provides C with a set of parameters that enable C to run EDHOC with RS. In particular, these parameters include information about the authorization credential of RS, AUTH\_CRED\_RS, that is transported by value or uniquely referred to.
 
 The request to the /token endpoint and the corresponding response can include EDHOC\_Information, which is a CBOR map object containing information related to an EDHOC implementation, see {{edhoc-parameters-object}}. This object is transported in the "edhoc\_info" parameter registered in {{iana-oauth-params}} and {{iana-oauth-cbor-mappings}}.
 
@@ -246,7 +242,13 @@ The client-to-AS request is specified in {{Section 5.8.1 of RFC9200}}.
 
 The client MUST send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see {{secure-comm-as}}). When using this profile, it is RECOMMENDED to use CoAP, EDHOC, and OSCORE in order to reduce the number of libraries that C has to support.
 
-An example of such a request is shown in {{token-request}}. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req\_cnf" parameter.
+AUTH\_CRED\_C is specified in the "req_cnf" parameter {{RFC9201}} of the POST request, either transported by value or uniquely referred to.
+
+For AUTH_CRED_C, its authentication credential type MUST be one of those supported by EDHOC, e.g., CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC5280}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Consequently, the "req_cnf" parameter specifies a confirmation method suitable for the type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is an X.509 certificate transported by value or by reference, respectively.
+
+Note that EDHOC does not admit the use of naked COSE_Keys as authentication credentials. The closest admitted authentication credential type is a CCS containing a COSE_Key in a "cnf" claim and possibly other claims, which can be transported by value using the confirmation method "kccs". Therefore, the "req_cnf" parameter cannot specify the confirmation method "COSE_Key" (CBOR abbreviation: 1).
+
+An example of client-to-AS request is shown in {{token-request}}. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req\_cnf" parameter.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
    Header: POST (Code=0.02)
@@ -327,6 +329,8 @@ When issuing the first access token of a token series, AS MUST send the followin
 
    When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_RS, it is expected that the response to C includes AUTH\_CRED\_RS by reference.
 
+   For AUTH_CRED_RS, its authentication credential type MUST be one of those supported by EDHOC. Consequently, the "rs\_cnf" parameter specifies a confirmation method suitable for the type of AUTH_CRED_RS. That is, the same considerations about AUTH_CRED_C and the "req_cnf" parameter made in {{c-as}} hold for AUTH_CRED_RS and the "rs\_cnf" parameter.
+
 When issuing the first access token of a token series, AS MAY send EDHOC\_Information related to RS, see {{edhoc-parameters-object}}, in corresponding fields of the response to C. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.
 
 {{fig-token-response}} shows an example of an AS response. The "rs_cnf" parameter specifies the authentication credential of RS, as an X.509 certificate transported by value in the "x5chain" field. The access token and the authentication credential of RS have been truncated for readability.
@@ -364,6 +368,8 @@ To avoid the complexity of different encodings, an access token of this profile 
 * The authentication credential AUTH\_CRED\_C that C specified in its POST request to the /token endpoint (see {{c-as}}), in the "cnf" claim.
 
    In the access token, AUTH\_CRED\_C can be transported by value or uniquely referred to by means of an appropriate identifier, regardless of how C specified it in the request to the /token endpoint. Thus, the specific field carried in the access token claim and specifying AUTH\_CRED\_C depends on the specific way used by AS.
+
+   Yet, consistent with the considerations about AUTH_CRED_C and the "req_cnf" parameter made in {{c-as}}, the "cnf" claim of the access token specifies a confirmation method suitable for the type of AUTH_CRED_C.
 
    When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), it is typically expected that AUTH\_CRED\_C is included by value.
 
@@ -1545,6 +1551,8 @@ responder = 13
 {:removeinrfc}
 
 ## Version -06 to -07 ## {#sec-06-07}
+
+* Explicit statement on admitted confirmation methods.
 
 * Revised examples in CBOR diagnostic notation.
 

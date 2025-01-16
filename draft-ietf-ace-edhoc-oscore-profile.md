@@ -1512,16 +1512,16 @@ edhoc_info_param = 47
 edhoc_info_claim = 41
 
 ; CWT Confirmation Methods
-x5chain = 5
-x5bag = 6
-x5t = 7
-x5u = 8
-c5c = 9
-c5b = 10
-c5t = 11
-c5u = 12
-kcwt = 13
-kccs = 14
+x5chain = 6
+x5bag = 7
+x5t = 8
+x5u = 9
+c5c = 10
+c5b = 11
+c5t = 12
+c5u = 13
+kcwt = 14
+kccs = 15
 
 ; EDHOC Information
 session_id = 0
@@ -1545,6 +1545,8 @@ responder = 13
 {:removeinrfc}
 
 ## Version -06 to -07 ## {#sec-06-07}
+
+Changed CBOR abbreviations to not collide with existing codepoints.
 
 * Clarifications and editorial improvements.
 

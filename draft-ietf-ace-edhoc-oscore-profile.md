@@ -300,7 +300,7 @@ Upon a successful update of access rights, the new issued access token becomes t
 
 In this profile, a token series is characterized by access tokens used between a given pair (C, RS) having the same "session\_id" in the EDHOC\_Information (see {{edhoc-parameters-object}}) and bound to the same authentication credential AUTH\_CRED\_C of C.
 
-AS assigns the "session\_id" to the EDHOC\_Information when issuing the first access token of a new series and that "session\_id" remains fixed throughout the series lifetime. When assigning the identifier, AS MUST ensure that it was not used in a previous series whose access tokens share the following properties with the access tokens of the new series:
+AS assigns the "session\_id" to the EDHOC\_Information when issuing the first access token of a new series and that "session\_id" remains fixed throughout the series lifetime. When assigning the identifier, AS MUST ensure that it was not used in a previous series whose access tokens share the following properties with the access tokens of the new series, irrespective of the used ACE profile:
 
 * i) issued for the same RS; and
 * ii) bound to the same authentication credential AUTH_CRED_C of the requesting client (irrespectively of how the AUTH_CRED_C is identified in the access tokens).
@@ -1543,6 +1543,10 @@ responder = 13
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -06 to -07 ## {#sec-06-07}
+
+* Clarifications and editorial improvements.
 
 ## Version -05 to -06 ## {#sec-05-06}
 

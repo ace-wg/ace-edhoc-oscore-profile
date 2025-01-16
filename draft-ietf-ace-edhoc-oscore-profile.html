@@ -1690,10 +1690,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-client-as-communication" class="section-name selfRef">Client-AS Communication</a>
       </h2>
 <p id="section-3-1">The following subsections describe the details of the POST request and response to the /token endpoint between C and AS.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">In this exchange, AS provides C with the access token, together with a set of parameters that enable C to run EDHOC with RS. In particular, these include information about the authorization credential of RS, AUTH_CRED_RS, transported by value or uniquely referred to.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">The access token is securely bound to the authentication credential of C, AUTH_CRED_C, by including it or uniquely referring to it in the access token.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">AUTH_CRED_C is specified in the "req_cnf" parameter defined in <span>[<a href="#RFC9201" class="cite xref">RFC9201</a>]</span> of the POST request to the /token endpoint from C to AS, either transported by value or uniquely referred to.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">The request to the /token endpoint and the corresponding response can include EDHOC_Information, which is a CBOR map object containing information related to an EDHOC implementation, see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>. This object is transported in the "edhoc_info" parameter registered in <a href="#iana-oauth-params" class="auto internal xref">Section 10.2</a> and <a href="#iana-oauth-cbor-mappings" class="auto internal xref">Section 10.3</a>.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-2">In this exchange, C provides AS with its own authentication credential AUTH_CRED_C. Then, AS issues the access token as securely bound to AUTH_CRED_C, by including it or uniquely referring to it in the access token. Together with the access token, AS provides C with a set of parameters that enable C to run EDHOC with RS. In particular, these parameters include information about the authorization credential of RS, AUTH_CRED_RS, that is transported by value or uniquely referred to.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">The request to the /token endpoint and the corresponding response can include EDHOC_Information, which is a CBOR map object containing information related to an EDHOC implementation, see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>. This object is transported in the "edhoc_info" parameter registered in <a href="#iana-oauth-params" class="auto internal xref">Section 10.2</a> and <a href="#iana-oauth-cbor-mappings" class="auto internal xref">Section 10.3</a>.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <div id="c-as">
 <section id="section-3.1">
         <h3 id="name-c-to-as-post-to-token-endpo">
@@ -1701,10 +1699,13 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
         </h3>
 <p id="section-3.1-1">The client-to-AS request is specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.1" class="relref">Section 5.8.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">The client <span class="bcp14">MUST</span> send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see <a href="#secure-comm-as" class="auto internal xref">Section 5</a>). When using this profile, it is <span class="bcp14">RECOMMENDED</span> to use CoAP, EDHOC, and OSCORE in order to reduce the number of libraries that C has to support.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">An example of such a request is shown in <a href="#token-request" class="auto internal xref">Figure 3</a>. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req_cnf" parameter.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">AUTH_CRED_C is specified in the "req_cnf" parameter <span>[<a href="#RFC9201" class="cite xref">RFC9201</a>]</span> of the POST request, either transported by value or uniquely referred to.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">For AUTH_CRED_C, its authentication credential type <span class="bcp14">MUST</span> be one of those supported by EDHOC, e.g., CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>, X.509 certificates <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span>, and C509 certificates <span>[<a href="#I-D.ietf-cose-cbor-encoded-cert" class="cite xref">I-D.ietf-cose-cbor-encoded-cert</a>]</span>. Consequently, the "req_cnf" parameter specifies a confirmation method suitable for the type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is an X.509 certificate transported by value or by reference, respectively.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">Note that EDHOC does not admit the use of naked COSE_Keys as authentication credentials. The closest admitted authentication credential type is a CCS containing a COSE_Key in a "cnf" claim and possibly other claims, which can be transported by value using the confirmation method "kccs". Therefore, the "req_cnf" parameter cannot specify the confirmation method "COSE_Key" (CBOR abbreviation: 1).<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.1-6">An example of client-to-AS request is shown in <a href="#token-request" class="auto internal xref">Figure 3</a>. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req_cnf" parameter.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
 <span id="name-example-of-c-to-as-post-tok"></span><div id="token-request">
 <figure id="figure-3">
-          <div class="alignLeft art-text artwork" id="section-3.1-4.1">
+          <div class="alignLeft art-text artwork" id="section-3.1-7.1">
 <pre>
    Header: POST (Code=0.02)
    Uri-Host: "as.example.com"
@@ -1724,13 +1725,13 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <a href="#name-example-of-c-to-as-post-tok" class="selfRef">Example of C-to-AS POST /token request for an access token.</a>
           </figcaption></figure>
 </div>
-<p id="section-3.1-5">If C wants to update its access rights without changing an existing OSCORE Security Context, it <span class="bcp14">MUST</span> include EDHOC_Information in its POST request to the /token endpoint. The EDHOC_Information <span class="bcp14">MUST</span> include the "session_id" field. This POST request <span class="bcp14">MUST</span> omit the "req_cnf" parameter. An example of such a request is shown in <a href="#token-request-update" class="auto internal xref">Figure 4</a>.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.1-6">The identifier "session_id" is assigned by AS as discussed in <a href="#token-series" class="auto internal xref">Section 3.2</a>, and, together with other information such as audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.1" class="relref">Section 5.8.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), can be used by AS to determine the token series to which the new requested access token has to be added. Therefore, the session_id <span class="bcp14">MUST</span> identify the pair (AUTH_CRED_C, AUTH_CRED_RS) associated with a still valid access token previously issued for C and RS by AS.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.1-7">Editor's note: When retrieving the access token it is required to consider the pair (session id, AUTH_CRED_C). Here it is stated that the session id identifies the pair (AUTH_CRED_C,AUTH_CRED_RS). Why then isn't the session id sufficient for retrieving the access token, considering it identifies AUTH_CRED_C?<a href="#section-3.1-7" class="pilcrow">¶</a></p>
-<p id="section-3.1-8">AS <span class="bcp14">MUST</span> verify that the received "session_id" identifies a token series to which a still valid access token issued for C and RS belongs. If that is not the case, the Client-to-AS request <span class="bcp14">MUST</span> be declined with the error code "invalid_request" as defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
+<p id="section-3.1-8">If C wants to update its access rights without changing an existing OSCORE Security Context, it <span class="bcp14">MUST</span> include EDHOC_Information in its POST request to the /token endpoint. The EDHOC_Information <span class="bcp14">MUST</span> include the "session_id" field. This POST request <span class="bcp14">MUST</span> omit the "req_cnf" parameter. An example of such a request is shown in <a href="#token-request-update" class="auto internal xref">Figure 4</a>.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
+<p id="section-3.1-9">The identifier "session_id" is assigned by AS as discussed in <a href="#token-series" class="auto internal xref">Section 3.2</a>, and, together with other information such as audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.1" class="relref">Section 5.8.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), can be used by AS to determine the token series to which the new requested access token has to be added. Therefore, the session_id <span class="bcp14">MUST</span> identify the pair (AUTH_CRED_C, AUTH_CRED_RS) associated with a still valid access token previously issued for C and RS by AS.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
+<p id="section-3.1-10">Editor's note: When retrieving the access token it is required to consider the pair (session id, AUTH_CRED_C). Here it is stated that the session id identifies the pair (AUTH_CRED_C,AUTH_CRED_RS). Why then isn't the session id sufficient for retrieving the access token, considering it identifies AUTH_CRED_C?<a href="#section-3.1-10" class="pilcrow">¶</a></p>
+<p id="section-3.1-11">AS <span class="bcp14">MUST</span> verify that the received "session_id" identifies a token series to which a still valid access token issued for C and RS belongs. If that is not the case, the Client-to-AS request <span class="bcp14">MUST</span> be declined with the error code "invalid_request" as defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-3.1-11" class="pilcrow">¶</a></p>
 <span id="name-example-of-c-to-as-post-toke"></span><div id="token-request-update">
 <figure id="figure-4">
-          <div class="alignLeft art-text artwork" id="section-3.1-9.1">
+          <div class="alignLeft art-text artwork" id="section-3.1-12.1">
 <pre>
    Header: POST (Code=0.02)
    Uri-Host: "as.example.com"
@@ -1805,6 +1806,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH_CRED_C, AUTH_CRED_RS), it is typically expected that the response to C may include AUTH_CRED_RS by value.<a href="#section-3.3-7.1.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-7.1.3">
 When later issuing further access tokens to the same pair (C, RS) using the same AUTH_CRED_RS, it is expected that the response to C includes AUTH_CRED_RS by reference.<a href="#section-3.3-7.1.3" class="pilcrow">¶</a></p>
+<p id="section-3.3-7.1.4">
+For AUTH_CRED_RS, its authentication credential type <span class="bcp14">MUST</span> be one of those supported by EDHOC. Consequently, the "rs_cnf" parameter specifies a confirmation method suitable for the type of AUTH_CRED_RS. That is, the same considerations about AUTH_CRED_C and the "req_cnf" parameter made in <a href="#c-as" class="auto internal xref">Section 3.1</a> hold for AUTH_CRED_RS and the "rs_cnf" parameter.<a href="#section-3.3-7.1.4" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.3-8">When issuing the first access token of a token series, AS <span class="bcp14">MAY</span> send EDHOC_Information related to RS, see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>, in corresponding fields of the response to C. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.<a href="#section-3.3-8" class="pilcrow">¶</a></p>
@@ -1854,9 +1857,11 @@ EDHOC_Information <span class="bcp14">MUST</span> be transported in the "edhoc_i
 <p id="section-3.3.1-2.2.2">
 In the access token, AUTH_CRED_C can be transported by value or uniquely referred to by means of an appropriate identifier, regardless of how C specified it in the request to the /token endpoint. Thus, the specific field carried in the access token claim and specifying AUTH_CRED_C depends on the specific way used by AS.<a href="#section-3.3.1-2.2.2" class="pilcrow">¶</a></p>
 <p id="section-3.3.1-2.2.3">
-When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH_CRED_C, AUTH_CRED_RS), it is typically expected that AUTH_CRED_C is included by value.<a href="#section-3.3.1-2.2.3" class="pilcrow">¶</a></p>
+Yet, consistent with the considerations about AUTH_CRED_C and the "req_cnf" parameter made in <a href="#c-as" class="auto internal xref">Section 3.1</a>, the "cnf" claim of the access token specifies a confirmation method suitable for the type of AUTH_CRED_C.<a href="#section-3.3.1-2.2.3" class="pilcrow">¶</a></p>
 <p id="section-3.3.1-2.2.4">
-When later issuing further access tokens to the same pair (C, RS) using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is identified by reference.<a href="#section-3.3.1-2.2.4" class="pilcrow">¶</a></p>
+When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH_CRED_C, AUTH_CRED_RS), it is typically expected that AUTH_CRED_C is included by value.<a href="#section-3.3.1-2.2.4" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-2.2.5">
+When later issuing further access tokens to the same pair (C, RS) using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is identified by reference.<a href="#section-3.3.1-2.2.5" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-3.3.1-3">When issuing the first access token of a token series, AS <span class="bcp14">MAY</span> specify additional EDHOC_Information data (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) in the "edhoc_info" claim of the access token. Specifically, if the following EDHOC_Information data are specified in the response to C from the /token endpoint, they <span class="bcp14">MUST</span> be included with the same values in the access token.<a href="#section-3.3.1-3" class="pilcrow">¶</a></p>
@@ -4408,13 +4413,16 @@ responder = 13
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-D.1-1.1">
-            <p id="appendix-D.1-1.1.1">Revised examples in CBOR diagnostic notation.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.1.1">Explicit statement on admitted confirmation methods.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.2">
-            <p id="appendix-D.1-1.2.1">Changed CBOR abbreviations to not collide with existing codepoints.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.2.1">Revised examples in CBOR diagnostic notation.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.3">
-            <p id="appendix-D.1-1.3.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.3.1">Changed CBOR abbreviations to not collide with existing codepoints.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.4">
+            <p id="appendix-D.1-1.4.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

@@ -436,19 +436,14 @@ Table of Contents
    The following subsections describe the details of the POST request
    and response to the /token endpoint between C and AS.
 
-   In this exchange, AS provides C with the access token, together with
+   In this exchange, C provides AS with its own authentication
+   credential AUTH_CRED_C.  Then, AS issues the access token as securely
+   bound to AUTH_CRED_C, by including it or uniquely referring to it in
+   the access token.  Together with the access token, AS provides C with
    a set of parameters that enable C to run EDHOC with RS.  In
-   particular, these include information about the authorization
-   credential of RS, AUTH_CRED_RS, transported by value or uniquely
-   referred to.
-
-   The access token is securely bound to the authentication credential
-   of C, AUTH_CRED_C, by including it or uniquely referring to it in the
-   access token.
-
-   AUTH_CRED_C is specified in the "req_cnf" parameter defined in
-   [RFC9201] of the POST request to the /token endpoint from C to AS,
-   either transported by value or uniquely referred to.
+   particular, these parameters include information about the
+   authorization credential of RS, AUTH_CRED_RS, that is transported by
+   value or uniquely referred to.
 
    The request to the /token endpoint and the corresponding response can
    include EDHOC_Information, which is a CBOR map object containing
@@ -466,9 +461,28 @@ Table of Contents
    RECOMMENDED to use CoAP, EDHOC, and OSCORE in order to reduce the
    number of libraries that C has to support.
 
-   An example of such a request is shown in Figure 3.  In this example,
-   C specifies its own authentication credential by reference, as the
-   hash of an X.509 certificate carried in the "x5t" field of the
+   AUTH_CRED_C is specified in the "req_cnf" parameter [RFC9201] of the
+   POST request, either transported by value or uniquely referred to.
+
+   For AUTH_CRED_C, its authentication credential type MUST be one of
+   those supported by EDHOC, e.g., CBOR Web Tokens (CWTs) and CWT Claims
+   Sets (CCSs) [RFC8392], X.509 certificates [RFC5280], and C509
+   certificates [I-D.ietf-cose-cbor-encoded-cert].  Consequently, the
+   "req_cnf" parameter specifies a confirmation method suitable for the
+   type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is an
+   X.509 certificate transported by value or by reference, respectively.
+
+   Note that EDHOC does not admit the use of naked COSE_Keys as
+   authentication credentials.  The closest admitted authentication
+   credential type is a CCS containing a COSE_Key in a "cnf" claim and
+   possibly other claims, which can be transported by value using the
+   confirmation method "kccs".  Therefore, the "req_cnf" parameter
+   cannot specify the confirmation method "COSE_Key" (CBOR abbreviation:
+   1).
+
+   An example of client-to-AS request is shown in Figure 3.  In this
+   example, C specifies its own authentication credential by reference,
+   as the hash of an X.509 certificate carried in the "x5t" field of the
    "req_cnf" parameter.
 
       Header: POST (Code=0.02)
@@ -621,6 +635,13 @@ Table of Contents
       using the same AUTH_CRED_RS, it is expected that the response to C
       includes AUTH_CRED_RS by reference.
 
+      For AUTH_CRED_RS, its authentication credential type MUST be one
+      of those supported by EDHOC.  Consequently, the "rs_cnf" parameter
+      specifies a confirmation method suitable for the type of
+      AUTH_CRED_RS.  That is, the same considerations about AUTH_CRED_C
+      and the "req_cnf" parameter made in Section 3.1 hold for
+      AUTH_CRED_RS and the "rs_cnf" parameter.
+
    When issuing the first access token of a token series, AS MAY send
    EDHOC_Information related to RS, see Section 3.4, in corresponding
    fields of the response to C.  This information is based on knowledge
@@ -678,6 +699,11 @@ Table of Contents
       endpoint.  Thus, the specific field carried in the access token
       claim and specifying AUTH_CRED_C depends on the specific way used
       by AS.
+
+      Yet, consistent with the considerations about AUTH_CRED_C and the
+      "req_cnf" parameter made in Section 3.1, the "cnf" claim of the
+      access token specifies a confirmation method suitable for the type
+      of AUTH_CRED_C.
 
       When issuing the first access token ever to a pair (C, RS) using a
       pair of corresponding authentication credentials (AUTH_CRED_C,
@@ -2931,6 +2957,8 @@ Appendix D.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 D.1.  Version -06 to -07
+
+   *  Explicit statement on admitted confirmation methods.
 
    *  Revised examples in CBOR diagnostic notation.
 

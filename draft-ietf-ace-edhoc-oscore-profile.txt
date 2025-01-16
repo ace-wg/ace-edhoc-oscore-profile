@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 23 April 2025                                         M. Tiloca
+Expires: 20 July 2025                                          M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         20 October 2024
+                                                         16 January 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,11 +64,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 April 2025.
+   This Internet-Draft will expire on 20 July 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -159,12 +159,13 @@ Table of Contents
    Appendix B.  Profile Requirements
    Appendix C.  CDDL Model
    Appendix D.  Document Updates
-     D.1.  Version -05 to -06
-     D.2.  Version -04 to -05
-     D.3.  Version -03 to -04
-     D.4.  Version -02 to -03
-     D.5.  Version -01 to -02
-     D.6.  Version -00 to -01
+     D.1.  Version -06 to -07
+     D.2.  Version -05 to -06
+     D.3.  Version -04 to -05
+     D.4.  Version -03 to -04
+     D.5.  Version -02 to -03
+     D.6.  Version -01 to -02
+     D.7.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -557,7 +558,7 @@ Table of Contents
    fixed throughout the series lifetime.  When assigning the identifier,
    AS MUST ensure that it was not used in a previous series whose access
    tokens share the following properties with the access tokens of the
-   new series:
+   new series, irrespective of the used ACE profile:
 
    *  i) issued for the same RS; and
 
@@ -2291,9 +2292,9 @@ Table of Contents
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-11, 8 July 2024,
+              ietf-cose-cbor-encoded-cert-12, 8 January 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-11>.
+              cbor-encoded-cert-12>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2422,32 +2423,33 @@ Table of Contents
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              05, 8 July 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-coap-est-oscore-05>.
+              06, 21 October 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
+              coap-est-oscore-06>.
 
    [I-D.ietf-ace-workflow-and-params]
               Tiloca, M. and G. Selander, "Alternative Workflow and
               OAuth Parameters for the Authentication and Authorization
               for Constrained Environments (ACE) Framework", Work in
               Progress, Internet-Draft, draft-ietf-ace-workflow-and-
-              params-02, 8 July 2024,
+              params-03, 21 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              workflow-and-params-02>.
+              workflow-and-params-03>.
 
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-key-update-08, 8 July 2024,
+              core-oscore-key-update-09, 21 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-key-update-08>.
+              oscore-key-update-09>.
 
    [I-D.ietf-lake-authz]
               Selander, G., Mattsson, J. P., Vučinić, M., Fedrecheski,
               G., and M. Richardson, "Lightweight Authorization using
-              Ephemeral Diffie-Hellman Over COSE", Work in Progress,
-              Internet-Draft, draft-ietf-lake-authz-02, 5 July 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
-              authz-02>.
+              Ephemeral Diffie-Hellman Over COSE (ELA)", Work in
+              Progress, Internet-Draft, draft-ietf-lake-authz-03, 21
+              October 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lake-authz-03>.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
@@ -2928,7 +2930,11 @@ Appendix D.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-D.1.  Version -05 to -06
+D.1.  Version -06 to -07
+
+   *  Clarifications and editorial improvements.
+
+D.2.  Version -05 to -06
 
    *  The access token can be uploaded through EDHOC in EAD_3, EAD_2, or
       EAD_4.
@@ -2949,7 +2955,7 @@ D.1.  Version -05 to -06
 
    *  Clarifications and editorial improvements.
 
-D.2.  Version -04 to -05
+D.3.  Version -04 to -05
 
    *  CBOR diagnostic notation uses placeholders from a CDDL model.
 
@@ -2969,7 +2975,7 @@ D.2.  Version -04 to -05
 
    *  Editorial fixes and improvements.
 
-D.3.  Version -03 to -04
+D.4.  Version -03 to -04
 
    *  Fixed column name and prefilling of the "EDHOC Information"
       registry.
@@ -2988,7 +2994,7 @@ D.3.  Version -03 to -04
 
    *  Editorial fixes and improvements.
 
-D.4.  Version -02 to -03
+D.5.  Version -02 to -03
 
    *  Restructured presentation of content.
 
@@ -3004,7 +3010,7 @@ D.4.  Version -02 to -03
 
    *  Clarifications and editorial improvements.
 
-D.5.  Version -01 to -02
+D.6.  Version -01 to -02
 
    *  Removed use of EDHOC_KeyUpdate.
 
@@ -3018,7 +3024,7 @@ D.5.  Version -01 to -02
 
    *  Editorial improvements.
 
-D.6.  Version -00 to -01
+D.7.  Version -00 to -01
 
    *  Fixed semantics of the ead_value for transporting an Access Token
       in the EAD_1 field.

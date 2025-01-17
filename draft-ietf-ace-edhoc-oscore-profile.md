@@ -895,15 +895,16 @@ IANA is asked to add the following entry to the "OAuth Parameters CBOR Mappings"
 * CBOR Key: TBD
 * Value Type: map
 * Reference: {{&SELF}}
+* Original Specification: {{&SELF}}
 
 ## JSON Web Token Claims Registry ## {#iana-token-json-claims}
 
 IANA is asked to add the following entries to the "JSON Web Token Claims" registry, following the procedure specified in {{RFC7519}}.
 
-*  Claim Name: "edhoc_info"
-*  Claim Description: Information for EDHOC session
-*  Change Controller: IETF
-*  Reference: {{&SELF}}
+* Claim Name: "edhoc_info"
+* Claim Description: Information for EDHOC session
+* Change Controller: IETF
+* Reference: {{&SELF}}
 
 ## CBOR Web Token (CWT) Claims Registry ## {#iana-token-cwt-claims}
 
@@ -1557,6 +1558,8 @@ responder = 13
 * Revised examples in CBOR diagnostic notation.
 
 * Changed CBOR abbreviations to not collide with existing codepoints.
+
+* Updates and fixes in the IANA considerations.
 
 * Clarifications and editorial improvements.
 

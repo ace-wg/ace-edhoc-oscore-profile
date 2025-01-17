@@ -936,9 +936,9 @@ Table of Contents
       simple value "true" or "false", and has label 4.
 
    *  comb_req: This parameter indicates whether the combined EDHOC +
-      OSCORE request defined in [I-D.ietf-core-oscore-edhoc]) is
-      supported.  In JSON, the "comb_req" value is a boolean.  In CBOR,
-      "comb_req" is the simple value "true" or "false", and has label 5.
+      OSCORE request defined in [RFC9668]) is supported.  In JSON, the
+      "comb_req" value is a boolean.  In CBOR, "comb_req" is the simple
+      value "true" or "false", and has label 5.
 
    *  uri_path: This parameter specifies the path component of the URI
       of the EDHOC resource where EDHOC messages have to be sent as
@@ -973,7 +973,7 @@ Table of Contents
       integers.  In CBOR, "cred_types" is an integer or an array of
       integers, and has label 9.  The integer values are taken from the
       "EDHOC Authentication Credential Types" registry defined in
-      [I-D.ietf-core-oscore-edhoc].
+      [RFC9668].
 
    *  id_cred_types: This parameter specifies a set of supported types
       of authentication credential identifiers for EDHOC (see
@@ -1321,15 +1321,15 @@ Table of Contents
       which the access token belongs.
 
    If supported by C, C MAY use the EDHOC + OSCORE combined request
-   defined in [I-D.ietf-core-oscore-edhoc], unless the "comb_req" field
-   of the EDHOC_Information was present in the access token response and
-   set to the CBOR simple value "false" (0xf4).  In the combined
-   request, both EDHOC message_3 and the first OSCORE-protected
-   application request are combined together in a single OSCORE-
-   protected CoAP request, thus saving one round trip.  For an example,
-   see Appendix A.2.  This requires C to derive the OSCORE Security
-   Context with RS already after having successfully processed the
-   received EDHOC message_2 and before sending EDHOC message_3.
+   defined in [RFC9668], unless the "comb_req" field of the
+   EDHOC_Information was present in the access token response and set to
+   the CBOR simple value "false" (0xf4).  In the combined request, both
+   EDHOC message_3 and the first OSCORE-protected application request
+   are combined together in a single OSCORE-protected CoAP request, thus
+   saving one round trip.  For an example, see Appendix A.2.  This
+   requires C to derive the OSCORE Security Context with RS already
+   after having successfully processed the received EDHOC message_2 and
+   before sending EDHOC message_3.
 
 4.6.  Update of Access Rights
 
@@ -2306,16 +2306,6 @@ Table of Contents
               <https://www.iana.org/assignments/cose/cose.xhtml#header-
               parameters>.
 
-   [I-D.ietf-core-oscore-edhoc]
-              Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
-              G. Selander, "Using Ephemeral Diffie-Hellman Over COSE
-              (EDHOC) with the Constrained Application Protocol (CoAP)
-              and Object Security for Constrained RESTful Environments
-              (OSCORE)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-edhoc-11, 9 April 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-edhoc-11>.
-
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
@@ -2445,6 +2435,13 @@ Table of Contents
               DOI 10.17487/RFC9528, March 2024,
               <https://www.rfc-editor.org/rfc/rfc9528>.
 
+   [RFC9668]  Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
+              G. Selander, "Using Ephemeral Diffie-Hellman Over COSE
+              (EDHOC) with the Constrained Application Protocol (CoAP)
+              and Object Security for Constrained RESTful Environments
+              (OSCORE)", RFC 9668, DOI 10.17487/RFC9668, November 2024,
+              <https://www.rfc-editor.org/rfc/rfc9668>.
+
 11.2.  Informative References
 
    [I-D.ietf-ace-coap-est-oscore]
@@ -2504,9 +2501,9 @@ Appendix A.  Examples
 
    *  Appendix A.1 does not make use of use of any optimization.
 
-   *  Appendix A.2 makes use of the optimizations defined in
-      [I-D.ietf-core-oscore-edhoc], hence reducing the roundtrips of the
-      interactions between the Client and the Resource Server.
+   *  Appendix A.2 makes use of the optimizations defined in [RFC9668],
+      hence reducing the roundtrips of the interactions between the
+      Client and the Resource Server.
 
    All these examples build on the following assumptions, as relying on
    expected early procedures performed at AS.  These include the
@@ -2747,9 +2744,8 @@ A.1.  Workflow without Optimizations
 A.2.  Workflow with Optimizations
 
    The example below builds on the example in Appendix A.1, while
-   additionally using the EDHOC+OSCORE request defined in
-   [I-D.ietf-core-oscore-edhoc] when running EDHOC both with AS and with
-   RS.
+   additionally using the EDHOC+OSCORE request defined in [RFC9668] when
+   running EDHOC both with AS and with RS.
 
    This interaction between C and RS consists of only two roundtrips to
    upload the access token, run EDHOC and access the protected resource
@@ -2968,6 +2964,8 @@ D.1.  Version -06 to -07
       codepoints.
 
    *  Updates and fixes in the IANA considerations.
+
+   *  Updated references.
 
    *  Clarifications and editorial improvements.
 

@@ -65,7 +65,7 @@ normative:
   RFC9203:
   RFC9360:
   RFC9528:
-  I-D.ietf-core-oscore-edhoc:
+  RFC9668:
   I-D.ietf-cose-cbor-encoded-cert:
   COSE.Header.Parameters:
     author:
@@ -457,7 +457,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of RFC9528}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value "true" or "false", and has label 4.
 
-* comb\_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}}) is supported. In JSON, the "comb\_req" value is a boolean. In CBOR, "comb\_req" is the simple value "true" or "false", and has label 5.
+* comb\_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in {{RFC9668}}) is supported. In JSON, the "comb\_req" value is a boolean. In CBOR, "comb\_req" is the simple value "true" or "false", and has label 5.
 
 * uri\_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri\_path" value is a string. In CBOR, "uri\_path" is a text string, and has label 6.
 
@@ -467,7 +467,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * osc\_version: This parameter specifies the OSCORE Version number that the two EDHOC peers have to use when using OSCORE. For more information about this parameter, see {{Section 5.4 of RFC8613}}. In JSON, the "osc\_version" value is an integer. In CBOR, the "osc\_version" type is unsigned integer, and has label 9.
 
-* cred\_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see {{Section 3.5.2 of RFC9528}}). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred\_types" value is an integer or an array of integers. In CBOR, "cred\_types" is an integer or an array of integers, and has label 9. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in {{I-D.ietf-core-oscore-edhoc}}.
+* cred\_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see {{Section 3.5.2 of RFC9528}}). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred\_types" value is an integer or an array of integers. In CBOR, "cred\_types" is an integer or an array of integers, and has label 9. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in {{RFC9668}}.
 
 * id\_cred\_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see {{Section 3.5.3 of RFC9528}}). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id\_cred\_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id\_cred\_types" is an integer or a text string, or an array of integers and text strings, and has label 10. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}}.
 
@@ -650,7 +650,7 @@ Once successfully completed the EDHOC session, C and RS derive an OSCORE Securit
 * RS associates the latest EDHOC session and the derived OSCORE Security Context
 with the stored access token, which is bound to the authentication credential AUTH_CRED_C used in the EDHOC session and with the session_id identifying the token series to which the access token belongs.
 
-If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{I-D.ietf-core-oscore-edhoc}}, unless the "comb\_req" field of the EDHOC\_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see {{example-with-optimization}}. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2 and before sending EDHOC message\_3.
+If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{RFC9668}}, unless the "comb\_req" field of the EDHOC\_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see {{example-with-optimization}}. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2 and before sending EDHOC message\_3.
 
 ## Update of Access Rights {#update-access-rights-c-rs}
 
@@ -1156,8 +1156,7 @@ This appendix provides examples where this profile of ACE is used. In particular
 
 * {{example-without-optimization}} does not make use of use of any optimization.
 
-* {{example-with-optimization}} makes use of the optimizations defined in
-{{I-D.ietf-core-oscore-edhoc}}, hence reducing the roundtrips of the interactions between the Client and the Resource Server.
+* {{example-with-optimization}} makes use of the optimizations defined in {{RFC9668}}, hence reducing the roundtrips of the interactions between the Client and the Resource Server.
 
 All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of RSs by the respective Resource Owners as well as the registrations of Clients authorized to request access token for those RSs.
 
@@ -1376,7 +1375,7 @@ M17 |<----------------------------------------------------------------+
 
 ## Workflow with Optimizations # {#example-with-optimization}
 
-The example below builds on the example in {{example-without-optimization}}, while additionally using the EDHOC+OSCORE request defined in {{I-D.ietf-core-oscore-edhoc}} when running EDHOC both with AS and with RS.
+The example below builds on the example in {{example-without-optimization}}, while additionally using the EDHOC+OSCORE request defined in {{RFC9668}} when running EDHOC both with AS and with RS.
 
 This interaction between C and RS consists of only two roundtrips to upload the access token, run EDHOC and access the protected resource at RS.
 
@@ -1560,6 +1559,8 @@ responder = 13
 * Changed CBOR abbreviations to not collide with existing codepoints.
 
 * Updates and fixes in the IANA considerations.
+
+* Updated references.
 
 * Clarifications and editorial improvements.
 

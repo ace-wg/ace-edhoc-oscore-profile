@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 21 July 2025                                          M. Tiloca
+Expires: 22 July 2025                                          M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         17 January 2025
+                                                         18 January 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 July 2025.
+   This Internet-Draft will expire on 22 July 2025.
 
 Copyright Notice
 
@@ -137,22 +137,26 @@ Table of Contents
      7.8.  URI Pointing to an Ordered Chain of C509 Certificates
      7.9.  CWT Containing a COSE_Key
      7.10. CCS Containing a COSE_Key
-   8.  Security Considerations
-   9.  Privacy Considerations
-   10. IANA Considerations
-     10.1.  ACE Profiles Registry
-     10.2.  OAuth Parameters Registry
-     10.3.  OAuth Parameters CBOR Mappings Registry
-     10.4.  JSON Web Token Claims Registry
-     10.5.  CBOR Web Token (CWT) Claims Registry
-     10.6.  JWT Confirmation Methods Registry
-     10.7.  CWT Confirmation Methods Registry
-     10.8.  EDHOC External Authorization Data Registry
-     10.9.  EDHOC Information Registry
-     10.10. Expert Review Instructions
-   11. References
-     11.1.  Normative References
-     11.2.  Informative References
+   8.  EDHOC Endpoint Identity Types
+   9.  EDHOC Transports
+   10. Security Considerations
+   11. Privacy Considerations
+   12. IANA Considerations
+     12.1.  ACE Profiles Registry
+     12.2.  OAuth Parameters Registry
+     12.3.  OAuth Parameters CBOR Mappings Registry
+     12.4.  JSON Web Token Claims Registry
+     12.5.  CBOR Web Token (CWT) Claims Registry
+     12.6.  JWT Confirmation Methods Registry
+     12.7.  CWT Confirmation Methods Registry
+     12.8.  EDHOC External Authorization Data Registry
+     12.9.  EDHOC Information Registry
+     12.10. EDHOC Endpoint Identity Types Registry
+     12.11. EDHOC Transports Registry
+     12.12. Expert Review Instructions
+   13. References
+     13.1.  Normative References
+     13.2.  Informative References
    Appendix A.  Examples
      A.1.  Workflow without Optimizations
      A.2.  Workflow with Optimizations
@@ -449,7 +453,7 @@ Table of Contents
    include EDHOC_Information, which is a CBOR map object containing
    information related to an EDHOC implementation, see Section 3.4.
    This object is transported in the "edhoc_info" parameter registered
-   in Section 10.2 and Section 10.3.
+   in Section 12.2 and Section 12.3.
 
 3.1.  C-to-AS: POST to /token endpoint
 
@@ -687,7 +691,7 @@ Table of Contents
       specified in the response to C from the /token endpoint.
 
       EDHOC_Information MUST be transported in the "edhoc_info" claim,
-      defined in Section 10.5.
+      defined in Section 12.5.
 
    *  The authentication credential AUTH_CRED_C that C specified in its
       POST request to the /token endpoint (see Section 3.1), in the
@@ -822,9 +826,9 @@ Table of Contents
    The EDHOC_Information can be encoded either as a JSON object or as a
    CBOR map.  The set of common fields that can appear in an
    EDHOC_Information can be found in the IANA "EDHOC Information"
-   registry (see Section 10.9), defined for extensibility, and the
-   initial set of parameters defined in this document is specified
-   below.  All parameters are optional.
+   registry defined in Section 12.9 for extensibility.  The initial set
+   of parameters defined in this document is specified below.  All
+   parameters are optional.
 
    Table 1 provides a summary of the EDHOC_Information parameters
    defined in this section.
@@ -902,6 +906,39 @@ Table of Contents
    | responder     | 13    | True  |                | Support for      |
    |               |       | or    |                | the EDHOC        |
    |               |       | False |                | Responder role   |
+   +---------------+-------+-------+----------------+------------------+
+   | max_msgsize   | 14    | uint  |                | Maximum size     |
+   |               |       |       |                | of EDHOC         |
+   |               |       |       |                | messages in      |
+   |               |       |       |                | bytes            |
+   +---------------+-------+-------+----------------+------------------+
+   | coap_ct       | 15    | True  |                | Requested use    |
+   |               |       | of    |                | of the CoAP      |
+   |               |       | False |                | Content-Format   |
+   |               |       |       |                | Option in CoAP   |
+   |               |       |       |                | messages whose   |
+   |               |       |       |                | payload          |
+   |               |       |       |                | includes         |
+   |               |       |       |                | exclusively an   |
+   |               |       |       |                | EDHOC message,   |
+   |               |       |       |                | possibly         |
+   |               |       |       |                | prepended by     |
+   |               |       |       |                | an EDHOC         |
+   |               |       |       |                | connection       |
+   |               |       |       |                | identifier       |
+   +---------------+-------+-------+----------------+------------------+
+   | id_ep_types   | 16    | int   | EDHOC Endpoint | Set of           |
+   |               |       | or    | Identity Types | supported        |
+   |               |       | array | Registry       | types of         |
+   |               |       |       |                | endpoint         |
+   |               |       |       |                | identities for   |
+   |               |       |       |                | EDHOC            |
+   +---------------+-------+-------+----------------+------------------+
+   | transports    | 17    | int   | EDHOC          | Set of           |
+   |               |       | or    | Transports     | supported        |
+   |               |       | array | Registry       | means for        |
+   |               |       |       |                | transporting     |
+   |               |       |       |                | EDHOC messages   |
    +---------------+-------+-------+----------------+------------------+
 
                    Table 1: EDHOC_Information Parameters
@@ -1011,6 +1048,42 @@ Table of Contents
       In CBOR, "responder" is the simple value "true" (0xf5) or "false"
       (0xf4), and has label 13.
 
+   *  max_msgsize: This parameter specifies the admitted maximum size of
+      EDHOC messages in bytes.  In JSON, the "max_msgsize" value is an
+      unsigned integer.  In CBOR, "max_msgsize" is an unsigned integer
+      and has label 14.
+
+   *  coap_cf: This parameter specifies whether it is required that CoAP
+      messages include the CoAP Content-Format Option with value 64
+      (application/edhoc+cbor-seq) or 65 (application/cid-edhoc+cbor-
+      seq) as appropriate, when the message payload includes exclusively
+      an EDHOC message possibly prepended by an EDHOC connection
+      identifier (see Sections 3.4.1 and A.2 of [RFC9528]).  In JSON,
+      the "coap_cf" value is a boolean.  In CBOR, "coap_cf" is the
+      simple value true (0xf5) or false (0xf4), and has label 15.
+
+   *  id_ep_types: This parameter specifies a set of supported types of
+      endpoint identities for EDHOC.  If the set is composed of a single
+      type of endpoint identity, this is encoded as an integer.
+      Otherwise, the set is encoded as an array, where each array
+      element encodes one type of endpoint identity as an integer.  In
+      JSON, the "id_ep_types" value is an integer or an array of
+      integers.  In CBOR, "id_ep_types" is an integer or an array of
+      integers, and has label 16.  The integer values are taken from the
+      'CBOR Label' column of the "EDHOC Endpoint Identity Types"
+      registry defined in Section 12.10 of this document.
+
+   *  transports: This parameter specifies a set of supported means for
+      transporting EDHOC messages.  If the set is composed of a single
+      means for transporting EDHOC messages, this is encoded as an
+      integer.  Otherwise, the set is encoded as an array, where each
+      array element encodes one means for transporting EDHOC messages as
+      an integer.  In JSON, the "transports" value is an integer or an
+      array of integers.  In CBOR, "transports" is an integer or an
+      array of integers, and has label 17.  The integer values are taken
+      from the 'Transport ID' column of the "EDHOC Transports" Registry
+      defined in Section 12.11 of this document.
+
    An example of JSON EDHOC_Information is given in Figure 7.
 
       "edhoc_info" : {
@@ -1038,6 +1111,10 @@ Table of Contents
      ? 11 => uint / array,           ; eads
      ? 12 => true / false,           ; initiator
      ? 13 => true / false,           ; responder
+     ? 14 => uint,                   ; max_msgsize
+     ? 15 => true / false,           ; coap_ct
+     ? 16 => int / array,            ; id_ep_types
+     ? 17 => int / array,            ; transports
      * int / tstr => any
    }
 
@@ -1065,7 +1142,7 @@ Table of Contents
 
    *  EAD_ACCESS_TOKEN = (ead_label, ead_value), where:
 
-      -  ead_label is the integer value TBD registered in Section 10.8,
+      -  ead_label is the integer value TBD registered in Section 12.8,
          and
 
       -  ead_value is a CBOR byte string equal to the value of the
@@ -1088,7 +1165,7 @@ Table of Contents
 
    *  EAD_SESSION_ID = (ead_label, ead_value), where:
 
-      -  ead_label is the integer value TBD registered in Section 10.8,
+      -  ead_label is the integer value TBD registered in Section 12.8,
          and
 
       -  ead_value is a CBOR byte string equal to the value of the
@@ -1555,7 +1632,7 @@ Table of Contents
 6.  CWT Confirmation Methods
 
    This document defines a number of new CWT confirmation methods (see
-   Section 10.7).  The semantics of each confirmation method is defined
+   Section 12.7).  The semantics of each confirmation method is defined
    below.
 
 6.1.  Ordered Chain of X.509 Certificates
@@ -1630,7 +1707,7 @@ Table of Contents
 7.  JWT Confirmation Methods
 
    This document defines a number of new JWT confirmation methods (see
-   Section 10.6).  The semantics of each confirmation method is defined
+   Section 12.6).  The semantics of each confirmation method is defined
    below.
 
 7.1.  Ordered Chain of X.509 Certificates
@@ -1724,7 +1801,56 @@ Table of Contents
    possibly other claims.  The format of "kcwt" is the base64url-encoded
    serialization of the CWT.
 
-8.  Security Considerations
+8.  EDHOC Endpoint Identity Types
+
+   This document defines the following identifier of type of endpoint
+   identity for EDHOC.
+
+   Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
+   with the RFC number of this specification and delete this paragraph.
+
+    +========+============+====================+=====================+
+    | Name   | CBOR label | Description        | Reference           |
+    +========+============+====================+=====================+
+    | EUI-64 | 0          | An EUI-64 identity | [RFC-XXXX][RFC4291] |
+    +--------+------------+--------------------+---------------------+
+
+                  Table 2: EDHOC Endpoint Identity Types
+
+9.  EDHOC Transports
+
+   This document defines the following identifiers of means for
+   transporting EDHOC messages.
+
+    +===========+============+===================+====================+
+    | Transport | Name       | Description       | Reference          |
+    | ID        |            |                   |                    |
+    +===========+============+===================+====================+
+    | 0         | CoAP over  | EDHOC messages    | [RFC7252],         |
+    |           | UDP        | are transported   | Appendix A.2 of    |
+    |           |            | as payload of     | [RFC9528]          |
+    |           |            | CoAP messages, in |                    |
+    |           |            | turn transported  |                    |
+    |           |            | over UDP          |                    |
+    +-----------+------------+-------------------+--------------------+
+    | 1         | CoAP over  | EDHOC messages    | [RFC7252][RFC8323] |
+    |           | TCP        | are transported   |                    |
+    |           |            | as payload of     |                    |
+    |           |            | CoAP messages, in |                    |
+    |           |            | turn transported  |                    |
+    |           |            | over TCP          |                    |
+    +-----------+------------+-------------------+--------------------+
+    | 2         | CoAP over  | EDHOC messages    | [RFC7252][RFC8323] |
+    |           | WebSockets | are transported   |                    |
+    |           |            | as payload of     |                    |
+    |           |            | CoAP messages, in |                    |
+    |           |            | turn transported  |                    |
+    |           |            | over WebSockets   |                    |
+    +-----------+------------+-------------------+--------------------+
+
+                         Table 3: EDHOC Transports
+
+10.  Security Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -1770,7 +1896,7 @@ Table of Contents
    token per client per PoP-key (i.e., per client's authentication
    credential).
 
-9.  Privacy Considerations
+11.  Privacy Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -1806,14 +1932,14 @@ Table of Contents
    if C and RS dynamically update their OSCORE identifiers, e.g., by
    using the method defined in [I-D.ietf-core-oscore-key-update].
 
-10.  IANA Considerations
+12.  IANA Considerations
 
    This document has the following actions for IANA.
 
    Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
    with the RFC number of this specification and delete this paragraph.
 
-10.1.  ACE Profiles Registry
+12.1.  ACE Profiles Registry
 
    IANA is asked to add the following entry to the "ACE Profiles"
    registry, following the procedure specified in [RFC9200].
@@ -1830,7 +1956,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-10.2.  OAuth Parameters Registry
+12.2.  OAuth Parameters Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters"
    registry.
@@ -1843,7 +1969,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-10.3.  OAuth Parameters CBOR Mappings Registry
+12.3.  OAuth Parameters CBOR Mappings Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters
    CBOR Mappings" registry, following the procedure specified in
@@ -1859,7 +1985,7 @@ Table of Contents
 
    *  Original Specification: [RFC-XXXX]
 
-10.4.  JSON Web Token Claims Registry
+12.4.  JSON Web Token Claims Registry
 
    IANA is asked to add the following entries to the "JSON Web Token
    Claims" registry, following the procedure specified in [RFC7519].
@@ -1872,7 +1998,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-10.5.  CBOR Web Token (CWT) Claims Registry
+12.5.  CBOR Web Token (CWT) Claims Registry
 
    IANA is asked to add the following entries to the "CBOR Web Token
    (CWT) Claims" registry, following the procedure specified in
@@ -1892,7 +2018,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-10.6.  JWT Confirmation Methods Registry
+12.6.  JWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "JWT Confirmation
    Methods" registry, following the procedure specified in [RFC7800].
@@ -2003,7 +2129,7 @@ Table of Contents
 
    *  Reference: Section 7.10 of [RFC-XXXX]
 
-10.7.  CWT Confirmation Methods Registry
+12.7.  CWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "CWT Confirmation
    Methods" registry, following the procedure specified in [RFC8747].
@@ -2174,7 +2300,7 @@ Table of Contents
 
    *  Reference: Section 6.10 of [RFC-XXXX]
 
-10.8.  EDHOC External Authorization Data Registry
+12.8.  EDHOC External Authorization Data Registry
 
    IANA is asked to add the following entries to the "EDHOC External
    Authorization Data" registry defined in Section 10.5 of [RFC9528].
@@ -2198,7 +2324,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX], Section 4.1
 
-10.9.  EDHOC Information Registry
+12.9.  EDHOC Information Registry
 
    IANA is requested to create a new "EDHOC Information" registry within
    the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group
@@ -2207,7 +2333,7 @@ Table of Contents
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", "Specification Required" per Section 4.6 of
    [RFC8126], or "Expert Review" per Section 4.5 of [RFC8126].  "Expert
-   Review" guidelines are provided in Section 10.10.
+   Review" guidelines are provided in Section 12.12.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2258,48 +2384,140 @@ Table of Contents
    In the "Specification" column, the value for all of these entries
    will be [RFC-XXXX] and [RFC9528].
 
-10.10.  Expert Review Instructions
+12.10.  EDHOC Endpoint Identity Types Registry
 
-   The IANA registry established in this document is defined as
-   "Standards Action with Expert Review", "Specification Required", or
-   "Expert Review", depending on the range of values for which an
-   assignment is requested.  This section gives some general guidelines
-   for what the experts should be looking for, but they are being
-   designated as experts for a reason so they should be given
-   substantial latitude.
+   IANA is requested to create a new "EDHOC Endpoint Identity Types"
+   registry within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)"
+   registry group defined in [RFC9528].
+
+   The registration policy is either "Private Use", "Standards Action
+   with Expert Review", or "Specification Required" per Section 4.6 of
+   [RFC8126].  "Expert Review" guidelines are provided in Section 12.12.
+
+   All assignments according to "Standards Action with Expert Review"
+   are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
+   with Expert Review additionally required per Section 4.5 of
+   [RFC8126].  The procedure for early IANA allocation of Standards
+   Track code points defined in [RFC7120] also applies.  When such a
+   procedure is used, IANA will ask the designated expert(s) to approve
+   the early allocation before registration.  In addition, WG chairs are
+   encouraged to consult the expert(s) early during the process outlined
+   in Section 3.1 of [RFC7120].
+
+   The columns of this registry are:
+
+   *  Name: This field contains the name of the EDHOC endpoint identity
+      type.
+
+   *  CBOR Label: The value to be used to identify this EDHOC endpoint
+      identity type.  These values MUST be unique.  The value can be a
+      positive integer or a negative integer.  Different ranges of
+      values use different registration policies [RFC8126].  Integer
+      values from -24 to 23 are designated as "Standards Action With
+      Expert Review".  Integer values from -65536 to -25 and from 24 to
+      65535 are designated as "Specification Required".  Integer values
+      smaller than -65536 and greater than 65535 are marked as "Private
+      Use".
+
+   *  Description: This field contains a short description of the EDHOC
+      endpoint identity type.
+
+   *  Reference: This field contains a pointer to the public
+      specification for the EDHOC endpoint identity type.
+
+   This registry has been initially populated with the values in
+   Table 2.
+
+12.11.  EDHOC Transports Registry
+
+   IANA is requested to create a new "EDHOC Transports" registry within
+   the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group
+   defined in [RFC9528].
+
+   The registration policy is either "Private Use", "Standards Action
+   with Expert Review", or "Specification Required" per Section 4.6 of
+   [RFC8126].  "Expert Review" guidelines are provided in Section 12.12.
+
+   All assignments according to "Standards Action with Expert Review"
+   are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
+   with Expert Review additionally required per Section 4.5 of
+   [RFC8126].  The procedure for early IANA allocation of Standards
+   Track code points defined in [RFC7120] also applies.  When such a
+   procedure is used, IANA will ask the designated expert(s) to approve
+   the early allocation before registration.  In addition, WG chairs are
+   encouraged to consult the expert(s) early during the process outlined
+   in Section 3.1 of [RFC7120].
+
+   The columns of this registry are:
+
+   *  Transport ID: The value to be used to identify this means for
+      transporting EDHOC messages.  These values MUST be unique.  The
+      value can be a positive integer or a negative integer.  Different
+      ranges of values use different registration policies [RFC8126].
+      Integer values from -24 to 23 are designated as "Standards Action
+      With Expert Review".  Integer values from -65536 to -25 and from
+      24 to 65535 are designated as "Specification Required".  Integer
+      values smaller than -65536 and greater than 65535 are marked as
+      "Private Use".
+
+   *  Name: This field contains the name of the means for transporting
+      EDHOC messages.
+
+   *  Description: This field contains a short description of the means
+      used for transporting EDHOC messages.
+
+   *  Reference: This field contains a pointer to the public
+      specification for the means used for transporting EDHOC messages.
+
+   This registry has been initially populated with the values in
+   Table 3.
+
+12.12.  Expert Review Instructions
+
+   "Standards Action with Expert Review", "Specification Required", and
+   "Expert Review" are three of the registration policies defined for
+   the IANA registries established in this document.  This section gives
+   some general guidelines for what the experts should be looking for,
+   but they are being designated as experts for a reason so they should
+   be given substantial latitude.
 
    Expert reviewers should take into consideration the following points:
+
+   *  Clarity and correctness of registrations.  Experts are expected to
+      check the clarity of purpose and use of the requested entries.
+      Experts need to make sure that the object of registration (i.e.,
+      an EDHOC_Information element, an EDHOC endpoint identity type, or
+      a means for transporting EDHOC messages) is clearly defined in the
+      corresponding specification.  Entries that do not meet these
+      objective of clarity and completeness must not be registered.
 
    *  Point squatting should be discouraged.  Reviewers are encouraged
       to get sufficient information for registration requests to ensure
       that the usage is not going to duplicate one that is already
       registered and that the point is likely to be used in deployments.
-      The zones tagged as private use are intended for testing purposes
-      and closed environments; code points in other ranges should not be
-      assigned for testing.
+      The zones tagged as "Private Use" are intended for testing
+      purposes and closed environments.  Code points in other ranges
+      should not be assigned for testing.
 
-   *  Specifications are required for the Standards Action range of
-      point assignment.  Specifications should exist for Specification
-      Required ranges, but early assignment before a specification is
-      available is considered to be permissible.  Specifications are
-      needed for the first-come, first-serve range if they are expected
-      to be used outside of closed environments in an interoperable way.
-      When specifications are not provided, the description provided
-      needs to have sufficient information to identify what the point is
-      being used for.
+   *  Specifications are required for the "Standards Action With Expert
+      Review" range of point assignment.  Specifications should exist
+      for "Specification Required" ranges, but early assignment before a
+      specification is available is considered to be permissible.  When
+      specifications are not provided, the description provided needs to
+      have sufficient information to identify what the point is being
+      used for.
 
    *  Experts should take into account the expected usage of fields when
-      approving point assignment.  The fact that there is a range for
-      Standards Track documents does not mean that a Standards Track
-      document cannot have points assigned outside of that range.  The
-      length of the encoded value should be weighed against how many
-      code points of that length are left, the size of device it will be
-      used on, and the number of code points left that encode to that
-      size.
+      approving point assignment.  Documents published via Standards
+      Action can also register points outside the Standards Action
+      range.  The length of the encoded value should be weighed against
+      how many code points of that length are left, the size of device
+      it will be used on, and the number of code points left that encode
+      to that size.
 
-11.  References
+13.  References
 
-11.1.  Normative References
+13.1.  Normative References
 
    [COSE.Header.Parameters]
               IANA, "COSE Header Parameters",
@@ -2323,6 +2541,10 @@ Table of Contents
               Resource Identifier (URI): Generic Syntax", STD 66,
               RFC 3986, DOI 10.17487/RFC3986, January 2005,
               <https://www.rfc-editor.org/rfc/rfc3986>.
+
+   [RFC4291]  Hinden, R. and S. Deering, "IP Version 6 Addressing
+              Architecture", RFC 4291, DOI 10.17487/RFC4291, February
+              2006, <https://www.rfc-editor.org/rfc/rfc4291>.
 
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
@@ -2368,6 +2590,12 @@ Table of Contents
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8323]  Bormann, C., Lemay, S., Tschofenig, H., Hartke, K.,
+              Silverajan, B., and B. Raymor, Ed., "CoAP (Constrained
+              Application Protocol) over TCP, TLS, and WebSockets",
+              RFC 8323, DOI 10.17487/RFC8323, February 2018,
+              <https://www.rfc-editor.org/rfc/rfc8323>.
 
    [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
               "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
@@ -2442,7 +2670,7 @@ Table of Contents
               (OSCORE)", RFC 9668, DOI 10.17487/RFC9668, November 2024,
               <https://www.rfc-editor.org/rfc/rfc9668>.
 
-11.2.  Informative References
+13.2.  Informative References
 
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
@@ -2955,6 +3183,8 @@ Appendix D.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 D.1.  Version -06 to -07
+
+   *  Defined new parameters for the EDHOC_Information object.
 
    *  Explicit statement on admitted confirmation methods.
 

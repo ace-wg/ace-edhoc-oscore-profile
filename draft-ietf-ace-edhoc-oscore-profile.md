@@ -67,6 +67,7 @@ normative:
   RFC9203:
   RFC9360:
   RFC9528:
+  RFC9562:
   RFC9668:
   I-D.ietf-cose-cbor-encoded-cert:
   COSE.Header.Parameters:
@@ -85,6 +86,7 @@ informative:
   I-D.ietf-core-oscore-key-update:
   I-D.ietf-lake-authz:
   I-D.ietf-ace-coap-est-oscore:
+  I-D.serafin-lake-ta-hint:
 
 entity:
   SELF: "[RFC-XXXX]"
@@ -453,6 +455,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 | coap_ct       | 15         | True of False        |                                                | Requested use of the CoAP Content-Format Option in CoAP messages whose payload includes exclusively an EDHOC message, possibly prepended by an EDHOC connection identifier |
 | id_ep_types   | 16         | int or array         | EDHOC Endpoint Identity Types Registry         | Set of supported types of endpoint identities for EDHOC                                                                                                                    |
 | transports    | 17         | int or array         | EDHOC Transports Registry                      | Set of supported means for transporting EDHOC messages                                                                                                                     |
+| ta_cred       | 18         | map or array         | EDHOC Trust Anchor Types Registry              | Set of supported trust anchors for verifying authentication credentials of EDHOC peers                                                                                     |
 {: #table-cbor-key-edhoc-params title="EDHOC_Information Parameters" align="center"}
 
 * session\_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and has label 0.
@@ -491,6 +494,14 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * transports: This parameter specifies a set of supported means for transporting EDHOC messages. If the set is composed of a single means for transporting EDHOC messages, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one means for transporting EDHOC messages as an integer. In JSON, the "transports" value is an integer or an array of integers. In CBOR, "transports" is an integer or an array of integers, and has label 17. The integer values are taken from the 'Transport ID' column of the "EDHOC Transports" Registry defined in {{iana-edhoc-transports}} of this document.
 
+* ta_cred: This parameter specifies a set of supported trust anchors for performing authentication. These trust anchors are used for verifying authentication credentials of EDHOC peers in EDHOC sessions, and are typically authentication credentials of Certificate Authorities (CAs).
+
+  The set is composed of pairs, each of which specifies a trust anchor type and an identifier of a trust anchor of that type. If the set is composed of a single pair, this is specified as a single item. If the set is composed of multiple pairs, these are specified as elements of an array. Trust anchor types are selected from the "EDHOC Trust Anchor Types" registry defined in {{iana-edhoc-ta-types}} of this document.
+
+  In JSON, the "ta_cred" value is an object or an array of objects. Each object includes only one entry, specifying the pair for a trust anchor TA of type TYPE. The entry's key specifies the TA's type TYPE taken from the 'Trust anchor type' column of the "EDHOC Trust Anchor Types" registry. The entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in {{Section 6.1 of RFC8949}} to the CBOR encoding of the identifier of TA when "ta_cred" is encoded in CBOR (see below).
+
+  In CBOR, the "ta_cred" value is a map or an array of maps, and has label 18. Each map includes only one entry, specifying the pair for a trust anchor TA. The entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry. The entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Trust anchor type' column.
+
 An example of JSON EDHOC\_Information is given in {{fig-edhoc-info-json}}.
 
 ~~~~~~~~~~~
@@ -524,6 +535,7 @@ EDHOC_Information = {
   ? 15 => true / false,           ; coap_ct
   ? 16 => int / array,            ; id_ep_types
   ? 17 => int / array,            ; transports
+  ? 18 => map / array,            ; ta_cred
   * int / tstr => any
 }
 ~~~~~~~~~~~
@@ -874,6 +886,21 @@ This document defines the following identifiers of means for transporting EDHOC 
 | 2            | CoAP over WebSockets | EDHOC messages are transported as payload of CoAP messages, in turn transported over WebSockets | {{RFC7252}}{{RFC8323}}                  |
 {: #table-edhoc-transports title="EDHOC Transports" align="center"}
 
+# EDHOC Trust Anchor Types # {#sec-edhoc-ta-types}
+
+This document defines the following EDHOC trust anchor types.
+
+Note to RFC Editor: Please replace all occurrences of "\[RFC-XXXX\]" with the RFC number of this specification and delete this paragraph.
+
+| Trust anchor type | CBOR label | Value type    | Description                                                            | Reference                                      |
+| uuid              | 0          | #6.37(bstr)   | Binary CBOR-encoded UUID                                               | {{&SELF}}{{RFC9562}}                           |
+| kid               | 4          | bstr          | Key identifier                                                         | {{&SELF}}{{RFC9052}}                           |
+| c5t               | 22         | COSE_CertHash | Hash of a C509 certificate                                             | {{&SELF}}\[draft-ietf-cose-cbor-encoded-cert\] |
+| c5u               | 23         | uri           | URI pointing to a COSE_C509 containing a ordered chain of certificates | {{&SELF}}\[draft-ietf-cose-cbor-encoded-cert\] |
+| x5t               | 34         | COSE_CertHash | Hash of an X.509 certificate                                           | {{&SELF}}{{RFC9360}}                           |
+| x5u               | 35         | uri           | URI pointing to an X.509 certificate                                   | {{&SELF}}{{RFC9360}}                           |
+{: #table-edhoc-ta-types title="EDHOC Trust Anchor Types" align="center"}
+
 # Security Considerations
 
 This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}. Thus, the general security considerations from the ACE framework also apply to this profile.
@@ -1214,13 +1241,41 @@ The columns of this registry are:
 
 This registry has been initially populated with the values in {{table-edhoc-transports}}.
 
+## EDHOC Trust Anchor Types Registry  ## {#iana-edhoc-ta-types}
+
+IANA is requested to create a new "EDHOC Trust Anchor Types" registry within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group defined in {{RFC9528}}.
+
+The registration policy is either "Private Use", "Standards Action with Expert Review", or "Specification Required" per {{Section 4.6 of RFC8126}}. "Expert Review" guidelines are provided in {{iana-expert-review}}.
+
+All assignments according to "Standards Action with Expert Review" are made on a "Standards Action" basis per {{Section 4.9 of RFC8126}}, with Expert Review additionally required per {{Section 4.5 of RFC8126}}. The procedure for early IANA allocation of Standards Track code points defined in {{RFC7120}} also applies. When such a procedure is used, IANA will ask the designated expert(s) to approve the early allocation before registration. In addition, WG chairs are encouraged to consult the expert(s) early during the process outlined in {{Section 3.1 of RFC7120}}.
+
+The columns of this registry are:
+
+* Trust anchor type: This field contains the descriptive name of the type of trust anchor, to enable easier reference to the item. These names MUST be unique.
+
+* CBOR label: This field contains the value used to identify the type of trust anchor. These values MUST be unique. The value can be an unsigned integer or a negative integer. Different ranges of values use different registration policies:
+
+  * Integer values from -24 to 23 are designated as "Standards Action With Expert Review".
+
+  * Integer values from -65536 to -25 and from 24 to 65535 are designated as "Specification Required".
+
+  * Integer values smaller than -65536 and greater than 65535 are marked as "Private Use".
+
+* CBOR type: This field contains the CBOR type for the value portion of the label.
+
+* Description: This field contains a short description of the type of trust anchor.
+
+* Reference: This field contains a pointer to the public specification for the type of trust anchor.
+
+This registry has been initially populated with the values in {{table-edhoc-ta-types}}.
+
 ## Expert Review Instructions # {#iana-expert-review}
 
 "Standards Action with Expert Review", "Specification Required", and "Expert Review" are three of the registration policies defined for the IANA registries established in this document. This section gives some general guidelines for what the experts should be looking for, but they are being designated as experts for a reason so they should be given substantial latitude.
 
 Expert reviewers should take into consideration the following points:
 
-* Clarity and correctness of registrations. Experts are expected to check the clarity of purpose and use of the requested entries. Experts need to make sure that the object of registration (i.e., an EDHOC_Information element, an EDHOC endpoint identity type, or a means for transporting EDHOC messages) is clearly defined in the corresponding specification. Entries that do not meet these objective of clarity and completeness must not be registered.
+* Clarity and correctness of registrations. Experts are expected to check the clarity of purpose and use of the requested entries. Experts need to make sure that the object of registration is clearly defined in the corresponding specification. Entries that do not meet these objective of clarity and completeness must not be registered.
 
 * Point squatting should be discouraged. Reviewers are encouraged to get sufficient information for registration requests to ensure that the usage is not going to duplicate one that is already registered and that the point is likely to be used in deployments. The zones tagged as "Private Use" are intended for testing purposes and closed environments. Code points in other ranges should not be assigned for testing.
 
@@ -1632,7 +1687,11 @@ responder = 13
 
 ## Version -06 to -07 ## {#sec-06-07}
 
-* Defined new parameters for the EDHOC_Information object.
+* Defined parameters for the EDHOC_Information object:
+
+  * Parameters moved here from draft-ietf-lake-app-profiles.
+
+  * New parameter "ta_cred".
 
 * Explicit statement on admitted confirmation methods.
 
@@ -1744,5 +1803,7 @@ responder = 13
 {:numbered="false"}
 
 The authors sincerely thank {{{Christian Amsüss}}} and {{{Carsten Bormann}}} for their comments and feedback.
+
+The parameter "ta_cred" for specifying supported trust anchors builds on a proposal originally described in {{I-D.serafin-lake-ta-hint}}.
 
 This work was supported by the Sweden's Innovation Agency VINNOVA within the EUREKA CELTIC-NEXT project CYPRESS; and by the H2020 project SIFIS-Home (Grant agreement 952652).

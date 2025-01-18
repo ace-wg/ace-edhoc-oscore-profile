@@ -1261,7 +1261,7 @@ The columns of this registry are:
 
   * Integer values smaller than -65536 and greater than 65535 are marked as "Private Use".
 
-* CBOR type: This field contains the CBOR type for the value portion of the label.
+* Value type: This field contains the CBOR type for the value portion of the label.
 
 * Description: This field contains a short description of the type of trust anchor.
 

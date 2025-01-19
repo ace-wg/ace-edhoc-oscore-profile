@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 22 July 2025                                          M. Tiloca
+Expires: 23 July 2025                                          M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         18 January 2025
+                                                         19 January 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 July 2025.
+   This Internet-Draft will expire on 23 July 2025.
 
 Copyright Notice
 
@@ -942,7 +942,7 @@ Table of Contents
    |               |       |       |                | transporting     |
    |               |       |       |                | EDHOC messages   |
    +---------------+-------+-------+----------------+------------------+
-   | ta_cred       | 18    | map   | EDHOC Trust    | Set of           |
+   | trust_anchors | 18    | map   | EDHOC Trust    | Set of           |
    |               |       | or    | Anchor Types   | supported        |
    |               |       | array | Registry       | trust anchors    |
    |               |       |       |                | for verifying    |
@@ -1094,10 +1094,10 @@ Table of Contents
       from the 'Transport ID' column of the "EDHOC Transports" Registry
       defined in Section 13.11 of this document.
 
-   *  ta_cred: This parameter specifies a set of supported trust anchors
-      for performing authentication.  These trust anchors are used for
-      verifying authentication credentials of EDHOC peers in EDHOC
-      sessions, and are typically authentication credentials of
+   *  trust_anchors: This parameter specifies a set of supported trust
+      anchors for performing authentication.  These trust anchors are
+      used for verifying authentication credentials of EDHOC peers in
+      EDHOC sessions, and are typically authentication credentials of
       Certificate Authorities (CAs).
 
       The set is composed of pairs, each of which specifies a trust
@@ -1108,25 +1108,26 @@ Table of Contents
       selected from the "EDHOC Trust Anchor Types" registry defined in
       Section 13.12 of this document.
 
-      In JSON, the "ta_cred" value is an object or an array of objects.
-      Each object includes only one entry, specifying the pair for a
-      trust anchor TA of type TYPE.  The entry's key specifies the TA's
-      type TYPE taken from the 'Trust anchor type' column of the "EDHOC
-      Trust Anchor Types" registry.  The entry's value is the identifier
-      of TA, whose encoding depends on TYPE.  Such an encoding is what
-      results from applying the conversion in Section 6.1 of [RFC8949]
-      to the CBOR encoding of the identifier of TA when "ta_cred" is
-      encoded in CBOR (see below).
+      In JSON, the "trust_anchors" value is an object or an array of
+      objects.  Each object includes only one entry, specifying the pair
+      for a trust anchor TA of type TYPE.  The entry's key specifies the
+      TA's type TYPE taken from the 'Trust anchor type' column of the
+      "EDHOC Trust Anchor Types" registry.  The entry's value is the
+      identifier of TA, whose encoding depends on TYPE.  Such an
+      encoding is what results from applying the conversion in
+      Section 6.1 of [RFC8949] to the CBOR encoding of the identifier of
+      TA when "trust_anchors" is encoded in CBOR (see below).
 
-      In CBOR, the "ta_cred" value is a map or an array of maps, and has
-      label 18.  Each map includes only one entry, specifying the pair
-      for a trust anchor TA.  The entry's key specifies the TA's type
-      TYPE encoded as a CBOR integer, with integer value taken from the
-      'CBOR label' column of the "EDHOC Trust Anchor Types" registry.
-      The entry's value specifies the identifier of TA, whose encoding
-      depends on TYPE and is specified by the 'Value type' column of the
-      "EDHOC Trust Anchor Types" registry, for the registry entry that
-      has TYPE as value of the 'Trust anchor type' column.
+      In CBOR, the "trust_anchors" value is a map or an array of maps,
+      and has label 18.  Each map includes only one entry, specifying
+      the pair for a trust anchor TA.  The entry's key specifies the
+      TA's type TYPE encoded as a CBOR integer, with integer value taken
+      from the 'CBOR label' column of the "EDHOC Trust Anchor Types"
+      registry.  The entry's value specifies the identifier of TA, whose
+      encoding depends on TYPE and is specified by the 'Value type'
+      column of the "EDHOC Trust Anchor Types" registry, for the
+      registry entry that has TYPE as value of the 'Trust anchor type'
+      column.
 
    An example of JSON EDHOC_Information is given in Figure 7.
 
@@ -1159,7 +1160,7 @@ Table of Contents
      ? 15 => true / false,           ; coap_ct
      ? 16 => int / array,            ; id_ep_types
      ? 17 => int / array,            ; transports
-     ? 18 => map / array,            ; ta_cred
+     ? 18 => map / array,            ; trust_anchors
      * int / tstr => any
    }
 
@@ -3337,7 +3338,7 @@ D.1.  Version -06 to -07
 
       -  Parameters moved here from draft-ietf-lake-app-profiles.
 
-      -  New parameter "ta_cred".
+      -  New parameter "trust_anchors".
 
    *  Explicit statement on admitted confirmation methods.
 
@@ -3465,8 +3466,9 @@ Acknowledgments
    The authors sincerely thank Christian Amsüss and Carsten Bormann for
    their comments and feedback.
 
-   The parameter "ta_cred" for specifying supported trust anchors builds
-   on a proposal originally described in [I-D.serafin-lake-ta-hint].
+   The parameter "trust_anchors" for specifying supported trust anchors
+   builds on a proposal originally described in
+   [I-D.serafin-lake-ta-hint].
 
    This work was supported by the Sweden's Innovation Agency VINNOVA
    within the EUREKA CELTIC-NEXT project CYPRESS; and by the H2020

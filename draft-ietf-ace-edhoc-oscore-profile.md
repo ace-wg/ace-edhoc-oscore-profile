@@ -455,7 +455,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 | coap_ct       | 15         | True of False        |                                                | Requested use of the CoAP Content-Format Option in CoAP messages whose payload includes exclusively an EDHOC message, possibly prepended by an EDHOC connection identifier |
 | id_ep_types   | 16         | int or array         | EDHOC Endpoint Identity Types Registry         | Set of supported types of endpoint identities for EDHOC                                                                                                                    |
 | transports    | 17         | int or array         | EDHOC Transports Registry                      | Set of supported means for transporting EDHOC messages                                                                                                                     |
-| ta_cred       | 18         | map or array         | EDHOC Trust Anchor Types Registry              | Set of supported trust anchors for verifying authentication credentials of EDHOC peers                                                                                     |
+| trust_anchors | 18         | map or array         | EDHOC Trust Anchor Types Registry              | Set of supported trust anchors for verifying authentication credentials of EDHOC peers                                                                                     |
 {: #table-cbor-key-edhoc-params title="EDHOC_Information Parameters" align="center"}
 
 * session\_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and has label 0.
@@ -494,13 +494,13 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * transports: This parameter specifies a set of supported means for transporting EDHOC messages. If the set is composed of a single means for transporting EDHOC messages, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one means for transporting EDHOC messages as an integer. In JSON, the "transports" value is an integer or an array of integers. In CBOR, "transports" is an integer or an array of integers, and has label 17. The integer values are taken from the 'Transport ID' column of the "EDHOC Transports" Registry defined in {{iana-edhoc-transports}} of this document.
 
-* ta_cred: This parameter specifies a set of supported trust anchors for performing authentication. These trust anchors are used for verifying authentication credentials of EDHOC peers in EDHOC sessions, and are typically authentication credentials of Certificate Authorities (CAs).
+* trust_anchors: This parameter specifies a set of supported trust anchors for performing authentication. These trust anchors are used for verifying authentication credentials of EDHOC peers in EDHOC sessions, and are typically authentication credentials of Certificate Authorities (CAs).
 
   The set is composed of pairs, each of which specifies a trust anchor type and an identifier of a trust anchor of that type. If the set is composed of a single pair, this is specified as a single item. If the set is composed of multiple pairs, these are specified as elements of an array. Trust anchor types are selected from the "EDHOC Trust Anchor Types" registry defined in {{iana-edhoc-ta-types}} of this document.
 
-  In JSON, the "ta_cred" value is an object or an array of objects. Each object includes only one entry, specifying the pair for a trust anchor TA of type TYPE. The entry's key specifies the TA's type TYPE taken from the 'Trust anchor type' column of the "EDHOC Trust Anchor Types" registry. The entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in {{Section 6.1 of RFC8949}} to the CBOR encoding of the identifier of TA when "ta_cred" is encoded in CBOR (see below).
+  In JSON, the "trust_anchors" value is an object or an array of objects. Each object includes only one entry, specifying the pair for a trust anchor TA of type TYPE. The entry's key specifies the TA's type TYPE taken from the 'Trust anchor type' column of the "EDHOC Trust Anchor Types" registry. The entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in {{Section 6.1 of RFC8949}} to the CBOR encoding of the identifier of TA when "trust_anchors" is encoded in CBOR (see below).
 
-  In CBOR, the "ta_cred" value is a map or an array of maps, and has label 18. Each map includes only one entry, specifying the pair for a trust anchor TA. The entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry. The entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Trust anchor type' column.
+  In CBOR, the "trust_anchors" value is a map or an array of maps, and has label 18. Each map includes only one entry, specifying the pair for a trust anchor TA. The entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry. The entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Trust anchor type' column.
 
 An example of JSON EDHOC\_Information is given in {{fig-edhoc-info-json}}.
 
@@ -535,7 +535,7 @@ EDHOC_Information = {
   ? 15 => true / false,           ; coap_ct
   ? 16 => int / array,            ; id_ep_types
   ? 17 => int / array,            ; transports
-  ? 18 => map / array,            ; ta_cred
+  ? 18 => map / array,            ; trust_anchors
   * int / tstr => any
 }
 ~~~~~~~~~~~
@@ -1691,7 +1691,7 @@ responder = 13
 
   * Parameters moved here from draft-ietf-lake-app-profiles.
 
-  * New parameter "ta_cred".
+  * New parameter "trust_anchors".
 
 * Explicit statement on admitted confirmation methods.
 
@@ -1804,6 +1804,6 @@ responder = 13
 
 The authors sincerely thank {{{Christian Amsüss}}} and {{{Carsten Bormann}}} for their comments and feedback.
 
-The parameter "ta_cred" for specifying supported trust anchors builds on a proposal originally described in {{I-D.serafin-lake-ta-hint}}.
+The parameter "trust_anchors" for specifying supported trust anchors builds on a proposal originally described in {{I-D.serafin-lake-ta-hint}}.
 
 This work was supported by the Sweden's Innovation Agency VINNOVA within the EUREKA CELTIC-NEXT project CYPRESS; and by the H2020 project SIFIS-Home (Grant agreement 952652).

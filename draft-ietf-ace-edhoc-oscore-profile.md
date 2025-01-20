@@ -248,7 +248,7 @@ The client-to-AS request is specified in {{Section 5.8.1 of RFC9200}}.
 
 The client MUST send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see {{secure-comm-as}}).
 
-When using this profile, the paylod of the POST request MUST be encoded in CBOR {{RFC8949}}, i.e., the request has media-type "application/ace+cbor". Also, it is RECOMMENDED to use CoAP, EDHOC, and OSCORE in order to reduce the number of libraries that C has to support.
+When using this profile, the payload of the POST request MUST be encoded in CBOR {{RFC8949}}, i.e., the request has media-type "application/ace+cbor". Also, it is RECOMMENDED to use CoAP, EDHOC, and OSCORE in order to reduce the number of libraries that C has to support.
 
 AUTH\_CRED\_C is specified in the "req_cnf" parameter {{RFC9201}} of the POST request, either transported by value or uniquely referred to.
 
@@ -321,7 +321,7 @@ In case the access token is issued for a group-audience (see {{Section 6.9 of RF
 
 After verifying the POST request to the /token endpoint and that C is authorized to access protected resources at RS, AS responds as defined in {{Section 5.8.2 of RFC9200}}, with potential modifications as detailed below.
 
-When using this profile, consistent with what is specified in {{c-as}}, the paylod of the response from the AS MUST be encoded in CBOR {{RFC8949}}, i.e., the response has media-type "application/ace+cbor".
+When using this profile, consistent with what is specified in {{c-as}}, the payload of the response from the AS MUST be encoded in CBOR {{RFC8949}}, i.e., the response has media-type "application/ace+cbor".
 
 If the request from C was invalid or not authorized, AS returns an error response as described in {{Section 5.8.3 of RFC9200}}.
 

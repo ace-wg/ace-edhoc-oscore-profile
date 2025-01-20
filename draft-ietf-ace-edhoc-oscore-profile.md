@@ -107,7 +107,9 @@ This document defines the "coap_edhoc_oscore" profile of the ACE-OAuth framework
 
 Like in the "coap_oscore" profile {{RFC9203}}, also in this profile a client (C) and a resource server (RS) use the Constrained Application Protocol (CoAP) {{RFC7252}} to communicate, and Object Security for Constrained RESTful Environments (OSCORE) {{RFC8613}} to protect their communications, but this profile uses the Ephemeral Diffie-Hellman Over COSE (EDHOC) protocol {{RFC9528}} to establish the OSCORE Security Context. The processing of requests for specific protected resources is identical to what is defined in the "coap_oscore" profile.
 
-When using this profile, C accesses protected resources hosted at RS with the use of an access token issued by a trusted authorization server (AS) and bound to an authentication credential of C. This differs from the "coap_oscore" profile, where the access token is bound to a symmetric key used to derive the OSCORE Security Context. Whereas {{RFC9200}} recommends the use of CBOR Web Tokens (CWTs) {{RFC8392}} as access tokens, this profile requires it, see {{access-token}}.
+When using this profile, C accesses protected resources hosted at RS with the use of an access token issued by a trusted authorization server (AS) and bound to an authentication credential of C. This differs from the "coap_oscore" profile, where the access token is bound to a symmetric key used to derive the OSCORE Security Context.
+
+Whereas {{RFC9200}} recommends the use of CBOR Web Tokens (CWTs) {{RFC8392}} as access tokens, this profile requires it (see {{access-token}}). Furthermore, this profile requires that, for messages exchanged between C and AS to request and provide an access token, the payload is encoded in CBOR {{RFC8949}} (see {{c-as}} and {{as-c}}), which ACE already requires if CoAP is used (see {{Section 5 of RFC9200}}) and already recommends otherwise (see {{Section 3 of RFC9200}}).
 
 An authentication credential can be a raw public key, e.g., encoded as a CWT Claims Set (CCS, {{RFC8392}}); or a public key certificate, e.g., encoded as an X.509 certificate {{RFC5280}} or as a CBOR encoded X.509 certificate (C509, {{I-D.ietf-cose-cbor-encoded-cert}}); or a different type of data structure containing the public key of the peer in question.
 
@@ -244,7 +246,9 @@ The request to the /token endpoint and the corresponding response can include ED
 
 The client-to-AS request is specified in {{Section 5.8.1 of RFC9200}}.
 
-The client MUST send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see {{secure-comm-as}}). When using this profile, it is RECOMMENDED to use CoAP, EDHOC, and OSCORE in order to reduce the number of libraries that C has to support.
+The client MUST send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see {{secure-comm-as}}).
+
+When using this profile, the paylod of the POST request MUST be encoded in CBOR {{RFC8949}}, i.e., the request has media-type "application/ace+cbor". Also, it is RECOMMENDED to use CoAP, EDHOC, and OSCORE in order to reduce the number of libraries that C has to support.
 
 AUTH\_CRED\_C is specified in the "req_cnf" parameter {{RFC9201}} of the POST request, either transported by value or uniquely referred to.
 
@@ -315,7 +319,11 @@ In case the access token is issued for a group-audience (see {{Section 6.9 of RF
 
 ## AS-to-C: Response # {#as-c}
 
-After verifying the POST request to the /token endpoint and that C is authorized to access, AS responds as defined in {{Section 5.8.2 of RFC9200}}, with potential modifications as detailed below. If the request from C was invalid or not authorized, AS returns an error response as described in {{Section 5.8.3 of RFC9200}}.
+After verifying the POST request to the /token endpoint and that C is authorized to access protected resources at RS, AS responds as defined in {{Section 5.8.2 of RFC9200}}, with potential modifications as detailed below.
+
+When using this profile, consistent with what is specified in {{c-as}}, the paylod of the response from the AS MUST be encoded in CBOR {{RFC8949}}, i.e., the response has media-type "application/ace+cbor".
+
+If the request from C was invalid or not authorized, AS returns an error response as described in {{Section 5.8.3 of RFC9200}}.
 
 AS can signal that the use of EDHOC and OSCORE as per this profile is REQUIRED for a specific access token, by including the "ace_profile" parameter with the value "coap_edhoc_oscore" in the access token response. This means that C MUST use EDHOC with RS and derive an OSCORE Security Context, as specified in {{edhoc-exec}}. After that, C MUST use the established OSCORE Security Context to protect communications with RS, when accessing protected resources at RS according to the authorization information indicated in the access token. Usually, it is assumed that constrained devices will be pre-configured with the necessary profile, so that this kind of profile signaling can be omitted.
 
@@ -1692,6 +1700,8 @@ responder = 13
   * Parameters moved here from draft-ietf-lake-app-profiles.
 
   * New parameter "trust_anchors".
+
+* Access Token Request/Response messages must be encoded in CBOR.
 
 * Explicit statement on admitted confirmation methods.
 

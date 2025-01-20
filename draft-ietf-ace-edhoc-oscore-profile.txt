@@ -471,7 +471,7 @@ Table of Contents
    secure channel that guarantees authentication, message integrity, and
    confidentiality (see Section 5).
 
-   When using this profile, the paylod of the POST request MUST be
+   When using this profile, the payload of the POST request MUST be
    encoded in CBOR [RFC8949], i.e., the request has media-type
    "application/ace+cbor".  Also, it is RECOMMENDED to use CoAP, EDHOC,
    and OSCORE in order to reduce the number of libraries that C has to
@@ -609,7 +609,7 @@ Table of Contents
    as detailed below.
 
    When using this profile, consistent with what is specified in
-   Section 3.1, the paylod of the response from the AS MUST be encoded
+   Section 3.1, the payload of the response from the AS MUST be encoded
    in CBOR [RFC8949], i.e., the response has media-type "application/
    ace+cbor".
 

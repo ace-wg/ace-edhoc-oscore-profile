@@ -268,7 +268,7 @@ An example of client-to-AS request is shown in {{token-request}}. In this exampl
      / audience / 5 : "tempSensor4711",
      / scope /    9 : "read",
      / req_cnf /  4 : {
-       e'x5t' : << [-15, h'79F2A41B510C1F9B'] >>
+       e'x5t' : [-15, h'79F2A41B510C1F9B']
      }
    }
 ~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-26T00:51:29.438252+00:00",
+  "timestamp": "2025-01-28T00:50:04.521457+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -155,6 +155,22 @@
           "updatedAt": "2024-10-24T12:37:40Z"
         }
       ]
+    },
+    {
+      "number": 10,
+      "id": "I_kwDOIar0bc6nksLg",
+      "title": "Request creation hints (typically in EAD2)",
+      "url": "https://github.com/ace-wg/ace-edhoc-oscore-profile/issues/10",
+      "state": "OPEN",
+      "author": "chrysn",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "When a client wants to establish an EDHOC context through this profile, it may not yet know the relevant AS-and-audience combination to get a token with.\n\nWould it make sense to send request creation hints in an EAD2 item? (I think yes).\n\nWould this document be the right place to allocate that number? (Don't know).\n\nShould that EAD item contain a mechanism to solicit it? (Probably yes: Like we're moving towards using app-profiles so that servers can send ID_CRED_R as a reference unless the initiator asks to, a client might send RCH without a value to solicit the RCH).\n\nOn the implementation side, this is being explored in <https://github.com/ariel-os/ariel-os/issues/728>.",
+      "createdAt": "2025-01-26T09:09:25Z",
+      "updatedAt": "2025-01-26T09:09:25Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [

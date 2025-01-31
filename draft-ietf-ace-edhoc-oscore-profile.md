@@ -463,7 +463,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 | coap_ct       | 15         | True of False        |                                                | Requested use of the CoAP Content-Format Option in CoAP messages whose payload includes exclusively an EDHOC message, possibly prepended by an EDHOC connection identifier |
 | ep_id_types   | 16         | int or array         | EDHOC Endpoint Identity Types Registry         | Set of supported types of endpoint identities for EDHOC                                                                                                                    |
 | transports    | 17         | int or array         | EDHOC Transports Registry                      | Set of supported means for transporting EDHOC messages                                                                                                                     |
-| trust_anchors | 18         | map or array         | EDHOC Trust Anchor Types Registry              | Set of supported trust anchors for verifying authentication credentials of EDHOC peers                                                                                     |
+| trust_anchors | 18         | map                  | EDHOC Trust Anchor Types Registry              | Set of supported trust anchors for verifying authentication credentials of EDHOC peers                                                                                     |
 {: #table-cbor-key-edhoc-params title="EDHOC_Information Parameters" align="center"}
 
 * session\_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and has label 0.
@@ -502,13 +502,33 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * transports: This parameter specifies a set of supported means for transporting EDHOC messages. If the set is composed of a single means for transporting EDHOC messages, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one means for transporting EDHOC messages as an integer. In JSON, the "transports" value is an integer or an array of integers. In CBOR, "transports" is an integer or an array of integers, and has label 17. The integer values are taken from the 'Transport ID' column of the "EDHOC Transports" Registry defined in {{iana-edhoc-transports}} of this document.
 
-* trust_anchors: This parameter specifies a set of supported trust anchors for performing authentication. These trust anchors are used for verifying authentication credentials of EDHOC peers in EDHOC sessions, and are typically authentication credentials of Certificate Authorities (CAs).
+* trust_anchors: This parameter specifies a collection of supported trust anchors for performing authentication. According to what is specified within the collection, these trust anchors are used for different purposes, e.g., for verifying authentication credentials of other EDHOC peers in EDHOC sessions.
 
-  The set is composed of pairs, each of which specifies a trust anchor type and an identifier of a trust anchor of that type. If the set is composed of a single pair, this is specified as a single item. If the set is composed of multiple pairs, these are specified as elements of an array. Trust anchor types are selected from the "EDHOC Trust Anchor Types" registry defined in {{iana-edhoc-ta-types}} of this document.
+  More in detail, the collection of trust anchors is composed of one or more sets. Each set includes one or more trust anchors to use for one specific purpose associated with that set.
 
-  In JSON, the "trust_anchors" value is an object or an array of objects. Each object includes only one entry, specifying the pair for a trust anchor TA of type TYPE. The entry's key specifies the TA's type TYPE taken from the 'Name' column of the "EDHOC Trust Anchor Types" registry. The entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in {{Section 6.1 of RFC8949}} to the CBOR encoding of the identifier of TA when "trust_anchors" is encoded in CBOR (see below).
+  In particular, each set is composed of pairs, each of which specifies a trust anchor type and an identifier of a trust anchor of that type. If the set is composed of a single pair, this pair is specified as a single item. If the set is composed of multiple pairs, these pairs are specified as elements of an array.
 
-  In CBOR, the "trust_anchors" value is a map or an array of maps, and has label 18. Each map includes only one entry, specifying the pair for a trust anchor TA. The entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry. The entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Name' column.
+  Trust anchor purposes are selected from the "EDHOC Trust Anchor Purposes" registry defined in {{iana-edhoc-ta-purposes}} of this document. Trust anchor types are selected from the "EDHOC Trust Anchor Types" registry defined in {{iana-edhoc-ta-types}} of this document.
+
+  In JSON, the "trust_anchors" value is an object with one or more outer entries, each of which is associated with a trust anchor purpose. The following applies for each outer entry:
+
+  * The outer entry's key specifies the associated trust anchor purpose taken from the 'Name' column' of the "EDHOC Trust Anchor Purposes" registry.
+
+  * The outer entry's value is an object or an array of at least two objects. Each object includes one inner entry, specifying the pair for a trust anchor TA of type TYPE. The inner entry is formatted as follows:
+
+    - The inner entry's key specifies the TA's type TYPE taken from the 'Name' column of the "EDHOC Trust Anchor Types" registry.
+
+    - The inner entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in {{Section 6.1 of RFC8949}} to the CBOR encoding of the identifier of TA when "trust_anchors" is encoded in CBOR (see below).
+
+  In CBOR, the "trust_anchors" value is a map and has label 18. The map includes one or more outer entries, each of which is associated with a trust anchor purpose. The following applies for each outer entry:
+
+  * The outer entry's key specifies the associated trust anchor purpose encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Purposes" registry.
+
+  * The outer entry's value is a map or an array of at least two maps. Each map includes one inner entry, specifying the pair for a trust anchor TA of type TYPE. The inner entry is formatted as follows:
+
+    - The inner entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry.
+
+    - The inner entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Name' column.
 
 An example of JSON EDHOC\_Information is given in {{fig-edhoc-info-json}}.
 
@@ -516,10 +536,35 @@ An example of JSON EDHOC\_Information is given in {{fig-edhoc-info-json}}.
    "edhoc_info" : {
        "session_id"    : b64'AQ==',
        "methods"       : 1,
-       "cipher_suites" : 0
+       "cipher_suites" : 0,
+       "trust_anchors" : {
+         "edhoc_cred" : [
+           { "c5u" : "coap://certs.c509.example" },
+           { "x5u" : "coap://certs.x509.example" }
+         ]
+       }
    }
 ~~~~~~~~~~~
 {: #fig-edhoc-info-json title="Example of JSON EDHOC_Information"}
+
+An example of CBOR EDHOC\_Information is given in {{fig-edhoc-info-cbor}}.
+
+~~~~~~~~~~~
+   e'edhoc_info_param'  : {
+     e'session_id'    : h'01',
+     e'methods'       : 1,
+     e'cipher_suites' : 0,
+     e'trust_anchors' : {
+       e'edhoc_cred' : [
+         { e'c5t_ta_type' : [-15, h'81DC2F32CB87E163'] },
+         { e'c5u_ta_type' : "coap://certs.c509.example" },
+         { e'x5t_ta_type' : [-15, h'79F2A41B510C1F9B'] },
+         { e'x5u_ta_type' : "coap://certs.x509.example" }
+       ]
+     }
+   }
+~~~~~~~~~~~
+{: #fig-edhoc-info-cbor title="Example of CBOR EDHOC_Information"}
 
 The CDDL grammar describing the CBOR EDHOC_Information is:
 
@@ -543,7 +588,7 @@ EDHOC_Information = {
   ? 15 => true / false,           ; coap_ct
   ? 16 => int / array,            ; ep_id_types
   ? 17 => int / array,            ; transports
-  ? 18 => map / array,            ; trust_anchors
+  ? 18 => map,                    ; trust_anchors
   * int / tstr => any
 }
 ~~~~~~~~~~~
@@ -893,6 +938,18 @@ This document defines the following identifiers of means for transporting EDHOC 
 | 1            | CoAP over TCP        | EDHOC messages are transported as payload of CoAP messages, in turn transported over TCP        | {{RFC7252}}{{RFC8323}}                  |
 | 2            | CoAP over WebSockets | EDHOC messages are transported as payload of CoAP messages, in turn transported over WebSockets | {{RFC7252}}{{RFC8323}}                  |
 {: #table-edhoc-transports title="EDHOC Transports" align="center"}
+
+# EDHOC Trust Anchor Purposes # {#sec-edhoc-ta-purposes}
+
+This document defines the following EDHOC trust anchor purpose.
+
+Note to RFC Editor: Please replace all occurrences of "\[RFC-XXXX\]" with the RFC number of this specification and delete this paragraph.
+
+| Name       | CBOR label | Description                                                                 | Reference            |
+| edhoc_cred | 0          | Verifying authentication credentials of other EDHOC peers in EDHOC sessions | {{&SELF}}{{RFC9528}} |
+{: #table-edhoc-ta-purposes title="EDHOC Trust Anchor Purposes" align="center"}
+
+Trust anchors with purpose "edhoc_cred" are used for verifying authentication credentials of other EDHOC peers in an EDHOC session, and they typically are authentication credentials of Certificate Authorities (CAs).
 
 # EDHOC Trust Anchor Types # {#sec-edhoc-ta-types}
 
@@ -1248,6 +1305,32 @@ The columns of this registry are:
 * Reference: This field contains a pointer to the public specification for the means used for transporting EDHOC messages.
 
 This registry has been initially populated with the values in {{table-edhoc-transports}}.
+
+## EDHOC Trust Anchor Purposes Registry  ## {#iana-edhoc-ta-purposes}
+
+IANA is requested to create a new "EDHOC Trust Anchor Purposes" registry within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group defined in {{RFC9528}}.
+
+The registration policy is either "Private Use", "Standards Action with Expert Review", or "Specification Required" per {{Section 4.6 of RFC8126}}. "Expert Review" guidelines are provided in {{iana-expert-review}}.
+
+All assignments according to "Standards Action with Expert Review" are made on a "Standards Action" basis per {{Section 4.9 of RFC8126}}, with Expert Review additionally required per {{Section 4.5 of RFC8126}}. The procedure for early IANA allocation of Standards Track code points defined in {{RFC7120}} also applies. When such a procedure is used, IANA will ask the designated expert(s) to approve the early allocation before registration. In addition, WG chairs are encouraged to consult the expert(s) early during the process outlined in {{Section 3.1 of RFC7120}}.
+
+The columns of this registry are:
+
+* Name: This field contains the descriptive name of the trust anchor purpose, to enable easier reference to the item. These names MUST be unique.
+
+* CBOR label: This field contains the value used to identify the trust anchor purpose. These values MUST be unique. The value can be an unsigned integer or a negative integer. Different ranges of values use different registration policies:
+
+  * Integer values from -24 to 23 are designated as "Standards Action With Expert Review".
+
+  * Integer values from -65536 to -25 and from 24 to 65535 are designated as "Specification Required".
+
+  * Integer values smaller than -65536 and greater than 65535 are marked as "Private Use".
+
+* Description: This field contains a short description of the trust anchor purpose.
+
+* Reference: This field contains a pointer to the public specification for the trust anchor purpose.
+
+This registry has been initially populated with the values in {{sec-edhoc-ta-purposes}}.
 
 ## EDHOC Trust Anchor Types Registry  ## {#iana-edhoc-ta-types}
 
@@ -1687,6 +1770,20 @@ id_cred_types = 10
 eads = 11
 initiator = 12
 responder = 13
+max_msgsize = 14
+coap_ct = 15
+ep_id_types = 16
+transports = 17
+trust_anchors = 18
+
+; EDHOC Trust Anchor Purposes
+edhoc_cred = 0
+
+; EDHOC Trust Anchor Types
+c5t_ta_type = 22
+c5u_ta_type = 23
+x5t_ta_type = 34
+x5u_ta_type = 35
 ~~~~~~~~~~~~~~~~~~~~
 {: #fig-cddl-model title="CDDL model" artwork-align="left"}
 

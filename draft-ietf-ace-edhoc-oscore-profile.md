@@ -506,9 +506,9 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
   The set is composed of pairs, each of which specifies a trust anchor type and an identifier of a trust anchor of that type. If the set is composed of a single pair, this is specified as a single item. If the set is composed of multiple pairs, these are specified as elements of an array. Trust anchor types are selected from the "EDHOC Trust Anchor Types" registry defined in {{iana-edhoc-ta-types}} of this document.
 
-  In JSON, the "trust_anchors" value is an object or an array of objects. Each object includes only one entry, specifying the pair for a trust anchor TA of type TYPE. The entry's key specifies the TA's type TYPE taken from the 'Trust anchor type' column of the "EDHOC Trust Anchor Types" registry. The entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in {{Section 6.1 of RFC8949}} to the CBOR encoding of the identifier of TA when "trust_anchors" is encoded in CBOR (see below).
+  In JSON, the "trust_anchors" value is an object or an array of objects. Each object includes only one entry, specifying the pair for a trust anchor TA of type TYPE. The entry's key specifies the TA's type TYPE taken from the 'Name' column of the "EDHOC Trust Anchor Types" registry. The entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in {{Section 6.1 of RFC8949}} to the CBOR encoding of the identifier of TA when "trust_anchors" is encoded in CBOR (see below).
 
-  In CBOR, the "trust_anchors" value is a map or an array of maps, and has label 18. Each map includes only one entry, specifying the pair for a trust anchor TA. The entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry. The entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Trust anchor type' column.
+  In CBOR, the "trust_anchors" value is a map or an array of maps, and has label 18. Each map includes only one entry, specifying the pair for a trust anchor TA. The entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry. The entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Name' column.
 
 An example of JSON EDHOC\_Information is given in {{fig-edhoc-info-json}}.
 
@@ -900,13 +900,13 @@ This document defines the following EDHOC trust anchor types.
 
 Note to RFC Editor: Please replace all occurrences of "\[RFC-XXXX\]" with the RFC number of this specification and delete this paragraph.
 
-| Trust anchor type | CBOR label | Value type    | Description                                                            | Reference                                      |
-| uuid              | 0          | #6.37(bstr)   | Binary CBOR-encoded UUID                                               | {{&SELF}}{{RFC9562}}                           |
-| kid               | 4          | bstr          | Key identifier                                                         | {{&SELF}}{{RFC9052}}                           |
-| c5t               | 22         | COSE_CertHash | Hash of a C509 certificate                                             | {{&SELF}}\[draft-ietf-cose-cbor-encoded-cert\] |
-| c5u               | 23         | uri           | URI pointing to a COSE_C509 containing a ordered chain of certificates | {{&SELF}}\[draft-ietf-cose-cbor-encoded-cert\] |
-| x5t               | 34         | COSE_CertHash | Hash of an X.509 certificate                                           | {{&SELF}}{{RFC9360}}                           |
-| x5u               | 35         | uri           | URI pointing to an X.509 certificate                                   | {{&SELF}}{{RFC9360}}                           |
+| Name | CBOR label | Value type    | Description                                                            | Reference                                      |
+| uuid | 0          | #6.37(bstr)   | Binary CBOR-encoded UUID                                               | {{&SELF}}{{RFC9562}}                           |
+| kid  | 4          | bstr          | Key identifier                                                         | {{&SELF}}{{RFC9052}}                           |
+| c5t  | 22         | COSE_CertHash | Hash of a C509 certificate                                             | {{&SELF}}\[draft-ietf-cose-cbor-encoded-cert\] |
+| c5u  | 23         | uri           | URI pointing to a COSE_C509 containing a ordered chain of certificates | {{&SELF}}\[draft-ietf-cose-cbor-encoded-cert\] |
+| x5t  | 34         | COSE_CertHash | Hash of an X.509 certificate                                           | {{&SELF}}{{RFC9360}}                           |
+| x5u  | 35         | uri           | URI pointing to an X.509 certificate                                   | {{&SELF}}{{RFC9360}}                           |
 {: #table-edhoc-ta-types title="EDHOC Trust Anchor Types" align="center"}
 
 # Security Considerations
@@ -1259,7 +1259,7 @@ All assignments according to "Standards Action with Expert Review" are made on a
 
 The columns of this registry are:
 
-* Trust anchor type: This field contains the descriptive name of the type of trust anchor, to enable easier reference to the item. These names MUST be unique.
+* Name: This field contains the descriptive name of the type of trust anchor, to enable easier reference to the item. These names MUST be unique.
 
 * CBOR label: This field contains the value used to identify the type of trust anchor. These values MUST be unique. The value can be an unsigned integer or a negative integer. Different ranges of values use different registration policies:
 

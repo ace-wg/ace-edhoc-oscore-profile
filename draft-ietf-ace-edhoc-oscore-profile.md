@@ -1254,7 +1254,7 @@ The columns of the registry are:
 
 * CBOR label: The value to be used as CBOR abbreviation of the item.
 
-   The value MUST be unique. The value can be a positive integer, a negative integer or a string. Integer values between -256 and 255 and strings of length 1 are designated as "Standards Action with Expert Review". Integer values from -65536 to -257 and from 256 to 65535 and strings of maximum length 2 are designated as "Specification Required". Integer values greater than 65535 and strings of length greater than 2 are designated as "Expert Review". Integer values less than -65536 are marked as "Private Use".
+   The value MUST be unique. The value can be a positive integer, a negative integer, or a string. Integer values between -256 and 255 and strings of length 1 are designated as "Standards Action with Expert Review". Integer values from -65536 to -257 and from 256 to 65535 and strings of maximum length 2 are designated as "Specification Required". Integer values greater than 65535 and strings of length greater than 2 are designated as "Expert Review". Integer values less than -65536 are marked as "Private Use".
 
 * CBOR type: The CBOR type of the item, or a pointer to the registry that defines its type, when that depends on another item.
 

@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 26 July 2025                                          M. Tiloca
+Expires: 4 August 2025                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         22 January 2025
+                                                         31 January 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 July 2025.
+   This Internet-Draft will expire on 4 August 2025.
 
 Copyright Notice
 
@@ -946,7 +946,7 @@ Table of Contents
    |               |       |       |                | connection       |
    |               |       |       |                | identifier       |
    +---------------+-------+-------+----------------+------------------+
-   | id_ep_types   | 16    | int   | EDHOC Endpoint | Set of           |
+   | ep_id_types   | 16    | int   | EDHOC Endpoint | Set of           |
    |               |       | or    | Identity Types | supported        |
    |               |       | array | Registry       | types of         |
    |               |       |       |                | endpoint         |
@@ -1089,13 +1089,13 @@ Table of Contents
       the "coap_cf" value is a boolean.  In CBOR, "coap_cf" is the
       simple value true (0xf5) or false (0xf4), and has label 15.
 
-   *  id_ep_types: This parameter specifies a set of supported types of
+   *  ep_id_types: This parameter specifies a set of supported types of
       endpoint identities for EDHOC.  If the set is composed of a single
       type of endpoint identity, this is encoded as an integer.
       Otherwise, the set is encoded as an array, where each array
       element encodes one type of endpoint identity as an integer.  In
-      JSON, the "id_ep_types" value is an integer or an array of
-      integers.  In CBOR, "id_ep_types" is an integer or an array of
+      JSON, the "ep_id_types" value is an integer or an array of
+      integers.  In CBOR, "ep_id_types" is an integer or an array of
       integers, and has label 16.  The integer values are taken from the
       'CBOR Label' column of the "EDHOC Endpoint Identity Types"
       registry defined in Section 13.10 of this document.
@@ -1175,7 +1175,7 @@ Table of Contents
      ? 13 => true / false,           ; responder
      ? 14 => uint,                   ; max_msgsize
      ? 15 => true / false,           ; coap_ct
-     ? 16 => int / array,            ; id_ep_types
+     ? 16 => int / array,            ; ep_id_types
      ? 17 => int / array,            ; transports
      ? 18 => map / array,            ; trust_anchors
      * int / tstr => any
@@ -2514,7 +2514,7 @@ Table of Contents
    *  Name: This field contains the name of the EDHOC endpoint identity
       type.
 
-   *  CBOR Label: The value to be used to identify this EDHOC endpoint
+   *  CBOR label: The value to be used to identify this EDHOC endpoint
       identity type.  These values MUST be unique.  The value can be a
       positive integer or a negative integer.  Different ranges of
       values use different registration policies [RFC8126].  Integer
@@ -3350,6 +3350,8 @@ Appendix D.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 D.1.  Version -06 to -07
+
+   *  Renamed id_ep_types as ep_id_types.
 
    *  Defined parameters for the EDHOC_Information object:
 

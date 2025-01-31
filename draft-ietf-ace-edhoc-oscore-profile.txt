@@ -964,10 +964,6 @@ Table of Contents
    | trust_anchors | 18    | map   | EDHOC Trust    | Set of           |
    |               |       |       | Anchor Types   | supported        |
    |               |       |       | Registry       | trust anchors    |
-   |               |       |       |                | for verifying    |
-   |               |       |       |                | authentication   |
-   |               |       |       |                | credentials of   |
-   |               |       |       |                | EDHOC peers      |
    +---------------+-------+-------+----------------+------------------+
 
                    Table 1: EDHOC_Information Parameters

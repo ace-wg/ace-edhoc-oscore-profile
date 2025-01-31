@@ -139,26 +139,28 @@ Table of Contents
      7.10. CCS Containing a COSE_Key
    8.  EDHOC Endpoint Identity Types
    9.  EDHOC Transports
-   10. EDHOC Trust Anchor Types
-   11. Security Considerations
-   12. Privacy Considerations
-   13. IANA Considerations
-     13.1.  ACE Profiles Registry
-     13.2.  OAuth Parameters Registry
-     13.3.  OAuth Parameters CBOR Mappings Registry
-     13.4.  JSON Web Token Claims Registry
-     13.5.  CBOR Web Token (CWT) Claims Registry
-     13.6.  JWT Confirmation Methods Registry
-     13.7.  CWT Confirmation Methods Registry
-     13.8.  EDHOC External Authorization Data Registry
-     13.9.  EDHOC Information Registry
-     13.10. EDHOC Endpoint Identity Types Registry
-     13.11. EDHOC Transports Registry
-     13.12. EDHOC Trust Anchor Types Registry
-     13.13. Expert Review Instructions
-   14. References
-     14.1.  Normative References
-     14.2.  Informative References
+   10. EDHOC Trust Anchor Purposes
+   11. EDHOC Trust Anchor Types
+   12. Security Considerations
+   13. Privacy Considerations
+   14. IANA Considerations
+     14.1.  ACE Profiles Registry
+     14.2.  OAuth Parameters Registry
+     14.3.  OAuth Parameters CBOR Mappings Registry
+     14.4.  JSON Web Token Claims Registry
+     14.5.  CBOR Web Token (CWT) Claims Registry
+     14.6.  JWT Confirmation Methods Registry
+     14.7.  CWT Confirmation Methods Registry
+     14.8.  EDHOC External Authorization Data Registry
+     14.9.  EDHOC Information Registry
+     14.10. EDHOC Endpoint Identity Types Registry
+     14.11. EDHOC Transports Registry
+     14.12. EDHOC Trust Anchor Purposes Registry
+     14.13. EDHOC Trust Anchor Types Registry
+     14.14. Expert Review Instructions
+   15. References
+     15.1.  Normative References
+     15.2.  Informative References
    Appendix A.  Examples
      A.1.  Workflow without Optimizations
      A.2.  Workflow with Optimizations
@@ -293,14 +295,14 @@ Table of Contents
 
    In the CBOR diagnostic notation used in this document, constructs of
    the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME
-   in the CDDL model shown in Figure 8 of Appendix C.  For example,
+   in the CDDL model shown in Figure 9 of Appendix C.  For example,
    {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2
    : 3}.
 
    Note to RFC Editor: Please delete the paragraph immediately preceding
    this note.  Also, in the CBOR diagnostic notation used in this
    document, please replace the constructs of the form e'SOME_NAME' with
-   the value assigned to SOME_NAME in the CDDL model shown in Figure 8
+   the value assigned to SOME_NAME in the CDDL model shown in Figure 9
    of Appendix C.  Finally, please delete this note.
 
 2.  Protocol Overview
@@ -461,7 +463,7 @@ Table of Contents
    include EDHOC_Information, which is a CBOR map object containing
    information related to an EDHOC implementation, see Section 3.4.
    This object is transported in the "edhoc_info" parameter registered
-   in Section 13.2 and Section 13.3.
+   in Section 14.2 and Section 14.3.
 
 3.1.  C-to-AS: POST to /token endpoint
 
@@ -710,7 +712,7 @@ Table of Contents
       specified in the response to C from the /token endpoint.
 
       EDHOC_Information MUST be transported in the "edhoc_info" claim,
-      defined in Section 13.5.
+      defined in Section 14.5.
 
    *  The authentication credential AUTH_CRED_C that C specified in its
       POST request to the /token endpoint (see Section 3.1), in the
@@ -845,7 +847,7 @@ Table of Contents
    The EDHOC_Information can be encoded either as a JSON object or as a
    CBOR map.  The set of common fields that can appear in an
    EDHOC_Information can be found in the IANA "EDHOC Information"
-   registry defined in Section 13.9 for extensibility.  The initial set
+   registry defined in Section 14.9 for extensibility.  The initial set
    of parameters defined in this document is specified below.  All
    parameters are optional.
 
@@ -960,8 +962,8 @@ Table of Contents
    |               |       |       |                | EDHOC messages   |
    +---------------+-------+-------+----------------+------------------+
    | trust_anchors | 18    | map   | EDHOC Trust    | Set of           |
-   |               |       | or    | Anchor Types   | supported        |
-   |               |       | array | Registry       | trust anchors    |
+   |               |       |       | Anchor Types   | supported        |
+   |               |       |       | Registry       | trust anchors    |
    |               |       |       |                | for verifying    |
    |               |       |       |                | authentication   |
    |               |       |       |                | credentials of   |
@@ -1098,7 +1100,7 @@ Table of Contents
       integers.  In CBOR, "ep_id_types" is an integer or an array of
       integers, and has label 16.  The integer values are taken from the
       'CBOR Label' column of the "EDHOC Endpoint Identity Types"
-      registry defined in Section 13.10 of this document.
+      registry defined in Section 14.10 of this document.
 
    *  transports: This parameter specifies a set of supported means for
       transporting EDHOC messages.  If the set is composed of a single
@@ -1109,51 +1111,110 @@ Table of Contents
       array of integers.  In CBOR, "transports" is an integer or an
       array of integers, and has label 17.  The integer values are taken
       from the 'Transport ID' column of the "EDHOC Transports" Registry
-      defined in Section 13.11 of this document.
+      defined in Section 14.11 of this document.
 
-   *  trust_anchors: This parameter specifies a set of supported trust
-      anchors for performing authentication.  These trust anchors are
-      used for verifying authentication credentials of EDHOC peers in
-      EDHOC sessions, and are typically authentication credentials of
-      Certificate Authorities (CAs).
+   *  trust_anchors: This parameter specifies a collection of supported
+      trust anchors for performing authentication.  According to what is
+      specified within the collection, these trust anchors are used for
+      different purposes, e.g., for verifying authentication credentials
+      of other EDHOC peers in EDHOC sessions.
 
-      The set is composed of pairs, each of which specifies a trust
-      anchor type and an identifier of a trust anchor of that type.  If
-      the set is composed of a single pair, this is specified as a
-      single item.  If the set is composed of multiple pairs, these are
-      specified as elements of an array.  Trust anchor types are
-      selected from the "EDHOC Trust Anchor Types" registry defined in
-      Section 13.12 of this document.
+      More in detail, the collection of trust anchors is composed of one
+      or more sets.  Each set includes one or more trust anchors to use
+      for one specific purpose associated with that set.
 
-      In JSON, the "trust_anchors" value is an object or an array of
-      objects.  Each object includes only one entry, specifying the pair
-      for a trust anchor TA of type TYPE.  The entry's key specifies the
-      TA's type TYPE taken from the 'Name' column of the "EDHOC Trust
-      Anchor Types" registry.  The entry's value is the identifier of
-      TA, whose encoding depends on TYPE.  Such an encoding is what
-      results from applying the conversion in Section 6.1 of [RFC8949]
-      to the CBOR encoding of the identifier of TA when "trust_anchors"
-      is encoded in CBOR (see below).
+      In particular, each set is composed of pairs, each of which
+      specifies a trust anchor type and an identifier of a trust anchor
+      of that type.  If the set is composed of a single pair, this pair
+      is specified as a single item.  If the set is composed of multiple
+      pairs, these pairs are specified as elements of an array.
 
-      In CBOR, the "trust_anchors" value is a map or an array of maps,
-      and has label 18.  Each map includes only one entry, specifying
-      the pair for a trust anchor TA.  The entry's key specifies the
-      TA's type TYPE encoded as a CBOR integer, with integer value taken
-      from the 'CBOR label' column of the "EDHOC Trust Anchor Types"
-      registry.  The entry's value specifies the identifier of TA, whose
-      encoding depends on TYPE and is specified by the 'Value type'
-      column of the "EDHOC Trust Anchor Types" registry, for the
-      registry entry that has TYPE as value of the 'Name' column.
+      Trust anchor purposes are selected from the "EDHOC Trust Anchor
+      Purposes" registry defined in Section 14.12 of this document.
+      Trust anchor types are selected from the "EDHOC Trust Anchor
+      Types" registry defined in Section 14.13 of this document.
+
+      In JSON, the "trust_anchors" value is an object with one or more
+      outer entries, each of which is associated with a trust anchor
+      purpose.  The following applies for each outer entry:
+
+      -  The outer entry's key specifies the associated trust anchor
+         purpose taken from the 'Name' column' of the "EDHOC Trust
+         Anchor Purposes" registry.
+
+      -  The outer entry's value is an object or an array of at least
+         two objects.  Each object includes one inner entry, specifying
+         the pair for a trust anchor TA of type TYPE.  The inner entry
+         is formatted as follows:
+
+         o  The inner entry's key specifies the TA's type TYPE taken
+            from the 'Name' column of the "EDHOC Trust Anchor Types"
+            registry.
+
+         o  The inner entry's value is the identifier of TA, whose
+            encoding depends on TYPE.  Such an encoding is what results
+            from applying the conversion in Section 6.1 of [RFC8949] to
+            the CBOR encoding of the identifier of TA when
+            "trust_anchors" is encoded in CBOR (see below).
+
+      In CBOR, the "trust_anchors" value is a map and has label 18.  The
+      map includes one or more outer entries, each of which is
+      associated with a trust anchor purpose.  The following applies for
+      each outer entry:
+
+      -  The outer entry's key specifies the associated trust anchor
+         purpose encoded as a CBOR integer, with integer value taken
+         from the 'CBOR label' column of the "EDHOC Trust Anchor
+         Purposes" registry.
+
+      -  The outer entry's value is a map or an array of at least two
+         maps.  Each map includes one inner entry, specifying the pair
+         for a trust anchor TA of type TYPE.  The inner entry is
+         formatted as follows:
+
+         o  The inner entry's key specifies the TA's type TYPE encoded
+            as a CBOR integer, with integer value taken from the 'CBOR
+            label' column of the "EDHOC Trust Anchor Types" registry.
+
+         o  The inner entry's value specifies the identifier of TA,
+            whose encoding depends on TYPE and is specified by the
+            'Value type' column of the "EDHOC Trust Anchor Types"
+            registry, for the registry entry that has TYPE as value of
+            the 'Name' column.
 
    An example of JSON EDHOC_Information is given in Figure 7.
 
       "edhoc_info" : {
           "session_id"    : b64'AQ==',
           "methods"       : 1,
-          "cipher_suites" : 0
+          "cipher_suites" : 0,
+          "trust_anchors" : {
+            "edhoc_cred" : [
+              { "c5u" : "coap://certs.c509.example" },
+              { "x5u" : "coap://certs.x509.example" }
+            ]
+          }
       }
 
                 Figure 7: Example of JSON EDHOC_Information
+
+   An example of CBOR EDHOC_Information is given in Figure 8.
+
+      e'edhoc_info_param'  : {
+        e'session_id'    : h'01',
+        e'methods'       : 1,
+        e'cipher_suites' : 0,
+        e'trust_anchors' : {
+          e'edhoc_cred' : [
+            { e'c5t_ta_type' : [-15, h'81DC2F32CB87E163'] },
+            { e'c5u_ta_type' : "coap://certs.c509.example" },
+            { e'x5t_ta_type' : [-15, h'79F2A41B510C1F9B'] },
+            { e'x5u_ta_type' : "coap://certs.x509.example" }
+          ]
+        }
+      }
+
+                Figure 8: Example of CBOR EDHOC_Information
 
    The CDDL grammar describing the CBOR EDHOC_Information is:
 
@@ -1176,7 +1237,7 @@ Table of Contents
      ? 15 => true / false,           ; coap_ct
      ? 16 => int / array,            ; ep_id_types
      ? 17 => int / array,            ; transports
-     ? 18 => map / array,            ; trust_anchors
+     ? 18 => map,                    ; trust_anchors
      * int / tstr => any
    }
 
@@ -1204,7 +1265,7 @@ Table of Contents
 
    *  EAD_ACCESS_TOKEN = (ead_label, ead_value), where:
 
-      -  ead_label is the integer value TBD registered in Section 13.8,
+      -  ead_label is the integer value TBD registered in Section 14.8,
          and
 
       -  ead_value is a CBOR byte string equal to the value of the
@@ -1227,7 +1288,7 @@ Table of Contents
 
    *  EAD_SESSION_ID = (ead_label, ead_value), where:
 
-      -  ead_label is the integer value TBD registered in Section 13.8,
+      -  ead_label is the integer value TBD registered in Section 14.8,
          and
 
       -  ead_value is a CBOR byte string equal to the value of the
@@ -1694,7 +1755,7 @@ Table of Contents
 6.  CWT Confirmation Methods
 
    This document defines a number of new CWT confirmation methods (see
-   Section 13.7).  The semantics of each confirmation method is defined
+   Section 14.7).  The semantics of each confirmation method is defined
    below.
 
 6.1.  Ordered Chain of X.509 Certificates
@@ -1769,7 +1830,7 @@ Table of Contents
 7.  JWT Confirmation Methods
 
    This document defines a number of new JWT confirmation methods (see
-   Section 13.6).  The semantics of each confirmation method is defined
+   Section 14.6).  The semantics of each confirmation method is defined
    below.
 
 7.1.  Ordered Chain of X.509 Certificates
@@ -1912,7 +1973,32 @@ Table of Contents
 
                          Table 3: EDHOC Transports
 
-10.  EDHOC Trust Anchor Types
+10.  EDHOC Trust Anchor Purposes
+
+   This document defines the following EDHOC trust anchor purpose.
+
+   Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
+   with the RFC number of this specification and delete this paragraph.
+
+     +============+=======+===================+=====================+
+     | Name       | CBOR  | Description       | Reference           |
+     |            | label |                   |                     |
+     +============+=======+===================+=====================+
+     | edhoc_cred | 0     | Verifying         | [RFC-XXXX][RFC9528] |
+     |            |       | authentication    |                     |
+     |            |       | credentials of    |                     |
+     |            |       | other EDHOC peers |                     |
+     |            |       | in EDHOC sessions |                     |
+     +------------+-------+-------------------+---------------------+
+
+                   Table 4: EDHOC Trust Anchor Purposes
+
+   Trust anchors with purpose "edhoc_cred" are used for verifying
+   authentication credentials of other EDHOC peers in an EDHOC session,
+   and they typically are authentication credentials of Certificate
+   Authorities (CAs).
+
+11.  EDHOC Trust Anchor Types
 
    This document defines the following EDHOC trust anchor types.
 
@@ -1949,9 +2035,9 @@ Table of Contents
    |      |       |               | certificate     |                 |
    +------+-------+---------------+-----------------+-----------------+
 
-                    Table 4: EDHOC Trust Anchor Types
+                    Table 5: EDHOC Trust Anchor Types
 
-11.  Security Considerations
+12.  Security Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -1997,7 +2083,7 @@ Table of Contents
    token per client per PoP-key (i.e., per client's authentication
    credential).
 
-12.  Privacy Considerations
+13.  Privacy Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -2033,14 +2119,14 @@ Table of Contents
    if C and RS dynamically update their OSCORE identifiers, e.g., by
    using the method defined in [I-D.ietf-core-oscore-key-update].
 
-13.  IANA Considerations
+14.  IANA Considerations
 
    This document has the following actions for IANA.
 
    Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
    with the RFC number of this specification and delete this paragraph.
 
-13.1.  ACE Profiles Registry
+14.1.  ACE Profiles Registry
 
    IANA is asked to add the following entry to the "ACE Profiles"
    registry, following the procedure specified in [RFC9200].
@@ -2057,7 +2143,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-13.2.  OAuth Parameters Registry
+14.2.  OAuth Parameters Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters"
    registry.
@@ -2070,7 +2156,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-13.3.  OAuth Parameters CBOR Mappings Registry
+14.3.  OAuth Parameters CBOR Mappings Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters
    CBOR Mappings" registry, following the procedure specified in
@@ -2086,7 +2172,7 @@ Table of Contents
 
    *  Original Specification: [RFC-XXXX]
 
-13.4.  JSON Web Token Claims Registry
+14.4.  JSON Web Token Claims Registry
 
    IANA is asked to add the following entries to the "JSON Web Token
    Claims" registry, following the procedure specified in [RFC7519].
@@ -2099,7 +2185,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-13.5.  CBOR Web Token (CWT) Claims Registry
+14.5.  CBOR Web Token (CWT) Claims Registry
 
    IANA is asked to add the following entries to the "CBOR Web Token
    (CWT) Claims" registry, following the procedure specified in
@@ -2119,7 +2205,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-13.6.  JWT Confirmation Methods Registry
+14.6.  JWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "JWT Confirmation
    Methods" registry, following the procedure specified in [RFC7800].
@@ -2230,7 +2316,7 @@ Table of Contents
 
    *  Reference: Section 7.10 of [RFC-XXXX]
 
-13.7.  CWT Confirmation Methods Registry
+14.7.  CWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "CWT Confirmation
    Methods" registry, following the procedure specified in [RFC8747].
@@ -2401,7 +2487,7 @@ Table of Contents
 
    *  Reference: Section 6.10 of [RFC-XXXX]
 
-13.8.  EDHOC External Authorization Data Registry
+14.8.  EDHOC External Authorization Data Registry
 
    IANA is asked to add the following entries to the "EDHOC External
    Authorization Data" registry defined in Section 10.5 of [RFC9528].
@@ -2425,7 +2511,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX], Section 4.1
 
-13.9.  EDHOC Information Registry
+14.9.  EDHOC Information Registry
 
    IANA is requested to create a new "EDHOC Information" registry within
    the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group
@@ -2434,7 +2520,7 @@ Table of Contents
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", "Specification Required" per Section 4.6 of
    [RFC8126], or "Expert Review" per Section 4.5 of [RFC8126].  "Expert
-   Review" guidelines are provided in Section 13.13.
+   Review" guidelines are provided in Section 14.14.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2485,7 +2571,7 @@ Table of Contents
    In the "Specification" column, the value for all of these entries
    will be [RFC-XXXX] and [RFC9528].
 
-13.10.  EDHOC Endpoint Identity Types Registry
+14.10.  EDHOC Endpoint Identity Types Registry
 
    IANA is requested to create a new "EDHOC Endpoint Identity Types"
    registry within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)"
@@ -2493,7 +2579,7 @@ Table of Contents
 
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 13.13.
+   [RFC8126].  "Expert Review" guidelines are provided in Section 14.14.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2529,7 +2615,7 @@ Table of Contents
    This registry has been initially populated with the values in
    Table 2.
 
-13.11.  EDHOC Transports Registry
+14.11.  EDHOC Transports Registry
 
    IANA is requested to create a new "EDHOC Transports" registry within
    the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group
@@ -2537,7 +2623,7 @@ Table of Contents
 
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 13.13.
+   [RFC8126].  "Expert Review" guidelines are provided in Section 14.14.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2573,7 +2659,56 @@ Table of Contents
    This registry has been initially populated with the values in
    Table 3.
 
-13.12.  EDHOC Trust Anchor Types Registry
+14.12.  EDHOC Trust Anchor Purposes Registry
+
+   IANA is requested to create a new "EDHOC Trust Anchor Purposes"
+   registry within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)"
+   registry group defined in [RFC9528].
+
+   The registration policy is either "Private Use", "Standards Action
+   with Expert Review", or "Specification Required" per Section 4.6 of
+   [RFC8126].  "Expert Review" guidelines are provided in Section 14.14.
+
+   All assignments according to "Standards Action with Expert Review"
+   are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
+   with Expert Review additionally required per Section 4.5 of
+   [RFC8126].  The procedure for early IANA allocation of Standards
+   Track code points defined in [RFC7120] also applies.  When such a
+   procedure is used, IANA will ask the designated expert(s) to approve
+   the early allocation before registration.  In addition, WG chairs are
+   encouraged to consult the expert(s) early during the process outlined
+   in Section 3.1 of [RFC7120].
+
+   The columns of this registry are:
+
+   *  Name: This field contains the descriptive name of the trust anchor
+      purpose, to enable easier reference to the item.  These names MUST
+      be unique.
+
+   *  CBOR label: This field contains the value used to identify the
+      trust anchor purpose.  These values MUST be unique.  The value can
+      be an unsigned integer or a negative integer.  Different ranges of
+      values use different registration policies:
+
+      -  Integer values from -24 to 23 are designated as "Standards
+         Action With Expert Review".
+
+      -  Integer values from -65536 to -25 and from 24 to 65535 are
+         designated as "Specification Required".
+
+      -  Integer values smaller than -65536 and greater than 65535 are
+         marked as "Private Use".
+
+   *  Description: This field contains a short description of the trust
+      anchor purpose.
+
+   *  Reference: This field contains a pointer to the public
+      specification for the trust anchor purpose.
+
+   This registry has been initially populated with the values in
+   Section 10.
+
+14.13.  EDHOC Trust Anchor Types Registry
 
    IANA is requested to create a new "EDHOC Trust Anchor Types" registry
    within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry
@@ -2581,7 +2716,7 @@ Table of Contents
 
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 13.13.
+   [RFC8126].  "Expert Review" guidelines are provided in Section 14.14.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2623,9 +2758,9 @@ Table of Contents
       specification for the type of trust anchor.
 
    This registry has been initially populated with the values in
-   Table 4.
+   Table 5.
 
-13.13.  Expert Review Instructions
+14.14.  Expert Review Instructions
 
    "Standards Action with Expert Review", "Specification Required", and
    "Expert Review" are three of the registration policies defined for
@@ -2667,9 +2802,9 @@ Table of Contents
       it will be used on, and the number of code points left that encode
       to that size.
 
-14.  References
+15.  References
 
-14.1.  Normative References
+15.1.  Normative References
 
    [COSE.Header.Parameters]
               IANA, "COSE Header Parameters",
@@ -2826,7 +2961,7 @@ Table of Contents
               (OSCORE)", RFC 9668, DOI 10.17487/RFC9668, November 2024,
               <https://www.rfc-editor.org/rfc/rfc9668>.
 
-14.2.  Informative References
+15.2.  Informative References
 
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
@@ -3338,8 +3473,22 @@ Appendix C.  CDDL Model
    eads = 11
    initiator = 12
    responder = 13
+   max_msgsize = 14
+   coap_ct = 15
+   ep_id_types = 16
+   transports = 17
+   trust_anchors = 18
 
-                            Figure 8: CDDL model
+   ; EDHOC Trust Anchor Purposes
+   edhoc_cred = 0
+
+   ; EDHOC Trust Anchor Types
+   c5t_ta_type = 22
+   c5u_ta_type = 23
+   x5t_ta_type = 34
+   x5u_ta_type = 35
+
+                            Figure 9: CDDL model
 
 Appendix D.  Document Updates
 

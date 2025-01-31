@@ -2170,9 +2170,9 @@ When later issuing further access tokens to the same pair (C, RS) using the same
 <p id="section-3.4-6.19.2">
 The set is composed of pairs, each of which specifies a trust anchor type and an identifier of a trust anchor of that type. If the set is composed of a single pair, this is specified as a single item. If the set is composed of multiple pairs, these are specified as elements of an array. Trust anchor types are selected from the "EDHOC Trust Anchor Types" registry defined in <a href="#iana-edhoc-ta-types" class="auto internal xref">Section 13.12</a> of this document.<a href="#section-3.4-6.19.2" class="pilcrow">¶</a></p>
 <p id="section-3.4-6.19.3">
-In JSON, the "trust_anchors" value is an object or an array of objects. Each object includes only one entry, specifying the pair for a trust anchor TA of type TYPE. The entry's key specifies the TA's type TYPE taken from the 'Trust anchor type' column of the "EDHOC Trust Anchor Types" registry. The entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> to the CBOR encoding of the identifier of TA when "trust_anchors" is encoded in CBOR (see below).<a href="#section-3.4-6.19.3" class="pilcrow">¶</a></p>
+In JSON, the "trust_anchors" value is an object or an array of objects. Each object includes only one entry, specifying the pair for a trust anchor TA of type TYPE. The entry's key specifies the TA's type TYPE taken from the 'Name' column of the "EDHOC Trust Anchor Types" registry. The entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> to the CBOR encoding of the identifier of TA when "trust_anchors" is encoded in CBOR (see below).<a href="#section-3.4-6.19.3" class="pilcrow">¶</a></p>
 <p id="section-3.4-6.19.4">
-In CBOR, the "trust_anchors" value is a map or an array of maps, and has label 18. Each map includes only one entry, specifying the pair for a trust anchor TA. The entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry. The entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Trust anchor type' column.<a href="#section-3.4-6.19.4" class="pilcrow">¶</a></p>
+In CBOR, the "trust_anchors" value is a map or an array of maps, and has label 18. Each map includes only one entry, specifying the pair for a trust anchor TA. The entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry. The entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Name' column.<a href="#section-3.4-6.19.4" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-3.4-7">An example of JSON EDHOC_Information is given in <a href="#fig-edhoc-info-json" class="auto internal xref">Figure 7</a>.<a href="#section-3.4-7" class="pilcrow">¶</a></p>
@@ -2833,7 +2833,7 @@ with the stored access token, which is bound to the authentication credential AU
         </caption>
 <thead>
           <tr>
-            <th class="text-left" rowspan="1" colspan="1">Trust anchor type</th>
+            <th class="text-left" rowspan="1" colspan="1">Name</th>
             <th class="text-left" rowspan="1" colspan="1">CBOR label</th>
             <th class="text-left" rowspan="1" colspan="1">Value type</th>
             <th class="text-left" rowspan="1" colspan="1">Description</th>
@@ -3586,7 +3586,7 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
 <p id="section-13.12-4">The columns of this registry are:<a href="#section-13.12-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-13.12-5.1">
-            <p id="section-13.12-5.1.1">Trust anchor type: This field contains the descriptive name of the type of trust anchor, to enable easier reference to the item. These names <span class="bcp14">MUST</span> be unique.<a href="#section-13.12-5.1.1" class="pilcrow">¶</a></p>
+            <p id="section-13.12-5.1.1">Name: This field contains the descriptive name of the type of trust anchor, to enable easier reference to the item. These names <span class="bcp14">MUST</span> be unique.<a href="#section-13.12-5.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-13.12-5.2">
             <p id="section-13.12-5.2.1">CBOR label: This field contains the value used to identify the type of trust anchor. These values <span class="bcp14">MUST</span> be unique. The value can be an unsigned integer or a negative integer. Different ranges of values use different registration policies:<a href="#section-13.12-5.2.1" class="pilcrow">¶</a></p>

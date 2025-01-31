@@ -1128,12 +1128,12 @@ Table of Contents
       In JSON, the "trust_anchors" value is an object or an array of
       objects.  Each object includes only one entry, specifying the pair
       for a trust anchor TA of type TYPE.  The entry's key specifies the
-      TA's type TYPE taken from the 'Trust anchor type' column of the
-      "EDHOC Trust Anchor Types" registry.  The entry's value is the
-      identifier of TA, whose encoding depends on TYPE.  Such an
-      encoding is what results from applying the conversion in
-      Section 6.1 of [RFC8949] to the CBOR encoding of the identifier of
-      TA when "trust_anchors" is encoded in CBOR (see below).
+      TA's type TYPE taken from the 'Name' column of the "EDHOC Trust
+      Anchor Types" registry.  The entry's value is the identifier of
+      TA, whose encoding depends on TYPE.  Such an encoding is what
+      results from applying the conversion in Section 6.1 of [RFC8949]
+      to the CBOR encoding of the identifier of TA when "trust_anchors"
+      is encoded in CBOR (see below).
 
       In CBOR, the "trust_anchors" value is a map or an array of maps,
       and has label 18.  Each map includes only one entry, specifying
@@ -1143,8 +1143,7 @@ Table of Contents
       registry.  The entry's value specifies the identifier of TA, whose
       encoding depends on TYPE and is specified by the 'Value type'
       column of the "EDHOC Trust Anchor Types" registry, for the
-      registry entry that has TYPE as value of the 'Trust anchor type'
-      column.
+      registry entry that has TYPE as value of the 'Name' column.
 
    An example of JSON EDHOC_Information is given in Figure 7.
 
@@ -1920,40 +1919,37 @@ Table of Contents
    Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
    with the RFC number of this specification and delete this paragraph.
 
-   +========+=======+===============+=================+================+
-   | Trust  | CBOR  | Value type    | Description     | Reference      |
-   | anchor | label |               |                 |                |
-   | type   |       |               |                 |                |
-   +========+=======+===============+=================+================+
-   | uuid   | 0     | #6.37(bstr)   | Binary CBOR-    | [RFC-          |
-   |        |       |               | encoded UUID    | XXXX][RFC9562] |
-   +--------+-------+---------------+-----------------+----------------+
-   | kid    | 4     | bstr          | Key identifier  | [RFC-          |
-   |        |       |               |                 | XXXX][RFC9052] |
-   +--------+-------+---------------+-----------------+----------------+
-   | c5t    | 22    | COSE_CertHash | Hash of a C509  | [RFC-          |
-   |        |       |               | certificate     | XXXX][draft-   |
-   |        |       |               |                 | ietf-cose-     |
-   |        |       |               |                 | cbor-encoded-  |
-   |        |       |               |                 | cert]          |
-   +--------+-------+---------------+-----------------+----------------+
-   | c5u    | 23    | uri           | URI pointing    | [RFC-          |
-   |        |       |               | to a COSE_C509  | XXXX][draft-   |
-   |        |       |               | containing a    | ietf-cose-     |
-   |        |       |               | ordered chain   | cbor-encoded-  |
-   |        |       |               | of              | cert]          |
-   |        |       |               | certificates    |                |
-   +--------+-------+---------------+-----------------+----------------+
-   | x5t    | 34    | COSE_CertHash | Hash of an      | [RFC-          |
-   |        |       |               | X.509           | XXXX][RFC9360] |
-   |        |       |               | certificate     |                |
-   +--------+-------+---------------+-----------------+----------------+
-   | x5u    | 35    | uri           | URI pointing    | [RFC-          |
-   |        |       |               | to an X.509     | XXXX][RFC9360] |
-   |        |       |               | certificate     |                |
-   +--------+-------+---------------+-----------------+----------------+
+   +======+=======+===============+=================+=================+
+   | Name | CBOR  | Value type    | Description     | Reference       |
+   |      | label |               |                 |                 |
+   +======+=======+===============+=================+=================+
+   | uuid | 0     | #6.37(bstr)   | Binary CBOR-    | [RFC-           |
+   |      |       |               | encoded UUID    | XXXX][RFC9562]  |
+   +------+-------+---------------+-----------------+-----------------+
+   | kid  | 4     | bstr          | Key identifier  | [RFC-           |
+   |      |       |               |                 | XXXX][RFC9052]  |
+   +------+-------+---------------+-----------------+-----------------+
+   | c5t  | 22    | COSE_CertHash | Hash of a C509  | [RFC-           |
+   |      |       |               | certificate     | XXXX][draft-    |
+   |      |       |               |                 | ietf-cose-cbor- |
+   |      |       |               |                 | encoded-cert]   |
+   +------+-------+---------------+-----------------+-----------------+
+   | c5u  | 23    | uri           | URI pointing to | [RFC-           |
+   |      |       |               | a COSE_C509     | XXXX][draft-    |
+   |      |       |               | containing a    | ietf-cose-cbor- |
+   |      |       |               | ordered chain   | encoded-cert]   |
+   |      |       |               | of certificates |                 |
+   +------+-------+---------------+-----------------+-----------------+
+   | x5t  | 34    | COSE_CertHash | Hash of an      | [RFC-           |
+   |      |       |               | X.509           | XXXX][RFC9360]  |
+   |      |       |               | certificate     |                 |
+   +------+-------+---------------+-----------------+-----------------+
+   | x5u  | 35    | uri           | URI pointing to | [RFC-           |
+   |      |       |               | an X.509        | XXXX][RFC9360]  |
+   |      |       |               | certificate     |                 |
+   +------+-------+---------------+-----------------+-----------------+
 
-                     Table 4: EDHOC Trust Anchor Types
+                    Table 4: EDHOC Trust Anchor Types
 
 11.  Security Considerations
 
@@ -2599,9 +2595,9 @@ Table of Contents
 
    The columns of this registry are:
 
-   *  Trust anchor type: This field contains the descriptive name of the
-      type of trust anchor, to enable easier reference to the item.
-      These names MUST be unique.
+   *  Name: This field contains the descriptive name of the type of
+      trust anchor, to enable easier reference to the item.  These names
+      MUST be unique.
 
    *  CBOR label: This field contains the value used to identify the
       type of trust anchor.  These values MUST be unique.  The value can

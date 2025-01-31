@@ -862,12 +862,12 @@ Table of Contents
    |               |       |       |                | a session        |
    +---------------+-------+-------+----------------+------------------+
    | methods       | 1     | int   | EDHOC Method   | Set of           |
-   |               |       | or    | Type Registry  | supported        |
+   |               |       | or    | Type registry  | supported        |
    |               |       | array |                | EDHOC methods    |
    +---------------+-------+-------+----------------+------------------+
    | cipher_suites | 2     | int   | EDHOC Cipher   | Set of           |
    |               |       | or    | Suites         | supported        |
-   |               |       | array | Registry       | EDHOC cipher     |
+   |               |       | array | registry       | EDHOC cipher     |
    |               |       |       |                | suites           |
    +---------------+-------+-------+----------------+------------------+
    | message_4     | 3     | True  |                | Support for      |
@@ -901,13 +901,13 @@ Table of Contents
    | cred_types    | 9     | int   | EDHOC          | Set of           |
    |               |       | or    | Authentication | supported        |
    |               |       | array | Credential     | types of         |
-   |               |       |       | Types Registry | authentication   |
+   |               |       |       | Types registry | authentication   |
    |               |       |       |                | credentials      |
    |               |       |       |                | for EDHOC        |
    +---------------+-------+-------+----------------+------------------+
    | id_cred_types | 10    | int   | COSE Header    | Set of           |
    |               |       | or    | Parameters     | supported        |
-   |               |       | tstr  | Registry       | types of         |
+   |               |       | tstr  | registry       | types of         |
    |               |       | or    |                | authentication   |
    |               |       | array |                | credential       |
    |               |       |       |                | identifiers      |
@@ -915,7 +915,7 @@ Table of Contents
    +---------------+-------+-------+----------------+------------------+
    | eads          | 11    | uint  | EDHOC External | Set of           |
    |               |       | or    | Authorization  | supported        |
-   |               |       | array | Data Registry  | EDHOC External   |
+   |               |       | array | Data registry  | EDHOC External   |
    |               |       |       |                | Authorization    |
    |               |       |       |                | Data (EAD)       |
    |               |       |       |                | items            |
@@ -950,20 +950,24 @@ Table of Contents
    +---------------+-------+-------+----------------+------------------+
    | ep_id_types   | 16    | int   | EDHOC Endpoint | Set of           |
    |               |       | or    | Identity Types | supported        |
-   |               |       | array | Registry       | types of         |
+   |               |       | array | registry       | types of         |
    |               |       |       |                | endpoint         |
    |               |       |       |                | identities for   |
    |               |       |       |                | EDHOC            |
    +---------------+-------+-------+----------------+------------------+
    | transports    | 17    | int   | EDHOC          | Set of           |
    |               |       | or    | Transports     | supported        |
-   |               |       | array | Registry       | means for        |
+   |               |       | array | registry       | means for        |
    |               |       |       |                | transporting     |
    |               |       |       |                | EDHOC messages   |
    +---------------+-------+-------+----------------+------------------+
    | trust_anchors | 18    | map   | EDHOC Trust    | Set of           |
-   |               |       |       | Anchor Types   | supported        |
-   |               |       |       | Registry       | trust anchors    |
+   |               |       |       | Anchor         | supported        |
+   |               |       |       | Purposes       | trust anchors    |
+   |               |       |       | registry and   |                  |
+   |               |       |       | EDHOC Trust    |                  |
+   |               |       |       | Anchor Types   |                  |
+   |               |       |       | registry       |                  |
    +---------------+-------+-------+----------------+------------------+
 
                    Table 1: EDHOC_Information Parameters

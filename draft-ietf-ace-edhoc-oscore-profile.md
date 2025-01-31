@@ -461,7 +461,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 | responder     | 13         | True or False        |                                                | Support for the EDHOC Responder role                                                                                                                                       |
 | max_msgsize   | 14         | uint                 |                                                | Maximum size of EDHOC messages in bytes                                                                                                                                    |
 | coap_ct       | 15         | True of False        |                                                | Requested use of the CoAP Content-Format Option in CoAP messages whose payload includes exclusively an EDHOC message, possibly prepended by an EDHOC connection identifier |
-| id_ep_types   | 16         | int or array         | EDHOC Endpoint Identity Types Registry         | Set of supported types of endpoint identities for EDHOC                                                                                                                    |
+| ep_id_types   | 16         | int or array         | EDHOC Endpoint Identity Types Registry         | Set of supported types of endpoint identities for EDHOC                                                                                                                    |
 | transports    | 17         | int or array         | EDHOC Transports Registry                      | Set of supported means for transporting EDHOC messages                                                                                                                     |
 | trust_anchors | 18         | map or array         | EDHOC Trust Anchor Types Registry              | Set of supported trust anchors for verifying authentication credentials of EDHOC peers                                                                                     |
 {: #table-cbor-key-edhoc-params title="EDHOC_Information Parameters" align="center"}
@@ -498,7 +498,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * coap\_cf: This parameter specifies whether it is required that CoAP messages include the CoAP Content-Format Option with value 64 (application/edhoc+cbor-seq) or 65 (application/cid-edhoc+cbor-seq) as appropriate, when the message payload includes exclusively an EDHOC message possibly prepended by an EDHOC connection identifier (see {{Sections 3.4.1 and A.2 of RFC9528}}). In JSON, the "coap\_cf" value is a boolean. In CBOR, "coap\_cf" is the simple value `true` (0xf5) or `false` (0xf4), and has label 15.
 
-* id\_ep\_types: This parameter specifies a set of supported types of endpoint identities for EDHOC. If the set is composed of a single type of endpoint identity, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one type of endpoint identity as an integer. In JSON, the "id\_ep\_types" value is an integer or an array of integers. In CBOR, "id\_ep\_types" is an integer or an array of integers, and has label 16. The integer values are taken from the 'CBOR Label' column of the "EDHOC Endpoint Identity Types" registry defined in {{iana-edhoc-endpoint-identity-types}} of this document.
+* ep\_id\_types: This parameter specifies a set of supported types of endpoint identities for EDHOC. If the set is composed of a single type of endpoint identity, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one type of endpoint identity as an integer. In JSON, the "ep\_id\_types" value is an integer or an array of integers. In CBOR, "ep\_id\_types" is an integer or an array of integers, and has label 16. The integer values are taken from the 'CBOR Label' column of the "EDHOC Endpoint Identity Types" registry defined in {{iana-edhoc-endpoint-identity-types}} of this document.
 
 * transports: This parameter specifies a set of supported means for transporting EDHOC messages. If the set is composed of a single means for transporting EDHOC messages, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one means for transporting EDHOC messages as an integer. In JSON, the "transports" value is an integer or an array of integers. In CBOR, "transports" is an integer or an array of integers, and has label 17. The integer values are taken from the 'Transport ID' column of the "EDHOC Transports" Registry defined in {{iana-edhoc-transports}} of this document.
 
@@ -541,7 +541,7 @@ EDHOC_Information = {
   ? 13 => true / false,           ; responder
   ? 14 => uint,                   ; max_msgsize
   ? 15 => true / false,           ; coap_ct
-  ? 16 => int / array,            ; id_ep_types
+  ? 16 => int / array,            ; ep_id_types
   ? 17 => int / array,            ; transports
   ? 18 => map / array,            ; trust_anchors
   * int / tstr => any
@@ -1221,7 +1221,7 @@ The columns of this registry are:
 
 * Name: This field contains the name of the EDHOC endpoint identity type.
 
-* CBOR Label: The value to be used to identify this EDHOC endpoint identity type. These values MUST be unique. The value can be a positive integer or a negative integer. Different ranges of values use different registration policies {{RFC8126}}. Integer values from -24 to 23 are designated as "Standards Action With Expert Review". Integer values from -65536 to -25 and from 24 to 65535 are designated as "Specification Required". Integer values smaller than -65536 and greater than 65535 are marked as "Private Use".
+* CBOR label: The value to be used to identify this EDHOC endpoint identity type. These values MUST be unique. The value can be a positive integer or a negative integer. Different ranges of values use different registration policies {{RFC8126}}. Integer values from -24 to 23 are designated as "Standards Action With Expert Review". Integer values from -65536 to -25 and from 24 to 65535 are designated as "Specification Required". Integer values smaller than -65536 and greater than 65535 are marked as "Private Use".
 
 * Description: This field contains a short description of the EDHOC endpoint identity type.
 
@@ -1694,6 +1694,8 @@ responder = 13
 {:removeinrfc}
 
 ## Version -06 to -07 ## {#sec-06-07}
+
+* Renamed id_ep_types as ep_id_types.
 
 * Defined parameters for the EDHOC_Information object:
 

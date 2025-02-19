@@ -15,12 +15,12 @@ It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual auth
 EDHOC also establishes an Object Security for Constrained RESTful Environments (OSCORE) Security Context, which is used to secure communications when accessing protected resources according to the authorization information indicated in the access token.
 This profile can be used to delegate management of authorization information from a resource-constrained server to a trusted host with less severe limitations regarding processing power and memory. 
     " name="description">
-<meta content="xml2rfc 3.25.0" name="generator">
+<meta content="xml2rfc 3.27.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-ace-edhoc-oscore-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.25.0
-    Python 3.12.8
+  xml2rfc 3.27.0
+    Python 3.12.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
@@ -441,7 +441,7 @@ dl {
     margin-bottom: 0;
   }
 }
-dl > dt {
+dl:not(.dlNewline) > dt {
   float: left;
   margin-right: 2ch;
   min-width: 8ch;
@@ -1050,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">EDHOC and OSCORE profile of ACE</td>
-<td class="right">January 2025</td>
+<td class="right">February 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 4 August 2025</td>
+<td class="center">Expires 23 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-31" class="published">31 January 2025</time>
+<time datetime="2025-02-19" class="published">19 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-04">4 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-23">23 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1831,7 +1831,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <li class="normal" id="section-3.3-9.1">
             <p id="section-3.3-9.1.1">A unique identification of the authentication credential of RS, AUTH_CRED_RS. This is specified in the "rs_cnf" parameter defined in <span>[<a href="#RFC9201" class="cite xref">RFC9201</a>]</span>. AUTH_CRED_RS can be transported by value or referred to by means of an appropriate identifier.<a href="#section-3.3-9.1.1" class="pilcrow">¶</a></p>
 <p id="section-3.3-9.1.2">
-When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH_CRED_C, AUTH_CRED_RS), it is typically expected that the response to C may include AUTH_CRED_RS by value.<a href="#section-3.3-9.1.2" class="pilcrow">¶</a></p>
+When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH_CRED_C, AUTH_CRED_RS), it is typically expected that the response to C includes AUTH_CRED_RS by value.<a href="#section-3.3-9.1.2" class="pilcrow">¶</a></p>
 <p id="section-3.3-9.1.3">
 When later issuing further access tokens to the same pair (C, RS) using the same AUTH_CRED_RS, it is expected that the response to C includes AUTH_CRED_RS by reference.<a href="#section-3.3-9.1.3" class="pilcrow">¶</a></p>
 <p id="section-3.3-9.1.4">
@@ -1883,11 +1883,11 @@ EDHOC_Information <span class="bcp14">MUST</span> be transported in the "edhoc_i
             <li class="normal" id="section-3.3.1-2.2">
               <p id="section-3.3.1-2.2.1">The authentication credential AUTH_CRED_C that C specified in its POST request to the /token endpoint (see <a href="#c-as" class="auto internal xref">Section 3.1</a>), in the "cnf" claim.<a href="#section-3.3.1-2.2.1" class="pilcrow">¶</a></p>
 <p id="section-3.3.1-2.2.2">
-In the access token, AUTH_CRED_C can be transported by value or uniquely referred to by means of an appropriate identifier, regardless of how C specified it in the request to the /token endpoint. Thus, the specific field carried in the access token claim and specifying AUTH_CRED_C depends on the specific way used by AS.<a href="#section-3.3.1-2.2.2" class="pilcrow">¶</a></p>
+In the access token, AUTH_CRED_C can be transported by value or uniquely referred to by means of an appropriate identifier. Yet, consistent with the considerations about AUTH_CRED_C and the "req_cnf" parameter made in <a href="#c-as" class="auto internal xref">Section 3.1</a>, the "cnf" claim of the access token specifies a confirmation method suitable for the type of AUTH_CRED_C.<a href="#section-3.3.1-2.2.2" class="pilcrow">¶</a></p>
 <p id="section-3.3.1-2.2.3">
-Yet, consistent with the considerations about AUTH_CRED_C and the "req_cnf" parameter made in <a href="#c-as" class="auto internal xref">Section 3.1</a>, the "cnf" claim of the access token specifies a confirmation method suitable for the type of AUTH_CRED_C.<a href="#section-3.3.1-2.2.3" class="pilcrow">¶</a></p>
+When issuing the first access token of a token series, the confirmation method used in the "cnf" claim <span class="bcp14">MUST</span> be the same one used in the "req_cnf" parameter of the corresponding client-to-AS request.<a href="#section-3.3.1-2.2.3" class="pilcrow">¶</a></p>
 <p id="section-3.3.1-2.2.4">
-When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH_CRED_C, AUTH_CRED_RS), it is typically expected that AUTH_CRED_C is included by value.<a href="#section-3.3.1-2.2.4" class="pilcrow">¶</a></p>
+When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH_CRED_C, AUTH_CRED_RS), it is expected that AUTH_CRED_C is included by value.<a href="#section-3.3.1-2.2.4" class="pilcrow">¶</a></p>
 <p id="section-3.3.1-2.2.5">
 When later issuing further access tokens to the same pair (C, RS) using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is identified by reference.<a href="#section-3.3.1-2.2.5" class="pilcrow">¶</a></p>
 </li>
@@ -4949,19 +4949,22 @@ x5u_ta_type = 35
             <p id="appendix-D.1-1.4.1">Explicit statement on admitted confirmation methods.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.5">
-            <p id="appendix-D.1-1.5.1">Revised examples in CBOR diagnostic notation.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.5.1">First token in a series: the "cnf" claim uses the same confirmation method of the "req_cnf" request to /token.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.6">
-            <p id="appendix-D.1-1.6.1">Changed CBOR abbreviations to not collide with existing codepoints.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.6.1">Revised examples in CBOR diagnostic notation.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.7">
-            <p id="appendix-D.1-1.7.1">Updates and fixes in the IANA considerations.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.7.1">Changed CBOR abbreviations to not collide with existing codepoints.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.8">
-            <p id="appendix-D.1-1.8.1">Updated references.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.8.1">Updates and fixes in the IANA considerations.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.9">
-            <p id="appendix-D.1-1.9.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.9.1">Updated references.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.10">
+            <p id="appendix-D.1-1.10.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

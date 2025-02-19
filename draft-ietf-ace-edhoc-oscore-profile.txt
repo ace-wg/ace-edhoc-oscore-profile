@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 4 August 2025                                         M. Tiloca
+Expires: 23 August 2025                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         31 January 2025
+                                                        19 February 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 August 2025.
+   This Internet-Draft will expire on 23 August 2025.
 
 Copyright Notice
 
@@ -653,8 +653,8 @@ Table of Contents
 
       When issuing the first access token ever to a pair (C, RS) using a
       pair of corresponding authentication credentials (AUTH_CRED_C,
-      AUTH_CRED_RS), it is typically expected that the response to C may
-      include AUTH_CRED_RS by value.
+      AUTH_CRED_RS), it is typically expected that the response to C
+      includes AUTH_CRED_RS by value.
 
       When later issuing further access tokens to the same pair (C, RS)
       using the same AUTH_CRED_RS, it is expected that the response to C
@@ -719,21 +719,21 @@ Table of Contents
       "cnf" claim.
 
       In the access token, AUTH_CRED_C can be transported by value or
-      uniquely referred to by means of an appropriate identifier,
-      regardless of how C specified it in the request to the /token
-      endpoint.  Thus, the specific field carried in the access token
-      claim and specifying AUTH_CRED_C depends on the specific way used
-      by AS.
-
-      Yet, consistent with the considerations about AUTH_CRED_C and the
+      uniquely referred to by means of an appropriate identifier.  Yet,
+      consistent with the considerations about AUTH_CRED_C and the
       "req_cnf" parameter made in Section 3.1, the "cnf" claim of the
       access token specifies a confirmation method suitable for the type
       of AUTH_CRED_C.
 
+      When issuing the first access token of a token series, the
+      confirmation method used in the "cnf" claim MUST be the same one
+      used in the "req_cnf" parameter of the corresponding client-to-AS
+      request.
+
       When issuing the first access token ever to a pair (C, RS) using a
       pair of corresponding authentication credentials (AUTH_CRED_C,
-      AUTH_CRED_RS), it is typically expected that AUTH_CRED_C is
-      included by value.
+      AUTH_CRED_RS), it is expected that AUTH_CRED_C is included by
+      value.
 
       When later issuing further access tokens to the same pair (C, RS)
       using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is
@@ -3507,6 +3507,9 @@ D.1.  Version -06 to -07
    *  Access Token Request/Response messages must be encoded in CBOR.
 
    *  Explicit statement on admitted confirmation methods.
+
+   *  First token in a series: the "cnf" claim uses the same
+      confirmation method of the "req_cnf" request to /token.
 
    *  Revised examples in CBOR diagnostic notation.
 

@@ -337,7 +337,7 @@ When issuing the first access token of a token series, AS MUST send the followin
 
 * A unique identification of the authentication credential of RS, AUTH\_CRED\_RS. This is specified in the "rs\_cnf" parameter defined in {{RFC9201}}. AUTH\_CRED\_RS can be transported by value or referred to by means of an appropriate identifier.
 
-   When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), it is typically expected that the response to C may include AUTH\_CRED\_RS by value.
+   When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), it is typically expected that the response to C includes AUTH\_CRED\_RS by value.
 
    When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_RS, it is expected that the response to C includes AUTH\_CRED\_RS by reference.
 
@@ -379,11 +379,11 @@ To avoid the complexity of different encodings, an access token of this profile 
 
 * The authentication credential AUTH\_CRED\_C that C specified in its POST request to the /token endpoint (see {{c-as}}), in the "cnf" claim.
 
-   In the access token, AUTH\_CRED\_C can be transported by value or uniquely referred to by means of an appropriate identifier, regardless of how C specified it in the request to the /token endpoint. Thus, the specific field carried in the access token claim and specifying AUTH\_CRED\_C depends on the specific way used by AS.
+   In the access token, AUTH\_CRED\_C can be transported by value or uniquely referred to by means of an appropriate identifier. Yet, consistent with the considerations about AUTH\_CRED\_C and the "req_cnf" parameter made in {{c-as}}, the "cnf" claim of the access token specifies a confirmation method suitable for the type of AUTH\_CRED\_C.
 
-   Yet, consistent with the considerations about AUTH_CRED_C and the "req_cnf" parameter made in {{c-as}}, the "cnf" claim of the access token specifies a confirmation method suitable for the type of AUTH_CRED_C.
+   When issuing the first access token of a token series, the confirmation method used in the "cnf" claim MUST be the same one used in the "req_cnf" parameter of the corresponding client-to-AS request.
 
-   When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), it is typically expected that AUTH\_CRED\_C is included by value.
+   When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), it is expected that AUTH\_CRED\_C is included by value.
 
    When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_C, it is expected that AUTH\_CRED\_C is identified by reference.
 
@@ -1803,6 +1803,8 @@ x5u_ta_type = 35
 * Access Token Request/Response messages must be encoded in CBOR.
 
 * Explicit statement on admitted confirmation methods.
+
+* First token in a series: the "cnf" claim uses the same confirmation method of the "req_cnf" request to /token.
 
 * Revised examples in CBOR diagnostic notation.
 

@@ -278,7 +278,7 @@ If C wants to update its access rights without changing an existing OSCORE Secur
 
 The identifier "session\_id" is assigned by AS as discussed in {{token-series}}, and identifies an ongoing token series associated with the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS). That is, previous access tokens in that series were issued by AS to C, as bound to AUTH_CRED_C and intended for RS as identified by AUTH_CRED_RS.
 
-Note that, the same "session\_id" value might identify multiple ongoing token series, e.g., if those all associated with the same client but different resource servers. In this case, AS can use the "session\_id" value together with other information such as the targeted audience (see {{Section 5.8.1 of RFC9200}}) and the authenticated identity of C, in order to determine the exact token series to which the new requested access token has to be added.
+Note that the same "session\_id" value might identify multiple ongoing token series, e.g., if those are associated with the same client but different resource servers. In this case, AS can use the "session\_id" value together with other information such as the targeted audience (see {{Section 5.8.1 of RFC9200}}) and the authenticated identity of C, in order to determine the exact token series to which the new requested access token has to be added.
 
 <!--
 Editor's note: When retrieving the access token it is required to consider the pair (session id, AUTH_CRED_C). Here it is stated that the session id identifies the pair (AUTH_CRED_C, AUTH_CRED_RS). Why then isn't the session id sufficient for retrieving the access token, considering it identifies AUTH_CRED_C?
@@ -290,7 +290,7 @@ Here on the AS, a series might be ongoing for (C, RS1) and another series might 
 The text above has been revisited, also based on the revised safer criterion for assigning new sender IDs at the AS in the next subsection.
 -->
 
-If the identifier specified in the "session\_id" parameter of the POST request identifies multiple, ongoing token series of which C has an access token, then C MUST specify the "audience" parameter in the POST request. In particular, the value of the "audience" parameter MUST be the same as in the POST request that C sent for requesting the first access token in the token series to which the new requested access token has to be added.
+If the identifier specified in the "session\_id" parameter of the POST request identifies multiple, ongoing token series of which C has an access token, then C MUST specify the "audience" parameter in the POST request. In particular, the value of the "audience" parameter MUST be the same as in the POST request that C previously sent to AS, for requesting the first access token in the token series to which the new requested access token has to be added.
 
 AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token issued for C and RS belongs. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid_request" as defined in {{Section 5.8.3 of RFC9200}}.
 

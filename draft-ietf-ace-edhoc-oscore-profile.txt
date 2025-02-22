@@ -489,9 +489,10 @@ Table of Contents
    those supported by EDHOC, e.g., CBOR Web Tokens (CWTs) and CWT Claims
    Sets (CCSs) [RFC8392], X.509 certificates [RFC5280], and C509
    certificates [I-D.ietf-cose-cbor-encoded-cert].  Consequently, the
-   "req_cnf" parameter specifies a confirmation method suitable for the
-   type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is an
-   X.509 certificate transported by value or referred to, respectively.
+   "req_cnf" parameter MUST specify a confirmation method suitable for
+   the type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is
+   an X.509 certificate transported by value or referred to,
+   respectively.
 
    Note that EDHOC does not admit the use of naked COSE_Keys as
    authentication credentials.  The closest admitted authentication
@@ -500,6 +501,18 @@ Table of Contents
    confirmation method "kccs".  Therefore, the "req_cnf" parameter MUST
    NOT specify the confirmation method "COSE_Key" (CBOR abbreviation:
    1).
+
+   When receiving an Access Token request including the "req_cnf"
+   parameter, AS checks whether it is already storing the authentication
+   credential of C, namely AUTH_CRED_C, specified in "req_cnf" by value
+   or reference.
+
+   If this is not the case, AS retrieves AUTH_CRED_C, either using the
+   "req_cnf" parameter or some other trusted source.  After that, AS
+   validates the actual AUTH_CRED_C.  In case of successful validation,
+   AS stores AUTH_CRED_C as a valid authentication credential.
+   Otherwise, the Client-to-AS request MUST be declined with the error
+   code "unsupported_pop_key" as defined in Section 5.8.3 of [RFC9200].
 
    An example of client-to-AS request is shown in Figure 3.  In this
    example, C specifies its own authentication credential by reference,
@@ -3510,6 +3523,8 @@ D.1.  Version -06 to -07
    *  Renamed id_ep_types as ep_id_types.
 
    *  Revised rules for the AS to assign session ID values.
+
+   *  Added explicit validation of AUTH_CRED_C at AS.
 
    *  Defined parameters for the EDHOC_Information object:
 

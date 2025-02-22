@@ -238,9 +238,9 @@ Upon successful update of access rights, the new issued access token effectively
 
 The following subsections describe the details of the POST request and response to the /token endpoint between C and AS.
 
-In this exchange, C provides AS with its own authentication credential AUTH\_CRED\_C. Then, AS issues the access token as securely bound to AUTH\_CRED\_C, by including it or uniquely referring to it in the access token. Together with the access token, AS provides C with a set of parameters that enable C to run EDHOC with RS. In particular, these parameters include information about the authorization credential of RS, AUTH\_CRED\_RS, that is transported by value or uniquely referred to.
+In this exchange, C provides AS with its own authentication credential AUTH\_CRED\_C. Then, AS issues the access token as securely bound to AUTH\_CRED\_C, by including it or uniquely referring to it in the access token. Together with the access token, AS provides C with a set of parameters that enable C to run EDHOC with RS. In particular, these parameters include information about the authentication credential of RS, AUTH\_CRED\_RS, which is transported by value or uniquely referred to.
 
-The request to the /token endpoint and the corresponding response can include EDHOC\_Information, which is a CBOR map object containing information related to an EDHOC implementation, see {{edhoc-parameters-object}}. This object is transported in the "edhoc\_info" parameter registered in {{iana-oauth-params}} and {{iana-oauth-cbor-mappings}}.
+The request to the /token endpoint and the corresponding response can include EDHOC\_Information, which is a CBOR map object containing information related to an EDHOC implementation (see {{edhoc-parameters-object}}). This object is transported in the "edhoc\_info" parameter registered in {{iana-oauth-params}} and {{iana-oauth-cbor-mappings}}.
 
 ## C-to-AS: POST to /token endpoint # {#c-as}
 
@@ -248,13 +248,13 @@ The client-to-AS request is specified in {{Section 5.8.1 of RFC9200}}.
 
 The client MUST send this POST request to the /token endpoint over a secure channel that guarantees authentication, message integrity, and confidentiality (see {{secure-comm-as}}).
 
-When using this profile, the payload of the POST request MUST be encoded in CBOR {{RFC8949}}, i.e., the request has media-type "application/ace+cbor". Also, it is RECOMMENDED to use CoAP, EDHOC, and OSCORE in order to reduce the number of libraries that C has to support.
+When using this profile, the payload of the POST request MUST be encoded in CBOR {{RFC8949}}, i.e., the request has media-type "application/ace+cbor". In order to reduce the number of libraries that C has to support, it is RECOMMENDED that C and AS use CoAP as message transfer protocol, OSCORE as security protocol, and EDHOC to establish an OSCORE Security Context.
 
 AUTH\_CRED\_C is specified in the "req_cnf" parameter {{RFC9201}} of the POST request, either transported by value or uniquely referred to.
 
-For AUTH_CRED_C, its authentication credential type MUST be one of those supported by EDHOC, e.g., CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC5280}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Consequently, the "req_cnf" parameter specifies a confirmation method suitable for the type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is an X.509 certificate transported by value or by reference, respectively.
+For AUTH_CRED_C, its authentication credential type MUST be one of those supported by EDHOC, e.g., CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC5280}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Consequently, the "req_cnf" parameter specifies a confirmation method suitable for the type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is an X.509 certificate transported by value or referred to, respectively.
 
-Note that EDHOC does not admit the use of naked COSE_Keys as authentication credentials. The closest admitted authentication credential type is a CCS containing a COSE_Key in a "cnf" claim and possibly other claims, which can be transported by value using the confirmation method "kccs". Therefore, the "req_cnf" parameter cannot specify the confirmation method "COSE_Key" (CBOR abbreviation: 1).
+Note that EDHOC does not admit the use of naked COSE_Keys as authentication credentials. The closest admitted authentication credential type is a CCS containing a COSE_Key in a "cnf" claim and possibly other claims, which can be transported by value using the confirmation method "kccs". Therefore, the "req_cnf" parameter MUST NOT specify the confirmation method "COSE_Key" (CBOR abbreviation: 1).
 
 An example of client-to-AS request is shown in {{token-request}}. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req\_cnf" parameter.
 
@@ -276,9 +276,21 @@ An example of client-to-AS request is shown in {{token-request}}. In this exampl
 
 If C wants to update its access rights without changing an existing OSCORE Security Context, it MUST include EDHOC\_Information in its POST request to the /token endpoint. The EDHOC\_Information MUST include the "session\_id" field. This POST request MUST omit the "req_cnf" parameter. An example of such a request is shown in {{token-request-update}}.
 
-The identifier "session\_id" is assigned by AS as discussed in {{token-series}}, and, together with other information such as audience (see {{Section 5.8.1 of RFC9200}}), can be used by AS to determine the token series to which the new requested access token has to be added. Therefore, the session\_id MUST identify the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS) associated with a still valid access token previously issued for C and RS by AS.
+The identifier "session\_id" is assigned by AS as discussed in {{token-series}}, and identifies an ongoing token series associated with the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS). That is, previous access tokens in that series were issued by AS to C, as bound to AUTH_CRED_C and intended for RS as identified by AUTH_CRED_RS.
 
-Editor's note: When retrieving the access token it is required to consider the pair (session id, AUTH_CRED_C). Here it is stated that the session id identifies the pair (AUTH_CRED_C,AUTH_CRED_RS). Why then isn't the session id sufficient for retrieving the access token, considering it identifies AUTH_CRED_C?
+Note that, the same "session\_id" value might identify multiple ongoing token series, e.g., if those all associated with the same client but different resource servers. In this case, AS can use the "session\_id" value together with other information such as the targeted audience (see {{Section 5.8.1 of RFC9200}}) and the authenticated identity of C, in order to determine the exact token series to which the new requested access token has to be added.
+
+<!--
+Editor's note: When retrieving the access token it is required to consider the pair (session id, AUTH_CRED_C). Here it is stated that the session id identifies the pair (AUTH_CRED_C, AUTH_CRED_RS). Why then isn't the session id sufficient for retrieving the access token, considering it identifies AUTH_CRED_C?
+
+MT: Retrieving an access token based on the pair (session id, AUTH_CRED_C) happens at RS, when using the session id specified in the EDHOC EAD item.
+
+Here on the AS, a series might be ongoing for (C, RS1) and another series might also be ongoing for (C, RS2). If C uses an authentication credential with RS1 and a different one with RS2, then both series can be legitimately identified by the same series id value, which thus might not sufficient to identify precisely one of C's authentication credentials. In practice, this is not an issue, since AS can rely on additional information such as audience.
+
+The text above has been revisited, also based on the revised safer criterion for assigning new sender IDs at the AS in the next subsection.
+-->
+
+If the identifier specified in the "session\_id" parameter of the POST request identifies multiple, ongoing token series of which C has an access token, then C MUST specify the "audience" parameter in the POST request. In particular, the value of the "audience" parameter MUST be the same as in the POST request that C sent for requesting the first access token in the token series to which the new requested access token has to be added.
 
 AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token issued for C and RS belongs. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid_request" as defined in {{Section 5.8.3 of RFC9200}}.
 
@@ -300,20 +312,22 @@ AS MUST verify that the received "session\_id" identifies a token series to whic
 
 ## Token Series {#token-series}
 
-This document refers to "token series" as a series of access tokens sorted in chronological order as they are released, characterized by the following properties:
+This document refers to "token series" as a series of access tokens that are sorted in chronological order of release and are characterized by the following properties:
 
-* issued by the same AS
-* issued to the same C, and associated with the same authentication credential of C
-* issued for the same RS, identified by the same authentication credential
+* Issued by the same AS.
+* Issued to the same C, and associated with the same authentication credential of C.
+* Issued for the same RS as identified by the same authentication credential.
 
 Upon a successful update of access rights, the new issued access token becomes the latest in its token series. When the latest access token of a token series becomes invalid (e.g., due to its expiration or revocation), the token series it belongs to ends.
 
 In this profile, a token series is characterized by access tokens used between a given pair (C, RS) having the same "session\_id" in the EDHOC\_Information (see {{edhoc-parameters-object}}) and bound to the same authentication credential AUTH\_CRED\_C of C.
 
-AS assigns the "session\_id" to the EDHOC\_Information when issuing the first access token of a new series and that "session\_id" remains fixed throughout the series lifetime. When assigning the identifier, AS MUST ensure that it was not used in a previous series whose access tokens share the following properties with the access tokens of the new series, irrespective of the used ACE profile:
+AS assigns the "session\_id" to the EDHOC\_Information when issuing the first access token of a new series. That "session\_id" remains fixed throughout the series lifetime.
 
-* i) issued for the same RS; and
-* ii) bound to the same authentication credential AUTH_CRED_C of the requesting client (irrespectively of how the AUTH_CRED_C is identified in the access tokens).
+When assigning the identifier, AS MUST ensure that it was not used in a previous series whose access tokens share both the following properties with the access tokens of the new series, irrespective of the used ACE profile:
+
+* issued to the same client C; and
+* issued for the same RS.
 
 In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), what is defined above applies, with the difference that the token series is associated with all the RSs in the group-audience, as indicated by their respective AUTH_CRED_RS.
 
@@ -1793,6 +1807,8 @@ x5u_ta_type = 35
 ## Version -06 to -07 ## {#sec-06-07}
 
 * Renamed id_ep_types as ep_id_types.
+
+* Revised rules for the AS to assign session ID values.
 
 * Defined parameters for the EDHOC_Information object:
 

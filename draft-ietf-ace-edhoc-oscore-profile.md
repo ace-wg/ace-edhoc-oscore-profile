@@ -1005,7 +1005,7 @@ IANA is asked to add the following entry to the "ACE Profiles" registry, followi
 
 * Name: coap_edhoc_oscore
 * Description: Profile for delegating client authentication and authorization in a constrained environment by establishing an OSCORE Security Context {{RFC8613}} between resource-constrained nodes, through the execution of the lightweight authenticated key exchange protocol EDHOC {{RFC9528}}.
-* CBOR Value:  TBD (value between 1 and 255)
+* CBOR Value:  TBD (value between 1 and 23)
 * Reference:  {{&SELF}}
 
 ## OAuth Parameters Registry ## {#iana-oauth-params}
@@ -1022,7 +1022,7 @@ IANA is asked to add the following entry to the "OAuth Parameters" registry.
 IANA is asked to add the following entry to the "OAuth Parameters CBOR Mappings" registry, following the procedure specified in {{RFC9200}}.
 
 * Name: "edhoc_info"
-* CBOR Key: TBD
+* CBOR Key: TBD (value between 1 and 255)
 * Value Type: map
 * Reference: {{&SELF}}
 * Original Specification: {{&SELF}}
@@ -1043,7 +1043,7 @@ IANA is asked to add the following entries to the "CBOR Web Token (CWT) Claims" 
 * Claim Name: "edhoc_info"
 * Claim Description: Information for EDHOC session
 * JWT Claim Name: "edhoc_info"
-* Claim Key: TBD
+* Claim Key: TBD (value between 1 and 255)
 * Claim Value Type: map
 * Change Controller: IETF
 * Reference: {{&SELF}}
@@ -1127,7 +1127,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: x5chain
 * Confirmation Method Description: An ordered chain of X.509 certificates
 * JWT Confirmation Method Name: "x5c"
-* Confirmation Key: TBD
+* Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: COSE_X509
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-x5chain}} of {{&SELF}}
@@ -1137,7 +1137,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: x5bag
 * Confirmation Method Description: An unordered bag of X.509 certificates
 * JWT Confirmation Method Name: "x5b"
-* Confirmation Key: TBD
+* Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: COSE_X509
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-x5bag}} of {{&SELF}}
@@ -1147,7 +1147,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: x5t
 * Confirmation Method Description: Hash of an X.509 certificate
 * JWT Confirmation Method Name: "x5t"
-* Confirmation Key: TBD
+* Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: COSE_CertHash
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-x5t}} of {{&SELF}}
@@ -1157,7 +1157,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: x5u
 * Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
 * JWT Confirmation Method Name: "x5u"
-* Confirmation Key: TBD
+* Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: uri
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-x5u}} of {{&SELF}}
@@ -1167,7 +1167,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: c5c
 * Confirmation Method Description: An ordered chain of C509 certificates
 * JWT Confirmation Method Name: "c5c"
-* Confirmation Key: TBD
+* Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: COSE_C509
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-c5c}} of {{&SELF}}
@@ -1177,7 +1177,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: c5b
 * Confirmation Method Description: An unordered bag of C509 certificates
 * JWT Confirmation Method Name: "c5b"
-* Confirmation Key: TBD
+* Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: COSE_C509
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-c5b}} of {{&SELF}}
@@ -1187,7 +1187,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: c5t
 * Confirmation Method Description: Hash of a C509 certificate
 * JWT Confirmation Method Name: "c5t"
-* Confirmation Key: TBD
+* Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: COSE_CertHash
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-c5t}} of {{&SELF}}
@@ -1197,7 +1197,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: c5u
 * Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
 * JWT Confirmation Method Name: "c5u"
-* Confirmation Key: TBD
+* Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: uri
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-c5u}} of {{&SELF}}
@@ -1207,7 +1207,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: kcwt
 * Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * JWT Confirmation Method Name: "kcwt"
-* Confirmation Key: TBD
+* Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: COSE_Messages
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-kcwt}} of {{&SELF}}
@@ -1217,7 +1217,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: kccs
 * Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * JWT Confirmation Method Name: "kccs"
-* Confirmation Key: TBD
+* Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: map / #6(map)
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-kccs}} of {{&SELF}}
@@ -1227,14 +1227,14 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 IANA is asked to add the following entries to the "EDHOC External Authorization Data" registry defined in {{Section 10.5 of RFC9528}}.
 
 * Name: ACE-OAuth Access Token
-* Label: TBD
+* Label: TBD (value between 24 and 255)
 * Description: An Access Token as used in the ACE-OAuth framework {{RFC9200}}
 * Reference: {{&SELF}}, {{AT-in-EAD}}
 
 <br>
 
 * Name: Session ID
-* Label: TBD
+* Label: TBD (value between 1 and 23)
 * Description: The identifier of an EDHOC session
 * Reference: {{&SELF}}, {{AT-in-EAD}}
 
@@ -1744,16 +1744,16 @@ edhoc_info_param = 47
 edhoc_info_claim = 41
 
 ; CWT Confirmation Methods
-x5chain = 6
-x5bag = 7
-x5t = 8
-x5u = 9
-c5c = 10
-c5b = 11
-c5t = 12
-c5u = 13
-kcwt = 14
-kccs = 15
+x5t = 6
+x5u = 7
+c5t = 8
+c5u = 9
+kcwt = 10
+kccs = 11
+x5chain = 24
+x5bag = 25
+c5c = 26
+c5b = 27
 
 ; EDHOC Information
 session_id = 0

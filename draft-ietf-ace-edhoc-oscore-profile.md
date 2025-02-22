@@ -147,21 +147,21 @@ Note to RFC Editor: Please delete the paragraph immediately preceding this note.
 
 # Protocol Overview {#overview}
 
-This section gives an overview of how to use the ACE framework {{RFC9200}} together with the lightweight authenticated key exchange protocol EDHOC {{RFC9528}}. By doing so, the client (C) and the resource server (RS) generate an OSCORE Security Context {{RFC8613}} associated with authorization information, and use that security context to protect their communications. The parameters needed by C to negotiate the use of this profile with the authorization server (AS), as well as the OSCORE setup process, are described in detail in the following sections.
+This section gives an overview of how to use the ACE framework {{RFC9200}} together with the lightweight authenticated key exchange protocol EDHOC {{RFC9528}}. By doing so, the client (C) and the resource server (RS) generate an OSCORE Security Context {{RFC8613}} associated with authorization information, and use that Security Context to protect their communications. The parameters needed by C to negotiate the use of this profile with the authorization server (AS), as well as the OSCORE setup process, are described in detail in the following sections.
 
 RS maintains a collection of authentication credentials. These are associated with OSCORE Security Contexts and with authorization information for all clients that RS is communicating with. The authorization information is used to enforce policies for processing requests from those clients.
 
-The ACE framework describes how integrity protected authorization information propagates from AS to RS. This profile describes how C requests from AS an access token, including authorization information, for the resources it wants to access on RS, by sending an access token request to the /token endpoint at AS, as specified in {{Section 5.8 of RFC9200}}.
+The ACE framework describes how integrity protected authorization information propagates from AS to RS. This profile describes how C requests from AS an access token specifying authorization information for the resources that C wants to access at RS, by sending an access token request to the /token endpoint at AS (see {{Section 5.8 of RFC9200}}).
 
-If the request is granted, then AS may send back an access token in a response to C, or upload the access token directly to RS as described in the alternative workflow defined in {{I-D.ietf-ace-workflow-and-params}}. The latter is not detailed further here.
+If the request is granted, then AS can provide C with an access token when sending a response to C, or instead upload the access token directly to RS as per the alternative workflow defined in {{I-D.ietf-ace-workflow-and-params}}. The latter option is not detailed further in this document.
 
-After that, C and RS executes the EDHOC protocol. C uses the authentication credential of RS provided by AS. If C has retrieved an access token, it is included as External Authorization Data (EAD) in the EDHOC protocol, see {{Section 3.8 of RFC9528}}. RS uses the authentication credential of C bound to and provided in the access token. The EDHOC session is detailed in {{edhoc-exec}}.
+After that, C and RS run the EDHOC protocol, with C using the authentication credential of RS obtained from AS. If C has obtained an access token from AS, then C specifies the access token within an External Authorization Data (EAD) item of an EDHOC message sent during the EDHOC session (see {{Section 3.8 of RFC9528}}). RS uses the authentication credential of C bound to and specified in the access token. How C and RS run EDHOC is detailed in {{edhoc-exec}}.
 
-If C and RS successfully complete the EDHOC protocol and the validations of authentication credentials, they are mutually authenticated and derive the OSCORE Security Context as per {{Section A.1 of RFC9528}}.
+If C and RS successfully complete the EDHOC execution and the validation of each other's authentication credential, they are mutually authenticated and derive the OSCORE Security Context as per {{Section A.1 of RFC9528}}.
 
 {{protocol-overview}} outlines an example of the message flow. A more detailed description of the message flow is shown in {{example-without-optimization}}.
 
-From then on, C effectively gains authorized and secure access to protected resources on RS with the established OSCORE Security Context, for as long as there is a valid access token. When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then that OSCORE Security Context is used to retrieve the uniquely associated access token determining the access rights of C.
+From then on and as long as there is a valid access token, C effectively gains authorized and secure access to protected resources at RS using the established OSCORE Security Context. When RS receives a request from C protected with an OSCORE Security Context derived from an EDHOC session implementing this profile, then that OSCORE Security Context is used to retrieve the uniquely associated access token determining the access rights of C.
 
 The OSCORE Security Context is discarded when an access token (whether the same or a different one) is used to successfully derive a new OSCORE Security Context for C.
 
@@ -199,11 +199,11 @@ Security Context /              |                         |
 ~~~~~~~~~~~
 {: #protocol-overview title="Protocol Outline using the EDHOC Forward Message Flow."}
 
-While the OSCORE Security Context and access token are valid, C can contact AS to request an update of its access rights, by sending a similar request as described above to the /token endpoint. This request also includes a "session identifier" (see {{edhoc-parameters-object}}) provided by AS in the response to the initial access request, which allows AS to retrieve the data it previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see {{token-series}}).
+As long as the OSCORE Security Context and the access token are valid, C can contact AS to request an update of its access rights, by sending a similar request as described above to the /token endpoint. This request also includes a "session identifier" (see {{edhoc-parameters-object}}) provided by AS in the response to the initial access token request, which allows AS to retrieve the data that it previously shared with C. The session identifier is assigned by AS and used to identify a series of access tokens, called a "token series" (see {{token-series}}).
 
-If C has retrieved an access token for updating its access rights belonging to the same token series, then it transfers the access token to RS using the /authz-info endpoint as specified in {{Section 5.10 of RFC9200}} where the CoAP exchange is protected by the previously established OSCORE security context, see {{update-access-rights-c-rs}}. If the access token is valid, RS replies to the request with a 2.01 (Created) response.
+If C has obtained an access token from AS for updating its access rights belonging to the same token series, then C transfers the access token to RS using the /authz-info endpoint as specified in {{Section 5.10 of RFC9200}}, where the exchanged CoAP messages are protected by the previously established OSCORE Security Context (see {{update-access-rights-c-rs}}). If the access token is valid, RS replies to the request with a 2.01 (Created) response.
 
-Upon successful update of access rights, the new issued access token becomes the latest in its token series, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
+Upon successful update of access rights, the new issued access token effectively becomes the latest in its token series also for RS, but the session identifier remains the same. When the latest access token of a token series becomes invalid (e.g., when it expires or gets revoked), that token series ends.
 
 {{update-overview}} outlines the message flow for updating access rights.
 

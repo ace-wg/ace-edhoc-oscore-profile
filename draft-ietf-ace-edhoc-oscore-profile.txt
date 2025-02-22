@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 23 August 2025                                        M. Tiloca
+Expires: 26 August 2025                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                        19 February 2025
+                                                        22 February 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 August 2025.
+   This Internet-Draft will expire on 26 August 2025.
 
 Copyright Notice
 
@@ -2139,7 +2139,7 @@ Table of Contents
       nodes, through the execution of the lightweight authenticated key
       exchange protocol EDHOC [RFC9528].
 
-   *  CBOR Value: TBD (value between 1 and 255)
+   *  CBOR Value: TBD (value between 1 and 23)
 
    *  Reference: [RFC-XXXX]
 
@@ -2164,7 +2164,7 @@ Table of Contents
 
    *  Name: "edhoc_info"
 
-   *  CBOR Key: TBD
+   *  CBOR Key: TBD (value between 1 and 255)
 
    *  Value Type: map
 
@@ -2197,7 +2197,7 @@ Table of Contents
 
    *  JWT Claim Name: "edhoc_info"
 
-   *  Claim Key: TBD
+   *  Claim Key: TBD (value between 1 and 255)
 
    *  Claim Value Type: map
 
@@ -2328,7 +2328,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: "x5c"
 
-   *  Confirmation Key: TBD
+   *  Confirmation Key: TBD (value between 24 and 255)
 
    *  Confirmation Value Type: COSE_X509
 
@@ -2345,7 +2345,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: "x5b"
 
-   *  Confirmation Key: TBD
+   *  Confirmation Key: TBD (value between 24 and 255)
 
    *  Confirmation Value Type: COSE_X509
 
@@ -2361,7 +2361,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: "x5t"
 
-   *  Confirmation Key: TBD
+   *  Confirmation Key: TBD (value between 1 and 23)
 
    *  Confirmation Value Type: COSE_CertHash
 
@@ -2378,7 +2378,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: "x5u"
 
-   *  Confirmation Key: TBD
+   *  Confirmation Key: TBD (value between 1 and 23)
 
    *  Confirmation Value Type: uri
 
@@ -2395,7 +2395,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: "c5c"
 
-   *  Confirmation Key: TBD
+   *  Confirmation Key: TBD (value between 24 and 255)
 
    *  Confirmation Value Type: COSE_C509
 
@@ -2412,7 +2412,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: "c5b"
 
-   *  Confirmation Key: TBD
+   *  Confirmation Key: TBD (value between 24 and 255)
 
    *  Confirmation Value Type: COSE_C509
 
@@ -2428,7 +2428,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: "c5t"
 
-   *  Confirmation Key: TBD
+   *  Confirmation Key: TBD (value between 1 and 23)
 
    *  Confirmation Value Type: COSE_CertHash
 
@@ -2445,7 +2445,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: "c5u"
 
-   *  Confirmation Key: TBD
+   *  Confirmation Key: TBD (value between 1 and 23)
 
    *  Confirmation Value Type: uri
 
@@ -2462,7 +2462,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: "kcwt"
 
-   *  Confirmation Key: TBD
+   *  Confirmation Key: TBD (value between 1 and 23)
 
    *  Confirmation Value Type: COSE_Messages
 
@@ -2479,7 +2479,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: "kccs"
 
-   *  Confirmation Key: TBD
+   *  Confirmation Key: TBD (value between 1 and 23)
 
    *  Confirmation Value Type: map / #6(map)
 
@@ -2494,7 +2494,7 @@ Table of Contents
 
    *  Name: ACE-OAuth Access Token
 
-   *  Label: TBD
+   *  Label: TBD (value between 24 and 255)
 
    *  Description: An Access Token as used in the ACE-OAuth framework
       [RFC9200]
@@ -2505,7 +2505,7 @@ Table of Contents
 
    *  Name: Session ID
 
-   *  Label: TBD
+   *  Label: TBD (value between 1 and 23)
 
    *  Description: The identifier of an EDHOC session
 
@@ -3447,16 +3447,16 @@ Appendix C.  CDDL Model
    edhoc_info_claim = 41
 
    ; CWT Confirmation Methods
-   x5chain = 6
-   x5bag = 7
-   x5t = 8
-   x5u = 9
-   c5c = 10
-   c5b = 11
-   c5t = 12
-   c5u = 13
-   kcwt = 14
-   kccs = 15
+   x5t = 6
+   x5u = 7
+   c5t = 8
+   c5u = 9
+   kcwt = 10
+   kccs = 11
+   x5chain = 24
+   x5bag = 25
+   c5c = 26
+   c5b = 27
 
    ; EDHOC Information
    session_id = 0

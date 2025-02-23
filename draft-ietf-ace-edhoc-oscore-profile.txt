@@ -2347,7 +2347,7 @@ Table of Contents
    IANA is asked to add the following entry to the "OAuth Parameters"
    registry.
 
-   *  Name: "edhoc_info"
+   *  Name: edhoc_info
 
    *  Parameter Usage Location: token request and token response
 
@@ -2361,7 +2361,7 @@ Table of Contents
    CBOR Mappings" registry, following the procedure specified in
    [RFC9200].
 
-   *  Name: "edhoc_info"
+   *  Name: edhoc_info
 
    *  CBOR Key: TBD (value between 1 and 255)
 
@@ -2376,7 +2376,7 @@ Table of Contents
    IANA is asked to add the following entries to the "JSON Web Token
    Claims" registry, following the procedure specified in [RFC7519].
 
-   *  Claim Name: "edhoc_info"
+   *  Claim Name: edhoc_info
 
    *  Claim Description: Information for EDHOC session
 
@@ -2390,11 +2390,11 @@ Table of Contents
    (CWT) Claims" registry, following the procedure specified in
    [RFC8392].
 
-   *  Claim Name: "edhoc_info"
+   *  Claim Name: edhoc_info
 
    *  Claim Description: Information for EDHOC session
 
-   *  JWT Claim Name: "edhoc_info"
+   *  JWT Claim Name: edhoc_info
 
    *  Claim Key: TBD (value between 1 and 255)
 
@@ -2409,7 +2409,7 @@ Table of Contents
    IANA is asked to add the following entries to the "JWT Confirmation
    Methods" registry, following the procedure specified in [RFC7800].
 
-   *  Confirmation Method Value: "x5c"
+   *  Confirmation Method Value: x5c
 
    *  Confirmation Method Description: An ordered chain of X.509
       certificates
@@ -2420,7 +2420,7 @@ Table of Contents
 
 
 
-   *  Confirmation Method Value: "x5b"
+   *  Confirmation Method Value: x5b
 
    *  Confirmation Method Description: An unordered bag of X.509
       certificates
@@ -2431,7 +2431,7 @@ Table of Contents
 
 
 
-   *  Confirmation Method Value: "x5t"
+   *  Confirmation Method Value: x5t
 
    *  Confirmation Method Description: Hash of an X.509 certificate
 
@@ -2441,7 +2441,7 @@ Table of Contents
 
 
 
-   *  Confirmation Method Value: "x5u"
+   *  Confirmation Method Value: x5u
 
    *  Confirmation Method Description: URI pointing to an ordered chain
       of X.509 certificates
@@ -2452,7 +2452,7 @@ Table of Contents
 
 
 
-   *  Confirmation Method Value: "c5c"
+   *  Confirmation Method Value: c5c
 
    *  Confirmation Method Description: An ordered chain of C509
       certificates
@@ -2463,7 +2463,7 @@ Table of Contents
 
 
 
-   *  Confirmation Method Value: "c5b"
+   *  Confirmation Method Value: c5b
 
    *  Confirmation Method Description: An unordered bag of C509
       certificates
@@ -2474,7 +2474,7 @@ Table of Contents
 
 
 
-   *  Confirmation Method Value: "c5t"
+   *  Confirmation Method Value: c5t
 
    *  Confirmation Method Description: Hash of a C509 certificate
 
@@ -2484,7 +2484,7 @@ Table of Contents
 
 
 
-   *  Confirmation Method Value: "c5u"
+   *  Confirmation Method Value: c5u
 
    *  Confirmation Method Description: URI pointing to a COSE_C509
       containing an ordered chain of C509 certificates
@@ -2495,7 +2495,7 @@ Table of Contents
 
 
 
-   *  Confirmation Method Value: "kcwt"
+   *  Confirmation Method Value: kcwt
 
    *  Confirmation Method Description: A CBOR Web Token (CWT) containing
       a COSE_Key in a 'cnf' claim and possibly other claims
@@ -2506,7 +2506,7 @@ Table of Contents
 
 
 
-   *  Confirmation Method Value: "kccs"
+   *  Confirmation Method Value: kccs
 
    *  Confirmation Method Description: A CWT Claims Set (CCS) containing
       a COSE_Key in a 'cnf' claim and possibly other claims
@@ -2525,7 +2525,7 @@ Table of Contents
    *  Confirmation Method Description: An ordered chain of X.509
       certificates
 
-   *  JWT Confirmation Method Name: "x5c"
+   *  JWT Confirmation Method Name: x5c
 
    *  Confirmation Key: TBD (value between 24 and 255)
 
@@ -2542,7 +2542,7 @@ Table of Contents
    *  Confirmation Method Description: An unordered bag of X.509
       certificates
 
-   *  JWT Confirmation Method Name: "x5b"
+   *  JWT Confirmation Method Name: x5b
 
    *  Confirmation Key: TBD (value between 24 and 255)
 
@@ -2558,7 +2558,7 @@ Table of Contents
 
    *  Confirmation Method Description: Hash of an X.509 certificate
 
-   *  JWT Confirmation Method Name: "x5t"
+   *  JWT Confirmation Method Name: x5t
 
    *  Confirmation Key: TBD (value between 1 and 23)
 
@@ -2575,7 +2575,7 @@ Table of Contents
    *  Confirmation Method Description: URI pointing to an ordered chain
       of X.509 certificates
 
-   *  JWT Confirmation Method Name: "x5u"
+   *  JWT Confirmation Method Name: x5u
 
    *  Confirmation Key: TBD (value between 1 and 23)
 
@@ -2592,7 +2592,7 @@ Table of Contents
    *  Confirmation Method Description: An ordered chain of C509
       certificates
 
-   *  JWT Confirmation Method Name: "c5c"
+   *  JWT Confirmation Method Name: c5c
 
    *  Confirmation Key: TBD (value between 24 and 255)
 
@@ -2609,7 +2609,7 @@ Table of Contents
    *  Confirmation Method Description: An unordered bag of C509
       certificates
 
-   *  JWT Confirmation Method Name: "c5b"
+   *  JWT Confirmation Method Name: c5b
 
    *  Confirmation Key: TBD (value between 24 and 255)
 
@@ -2625,7 +2625,7 @@ Table of Contents
 
    *  Confirmation Method Description: Hash of a C509 certificate
 
-   *  JWT Confirmation Method Name: "c5t"
+   *  JWT Confirmation Method Name: c5t
 
    *  Confirmation Key: TBD (value between 1 and 23)
 
@@ -2642,7 +2642,7 @@ Table of Contents
    *  Confirmation Method Description: URI pointing to a COSE_C509
       containing an ordered chain of C509 certificates
 
-   *  JWT Confirmation Method Name: "c5u"
+   *  JWT Confirmation Method Name: c5u
 
    *  Confirmation Key: TBD (value between 1 and 23)
 
@@ -2659,7 +2659,7 @@ Table of Contents
    *  Confirmation Method Description: A CBOR Web Token (CWT) containing
       a COSE_Key in a 'cnf' claim and possibly other claims
 
-   *  JWT Confirmation Method Name: "kcwt"
+   *  JWT Confirmation Method Name: kcwt
 
    *  Confirmation Key: TBD (value between 1 and 23)
 
@@ -2676,7 +2676,7 @@ Table of Contents
    *  Confirmation Method Description: A CWT Claims Set (CCS) containing
       a COSE_Key in a 'cnf' claim and possibly other claims
 
-   *  JWT Confirmation Method Name: "kccs"
+   *  JWT Confirmation Method Name: kccs
 
    *  Confirmation Key: TBD (value between 1 and 23)
 

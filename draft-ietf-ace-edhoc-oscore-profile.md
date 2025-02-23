@@ -628,7 +628,7 @@ Detailed examples are given in {{examples}}.
 
 ## EAD items for Access Token and Session Identifier {#AT-in-EAD}
 
-This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transporting an access token or a session idenfier in EDHOC.
+This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transporting an access token or a session identifier in EDHOC.
 
 * EAD\_ACCESS\_TOKEN  = (ead\_label, ead\_value), where:
 

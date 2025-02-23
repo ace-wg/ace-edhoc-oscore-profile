@@ -347,21 +347,19 @@ AS can signal that the use of EDHOC and OSCORE as per this profile is REQUIRED f
 
  According to this document, the AS provides the access token to C, by specifying it in the "access\_token" parameter of the access token response. An alternative workflow where the access token is uploaded by AS directly to RS is described in {{I-D.ietf-ace-workflow-and-params}}.
 
-When issuing any access token, AS MUST send the following data in the response to C.
+When issuing the first access token of a token series, AS MUST include the following data in the response to C.
 
-* The "session\_id" field of EDHOC\_Information, which is the identifier of the token series which the issued access token belongs to.
-
-When issuing the first access token of a token series, AS MUST send the following data in the response to C.
+* The "edhoc\_info" parameter conveying an EDHOC\_Information object (see {{edhoc-parameters-object}}). The EDHOC\_Information object MUST include the "session\_id" field specifying the identifier of the token series which the issued access token belongs to, and MAY include additional fields (see {{edhoc-parameters-object}}) to convey information about RS. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.
 
 * A unique identification of the authentication credential of RS, AUTH\_CRED\_RS. This is specified in the "rs\_cnf" parameter defined in {{RFC9201}}. AUTH\_CRED\_RS can be transported by value or referred to by means of an appropriate identifier.
 
-   When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), it is typically expected that the response to C includes AUTH\_CRED\_RS by value.
+   When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), it is expected that the response to C includes AUTH\_CRED\_RS by value.
 
    When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_RS, it is expected that the response to C includes AUTH\_CRED\_RS by reference.
 
    For AUTH_CRED_RS, its authentication credential type MUST be one of those supported by EDHOC. Consequently, the "rs\_cnf" parameter specifies a confirmation method suitable for the type of AUTH_CRED_RS. That is, the same considerations about AUTH_CRED_C and the "req_cnf" parameter made in {{c-as}} hold for AUTH_CRED_RS and the "rs\_cnf" parameter.
 
-When issuing the first access token of a token series, AS MAY send EDHOC\_Information related to RS, see {{edhoc-parameters-object}}, in corresponding fields of the response to C. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.
+When issuing an access token for dynamically updating C's access rights (i.e., the access token is not the first in its token series), the response from AS MUST NOT include the "edhoc\_info" and "rs\_cnf" parameters.
 
 {{fig-token-response}} shows an example of an AS response. The "rs_cnf" parameter specifies the authentication credential of RS, as an X.509 certificate transported by value in the "x5chain" field. The access token and the authentication credential of RS have been truncated for readability.
 
@@ -370,13 +368,13 @@ When issuing the first access token of a token series, AS MAY send EDHOC\_Inform
       Content-Format: application/ace+cbor
       Payload:
       {
-        / access_token / 1 : h'8343a1010aa2044c53/...
-          (remainder of access token (CWT) omitted for brevity)/',
+        / access_token / 1 : h'8343a1010aa2044c53...0f6a'
+          / remainder of access token (CWT) omitted for brevity /,
         / ace_profile / 38 : e'coap_edhoc_oscore',
         / expires_in /   2 : 3600,
         / rs_cnf /      41 : {
-          e'x5chain' : h'3081ee3081a1a00302/...'
-            (remainder of the credential omitted for brevity)/'
+          e'x5chain' : h'3081ee3081a1a00302...77bc'
+            / remainder of the credential omitted for brevity /
         }
         e'edhoc_info_param' : {
           e'session_id'    : h'01',
@@ -1815,6 +1813,8 @@ x5u_ta_type = 35
 * Revised rules for the AS to assign session ID values.
 
 * Added explicit validation of AUTH_CRED_C at AS.
+
+* "edhoc_info" on in AS-to-C response for first token in a series.
 
 * Defined parameters for the EDHOC_Information object:
 

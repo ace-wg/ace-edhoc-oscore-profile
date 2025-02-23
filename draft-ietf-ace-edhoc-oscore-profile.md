@@ -661,8 +661,6 @@ In case the EDHOC forward message flow is used, C acts as EDHOC Initiator, and t
 
 Depending on the message flow used, the EDHOC messages will be carried either in CoAP POST requests or in CoAP 2.04 (Changed) responses, as detailed in {{Section A.2 of RFC9528}}.
 
-In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}) and the EDHOC reverse message flow is used, then C can send the first CoAP POST request over IP multicast {{I-D.ietf-core-groupcomm-bis}} as an EDHOC "roll call". For the sake of efficiency, it is expected that the group-audience is appropriately mapped with a CoAP group and/or application group (see {{Section 2 of I-D.ietf-core-groupcomm-bis}}), so that only the RSs belonging to the group-audience receive the request. After that, C receives an EDHOC message_1 from each of the different targeted RSs, and continues the EDHOC session by individually sending a different EDHOC message_2 to each RS that has sent an EDHOC message_1.
-
 C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field (if present) of the EDHOC\_Information object within the access token response received from AS, when obtaining the first access token of a token series (see {{c-as}}). If the "uri_path" field is not present in that EDHOC\_Information object, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.
 
 RS has to ensure that no requests can be performed on an EDHOC resource other than for running the EDHOC protocol. Specifically, it SHOULD NOT be possible to perform any other operation than POST on an EDHOC resource.
@@ -716,6 +714,8 @@ Specific instructions for the different messages are included in the following s
 ### Trigger Message
 
 As specified in {{Section A.2.2 of RFC9528}}, the trigger message consists of C making an empty POST request to the EDHOC resource at RS, intended to trigger a response containing EDHOC message_1.
+
+In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), then C can perform an EDHOC "roll call", by sending the trigger message as a group request over IP multicast {{I-D.ietf-core-groupcomm-bis}}. For the sake of efficiency, it is expected that the group-audience is appropriately mapped with a CoAP group and/or application group (see {{Section 2 of I-D.ietf-core-groupcomm-bis}}), so that only the RSs belonging to the group-audience receive the trigger message. After that, C can receive a different EDHOC message_1 from each of the targeted RSs, and continues the EDHOC session by individually sending a different EDHOC message_2 to each RS that has replied with an EDHOC message_1.
 
 ### EDHOC message\_1
 

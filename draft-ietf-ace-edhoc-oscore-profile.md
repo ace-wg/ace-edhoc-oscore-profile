@@ -155,7 +155,7 @@ The ACE framework describes how integrity protected authorization information pr
 
 If the request is granted, then AS can provide C with an access token when sending a response to C, or instead upload the access token directly to RS as per the alternative workflow defined in {{I-D.ietf-ace-workflow-and-params}}. The latter option is not detailed further in this document.
 
-After that, C and RS run the EDHOC protocol, with C using the authentication credential of RS obtained from AS. If C has obtained an access token from AS, then C specifies the access token within an External Authorization Data (EAD) item of an EDHOC message sent during the EDHOC session (see {{Section 3.8 of RFC9528}}). RS uses the authentication credential of C bound to and specified in the access token. How C and RS run EDHOC is detailed in {{edhoc-exec}}.
+After that, C and RS run the EDHOC protocol, with C using the authentication credential of RS obtained from AS. If C has obtained an access token from AS, then C specifies the access token within an External Authorization Data (EAD) field of an EDHOC message sent during the EDHOC session (see {{Section 3.8 of RFC9528}}). RS uses the authentication credential of C bound to and specified in the access token. How C and RS run EDHOC is detailed in {{edhoc-exec}}.
 
 If C and RS successfully complete the EDHOC execution and the validation of each other's authentication credential, they are mutually authenticated and derive the OSCORE Security Context as per {{Section A.1 of RFC9528}}.
 
@@ -618,38 +618,37 @@ EDHOC_Information = {
 
 # Client-RS Communication # {#c-rs-comm}
 
-This section describes the exchange between C and RS, including the execution of the EDHOC protocol, and the uploading of the access token from C to RS. The alternative workflow, where AS uploads the access token directly to RS, is described in {{I-D.ietf-ace-workflow-and-params}}.
+This section describes the exchange between C and RS, including the execution of the EDHOC protocol and the uploading of the access token from C to RS. The alternative workflow, where AS uploads the access token directly to RS, is described in {{I-D.ietf-ace-workflow-and-params}}.
 
-C and RS run the EDHOC protocol (see {{edhoc-exec}}), and C uploads the access token in an EAD field (see {{AT-in-EAD}}) of an EDHOC message. Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context (see {{oscore-security-context}}). OSCORE protects the communication when C accesses resources at RS, as per the access rights specified in the access token (see {{access-rights-verif}}).
+C and RS run the EDHOC protocol (see {{edhoc-exec}}), and C uploads the access token in an EAD field (see {{AT-in-EAD}}) of an EDHOC message. Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context (see {{oscore-security-context}}). After that, OSCORE is used for protecting communications when C accesses resources at RS, as per the access rights specified in the access token (see {{access-rights-verif}}).
 
 Detailed examples are given in {{examples}}.
 
 ## EAD items for Access Token and Session Identifier {#AT-in-EAD}
 
- This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transporting access token and session idenfier in EDHOC.
+This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transporting an access token or a session idenfier in EDHOC.
 
 * EAD\_ACCESS\_TOKEN  = (ead\_label, ead\_value), where:
 
-    * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}, and
-    * ead\_value is a CBOR byte string equal to the value of the "access\_token" field of the access token response from AS, see {{as-c}}.
+  * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}.
+  * ead\_value is a CBOR byte string equal to the value of the "access\_token" field of the access token response from AS (see {{as-c}}).
 
-This EAD item is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must process the protocol with the received access token, or else abort the EDHOC session (see {{Section 3.8 of RFC9528}}). A Client or Resource Server supporting the profile of ACE defined in this document MUST support this EAD item.
+  This EAD item is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must progress the protocol using the received access token, or else abort the EDHOC session (see {{Section 3.8 of RFC9528}}). A client or resource server supporting the profile of ACE defined in this document MUST support this EAD item.
 
-EAD\_ACCESS\_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights, see {{update-access-rights-c-rs}}.
+  EAD\_ACCESS\_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights (see {{update-access-rights-c-rs}}).
 
-Editor's note: Add example. Value for ead_label not from lowest range, suggested value 26.
-
+  Editor's note: Add example.
 
 * EAD\_SESSION\_ID  = (ead\_label, ead\_value), where:
 
-    * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}, and
-    * ead\_value is a CBOR byte string equal to the value of the "session\_id" field of EDHOC_Information (see {{edhoc-parameters-object}}).
+  * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}.
+  * ead\_value is a CBOR byte string equal to the value of the "session\_id" field within the EDHOC_Information object specified by AS in the "edhoc_info" parameter of the response from the /token endpoint, when issuing the first access token of a token series (see {{as-c}}).
 
-This EAD item is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must process the protocol with the access token associated with this session_id and with the AUTH_CRED_C used in the EDHOC session, or else abort the EDHOC session (see {{Section 3.8 of RFC9528}}). A client or resource server supporting the profile of ACE defined in this document MUST support this EAD item.
+  This EAD item is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must progress the protocol using the access token associated with the identifier specified in "ead\_value" and with the AUTH_CRED_C used in the EDHOC session, or else abort the EDHOC session (see {{Section 3.8 of RFC9528}}). A client or resource server supporting the profile of ACE defined in this document MUST support this EAD item.
 
-EAD\_SESSION\_ID is used only if the access token has been provisioned to the RS and is valid, but there is a need to establish a (new) OSCORE Security Context with EDHOC between C and RS.
+  EAD\_SESSION\_ID is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.
 
-Editor's note: Add example. Value for ead_label from lowest range.
+  Editor's note: Add example.
 
 ## EDHOC Session {#edhoc-exec}
 

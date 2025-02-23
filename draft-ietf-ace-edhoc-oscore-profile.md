@@ -873,6 +873,28 @@ If OSCORE verification succeeds and the target resource requires authorization, 
 
 When an access token becomes invalid (e.g., due to its expiration or revocation), RS MUST delete the access token and the associated OSCORE Security Context, and MUST notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in {{Section 5.8.3 of RFC9200}}.
 
+## Authentication Credential Invalidity # {#auth-cred-validity}
+
+If an authentication credential AUTH\_CRED\_C of C is invalidated (e.g., it expires), then the following applies:
+
+* RS MUST delete all the stored access tokens that specify AUTH\_CRED\_C in the "cnf" claim.
+
+* C MUST delete every stored access token such that C obtained the first access token of the same series through the response to an access token request specifying AUTH\_CRED\_C, e.g., in the "req_cnf" parameter (see {{c-as}}).
+
+* RS and C MUST abort and purge all the EDHOC sessions that used AUTH\_CRED\_C and successfully completed, as well as the OSCORE Security Context derived from those sessions (see {{discard-context}}).
+
+If an authentication credential AUTH\_CRED\_RS of RS is invalidated (e.g., it expires), then the following applies:
+
+* C MUST delete every stored access token such that C obtained the first access token of the same series through an access token response specifying AUTH\_CRED\_RS, e.g., in the 'rs_cnf' parameter (see {{as-c}}).
+
+* C MUST delete every stored access token that C specified (by value or be reference) during an EDHOC session that used AUTH\_CRED\_RS and successfully completed.
+
+* RS and C MUST abort and purge all the EDHOC sessions that used AUTH\_CRED\_RS and successfully completed, as well as the OSCORE Security Context derived from those sessions (see {{discard-context}}).
+
+## EDHOC Session Invalidity # {#session-validity}
+
+If an EDHOC session is aborted and purged for other reasons than those in {{auth-cred-validity}}, then RS and C that established the session MUST delete the OSCORE Security Context derived from that session (see {{discard-context}}).
+
 # Secure Communication with AS # {#secure-comm-as}
 
 As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicates via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED. Other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} (such as HTTP and DTLS {{RFC9147}} or TLS {{RFC8446}}) MAY be used instead.
@@ -1867,6 +1889,8 @@ x5u_ta_type = 35
 * With a group-audience, the reverse message flow can use a roll call.
 
 * Matching authentication credentials from ID_CRED_X and EAD item.
+
+* Handling authentication credentials and EDHOC session that become invalid.
 
 * Changed CBOR abbreviations to not collide with existing codepoints.
 

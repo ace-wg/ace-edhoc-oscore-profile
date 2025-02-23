@@ -652,17 +652,17 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
 ## EDHOC Session {#edhoc-exec}
 
-In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol augmented with an access token, or reference thereof - the session identifier, carried in an EAD item, either EAD\_ACCESS\_TOKEN or EAD\_SESSION\_ID, see {{AT-in-EAD}}.
+In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol augmented with an access token. During the EDHOC session, C specifies the access token to RS by value as conveyed in EAD item EAD\_ACCESS\_TOKEN, or by reference through a session identifier conveyed in the EAD item EAD\_SESSION\_ID (see {{AT-in-EAD}}).
 
-As per {{Section A.2 of RFC9528}}, EDHOC may be transferred over CoAP using either the forward or the reverse message flow, manifesting the two possible mappings between the ACE roles client / resource server and the EDHOC roles Initiator / Responder (whereas the CoAP client/server roles remain the same). The choice of mapping depends on the deployment setting, in particular which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers.
+As per {{Section A.2 of RFC9528}}, EDHOC can be transferred over CoAP using either the forward or the reverse message flow, thus manifesting the two possible mappings between the ACE roles (client and resource server) and the EDHOC roles (Initiator and Responder), whereas the CoAP roles (client and server) remain the same. The choice of message flow and corresponding mapping depends on the deployment setting and in particular on which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers.
 
-In case of the EDHOC forward message flow, the access token / session id MUST be included in the EAD field of EDHOC message\_3 (EAD\_3). In case of the EDHOC reverse message flow, the access token / session id MAY be included in the EAD field of EDHOC message\_2 (EAD\_2) or message\_4 (EAD\_4). In this way the access token / session id gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C, see {{Section 9.1 of RFC9528}}.
+In case the EDHOC forward message flow is used, C acts as EDHOC Initiator, and the access token MUST be specified by value or by reference in the EAD\_3 field of EDHOC message\_3. In case the EDHOC reverse message flow is used, C acts as EDHOC Responder, and the access token MUST be specified by value or by reference either in the EAD\_2 field of EDHOC message\_2 or in the EAD\_4 field of EDHOC message\_4. By doing so, the access token or the associated session identifier gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see {{Section 9.1 of RFC9528}}).
 
-Depending on message flow, the EDHOC messages will either be carried in CoAP POST requests or 2.04 (Changed) CoAP responses, as detailed in {{Section A.2 of RFC9528}}.
+Depending on the message flow used, the EDHOC messages will be carried either in CoAP POST requests or in CoAP 2.04 (Changed) responses, as detailed in {{Section A.2 of RFC9528}}.
 
-C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field of the EDHOC\_Information in the access token response received from AS (see {{c-as}}), if present. Otherwise, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.
+C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field (if present) of the EDHOC\_Information object within the access token response received from AS, when obtaining the first access token of a token series (see {{c-as}}). If the "uri_path" field is not present in that EDHOC\_Information object, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.
 
-RS has to ensure that attackers cannot perform requests on the EDHOC resource, other than sending EDHOC messages. Specifically, it SHOULD NOT be possible to perform any other operation than POST on an EDHOC resource.
+RS has to ensure that no requests can be performed on an EDHOC resource other than for running the EDHOC protocol. Specifically, it SHOULD NOT be possible to perform any other operation than POST on an EDHOC resource.
 
 ## Forward Message Flow {#forward}
 

@@ -905,7 +905,7 @@ When using this profile and running EDHOC per its reverse message flow (see {{re
 
 However, the identity protection achieved through EDHOC can be defeated if RS exposes information such as audience and scope, when specifying the corresponding parameters in an unprotected AS Request Creation Hints message.
 
-Therefore, if RS supports the EDHOC reverse message and sends an AS Request Creation Hints, the following applies:
+Therefore, if RS supports the EDHOC reverse message flow and sends an AS Request Creation Hints, the following applies:
 
 * The message payload MUST NOT include the "audience" parameter.
 

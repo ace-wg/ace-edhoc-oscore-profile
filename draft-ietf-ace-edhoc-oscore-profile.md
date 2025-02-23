@@ -278,7 +278,7 @@ An example of client-to-AS request is shown in {{token-request}}. In this exampl
 ~~~~~~~~~~~~~~~~~~~~~~~
 {: #token-request title="Example of C-to-AS POST /token request for an access token."}
 
-If C wants to update its access rights without changing an existing OSCORE Security Context, it MUST include EDHOC\_Information in its POST request to the /token endpoint. The EDHOC\_Information MUST include the "session\_id" field. This POST request MUST omit the "req_cnf" parameter. An example of such a request is shown in {{token-request-update}}.
+If C wants to update its access rights without changing an existing OSCORE Security Context, it MUST include EDHOC\_Information in its POST request to the /token endpoint. The EDHOC\_Information MUST include the "session\_id" field. This POST request MUST NOT include the "req_cnf" parameter. An example of such a request is shown in {{token-request-update}}.
 
 The identifier "session\_id" is assigned by AS as discussed in {{token-series}}, and identifies an ongoing token series associated with the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS). That is, previous access tokens in that series were issued by AS to C, as bound to AUTH_CRED_C and intended for RS as identified by AUTH_CRED_RS.
 
@@ -387,21 +387,23 @@ When issuing an access token for dynamically updating C's access rights (i.e., t
 
 ### Access Token {#access-token}
 
-To avoid the complexity of different encodings, an access token of this profile SHALL be a CBOR Web Token (CWT), see {{RFC8392}}. When issuing any access token of a token series, AS MUST specify the following data in the associated claims of the access token:
+To avoid the complexity of different encodings, an access token of this profile SHALL be a CBOR Web Token (CWT) {{RFC8392}}.
 
-* The "session\_id" field of EDHOC\_Information, with the same value specified in the response to C from the /token endpoint.
+When issuing any access token of a token series, AS MUST specify the following data in the associated claims of the access token:
 
-   EDHOC\_Information MUST be transported in the "edhoc\_info" claim, defined in {{iana-token-cwt-claims}}.
+* The "edhoc\_info" claim defined in {{iana-token-cwt-claims}} and conveying an EDHOC\_Information object (see {{edhoc-parameters-object}}).
 
-* The authentication credential AUTH\_CRED\_C that C specified in its POST request to the /token endpoint (see {{c-as}}), in the "cnf" claim.
+  The EDHOC\_Information object MUST include the "session\_id" field specifying the identifier of the token series which the issued access token belongs to. The "session\_id" value is the same one included in the EDHOC\_Information object of the response to C from the /token endpoint (see {{as-c}}), when providing C with the first access token in the series.
 
-   In the access token, AUTH\_CRED\_C can be transported by value or uniquely referred to by means of an appropriate identifier. Yet, consistent with the considerations about AUTH\_CRED\_C and the "req_cnf" parameter made in {{c-as}}, the "cnf" claim of the access token specifies a confirmation method suitable for the type of AUTH\_CRED\_C.
+* The "cnf" claim, specifying the authentication credential AUTH\_CRED\_C that C specified in its POST request to the /token endpoint, when requesting the first access token in the series which the issued access token belongs to (see {{c-as}}).
 
-   When issuing the first access token of a token series, the confirmation method used in the "cnf" claim MUST be the same one used in the "req_cnf" parameter of the corresponding client-to-AS request.
+   In the access token, AUTH\_CRED\_C can be transported by value or uniquely referred to by means of an appropriate identifier. Yet, consistent with the considerations about AUTH\_CRED\_C and the "req_cnf" parameter made in {{c-as}}, the "cnf" claim of the access token MUST specify a confirmation method suitable for the type of AUTH\_CRED\_C.
 
-   When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), it is expected that AUTH\_CRED\_C is included by value.
+   When issuing the first access token of a token series, the confirmation method used in the "cnf" claim MUST be the same one used in the "req_cnf" parameter of the corresponding POST request from C to the /token endpoint.
 
-   When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_C, it is expected that AUTH\_CRED\_C is identified by reference.
+   When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), it is expected that AUTH\_CRED\_C is included by value in the "cnf" claim of the access token.
+
+   When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_C, it is expected that AUTH\_CRED\_C is identified by reference in the "cnf" claim of the access token.
 
 When issuing the first access token of a token series, AS MAY specify additional EDHOC\_Information data (see {{edhoc-parameters-object}}) in the "edhoc\_info" claim of the access token. Specifically, if the following EDHOC\_Information data are specified in the response to C from the /token endpoint, they MUST be included with the same values in the access token.
 
@@ -411,9 +413,9 @@ When issuing the first access token of a token series, AS MAY specify additional
 
 * osc\_version: The OSCORE version. If it is not included, the default value of 1 (see {{Section 5.4 of RFC8613}}) is assumed.
 
-The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. RS needs to be able to verify that the access token is issued by a trusted AS (source authentication). Depending on the use case and deployment, the access token may need to be confidentiality protected, for example, for privacy reasons.
+The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. Also, RS has to be able to verify that the access token is issued by a trusted AS, by achieving source authentication. Depending on the use case and deployment, the access token may need to be confidentiality protected, for example due to privacy reasons.
 
-AS protects the access token using a COSE method (see {{RFC9052}}) as specified in {{RFC8392}}. Depending on the audience, there may be different ways to most appropriately ensure the confidentiality of an access token. For an audience comprising a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0. Instead, if the access token needs to be read by multiple RSs, then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection is applied during transport, by including the access token in the EAD\_3 field of EDHOC message_3 sent by C to RS, when using the EDHOC forward message flow (see {{edhoc-exec}}).
+AS protects the access token using a COSE method {{RFC9052}} as specified in {{RFC8392}}. Depending on the audience, there can be different ways to most appropriately ensure the confidentiality of an access token. For an audience comprising a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0. Instead, if the access token needs to be read by multiple RSs, then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection is applied during transport, by including the access token in the EAD\_3 field of EDHOC message_3 sent by C to RS, when using the EDHOC forward message flow (see {{edhoc-exec}}).
 
 {{fig-token}} shows an example CWT Claims Set, including the relevant EDHOC parameters in the "edhoc\_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.
 
@@ -424,8 +426,8 @@ AS protects the access token using a COSE method (see {{RFC9052}}) as specified 
     / exp /   4 : 1563453000,
     / scope / 9 :  "temperature_g firmware_p",
     / cnf /   8 : {
-      e'x5chain' : h'3081ee3081a1a00302/...
-        (remainder of the credential omitted for brevity)/'
+      e'x5chain' : h'3081ee3081a1a00302...77bc'
+        / remainder of the credential omitted for brevity /
     }
     e'edhoc_info_claim' : {
       e'session_id'    : h'01',

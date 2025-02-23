@@ -1311,7 +1311,7 @@ Table of Contents
 4.1.  EAD items for Access Token and Session Identifier
 
    This document defines EAD items (see Section 3.8 of [RFC9528]) for
-   transporting an access token or a session idenfier in EDHOC.
+   transporting an access token or a session identifier in EDHOC.
 
    *  EAD_ACCESS_TOKEN = (ead_label, ead_value), where:
 

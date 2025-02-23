@@ -1387,6 +1387,28 @@ Table of Contents
    protection by EDHOC as provided to the authentication credential used
    by C in the EDHOC session (see Section 9.1 of [RFC9528]).
 
+   When RS processes the EAD item EAD_ACCESS_TOKEN or EAD_SESSION_ID, RS
+   MUST verify that the authentication credential AUTH_CRED_C that C
+   specifies in the ID_CRED_X field during the EDHOC session is the same
+   authentication credential correlated with the EAD item.  If such a
+   verification fails, RS MUST abort the EDHOC session.  Note that:
+
+   *  The ID_CRED_X field in question is the ID_CRED_I or ID_CRED_R
+      field, when using the EDHOC forward or reverse message flow,
+      respectively.
+
+   *  If the processed EAD item is EAD_ACCESS_TOKEN, then the
+      authentication credential correlated with the EAD item is
+      specified in the 'cnf' claim of the access token conveyed in the
+      EAD item.
+
+   *  If the processed EAD item is EAD_SESSION_ID, then the
+      authentication credential correlated with the EAD item is
+      specified in the 'cnf' claim of an access token stored at the RS,
+      which is associated with the authentication credential specified
+      by ID_CRED_X and with the session identifier conveyed in the EAD
+      item.
+
    Depending on the message flow used, the EDHOC messages will be
    carried either in CoAP POST requests or in CoAP 2.04 (Changed)
    responses, as detailed in Appendix A.2 of [RFC9528].
@@ -3599,6 +3621,8 @@ D.1.  Version -06 to -07
 
    *  With a group-audience, the reverse message flow can use a roll
       call.
+
+   *  Matching authentication credentials from ID_CRED_X and EAD item.
 
    *  Changed CBOR abbreviations to not collide with existing
       codepoints.

@@ -1376,16 +1376,16 @@ Table of Contents
    most, since EDHOC protects the identity of the Initiator against
    active attackers.
 
-   In case the EDHOC forward message flow is used, C acts as EDHOC
-   Initiator, and the access token MUST be specified by value or by
-   reference in the EAD_3 field of EDHOC message_3.  In case the EDHOC
-   reverse message flow is used, C acts as EDHOC Responder, and the
-   access token MUST be specified by value or by reference either in the
-   EAD_2 field of EDHOC message_2 or in the EAD_4 field of EDHOC
-   message_4.  By doing so, the access token or the associated session
-   identifier gets at least the same confidentiality protection by EDHOC
-   as provided to the authentication credential used by C in the EDHOC
-   session (see Section 9.1 of [RFC9528]).
+   In case the EDHOC forward message flow is used (see Section 4.3), C
+   acts as EDHOC Initiator, and the access token MUST be specified by
+   value or by reference in the EAD_3 field of EDHOC message_3.  In case
+   the EDHOC reverse message flow is used (see Section 4.4), C acts as
+   EDHOC Responder, and the access token MUST be specified by value or
+   by reference either in the EAD_2 field of EDHOC message_2 or in the
+   EAD_4 field of EDHOC message_4.  By doing so, the access token or the
+   associated session identifier gets at least the same confidentiality
+   protection by EDHOC as provided to the authentication credential used
+   by C in the EDHOC session (see Section 9.1 of [RFC9528]).
 
    Depending on the message flow used, the EDHOC messages will be
    carried either in CoAP POST requests or in CoAP 2.04 (Changed)

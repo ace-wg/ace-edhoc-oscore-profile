@@ -85,6 +85,7 @@ informative:
   I-D.ietf-core-groupcomm-bis:
   I-D.ietf-ace-workflow-and-params:
   I-D.ietf-core-oscore-key-update:
+  I-D.ietf-core-oscore-id-update:
   I-D.ietf-lake-authz:
   I-D.ietf-ace-coap-est-oscore:
   I-D.serafin-lake-ta-hint:
@@ -895,7 +896,7 @@ If an authentication credential AUTH\_CRED\_RS of RS is invalidated (e.g., it ex
 
 If an EDHOC session is aborted and purged for other reasons than those in {{auth-cred-validity}}, then RS and C that established the session MUST delete the OSCORE Security Context derived from that session (see {{discard-context}}).
 
-## Using AS Request Creation Hints
+## Using AS Request Creation Hints # {#as-creation-hints}
 
 When replying to an unauthorized resource request message from a client, RS can send an unprotected AS Request Creation Hints message as a 4.01 (Unauthorized) error response (see {{Section 5.3 of RFC9200}}).
 
@@ -920,7 +921,7 @@ If OSCORE is used, the requesting entity and AS need to have an OSCORE Security 
 
 # CWT Confirmation Methods
 
-This document defines a number of new CWT confirmation methods (see {{iana-cwt-confirmation-methods}}). The semantics of each confirmation method is defined below.
+This document defines a number of new CWT confirmation methods, which are registered in {{iana-cwt-confirmation-methods}}. The semantics of each confirmation method is defined below.
 
 ## Ordered Chain of X.509 Certificates # {#ssec-cwt-conf-x5chain}
 
@@ -964,7 +965,7 @@ The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} cont
 
 # JWT Confirmation Methods
 
-This document defines a number of new JWT confirmation methods (see {{iana-jwt-confirmation-methods}}). The semantics of each confirmation method is defined below.
+This document defines a number of new JWT confirmation methods, which are registered in {{iana-jwt-confirmation-methods}}. The semantics of each confirmation method is defined below.
 
 ## Ordered Chain of X.509 Certificates # {#ssec-jwt-conf-x5c}
 
@@ -1059,9 +1060,9 @@ This document specifies a profile for the Authentication and Authorization for C
 
 Furthermore, the security considerations from OSCORE {{RFC8613}} and from EDHOC {{RFC9528}} also apply to this specific use of the OSCORE and EDHOC protocols.
 
-As previously stated, once completed the EDHOC session, C and RS are mutually authenticated through their respective authentication credentials, whose retrieval has been facilitated by AS. Also once completed the EDHOC session, C and RS have established a long-term secret key PRK\_out enjoying forward secrecy. This is in turn used by C and RS to establish an OSCORE Security Context.
+As previously stated, once completed the EDHOC session, C and RS are mutually authenticated through their respective authentication credentials, whose retrieval has been facilitated by AS. Also, once completed the EDHOC session, C and RS have established a long-term secret key PRK\_out enjoying forward secrecy. This is in turn used by C and RS to establish an OSCORE Security Context.
 
-Furthermore, RS achieves confirmation that C has PRK\_out (proof-of-possession) when completing the EDHOC session. Rather, C achieves confirmation that RS has PRK\_out (proof-of-possession) either when receiving the optional EDHOC message\_4 from RS, or when successfully verifying a response from RS protected with the established OSCORE Security Context.
+Furthermore, RS achieves confirmation that C has PRK\_out (proof-of-possession) when completing the EDHOC session. Instead, C achieves confirmation that RS has PRK\_out (proof-of-possession) either when receiving the optional EDHOC message\_4 from RS, or when successfully verifying a response from RS protected with the established OSCORE Security Context.
 
 OSCORE is designed to secure point-to-point communication, providing a secure binding between a request and the corresponding response(s). Thus, the basic OSCORE protocol is not intended for use in point-to-multipoint communication (e.g., enforced via multicast or a publish-subscribe model). Implementers of this profile should make sure that their use case of OSCORE corresponds to the expected one, in order to prevent weakening the security assurances provided by OSCORE.
 
@@ -1073,12 +1074,17 @@ This document specifies a profile for the Authentication and Authorization for C
 
 Furthermore, the privacy considerations from OSCORE {{RFC8613}} and from EDHOC {{RFC9528}} also apply to this specific use of the OSCORE and EDHOC protocols.
 
-An unprotected response to an unauthorized request may disclose information about RS and/or its existing relationship with C. It is advisable to include as little information as possible in an unencrypted response. When an OSCORE Security Context already exists between C and RS, more detailed information may be included.
+An unprotected response to an unauthorized request may disclose information about RS and/or its existing relationship with C. It is advisable to include as little information as possible in an unencrypted response (see also {{as-creation-hints}}). When an OSCORE Security Context already exists between C and RS, more detailed information may be included.
 
-Except for the case where C attempts to update its access rights, the (encrypted) access token is sent in an unprotected POST request to the /authz-info endpoint at RS. Thus, if C uses the same single access token from multiple locations, it can risk being tracked by the access token's value even when the access token is encrypted.
+The (encrypted) access token is never sent in an unprotected POST request to the /authz-info endpoint at RS. Thus, even if C uses the same single access token from multiple locations, the access token's value does not contribute to the risk of C being tracked.
 
+The identifiers used in OSCORE, i.e., the OSCORE Sender/Recipient IDs, are negotiated by C and RS during the EDHOC session. When using the EDHOC forward (reverse) message flow:
 
-The identifiers used in OSCORE, i.e., the OSCORE Sender/Recipient IDs, are negotiated by C and RS during the EDHOC session. That is, the EDHOC Connection Identifier C\_I of C is going to be the OSCORE Recipient ID of C (the OSCORE Sender ID of RS). Conversely, the EDHOC Connection Identifier C\_R of RS is going to be the OSCORE Recipient ID of RS (the OSCORE Sender ID of C). These OSCORE identifiers are privacy sensitive (see {{Section 12.8 of RFC8613}}). In particular, they could reveal information about C, or may be used for correlating different requests from C, e.g., across different networks that C has joined and left over time. This can be mitigated if C and RS dynamically update their OSCORE identifiers, e.g., by using the method defined in {{I-D.ietf-core-oscore-key-update}}.
+* The EDHOC Connection Identifier C\_I (C\_R) of C is going to be the OSCORE Recipient ID of C, i.e., the OSCORE Sender ID of RS.
+
+* The EDHOC Connection Identifier C\_R (C\_I) of RS is going to be the OSCORE Recipient ID of RS, i.e., the OSCORE Sender ID of C.
+
+These OSCORE identifiers are privacy sensitive (see {{Section 12.8 of RFC8613}}). In particular, they could reveal information about C, or may be used for correlating different requests from C, e.g., across different networks that C has joined and left over time. This can be mitigated if C and RS dynamically update their OSCORE identifiers, e.g., by using the method defined in {{I-D.ietf-core-oscore-id-update}}.
 
 # IANA Considerations
 

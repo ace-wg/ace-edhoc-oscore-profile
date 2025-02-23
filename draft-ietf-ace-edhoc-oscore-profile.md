@@ -82,6 +82,7 @@ informative:
   RFC8446:
   RFC9110:
   RFC9147:
+  I-D.ietf-core-groupcomm-bis:
   I-D.ietf-ace-workflow-and-params:
   I-D.ietf-core-oscore-key-update:
   I-D.ietf-lake-authz:
@@ -659,6 +660,8 @@ As per {{Section A.2 of RFC9528}}, EDHOC can be transferred over CoAP using eith
 In case the EDHOC forward message flow is used, C acts as EDHOC Initiator, and the access token MUST be specified by value or by reference in the EAD\_3 field of EDHOC message\_3. In case the EDHOC reverse message flow is used, C acts as EDHOC Responder, and the access token MUST be specified by value or by reference either in the EAD\_2 field of EDHOC message\_2 or in the EAD\_4 field of EDHOC message\_4. By doing so, the access token or the associated session identifier gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see {{Section 9.1 of RFC9528}}).
 
 Depending on the message flow used, the EDHOC messages will be carried either in CoAP POST requests or in CoAP 2.04 (Changed) responses, as detailed in {{Section A.2 of RFC9528}}.
+
+In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}) and the EDHOC reverse message flow is used, then C can send the first CoAP POST request over IP multicast {{I-D.ietf-core-groupcomm-bis}} as an EDHOC "roll call". For the sake of efficiency, it is expected that the group-audience is appropriately mapped with a CoAP group and/or application group (see {{Section 2 of I-D.ietf-core-groupcomm-bis}}), so that only the RSs belonging to the group-audience receive the request. After that, C receives an EDHOC message_1 from each of the different targeted RSs, and continues the EDHOC session by individually sending a different EDHOC message_2 to each RS that has sent an EDHOC message_1.
 
 C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field (if present) of the EDHOC\_Information object within the access token response received from AS, when obtaining the first access token of a token series (see {{c-as}}). If the "uri_path" field is not present in that EDHOC\_Information object, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.
 
@@ -1836,6 +1839,8 @@ x5u_ta_type = 35
 * First token in a series: the "cnf" claim uses the same confirmation method of the "req_cnf" request to /token.
 
 * Revised examples in CBOR diagnostic notation.
+
+* With a group-audience, the reverse message flow can use a roll call.
 
 * Changed CBOR abbreviations to not collide with existing codepoints.
 

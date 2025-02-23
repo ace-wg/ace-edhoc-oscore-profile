@@ -1105,7 +1105,7 @@ IANA is asked to add the following entry to the "ACE Profiles" registry, followi
 
 IANA is asked to add the following entry to the "OAuth Parameters" registry.
 
-* Name: "edhoc_info"
+* Name: edhoc_info
 * Parameter Usage Location: token request and token response
 * Change Controller: IETF
 * Reference: {{&SELF}}
@@ -1114,7 +1114,7 @@ IANA is asked to add the following entry to the "OAuth Parameters" registry.
 
 IANA is asked to add the following entry to the "OAuth Parameters CBOR Mappings" registry, following the procedure specified in {{RFC9200}}.
 
-* Name: "edhoc_info"
+* Name: edhoc_info
 * CBOR Key: TBD (value between 1 and 255)
 * Value Type: map
 * Reference: {{&SELF}}
@@ -1124,7 +1124,7 @@ IANA is asked to add the following entry to the "OAuth Parameters CBOR Mappings"
 
 IANA is asked to add the following entries to the "JSON Web Token Claims" registry, following the procedure specified in {{RFC7519}}.
 
-* Claim Name: "edhoc_info"
+* Claim Name: edhoc_info
 * Claim Description: Information for EDHOC session
 * Change Controller: IETF
 * Reference: {{&SELF}}
@@ -1133,9 +1133,9 @@ IANA is asked to add the following entries to the "JSON Web Token Claims" regist
 
 IANA is asked to add the following entries to the "CBOR Web Token (CWT) Claims" registry, following the procedure specified in {{RFC8392}}.
 
-* Claim Name: "edhoc_info"
+* Claim Name: edhoc_info
 * Claim Description: Information for EDHOC session
-* JWT Claim Name: "edhoc_info"
+* JWT Claim Name: edhoc_info
 * Claim Key: TBD (value between 1 and 255)
 * Claim Value Type: map
 * Change Controller: IETF
@@ -1145,70 +1145,70 @@ IANA is asked to add the following entries to the "CBOR Web Token (CWT) Claims" 
 
 IANA is asked to add the following entries to the "JWT Confirmation Methods" registry, following the procedure specified in {{RFC7800}}.
 
-* Confirmation Method Value: "x5c"
+* Confirmation Method Value: x5c
 * Confirmation Method Description: An ordered chain of X.509 certificates
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-x5c}} of {{&SELF}}
 
 <br>
 
-* Confirmation Method Value: "x5b"
+* Confirmation Method Value: x5b
 * Confirmation Method Description: An unordered bag of X.509 certificates
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-x5b}} of {{&SELF}}
 
 <br>
 
-* Confirmation Method Value: "x5t"
+* Confirmation Method Value: x5t
 * Confirmation Method Description: Hash of an X.509 certificate
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-x5t}} of {{&SELF}}
 
 <br>
 
-* Confirmation Method Value: "x5u"
+* Confirmation Method Value: x5u
 * Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-x5u}} of {{&SELF}}
 
 <br>
 
-* Confirmation Method Value: "c5c"
+* Confirmation Method Value: c5c
 * Confirmation Method Description: An ordered chain of C509 certificates
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-c5c}} of {{&SELF}}
 
 <br>
 
-* Confirmation Method Value: "c5b"
+* Confirmation Method Value: c5b
 * Confirmation Method Description: An unordered bag of C509 certificates
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-c5b}} of {{&SELF}}
 
 <br>
 
-* Confirmation Method Value: "c5t"
+* Confirmation Method Value: c5t
 * Confirmation Method Description: Hash of a C509 certificate
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-c5t}} of {{&SELF}}
 
 <br>
 
-* Confirmation Method Value: "c5u"
+* Confirmation Method Value: c5u
 * Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-c5u}} of {{&SELF}}
 
 <br>
 
-* Confirmation Method Value: "kcwt"
+* Confirmation Method Value: kcwt
 * Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-kcwt}} of {{&SELF}}
 
 <br>
 
-* Confirmation Method Value: "kccs"
+* Confirmation Method Value: kccs
 * Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-kccs}} of {{&SELF}}
@@ -1219,7 +1219,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 * Confirmation Method Name: x5chain
 * Confirmation Method Description: An ordered chain of X.509 certificates
-* JWT Confirmation Method Name: "x5c"
+* JWT Confirmation Method Name: x5c
 * Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: COSE_X509
 * Change Controller: IETF
@@ -1229,7 +1229,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 * Confirmation Method Name: x5bag
 * Confirmation Method Description: An unordered bag of X.509 certificates
-* JWT Confirmation Method Name: "x5b"
+* JWT Confirmation Method Name: x5b
 * Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: COSE_X509
 * Change Controller: IETF
@@ -1239,7 +1239,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 * Confirmation Method Name: x5t
 * Confirmation Method Description: Hash of an X.509 certificate
-* JWT Confirmation Method Name: "x5t"
+* JWT Confirmation Method Name: x5t
 * Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: COSE_CertHash
 * Change Controller: IETF
@@ -1249,7 +1249,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 * Confirmation Method Name: x5u
 * Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
-* JWT Confirmation Method Name: "x5u"
+* JWT Confirmation Method Name: x5u
 * Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: uri
 * Change Controller: IETF
@@ -1259,7 +1259,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 * Confirmation Method Name: c5c
 * Confirmation Method Description: An ordered chain of C509 certificates
-* JWT Confirmation Method Name: "c5c"
+* JWT Confirmation Method Name: c5c
 * Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: COSE_C509
 * Change Controller: IETF
@@ -1269,7 +1269,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 * Confirmation Method Name: c5b
 * Confirmation Method Description: An unordered bag of C509 certificates
-* JWT Confirmation Method Name: "c5b"
+* JWT Confirmation Method Name: c5b
 * Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: COSE_C509
 * Change Controller: IETF
@@ -1279,7 +1279,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 * Confirmation Method Name: c5t
 * Confirmation Method Description: Hash of a C509 certificate
-* JWT Confirmation Method Name: "c5t"
+* JWT Confirmation Method Name: c5t
 * Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: COSE_CertHash
 * Change Controller: IETF
@@ -1289,7 +1289,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 * Confirmation Method Name: c5u
 * Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
-* JWT Confirmation Method Name: "c5u"
+* JWT Confirmation Method Name: c5u
 * Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: uri
 * Change Controller: IETF
@@ -1299,7 +1299,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 * Confirmation Method Name: kcwt
 * Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims
-* JWT Confirmation Method Name: "kcwt"
+* JWT Confirmation Method Name: kcwt
 * Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: COSE_Messages
 * Change Controller: IETF
@@ -1309,7 +1309,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 * Confirmation Method Name: kccs
 * Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims
-* JWT Confirmation Method Name: "kccs"
+* JWT Confirmation Method Name: kccs
 * Confirmation Key: TBD (value between 1 and 23)
 * Confirmation Value Type: map / #6(map)
 * Change Controller: IETF

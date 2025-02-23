@@ -349,7 +349,11 @@ AS can signal that the use of EDHOC and OSCORE as per this profile is REQUIRED f
 
 When issuing the first access token of a token series, AS MUST include the following data in the response to C.
 
-* The "edhoc\_info" parameter conveying an EDHOC\_Information object (see {{edhoc-parameters-object}}). The EDHOC\_Information object MUST include the "session\_id" field specifying the identifier of the token series which the issued access token belongs to, and MAY include additional fields (see {{edhoc-parameters-object}}) to convey information about RS. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.
+* The "edhoc\_info" parameter conveying an EDHOC\_Information object (see {{edhoc-parameters-object}}). The EDHOC\_Information object MUST include the "session\_id" field specifying the identifier of the token series which the issued access token belongs to.
+
+  The EDHOC\_Information object MAY include additional fields (see {{edhoc-parameters-object}}) to convey information about RS. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.
+
+  In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), the information specified in the EDHOC\_Information object refers to the group-audience as a whole. Therefore, it is appropriate for AS to define group-audiences comprising RSs that are all aligned in terms of supported EDHOC features and configurations.
 
 * A unique identification of the authentication credential of RS, AUTH\_CRED\_RS. This is specified in the "rs\_cnf" parameter defined in {{RFC9201}}. AUTH\_CRED\_RS can be transported by value or referred to by means of an appropriate identifier.
 
@@ -1817,6 +1821,8 @@ x5u_ta_type = 35
 * Added explicit validation of AUTH_CRED_C at AS.
 
 * "edhoc_info" on in AS-to-C response for first token in a series.
+
+* With a group-audience, "edhoc_info" refers to the whole audience.
 
 * Defined parameters for the EDHOC_Information object:
 

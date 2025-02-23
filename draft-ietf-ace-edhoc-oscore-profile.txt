@@ -537,8 +537,8 @@ Table of Contents
    If C wants to update its access rights without changing an existing
    OSCORE Security Context, it MUST include EDHOC_Information in its
    POST request to the /token endpoint.  The EDHOC_Information MUST
-   include the "session_id" field.  This POST request MUST omit the
-   "req_cnf" parameter.  An example of such a request is shown in
+   include the "session_id" field.  This POST request MUST NOT include
+   the "req_cnf" parameter.  An example of such a request is shown in
    Figure 4.
 
    The identifier "session_id" is assigned by AS as discussed in
@@ -729,40 +729,46 @@ Table of Contents
 3.3.1.  Access Token
 
    To avoid the complexity of different encodings, an access token of
-   this profile SHALL be a CBOR Web Token (CWT), see [RFC8392].  When
-   issuing any access token of a token series, AS MUST specify the
+   this profile SHALL be a CBOR Web Token (CWT) [RFC8392].
+
+   When issuing any access token of a token series, AS MUST specify the
    following data in the associated claims of the access token:
 
-   *  The "session_id" field of EDHOC_Information, with the same value
-      specified in the response to C from the /token endpoint.
+   *  The "edhoc_info" claim defined in Section 14.5 and conveying an
+      EDHOC_Information object (see Section 3.4).
 
-      EDHOC_Information MUST be transported in the "edhoc_info" claim,
-      defined in Section 14.5.
+      The EDHOC_Information object MUST include the "session_id" field
+      specifying the identifier of the token series which the issued
+      access token belongs to.  The "session_id" value is the same one
+      included in the EDHOC_Information object of the response to C from
+      the /token endpoint (see Section 3.3), when providing C with the
+      first access token in the series.
 
-   *  The authentication credential AUTH_CRED_C that C specified in its
-      POST request to the /token endpoint (see Section 3.1), in the
-      "cnf" claim.
+   *  The "cnf" claim, specifying the authentication credential
+      AUTH_CRED_C that C specified in its POST request to the /token
+      endpoint, when requesting the first access token in the series
+      which the issued access token belongs to (see Section 3.1).
 
       In the access token, AUTH_CRED_C can be transported by value or
       uniquely referred to by means of an appropriate identifier.  Yet,
       consistent with the considerations about AUTH_CRED_C and the
       "req_cnf" parameter made in Section 3.1, the "cnf" claim of the
-      access token specifies a confirmation method suitable for the type
-      of AUTH_CRED_C.
+      access token MUST specify a confirmation method suitable for the
+      type of AUTH_CRED_C.
 
       When issuing the first access token of a token series, the
       confirmation method used in the "cnf" claim MUST be the same one
-      used in the "req_cnf" parameter of the corresponding client-to-AS
-      request.
+      used in the "req_cnf" parameter of the corresponding POST request
+      from C to the /token endpoint.
 
       When issuing the first access token ever to a pair (C, RS) using a
       pair of corresponding authentication credentials (AUTH_CRED_C,
       AUTH_CRED_RS), it is expected that AUTH_CRED_C is included by
-      value.
+      value in the "cnf" claim of the access token.
 
       When later issuing further access tokens to the same pair (C, RS)
       using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is
-      identified by reference.
+      identified by reference in the "cnf" claim of the access token.
 
    When issuing the first access token of a token series, AS MAY specify
    additional EDHOC_Information data (see Section 3.4) in the
@@ -784,13 +790,13 @@ Table of Contents
 
    The access token needs to be protected for various reasons.  To
    prevent manipulation of the content, it needs to be integrity
-   protected.  RS needs to be able to verify that the access token is
-   issued by a trusted AS (source authentication).  Depending on the use
-   case and deployment, the access token may need to be confidentiality
-   protected, for example, for privacy reasons.
+   protected.  Also, RS has to be able to verify that the access token
+   is issued by a trusted AS, by achieving source authentication.
+   Depending on the use case and deployment, the access token may need
+   to be confidentiality protected, for example due to privacy reasons.
 
-   AS protects the access token using a COSE method (see [RFC9052]) as
-   specified in [RFC8392].  Depending on the audience, there may be
+   AS protects the access token using a COSE method [RFC9052] as
+   specified in [RFC8392].  Depending on the audience, there can be
    different ways to most appropriately ensure the confidentiality of an
    access token.  For an audience comprising a single RS, the CWT Claims
    Set may be wrapped in COSE_Encrypt / COSE_Encrypt0.  Instead, if the
@@ -812,8 +818,8 @@ Table of Contents
        / exp /   4 : 1563453000,
        / scope / 9 :  "temperature_g firmware_p",
        / cnf /   8 : {
-         e'x5chain' : h'3081ee3081a1a00302/...
-           (remainder of the credential omitted for brevity)/'
+         e'x5chain' : h'3081ee3081a1a00302...77bc'
+           / remainder of the credential omitted for brevity /
        }
        e'edhoc_info_claim' : {
          e'session_id'    : h'01',

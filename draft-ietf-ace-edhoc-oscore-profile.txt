@@ -1919,8 +1919,8 @@ Table of Contents
    specifying the corresponding parameters in an unprotected AS Request
    Creation Hints message.
 
-   Therefore, if RS supports the EDHOC reverse message and sends an AS
-   Request Creation Hints, the following applies:
+   Therefore, if RS supports the EDHOC reverse message flow and sends an
+   AS Request Creation Hints, the following applies:
 
    *  The message payload MUST NOT include the "audience" parameter.
 

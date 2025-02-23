@@ -790,11 +790,13 @@ In the combined request, both EDHOC message\_3 and the first OSCORE-protected ap
 
 If C has a valid OSCORE Security Context associated with a valid access token at RS, then C can request from AS an update of the access rights as described in {{c-as}}.
 
-If the request is granted then AS generates a new access token containing updated access rights for C (see {{update-access-rights-c-as}}) in the same token series of the current access token (see {{token-series}}).
+If the request is granted, then AS generates a new access token containing updated access rights for C (see {{update-access-rights-c-as}}), in the same token series of the current access token (see {{token-series}}).
 
-According to this document, AS provides the access token to C (see {{as-c}}) for further uploading to RS. Alternatively, the access token may be uploaded by AS directly to RS, as described in {{I-D.ietf-ace-workflow-and-params}}. If all validations are successful, C can access protected resources at RS according to the updated access rights using the previously established OSCORE Security Context.
+According to this document, AS provides the new access token to C (see {{as-c}}) for further uploading to RS. Alternatively, the new access token can be uploaded by AS directly to RS, as described in {{I-D.ietf-ace-workflow-and-params}}.
 
-The rest of this section describes the message exchange for the uploading of the access token from C to RS.
+If all validations are successful, C can access protected resources at RS according to the updated access rights, using the previously established OSCORE Security Context.
+
+The rest of this section describes the message exchange for the uploading of the new access token from C to RS.
 
 ### C-to-RS: POST to /authz-info endpoint # {#c-rs}
 
@@ -804,32 +806,27 @@ That is, C sends a POST request to the /authz-info endpoint at RS, with the requ
 
 C MUST protect the POST request using the current OSCORE Security Context shared with RS.
 
-Upon receiving an access token from C, RS MUST follow the procedures defined in {{Section 5.10.1 of RFC9200}}. That is, RS must verify the validity of the access token. RS may make an introspection request (see {{Section 5.9.1 of RFC9200}}) to validate the access token.
+Upon receiving an access token from C, RS MUST follow the procedures defined in {{Section 5.10.1 of RFC9200}}. That is, RS MUST verify the validity of the access token. RS MAY make an introspection request (see {{Section 5.9.1 of RFC9200}}) to validate the access token at AS.
 
 RS MUST check the following conditions:
 
-* RS checks whether it stores an access token T_OLD, such that the "session\_id" field of EDHOC_Information matches the "session\_id" field of EDHOC_Information in the new access token T_NEW.
+* RS checks whether it stores an access token T_OLD, such that the "session\_id" field of the EDHOC\_Information object specified by the "cnf" claim matches the "session\_id" field of the EDHOC\_Information object specified by the "cnf" claim of the new access token T_NEW.
 
 * RS checks whether the OSCORE Security Context CTX used to protect the request matches the OSCORE Security Context associated with the stored access token T_OLD.
 
-If both the conditions above hold, RS MUST replace the old access token T_OLD with the new access token T_NEW, and associate T_NEW with the OSCORE Security Context CTX.
+If both the conditions above hold, RS MUST supersede the old access token T_OLD by replacing the corresponding authorization information with the one specified in the new access token T_NEW, and MUST associate T_NEW with the OSCORE Security Context CTX.
 
 Note that C and RS do not execute the EDHOC protocol, they do not establish a new OSCORE Security Context, and AUTH_CRED_C remains the same.
 
 ###  RS-to-C: 2.01 (Created) {#rs-c}
 
-If all validations are successful, RS MUST reply to the POST request with a 2.01 (Created) response protected with the same OSCORE Security Context, with no payload. The access token is stored such that it is possible to retrieve it based on "session\_id" and AUTH_CRED_C.
+If all validations are successful, RS stores the new access token in such a way that it is possible to retrieve it based on the pair (SESSION\_ID, AUTH\_CRED\_C), where SESSION\_ID is the identifier of the token series to which the access token belongs. Note that SESSION\_ID is specified in the "session\_id" field of the EDHOC\_Information object, within the "cnf" claim of the access token.
 
-After that, C can access to protected resources at RS according to the updated access rights using the previously established OSCORE Security Context.
+Then, RS MUST reply to the POST request by sending a 2.01 (Created) response with no payload. The response is protected with the same OSCORE Security Context used to protect the corresponding request. After that, C can access protected resources at RS according to the updated access rights, using the previously established OSCORE Security Context.
 
-Otherwise, RS MUST respond with a 4.01 (Unauthorized) error response. RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
+Instead, if any validation fails, RS MUST respond with a 4.01 (Unauthorized) error response. RS MAY provide additional information in the payload of the error response, in order to clarify what went wrong.
 
 As specified in {{Section 5.10.1 of RFC9200}}, when receiving a valid access token with updated authorization information from C (see {{c-rs}}), it is recommended that RS overwrites the previous access token. That is, only the latest authorization information in the access token received by RS is valid. This simplifies the process needed by RS to keep track of authorization information for a given client.
-
-Editor's note: The following error case was described for unprotected POST /authz-info. It seems not relevant anymore.
-
-If, instead, the access token is valid but associated with claims that RS cannot process (e.g., an unknown scope), or if any of the expected parameters is missing (e.g., any of the mandatory parameters from AS or the identifier "session\_id"), or if any parameters received in the EDHOC_Information is unrecognized, then RS MUST respond with an error response code equivalent to the CoAP code 4.00 (Bad Request). In the latter two cases, RS may provide additional information in the payload of the error response, in order to clarify what went wrong.
-
 
 ## Discarding the OSCORE Security Context # {#discard-context}
 

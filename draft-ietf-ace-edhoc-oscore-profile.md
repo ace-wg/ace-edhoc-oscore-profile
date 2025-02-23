@@ -1371,7 +1371,7 @@ The columns of this registry are:
 
 * Name: This field contains the name of the EDHOC endpoint identity type.
 
-* CBOR label: The value to be used to identify this EDHOC endpoint identity type. These values MUST be unique. The value can be a positive integer or a negative integer. Different ranges of values use different registration policies {{RFC8126}}. Integer values from -24 to 23 are designated as "Standards Action With Expert Review". Integer values from -65536 to -25 and from 24 to 65535 are designated as "Specification Required". Integer values smaller than -65536 and greater than 65535 are marked as "Private Use".
+* CBOR label: The value to be used to identify this EDHOC endpoint identity type. These values MUST be unique. The value can be a positive integer or a negative integer. Different ranges of values use different registration policies {{RFC8126}}. Integer values from -24 to 23 are designated as "Standards Action with Expert Review". Integer values from -65536 to -25 and from 24 to 65535 are designated as "Specification Required". Integer values smaller than -65536 and greater than 65535 are marked as "Private Use".
 
 * Description: This field contains a short description of the EDHOC endpoint identity type.
 
@@ -1389,7 +1389,7 @@ All assignments according to "Standards Action with Expert Review" are made on a
 
 The columns of this registry are:
 
-* Transport ID: The value to be used to identify this means for transporting EDHOC messages. These values MUST be unique. The value can be a positive integer or a negative integer. Different ranges of values use different registration policies {{RFC8126}}. Integer values from -24 to 23 are designated as "Standards Action With Expert Review". Integer values from -65536 to -25 and from 24 to 65535 are designated as "Specification Required". Integer values smaller than -65536 and greater than 65535 are marked as "Private Use".
+* Transport ID: The value to be used to identify this means for transporting EDHOC messages. These values MUST be unique. The value can be a positive integer or a negative integer. Different ranges of values use different registration policies {{RFC8126}}. Integer values from -24 to 23 are designated as "Standards Action with Expert Review". Integer values from -65536 to -25 and from 24 to 65535 are designated as "Specification Required". Integer values smaller than -65536 and greater than 65535 are marked as "Private Use".
 
 * Name: This field contains the name of the means for transporting EDHOC messages.
 
@@ -1413,7 +1413,7 @@ The columns of this registry are:
 
 * CBOR label: This field contains the value used to identify the trust anchor purpose. These values MUST be unique. The value can be an unsigned integer or a negative integer. Different ranges of values use different registration policies:
 
-  * Integer values from -24 to 23 are designated as "Standards Action With Expert Review".
+  * Integer values from -24 to 23 are designated as "Standards Action with Expert Review".
 
   * Integer values from -65536 to -25 and from 24 to 65535 are designated as "Specification Required".
 
@@ -1439,7 +1439,7 @@ The columns of this registry are:
 
 * CBOR label: This field contains the value used to identify the type of trust anchor. These values MUST be unique. The value can be an unsigned integer or a negative integer. Different ranges of values use different registration policies:
 
-  * Integer values from -24 to 23 are designated as "Standards Action With Expert Review".
+  * Integer values from -24 to 23 are designated as "Standards Action with Expert Review".
 
   * Integer values from -65536 to -25 and from 24 to 65535 are designated as "Specification Required".
 
@@ -1463,7 +1463,7 @@ Expert reviewers should take into consideration the following points:
 
 * Point squatting should be discouraged. Reviewers are encouraged to get sufficient information for registration requests to ensure that the usage is not going to duplicate one that is already registered and that the point is likely to be used in deployments. The zones tagged as "Private Use" are intended for testing purposes and closed environments. Code points in other ranges should not be assigned for testing.
 
-* Specifications are required for the "Standards Action With Expert Review" range of point assignment. Specifications should exist for "Specification Required" ranges, but early assignment before a specification is available is considered to be permissible. When specifications are not provided, the description provided needs to have sufficient information to identify what the point is being used for.
+* Specifications are required for the "Standards Action with Expert Review" range of point assignment. Specifications should exist for "Specification Required" ranges, but early assignment before a specification is available is considered to be permissible. When specifications are not provided, the description provided needs to have sufficient information to identify what the point is being used for.
 
 * Experts should take into account the expected usage of fields when approving point assignment. Documents published via Standards Action can also register points outside the Standards Action range. The length of the encoded value should be weighed against how many code points of that length are left, the size of device it will be used on, and the number of code points left that encode to that size.
 

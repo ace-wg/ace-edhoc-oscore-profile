@@ -705,7 +705,7 @@ Table of Contents
    When issuing an access token for dynamically updating C's access
    rights (i.e., the access token is not the first in its token series),
    the response from AS MUST NOT include the "edhoc_info" and "rs_cnf"
-   parameters.
+   parameters (see Section 3.3.3).
 
    Figure 5 shows an example of an AS response.  The "rs_cnf" parameter
    specifies the authentication credential of RS, as an X.509
@@ -859,17 +859,19 @@ Table of Contents
    rights while preserving the same OSCORE Security Context.
 
    If the request is granted, then AS generates a new access token,
-   where the "edhoc_info" claim MUST include only the "session_id"
-   field.  The access token is provisioned to RS either via C as
-   specified in this document, or directly as described in
-   [I-D.ietf-ace-workflow-and-params].  In either case, the access token
-   response from the AS to C MUST NOT include the "rs_cnf" parameter.
+   where the EDHOC_Information object specified in the "edhoc_info"
+   claim MUST include only the "session_id" field.  The access token is
+   provisioned to RS either via C as specified in this document, or
+   directly as described in [I-D.ietf-ace-workflow-and-params].  In
+   either case, the access token response from AS to C MUST NOT include
+   the "edhoc_info" and "rs_cnf" parameters.
 
-   EDHOC_Information including the "session_id" field needs to be
-   specified in the new access token in order for RS to identify the old
-   access token to supersede, as well as the OSCORE Security Context
-   already shared between C and RS and to be associated with the new
-   access token.
+   As defined in Section 3.3.1, the "session_id" field is included in
+   the EDHOC_Information object specified in the "edhoc_info" claim of
+   the new access token.  This allows RS to identify the old access
+   token to supersede, as well as the OSCORE Security Context already
+   shared between C and RS and to be associated with the new access
+   token.
 
 3.4.  EDHOC_Information
 

@@ -2523,23 +2523,47 @@ Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Den
         <h3 id="name-oscore-security-context">
 <a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-oscore-security-context" class="section-name selfRef">OSCORE Security Context</a>
         </h3>
-<p id="section-4.5-1">Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context, as defined in <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. In addition, the following applies.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.5-1">Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context, as defined in <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. In addition, the following applies:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.5-2.1">
-            <p id="section-4.5-2.1.1">The length in bytes of the OSCORE Master Secret (i.e., the oscore_key_length parameter, see <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) <span class="bcp14">MUST</span> be the value specified in the "osc_ms_size" field (if present) in the EDHOC_Information of the access token response to C, and of the access token provisioned to RS, respectively.<a href="#section-4.5-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.5-2.1.1">The length in bytes of the OSCORE Master Secret (i.e., the oscore_key_length parameter, see <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) <span class="bcp14">MUST</span> be the value specified in the "osc_ms_size" field (if present) within the EDHOC_Information object specified by:<a href="#section-4.5-2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.5-2.1.2.1">
+                <p id="section-4.5-2.1.2.1.1">The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#section-4.5-2.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.5-2.1.2.2">
+                <p id="section-4.5-2.1.2.2.1">The "edhoc_info" claim of the access token provisioned to RS (see <a href="#access-token" class="auto internal xref">Section 3.3.1</a>).<a href="#section-4.5-2.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
 </li>
           <li class="normal" id="section-4.5-2.2">
-            <p id="section-4.5-2.2.1">The length in bytes of the OSCORE Master Salt (i.e., the oscore_salt_length parameter, see <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) <span class="bcp14">MUST</span> be the value specified in the "osc_salt_size" field (if present) in the EDHOC_Information of the access token response to C, and of the access token provisioned to RS, respectively.<a href="#section-4.5-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.5-2.2.1">The length in bytes of the OSCORE Master Salt (i.e., the oscore_salt_length parameter, see <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) <span class="bcp14">MUST</span> be the value specified in the "osc_salt_size" field (if present) within the EDHOC_Information object specified by:<a href="#section-4.5-2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.5-2.2.2.1">
+                <p id="section-4.5-2.2.2.1.1">The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#section-4.5-2.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.5-2.2.2.2">
+                <p id="section-4.5-2.2.2.2.1">The "edhoc_info" claim of the access token provisioned to RS (see <a href="#access-token" class="auto internal xref">Section 3.3.1</a>).<a href="#section-4.5-2.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
 </li>
           <li class="normal" id="section-4.5-2.3">
-            <p id="section-4.5-2.3.1">C and RS <span class="bcp14">MUST</span> use the OSCORE version specified in the "osc_version" field (if present) in the EDHOC_Information of the access token response to C, and of the access token provisioned to RS, respectively.<a href="#section-4.5-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-4.5-2.3.1">C and RS <span class="bcp14">MUST</span> use the OSCORE version specified in the "osc_version" field (if present) within the EDHOC_Information object specified by:<a href="#section-4.5-2.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.5-2.3.2.1">
+                <p id="section-4.5-2.3.2.1.1">The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#section-4.5-2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.5-2.3.2.2">
+                <p id="section-4.5-2.3.2.2.1">The "edhoc_info" claim of the access token provisioned to RS (see <a href="#access-token" class="auto internal xref">Section 3.3.1</a>).<a href="#section-4.5-2.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
 </li>
           <li class="normal" id="section-4.5-2.4">
-            <p id="section-4.5-2.4.1">RS associates the latest EDHOC session and the derived OSCORE Security Context
-with the stored access token, which is bound to the authentication credential AUTH_CRED_C used in the EDHOC session and with the session_id identifying the token series to which the access token belongs.<a href="#section-4.5-2.4.1" class="pilcrow">¶</a></p>
+            <p id="section-4.5-2.4.1">RS associates the latest EDHOC session and the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential AUTH_CRED_C used in the EDHOC session. The access token is also associated with the pair (SESSION_ID, AUTH_CRED_C), where SESSION_ID is the identifier of the token series to which the access token belongs.<a href="#section-4.5-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.5-3">If supported by C, C <span class="bcp14">MAY</span> use the EDHOC + OSCORE combined request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span>, unless the "comb_req" field of the EDHOC_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see <a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a>. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message_2 and before sending EDHOC message_3.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-3">If supported by C, C <span class="bcp14">MAY</span> use the EDHOC + OSCORE combined request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span>, unless the EDHOC_Information object specified by the "edhoc_info" parameter of the access token response included the "comb_req" field encoding the CBOR simple value "false" (0xf4).<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-4">In the combined request, both EDHOC message_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message_2 and before sending EDHOC message_3. An example is provided in <a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a>.<a href="#section-4.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="update-access-rights-c-rs">

@@ -1599,41 +1599,62 @@ Table of Contents
 
    Once successfully completed the EDHOC session, C and RS derive an
    OSCORE Security Context, as defined in Appendix A.1 of [RFC9528].  In
-   addition, the following applies.
+   addition, the following applies:
 
    *  The length in bytes of the OSCORE Master Secret (i.e., the
       oscore_key_length parameter, see Appendix A.1 of [RFC9528]) MUST
-      be the value specified in the "osc_ms_size" field (if present) in
-      the EDHOC_Information of the access token response to C, and of
-      the access token provisioned to RS, respectively.
+      be the value specified in the "osc_ms_size" field (if present)
+      within the EDHOC_Information object specified by:
+
+      -  The "edhoc_info" parameter of the access token response that C
+         received from AS, through which C obtained the first access
+         token of the token series (see Section 3.1).
+
+      -  The "edhoc_info" claim of the access token provisioned to RS
+         (see Section 3.3.1).
 
    *  The length in bytes of the OSCORE Master Salt (i.e., the
       oscore_salt_length parameter, see Appendix A.1 of [RFC9528]) MUST
       be the value specified in the "osc_salt_size" field (if present)
-      in the EDHOC_Information of the access token response to C, and of
-      the access token provisioned to RS, respectively.
+      within the EDHOC_Information object specified by:
+
+      -  The "edhoc_info" parameter of the access token response that C
+         received from AS, through which C obtained the first access
+         token of the token series (see Section 3.1).
+
+      -  The "edhoc_info" claim of the access token provisioned to RS
+         (see Section 3.3.1).
 
    *  C and RS MUST use the OSCORE version specified in the
-      "osc_version" field (if present) in the EDHOC_Information of the
-      access token response to C, and of the access token provisioned to
-      RS, respectively.
+      "osc_version" field (if present) within the EDHOC_Information
+      object specified by:
+
+      -  The "edhoc_info" parameter of the access token response that C
+         received from AS, through which C obtained the first access
+         token of the token series (see Section 3.1).
+
+      -  The "edhoc_info" claim of the access token provisioned to RS
+         (see Section 3.3.1).
 
    *  RS associates the latest EDHOC session and the derived OSCORE
       Security Context with the stored access token, which is bound to
       the authentication credential AUTH_CRED_C used in the EDHOC
-      session and with the session_id identifying the token series to
-      which the access token belongs.
+      session.  The access token is also associated with the pair
+      (SESSION_ID, AUTH_CRED_C), where SESSION_ID is the identifier of
+      the token series to which the access token belongs.
 
    If supported by C, C MAY use the EDHOC + OSCORE combined request
-   defined in [RFC9668], unless the "comb_req" field of the
-   EDHOC_Information was present in the access token response and set to
-   the CBOR simple value "false" (0xf4).  In the combined request, both
-   EDHOC message_3 and the first OSCORE-protected application request
-   are combined together in a single OSCORE-protected CoAP request, thus
-   saving one round trip.  For an example, see Appendix A.2.  This
+   defined in [RFC9668], unless the EDHOC_Information object specified
+   by the "edhoc_info" parameter of the access token response included
+   the "comb_req" field encoding the CBOR simple value "false" (0xf4).
+
+   In the combined request, both EDHOC message_3 and the first OSCORE-
+   protected application request are combined together in a single
+   OSCORE-protected CoAP request, thus saving one round trip.  This
    requires C to derive the OSCORE Security Context with RS already
    after having successfully processed the received EDHOC message_2 and
-   before sending EDHOC message_3.
+   before sending EDHOC message_3.  An example is provided in
+   Appendix A.2.
 
 4.6.  Update of Access Rights
 

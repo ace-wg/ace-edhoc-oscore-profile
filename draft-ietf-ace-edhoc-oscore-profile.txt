@@ -114,6 +114,8 @@ Table of Contents
      4.8.  Establishing a New OSCORE Security Context
      4.9.  Access Rights Verification
      4.10. Access Token Invalidity
+     4.11. Authentication Credential Invalidity
+     4.12. EDHOC Session Invalidity
    5.  Secure Communication with AS
    6.  CWT Confirmation Methods
      6.1.  Ordered Chain of X.509 Certificates
@@ -1854,6 +1856,46 @@ Table of Contents
    OSCORE Security Context, and MUST notify C with an error response
    with code 4.01 (Unauthorized) for any long running request, as
    specified in Section 5.8.3 of [RFC9200].
+
+4.11.  Authentication Credential Invalidity
+
+   If an authentication credential AUTH_CRED_C of C is invalidated
+   (e.g., it expires), then the following applies:
+
+   *  RS MUST delete all the stored access tokens that specify
+      AUTH_CRED_C in the "cnf" claim.
+
+   *  C MUST delete every stored access token such that C obtained the
+      first access token of the same series through the response to an
+      access token request specifying AUTH_CRED_C, e.g., in the
+      "req_cnf" parameter (see Section 3.1).
+
+   *  RS and C MUST abort and purge all the EDHOC sessions that used
+      AUTH_CRED_C and successfully completed, as well as the OSCORE
+      Security Context derived from those sessions (see Section 4.7).
+
+   If an authentication credential AUTH_CRED_RS of RS is invalidated
+   (e.g., it expires), then the following applies:
+
+   *  C MUST delete every stored access token such that C obtained the
+      first access token of the same series through an access token
+      response specifying AUTH_CRED_RS, e.g., in the 'rs_cnf' parameter
+      (see Section 3.3).
+
+   *  C MUST delete every stored access token that C specified (by value
+      or be reference) during an EDHOC session that used AUTH_CRED_RS
+      and successfully completed.
+
+   *  RS and C MUST abort and purge all the EDHOC sessions that used
+      AUTH_CRED_RS and successfully completed, as well as the OSCORE
+      Security Context derived from those sessions (see Section 4.7).
+
+4.12.  EDHOC Session Invalidity
+
+   If an EDHOC session is aborted and purged for other reasons than
+   those in Section 4.11, then RS and C that established the session
+   MUST delete the OSCORE Security Context derived from that session
+   (see Section 4.7).
 
 5.  Secure Communication with AS
 
@@ -3655,6 +3697,9 @@ D.1.  Version -06 to -07
       call.
 
    *  Matching authentication credentials from ID_CRED_X and EAD item.
+
+   *  Handling authentication credentials and EDHOC session that become
+      invalid.
 
    *  Changed CBOR abbreviations to not collide with existing
       codepoints.

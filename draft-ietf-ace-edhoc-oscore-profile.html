@@ -1273,6 +1273,12 @@ This profile can be used to delegate management of authorization information fro
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10">
                 <p id="section-toc.1-1.4.2.10.1"><a href="#section-4.10" class="auto internal xref">4.10</a>. <a href="#name-access-token-invalidity" class="internal xref">Access Token Invalidity</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.11">
+                <p id="section-toc.1-1.4.2.11.1"><a href="#section-4.11" class="auto internal xref">4.11</a>. <a href="#name-authentication-credential-i" class="internal xref">Authentication Credential Invalidity</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.12">
+                <p id="section-toc.1-1.4.2.12.1"><a href="#section-4.12" class="auto internal xref">4.12</a>. <a href="#name-edhoc-session-invalidity" class="internal xref">EDHOC Session Invalidity</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
@@ -2673,6 +2679,45 @@ Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Den
 <a href="#section-4.10" class="section-number selfRef">4.10. </a><a href="#name-access-token-invalidity" class="section-name selfRef">Access Token Invalidity</a>
         </h3>
 <p id="section-4.10-1">When an access token becomes invalid (e.g., due to its expiration or revocation), RS <span class="bcp14">MUST</span> delete the access token and the associated OSCORE Security Context, and <span class="bcp14">MUST</span> notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-4.10-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="auth-cred-validity">
+<section id="section-4.11">
+        <h3 id="name-authentication-credential-i">
+<a href="#section-4.11" class="section-number selfRef">4.11. </a><a href="#name-authentication-credential-i" class="section-name selfRef">Authentication Credential Invalidity</a>
+        </h3>
+<p id="section-4.11-1">If an authentication credential AUTH_CRED_C of C is invalidated (e.g., it expires), then the following applies:<a href="#section-4.11-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.11-2.1">
+            <p id="section-4.11-2.1.1">RS <span class="bcp14">MUST</span> delete all the stored access tokens that specify AUTH_CRED_C in the "cnf" claim.<a href="#section-4.11-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.11-2.2">
+            <p id="section-4.11-2.2.1">C <span class="bcp14">MUST</span> delete every stored access token such that C obtained the first access token of the same series through the response to an access token request specifying AUTH_CRED_C, e.g., in the "req_cnf" parameter (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#section-4.11-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.11-2.3">
+            <p id="section-4.11-2.3.1">RS and C <span class="bcp14">MUST</span> abort and purge all the EDHOC sessions that used AUTH_CRED_C and successfully completed, as well as the OSCORE Security Context derived from those sessions (see <a href="#discard-context" class="auto internal xref">Section 4.7</a>).<a href="#section-4.11-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-4.11-3">If an authentication credential AUTH_CRED_RS of RS is invalidated (e.g., it expires), then the following applies:<a href="#section-4.11-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.11-4.1">
+            <p id="section-4.11-4.1.1">C <span class="bcp14">MUST</span> delete every stored access token such that C obtained the first access token of the same series through an access token response specifying AUTH_CRED_RS, e.g., in the 'rs_cnf' parameter (see <a href="#as-c" class="auto internal xref">Section 3.3</a>).<a href="#section-4.11-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.11-4.2">
+            <p id="section-4.11-4.2.1">C <span class="bcp14">MUST</span> delete every stored access token that C specified (by value or be reference) during an EDHOC session that used AUTH_CRED_RS and successfully completed.<a href="#section-4.11-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.11-4.3">
+            <p id="section-4.11-4.3.1">RS and C <span class="bcp14">MUST</span> abort and purge all the EDHOC sessions that used AUTH_CRED_RS and successfully completed, as well as the OSCORE Security Context derived from those sessions (see <a href="#discard-context" class="auto internal xref">Section 4.7</a>).<a href="#section-4.11-4.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="session-validity">
+<section id="section-4.12">
+        <h3 id="name-edhoc-session-invalidity">
+<a href="#section-4.12" class="section-number selfRef">4.12. </a><a href="#name-edhoc-session-invalidity" class="section-name selfRef">EDHOC Session Invalidity</a>
+        </h3>
+<p id="section-4.12-1">If an EDHOC session is aborted and purged for other reasons than those in <a href="#auth-cred-validity" class="auto internal xref">Section 4.11</a>, then RS and C that established the session <span class="bcp14">MUST</span> delete the OSCORE Security Context derived from that session (see <a href="#discard-context" class="auto internal xref">Section 4.7</a>).<a href="#section-4.12-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -5033,16 +5078,19 @@ x5u_ta_type = 35
             <p id="appendix-D.1-1.12.1">Matching authentication credentials from ID_CRED_X and EAD item.<a href="#appendix-D.1-1.12.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.13">
-            <p id="appendix-D.1-1.13.1">Changed CBOR abbreviations to not collide with existing codepoints.<a href="#appendix-D.1-1.13.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.13.1">Handling authentication credentials and EDHOC session that become invalid.<a href="#appendix-D.1-1.13.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.14">
-            <p id="appendix-D.1-1.14.1">Updates and fixes in the IANA considerations.<a href="#appendix-D.1-1.14.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.14.1">Changed CBOR abbreviations to not collide with existing codepoints.<a href="#appendix-D.1-1.14.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.15">
-            <p id="appendix-D.1-1.15.1">Updated references.<a href="#appendix-D.1-1.15.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.15.1">Updates and fixes in the IANA considerations.<a href="#appendix-D.1-1.15.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.16">
-            <p id="appendix-D.1-1.16.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.16.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.16.1">Updated references.<a href="#appendix-D.1-1.16.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.17">
+            <p id="appendix-D.1-1.17.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.17.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

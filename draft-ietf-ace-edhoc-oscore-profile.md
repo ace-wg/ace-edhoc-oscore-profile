@@ -1475,33 +1475,33 @@ This appendix provides examples where this profile of ACE is used. In particular
 
 * {{example-without-optimization}} does not make use of use of any optimization.
 
-* {{example-with-optimization}} makes use of the optimizations defined in {{RFC9668}}, hence reducing the roundtrips of the interactions between the Client and the Resource Server.
+* {{example-with-optimization}} makes use of the optimizations defined in {{RFC9668}}, hence reducing the roundtrips of the interactions between C and RS.
 
-All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of RSs by the respective Resource Owners as well as the registrations of Clients authorized to request access token for those RSs.
+All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of resource servers by the respective resource owners as well as the registrations of clients authorized to request access tokens for those resource servers.
 
-* AS knows the authentication credential AUTH_CRED_C of the Client C.
+* AS knows the authentication credential AUTH_CRED_C of C.
 
-* The Client knows the authentication credential AUTH_CRED_AS of AS.
+* C knows the authentication credential AUTH_CRED_AS of AS.
 
 * AS knows the authentication credential AUTH_CRED_RS of RS.
 
 * RS knows the authentication credential AUTH_CRED_AS of AS.
 
-   This is relevant in case AS and RS actually require a secure association (e.g., for RS to perform token introspection at AS, or for AS to upload an access token to RS on behalf of the Client).
+  This is relevant in case AS and RS actually require a secure association (e.g., for RS to perform token introspection at AS, or for AS to upload an access token to RS on behalf of C as described in {{I-D.ietf-ace-workflow-and-params}}).
 
-As a result of the assumptions above, it is possible to limit the transport of AUTH_CRED_C and AUTH_CRED_RS by value only to the following two cases, and only when the Client requests an access token for RS in question for the first time when considering the pair (AUTH_CRED_C, AUTH_CRED_RS).
+As a result of the assumptions above, it is possible to limit the transport of AUTH_CRED_C and AUTH_CRED_RS by value only to the following two cases, and only when C requests an access token for RS for the first time when considering the pair (AUTH_CRED_C, AUTH_CRED_RS).
 
-* In the Token Response from AS to the Client, where AUTH_CRED_RS is specified by the 'rs_cnf' parameter.
+* In the access token response from AS to C, where AUTH_CRED_RS is specified by the "rs_cnf" parameter.
 
-* In the access token, where AUTH_CRED_C is specified by the 'cnf' claim.
+* In the access token, where AUTH_CRED_C is specified by the "cnf" claim.
 
-Note that, even under the circumstances mentioned above, AUTH_CRED_C might rather be indicated by reference. This is possible if RS can effectively use such a reference from the access token to retrieve AUTH_CRED_C (e.g., from a trusted repository of authentication credentials reachable through a non-constrained link), and if AS is in turn aware of that.
+Note that, even under the circumstances mentioned above, AUTH_CRED_C might rather be identified by reference. This is possible if RS can effectively use such a reference from the access token to retrieve AUTH_CRED_C (e.g., from a trusted repository of authentication credentials reachable through a non-constrained link), and if AS is in turn aware of that.
 
-In any other case, it is otherwise possible to indicate both AUTH_CRED_C and AUTH_CRED_RS by reference, when performing the ACE access control workflow as well as later on when the Client and RS run EDHOC.
+In any other case, it is otherwise possible to identify both AUTH_CRED_C and AUTH_CRED_RS by reference, when performing the ACE access control workflow as well as later on when C and RS run EDHOC.
 
 ## Workflow without Optimizations # {#example-without-optimization}
 
-The example below shows a simple interaction between the Client and RS: C and RS run EDHOC wherein C uploads the access token to RS, and then accesses a protected resource at RS.
+The example below shows a simple interaction between C and RS: C and RS run EDHOC wherein C uploads the access token to RS, and then accesses a protected resource at RS.
 
 ~~~~~~~~~~~ aasvg
     C                                 AS                             RS
@@ -1527,20 +1527,20 @@ M03 +--------------------------------->|                              |
     |  Token request to /token         |                              |
     |  (OSCORE-protected message)      |                              |
 M04 +--------------------------------->|                              |
-    |  'req_cnf' identifies            |                              |
+    |  "req_cnf" identifies            |                              |
     |     AUTH_CRED_C by reference     |                              |
     |                                  |                              |
     |                                  |                              |
     |  Token response                  |                              |
     |  (OSCORE-protected message)      |                              |
 M05 |<---------------------------------+                              |
-    |  'rs_cnf' specifies              |                              |
+    |  "rs_cnf" specifies              |                              |
     |     AUTH_CRED_RS by value        |                              |
     |                                  |                              |
-    |  'ace_profile' specifies the     |                              |
+    |  "ace_profile" specifies the     |                              |
     |  ACE profile "coap_edhoc_oscore" |                              |
     |                                  |                              |
-    |  'edhoc_info' specifies:         |                              |
+    |  "edhoc_info" specifies:         |                              |
     |     {                            |                              |
     |       e'session_id' : h'01',     |                              |
     |       e'cipher_suites' : 2,      |                              |
@@ -1549,16 +1549,16 @@ M05 |<---------------------------------+                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
-    |  - the 'cnf' claim specifies     |                              |
+    |  - the "cnf" claim specifies     |                              |
     |    AUTH_CRED_C by value          |                              |
-    |  - the 'edhoc_info' claim        |                              |
+    |  - the "edhoc_info" claim        |                              |
     |    specifies the same as         |                              |
-    |    'edhoc_info' above            |                              |
+    |    "edhoc_info" above            |                              |
     |                                  |                              |
 
-     Possibly after chain verification, the Client adds AUTH_CRED_RS
+     Possibly after chain verification, C adds AUTH_CRED_RS
      to the set of its trusted peer authentication credentials,
-     relying on AS as trusted provider/
+     relying on AS as trusted provider
 
     |                                  |                              |
     |                                  |                              |
@@ -1585,9 +1585,9 @@ M08 +---------------------------------------------------------------->|
 
      Possibly after chain verification, RS adds AUTH_CRED_C
      to the set of its trusted peer authentication credentials,
-     relying on AS as trusted provider/
+     relying on AS as trusted provider
 
-
+    |                                  |                              |
     |                                  |                              |
     |  Access to protected resource    |                              |
     |  (OSCORE-protected message)      |                              |
@@ -1600,8 +1600,9 @@ M10 |<----------------------------------------------------------------+
     |                                  |                              |
 
      Later on, the access token expires ...
-      - The Client and RS delete their OSCORE Security Context and
-        purge the EDHOC session used to derive it (unless the same
+
+      - C and RS delete their OSCORE Security Context and purge
+        the EDHOC session used to derive it (unless the same
         session is also used for other reasons).
       - RS retains AUTH_CRED_C as still valid,
         and AS knows about it.
@@ -1616,18 +1617,19 @@ M10 |<----------------------------------------------------------------+
     |                                  |                              |
     |                                  |                              |
 
-     The Client asks for a new access token; now all the
-     authentication credentials can be indicated by reference
+     C asks for a new access token; now all the
+     authentication credentials can be identifies by reference
 
      The price to pay is on AS, about remembering that at least
      one access token has been issued for the pair (Client, RS)
      and considering the pair (AUTH_CRED_C, AUTH_CRED_RS)
 
     |                                  |                              |
+    |                                  |                              |
     |  Token request to /token         |                              |
     |  (OSCORE-protected message)      |                              |
 M11 +--------------------------------->|                              |
-    |  'req_cnf' identifies            |                              |
+    |  "req_cnf" identifies            |                              |
     |     CRED_I = AUTH_CRED_C         |                              |
     |     by reference                 |                              |
     |                                  |                              |
@@ -1635,13 +1637,13 @@ M11 +--------------------------------->|                              |
     |  Token response                  |                              |
     |  (OSCORE-protected message)      |                              |
 M12 |<---------------------------------+                              |
-    |  'rs_cnf' identifies             |                              |
+    |  "rs_cnf" identifies             |                              |
     |     AUTH_CRED_RS by reference    |                              |
     |                                  |                              |
-    |  'ace_profile' specifies the     |                              |
+    |  "ace_profile" specifies the     |                              |
     |  ACE profile "coap_edhoc_oscore" |                              |
     |                                  |                              |
-    |  'edhoc_info' specifies:         |                              |
+    |  "edhoc_info" specifies:         |                              |
     |     {                            |                              |
     |       e'session_id' : h'05',     |                              |
     |       e'cipher_suites' : 2,      |                              |
@@ -1650,11 +1652,11 @@ M12 |<---------------------------------+                              |
     |     }                            |                              |
     |                                  |                              |
     |  In the access token:            |                              |
-    |  - the 'cnf' claim specifies     |                              |
+    |  - the "cnf" claim identifies    |                              |
     |    AUTH_CRED_C by reference      |                              |
-    |  - the 'edhoc_info' claim        |                              |
+    |  - the "edhoc_info" claim        |                              |
     |    specifies the same as         |                              |
-    |    'edhoc_info' above            |                              |
+    |    "edhoc_info" above            |                              |
     |                                  |                              |
     |                                  |                              |
     |                                  |                              |
@@ -1666,7 +1668,7 @@ M13 +---------------------------------------------------------------->|
     |  EDHOC message_2                 |                              |
     |  (no access control is enforced) |                              |
 M14 |<----------------------------------------------------------------+
-    |  ID_CRED_R specifies             |                              |
+    |  ID_CRED_R identifies            |                              |
     |     CRED_R = AUTH_CRED_RS        |                              |
     |     by reference                 |                              |
     |                                  |                              |
@@ -1696,7 +1698,7 @@ M17 |<----------------------------------------------------------------+
 
 The example below builds on the example in {{example-without-optimization}}, while additionally using the EDHOC + OSCORE request defined in {{RFC9668}} when running EDHOC both with AS and with RS.
 
-This interaction between C and RS consists of only two roundtrips to upload the access token, run EDHOC and access the protected resource at RS.
+This interaction between C and RS consists of only two roundtrips to upload the access token, run EDHOC, and access the protected resource at RS.
 
 ~~~~~~~~~~~ aasvg
     C                                   AS                           RS
@@ -1721,20 +1723,20 @@ M03 +----------------------------------->|                            |
     |  --- --- ---                       |                            |
     |  - OSCORE-protected part           |                            |
     |      Token request                 |                            |
-    |         'req_cnf' identifies       |                            |
+    |         "req_cnf" identifies       |                            |
     |         AUTH_CRED_C by reference   |                            |
     |                                    |                            |
     |                                    |                            |
     |  Token response                    |                            |
     |  (OSCORE-protected message)        |                            |
 M04 |<-----------------------------------+                            |
-    |  'rs_cnf' specifies                |                            |
+    |  "rs_cnf" specifies                |                            |
     |     AUTH_CRED_RS by value          |                            |
     |                                    |                            |
-    |  'ace_profile' specifies the       |                            |
+    |  "ace_profile" specifies the       |                            |
     |  ACE profile "coap_edhoc_oscore"   |                            |
     |                                    |                            |
-    |  'edhoc_info' specifies:           |                            |
+    |  "edhoc_info" specifies:           |                            |
     |     {                              |                            |
     |       e'session_id' : h'01',       |                            |
     |       e'cipher_suites' : 2,        |                            |
@@ -1743,14 +1745,14 @@ M04 |<-----------------------------------+                            |
     |     }                              |                            |
     |                                    |                            |
     |  In the access token:              |                            |
-    |  - the 'cnf' claim specifies       |                            |
+    |  - the "cnf" claim specifies       |                            |
     |    AUTH_CRED_C by value            |                            |
-    |  - the 'edhoc_info' claim          |                            |
+    |  - the "edhoc_info" claim          |                            |
     |    specifies the same as           |                            |
-    |    'edhoc_info' above              |                            |
+    |    "edhoc_info" above              |                            |
     |                                    |                            |
 
-     Possibly after chain verification, the Client adds AUTH_CRED_RS
+     Possibly after chain verification, C adds AUTH_CRED_RS
      to the set of its trusted peer authentication credentials,
      relying on AS as trusted provider
 
@@ -1764,6 +1766,7 @@ M05 +---------------------------------------------------------------->|
      to the set of its trusted peer authentication credentials,
      relying on AS as trusted provider
 
+    |                                    |                            |
     |                                    |                            |
     |  EDHOC message_2                   |                            |
 M06 |<----------------------------------------------------------------+
@@ -1788,6 +1791,7 @@ M07 +---------------------------------------------------------------->|
      is enforced on the rebuilt OSCORE-protected request,
      like if it had been sent stand-alone
 
+    |                                    |                            |
     |                                    |                            |
     |  Response                          |                            |
     |  (OSCORE-protected message)        |                            |

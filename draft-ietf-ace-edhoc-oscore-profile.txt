@@ -1391,18 +1391,6 @@ Table of Contents
    carried either in CoAP POST requests or in CoAP 2.04 (Changed)
    responses, as detailed in Appendix A.2 of [RFC9528].
 
-   In case the access token is issued for a group-audience (see
-   Section 6.9 of [RFC9200]) and the EDHOC reverse message flow is used,
-   then C can send the first CoAP POST request over IP multicast
-   [I-D.ietf-core-groupcomm-bis] as an EDHOC "roll call".  For the sake
-   of efficiency, it is expected that the group-audience is
-   appropriately mapped with a CoAP group and/or application group (see
-   Section 2 of [I-D.ietf-core-groupcomm-bis]), so that only the RSs
-   belonging to the group-audience receive the request.  After that, C
-   receives an EDHOC message_1 from each of the different targeted RSs,
-   and continues the EDHOC session by individually sending a different
-   EDHOC message_2 to each RS that has sent an EDHOC message_1.
-
    C MUST target the EDHOC resource at RS with the URI path specified in
    the "uri_path" field (if present) of the EDHOC_Information object
    within the access token response received from AS, when obtaining the
@@ -1510,6 +1498,18 @@ Table of Contents
    As specified in Appendix A.2.2 of [RFC9528], the trigger message
    consists of C making an empty POST request to the EDHOC resource at
    RS, intended to trigger a response containing EDHOC message_1.
+
+   In case the access token is issued for a group-audience (see
+   Section 6.9 of [RFC9200]), then C can perform an EDHOC "roll call",
+   by sending the trigger message as a group request over IP multicast
+   [I-D.ietf-core-groupcomm-bis].  For the sake of efficiency, it is
+   expected that the group-audience is appropriately mapped with a CoAP
+   group and/or application group (see Section 2 of
+   [I-D.ietf-core-groupcomm-bis]), so that only the RSs belonging to the
+   group-audience receive the trigger message.  After that, C can
+   receive a different EDHOC message_1 from each of the targeted RSs,
+   and continues the EDHOC session by individually sending a different
+   EDHOC message_2 to each RS that has replied with an EDHOC message_1.
 
 4.4.2.  EDHOC message_1
 

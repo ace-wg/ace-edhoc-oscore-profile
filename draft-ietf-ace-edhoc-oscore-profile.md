@@ -895,6 +895,23 @@ If an authentication credential AUTH\_CRED\_RS of RS is invalidated (e.g., it ex
 
 If an EDHOC session is aborted and purged for other reasons than those in {{auth-cred-validity}}, then RS and C that established the session MUST delete the OSCORE Security Context derived from that session (see {{discard-context}}).
 
+## Using AS Request Creation Hints
+
+When replying to an unauthorized resource request message from a client, RS can send an unprotected AS Request Creation Hints message as a 4.01 (Unauthorized) error response (see {{Section 5.3 of RFC9200}}).
+
+The message payload can specify a number of parameters that help the sender client acquire a valid access token from AS. These parameters include "audience" and "scope".
+
+When using this profile and running EDHOC per its reverse message flow (see {{reverse}}), RS acts as EDHOC Initiator. A compelling reason to do so is the wish to protect the identity of RS against active attackers, consistently with the EDHOC security properties.
+
+However, the identity protection achieved through EDHOC can be defeated if RS exposes information such as audience and scope, when specifying the corresponding parameters in an unprotected AS Request Creation Hints message.
+
+Therefore, if RS supports the EDHOC reverse message and sends an AS Request Creation Hints, the following applies:
+
+* The message payload MUST NOT include the "audience" parameter.
+
+* The message payload SHOULD NOT include the "scope" parameter, unless its value cannot contribute to expose the identity of RS.
+
+
 # Secure Communication with AS # {#secure-comm-as}
 
 As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicates via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED. Other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} (such as HTTP and DTLS {{RFC9147}} or TLS {{RFC8446}}) MAY be used instead.
@@ -1891,6 +1908,8 @@ x5u_ta_type = 35
 * Matching authentication credentials from ID_CRED_X and EAD item.
 
 * Handling authentication credentials and EDHOC session that become invalid.
+
+* Limited use of ACE Request Creation Hints when supporting the EDHOC reverse message flow.
 
 * Changed CBOR abbreviations to not collide with existing codepoints.
 

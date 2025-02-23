@@ -659,6 +659,12 @@ As per {{Section A.2 of RFC9528}}, EDHOC can be transferred over CoAP using eith
 
 In case the EDHOC forward message flow is used (see {{forward}}), C acts as EDHOC Initiator, and the access token MUST be specified by value or by reference in the EAD\_3 field of EDHOC message\_3. In case the EDHOC reverse message flow is used (see {{reverse}}), C acts as EDHOC Responder, and the access token MUST be specified by value or by reference either in the EAD\_2 field of EDHOC message\_2 or in the EAD\_4 field of EDHOC message\_4. By doing so, the access token or the associated session identifier gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see {{Section 9.1 of RFC9528}}).
 
+When RS processes the EAD item EAD\_ACCESS\_TOKEN or EAD\_SESSION\_ID, RS MUST verify that the authentication credential AUTH\_CRED\_C that C specifies in the ID\_CRED\_X field during the EDHOC session is the same authentication credential correlated with the EAD item. If such a verification fails, RS MUST abort the EDHOC session. Note that:
+
+* The ID\_CRED\_X field in question is the ID\_CRED\_I or ID\_CRED\_R field, when using the EDHOC forward or reverse message flow, respectively.
+* If the processed EAD item is EAD\_ACCESS\_TOKEN, then the authentication credential correlated with the EAD item is specified in the 'cnf' claim of the access token conveyed in the EAD item.
+* If the processed EAD item is EAD\_SESSION\_ID, then the authentication credential correlated with the EAD item is specified in the 'cnf' claim of an access token stored at the RS, which is associated with the authentication credential specified by ID\_CRED\_X and with the session identifier conveyed in the EAD item.
+
 Depending on the message flow used, the EDHOC messages will be carried either in CoAP POST requests or in CoAP 2.04 (Changed) responses, as detailed in {{Section A.2 of RFC9528}}.
 
 C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field (if present) of the EDHOC\_Information object within the access token response received from AS, when obtaining the first access token of a token series (see {{c-as}}). If the "uri_path" field is not present in that EDHOC\_Information object, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.
@@ -1841,6 +1847,8 @@ x5u_ta_type = 35
 * Revised examples in CBOR diagnostic notation.
 
 * With a group-audience, the reverse message flow can use a roll call.
+
+* Matching authentication credentials from ID_CRED_X and EAD item.
 
 * Changed CBOR abbreviations to not collide with existing codepoints.
 

@@ -666,11 +666,20 @@ Table of Contents
    *  The "edhoc_info" parameter conveying an EDHOC_Information object
       (see Section 3.4).  The EDHOC_Information object MUST include the
       "session_id" field specifying the identifier of the token series
-      which the issued access token belongs to, and MAY include
-      additional fields (see Section 3.4) to convey information about
-      RS.  This information is based on knowledge that AS has about RS,
-      e.g., from a previous onboarding process, with particular
-      reference to what RS supports as EDHOC peer.
+      which the issued access token belongs to.
+
+      The EDHOC_Information object MAY include additional fields (see
+      Section 3.4) to convey information about RS.  This information is
+      based on knowledge that AS has about RS, e.g., from a previous
+      onboarding process, with particular reference to what RS supports
+      as EDHOC peer.
+
+      In case the access token is issued for a group-audience (see
+      Section 6.9 of [RFC9200]), the information specified in the
+      EDHOC_Information object refers to the group-audience as a whole.
+      Therefore, it is appropriate for AS to define group-audiences
+      comprising RSs that are all aligned in terms of supported EDHOC
+      features and configurations.
 
    *  A unique identification of the authentication credential of RS,
       AUTH_CRED_RS.  This is specified in the "rs_cnf" parameter defined
@@ -3534,6 +3543,8 @@ D.1.  Version -06 to -07
    *  Added explicit validation of AUTH_CRED_C at AS.
 
    *  "edhoc_info" on in AS-to-C response for first token in a series.
+
+   *  With a group-audience, "edhoc_info" refers to the whole audience.
 
    *  Defined parameters for the EDHOC_Information object:
 

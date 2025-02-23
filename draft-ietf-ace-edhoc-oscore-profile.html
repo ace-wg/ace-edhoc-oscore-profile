@@ -1827,7 +1827,11 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-3.3-6">When issuing the first access token of a token series, AS <span class="bcp14">MUST</span> include the following data in the response to C.<a href="#section-3.3-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-7.1">
-            <p id="section-3.3-7.1.1">The "edhoc_info" parameter conveying an EDHOC_Information object (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>). The EDHOC_Information object <span class="bcp14">MUST</span> include the "session_id" field specifying the identifier of the token series which the issued access token belongs to, and <span class="bcp14">MAY</span> include additional fields (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) to convey information about RS. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.<a href="#section-3.3-7.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-7.1.1">The "edhoc_info" parameter conveying an EDHOC_Information object (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>). The EDHOC_Information object <span class="bcp14">MUST</span> include the "session_id" field specifying the identifier of the token series which the issued access token belongs to.<a href="#section-3.3-7.1.1" class="pilcrow">¶</a></p>
+<p id="section-3.3-7.1.2">
+The EDHOC_Information object <span class="bcp14">MAY</span> include additional fields (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) to convey information about RS. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.<a href="#section-3.3-7.1.2" class="pilcrow">¶</a></p>
+<p id="section-3.3-7.1.3">
+In case the access token is issued for a group-audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-6.9" class="relref">Section 6.9</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), the information specified in the EDHOC_Information object refers to the group-audience as a whole. Therefore, it is appropriate for AS to define group-audiences comprising RSs that are all aligned in terms of supported EDHOC features and configurations.<a href="#section-3.3-7.1.3" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.3-7.2">
             <p id="section-3.3-7.2.1">A unique identification of the authentication credential of RS, AUTH_CRED_RS. This is specified in the "rs_cnf" parameter defined in <span>[<a href="#RFC9201" class="cite xref">RFC9201</a>]</span>. AUTH_CRED_RS can be transported by value or referred to by means of an appropriate identifier.<a href="#section-3.3-7.2.1" class="pilcrow">¶</a></p>
@@ -4943,39 +4947,42 @@ x5u_ta_type = 35
             <p id="appendix-D.1-1.4.1">"edhoc_info" on in AS-to-C response for first token in a series.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.5">
-            <p id="appendix-D.1-1.5.1">Defined parameters for the EDHOC_Information object:<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-D.1-1.5.2.1">
-                <p id="appendix-D.1-1.5.2.1.1">Parameters moved here from draft-ietf-lake-app-profiles.<a href="#appendix-D.1-1.5.2.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.5.1">With a group-audience, "edhoc_info" refers to the whole audience.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-D.1-1.5.2.2">
-                <p id="appendix-D.1-1.5.2.2.1">New parameter "trust_anchors".<a href="#appendix-D.1-1.5.2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.1-1.6">
+            <p id="appendix-D.1-1.6.1">Defined parameters for the EDHOC_Information object:<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-D.1-1.6.2.1">
+                <p id="appendix-D.1-1.6.2.1.1">Parameters moved here from draft-ietf-lake-app-profiles.<a href="#appendix-D.1-1.6.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-D.1-1.6.2.2">
+                <p id="appendix-D.1-1.6.2.2.1">New parameter "trust_anchors".<a href="#appendix-D.1-1.6.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-D.1-1.6">
-            <p id="appendix-D.1-1.6.1">Access Token Request/Response messages must be encoded in CBOR.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
-</li>
           <li class="normal" id="appendix-D.1-1.7">
-            <p id="appendix-D.1-1.7.1">Explicit statement on admitted confirmation methods.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.7.1">Access Token Request/Response messages must be encoded in CBOR.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.8">
-            <p id="appendix-D.1-1.8.1">First token in a series: the "cnf" claim uses the same confirmation method of the "req_cnf" request to /token.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.8.1">Explicit statement on admitted confirmation methods.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.9">
-            <p id="appendix-D.1-1.9.1">Revised examples in CBOR diagnostic notation.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.9.1">First token in a series: the "cnf" claim uses the same confirmation method of the "req_cnf" request to /token.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.10">
-            <p id="appendix-D.1-1.10.1">Changed CBOR abbreviations to not collide with existing codepoints.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.10.1">Revised examples in CBOR diagnostic notation.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.11">
-            <p id="appendix-D.1-1.11.1">Updates and fixes in the IANA considerations.<a href="#appendix-D.1-1.11.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.11.1">Changed CBOR abbreviations to not collide with existing codepoints.<a href="#appendix-D.1-1.11.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.12">
-            <p id="appendix-D.1-1.12.1">Updated references.<a href="#appendix-D.1-1.12.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.12.1">Updates and fixes in the IANA considerations.<a href="#appendix-D.1-1.12.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.13">
-            <p id="appendix-D.1-1.13.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.13.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.13.1">Updated references.<a href="#appendix-D.1-1.13.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.14">
+            <p id="appendix-D.1-1.14.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.14.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

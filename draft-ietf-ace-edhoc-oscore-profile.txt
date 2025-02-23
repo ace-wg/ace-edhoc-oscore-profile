@@ -1391,6 +1391,18 @@ Table of Contents
    carried either in CoAP POST requests or in CoAP 2.04 (Changed)
    responses, as detailed in Appendix A.2 of [RFC9528].
 
+   In case the access token is issued for a group-audience (see
+   Section 6.9 of [RFC9200]) and the EDHOC reverse message flow is used,
+   then C can send the first CoAP POST request over IP multicast
+   [I-D.ietf-core-groupcomm-bis] as an EDHOC "roll call".  For the sake
+   of efficiency, it is expected that the group-audience is
+   appropriately mapped with a CoAP group and/or application group (see
+   Section 2 of [I-D.ietf-core-groupcomm-bis]), so that only the RSs
+   belonging to the group-audience receive the request.  After that, C
+   receives an EDHOC message_1 from each of the different targeted RSs,
+   and continues the EDHOC session by individually sending a different
+   EDHOC message_2 to each RS that has sent an EDHOC message_1.
+
    C MUST target the EDHOC resource at RS with the URI path specified in
    the "uri_path" field (if present) of the EDHOC_Information object
    within the access token response received from AS, when obtaining the
@@ -3036,6 +3048,14 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
               workflow-and-params-03>.
 
+   [I-D.ietf-core-groupcomm-bis]
+              Dijk, E., Wang, C., and M. Tiloca, "Group Communication
+              for the Constrained Application Protocol (CoAP)", Work in
+              Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
+              12, 21 October 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              groupcomm-bis-12>.
+
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
@@ -3576,6 +3596,9 @@ D.1.  Version -06 to -07
       confirmation method of the "req_cnf" request to /token.
 
    *  Revised examples in CBOR diagnostic notation.
+
+   *  With a group-audience, the reverse message flow can use a roll
+      call.
 
    *  Changed CBOR abbreviations to not collide with existing
       codepoints.

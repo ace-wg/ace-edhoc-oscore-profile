@@ -2361,8 +2361,9 @@ Editor's note: Add example.<a href="#section-4.1-2.2.5" class="pilcrow">¶</a></
 <p id="section-4.2-2">As per <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2" class="relref">Appendix A.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, EDHOC can be transferred over CoAP using either the forward or the reverse message flow, thus manifesting the two possible mappings between the ACE roles (client and resource server) and the EDHOC roles (Initiator and Responder), whereas the CoAP roles (client and server) remain the same. The choice of message flow and corresponding mapping depends on the deployment setting and in particular on which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3">In case the EDHOC forward message flow is used, C acts as EDHOC Initiator, and the access token <span class="bcp14">MUST</span> be specified by value or by reference in the EAD_3 field of EDHOC message_3. In case the EDHOC reverse message flow is used, C acts as EDHOC Responder, and the access token <span class="bcp14">MUST</span> be specified by value or by reference either in the EAD_2 field of EDHOC message_2 or in the EAD_4 field of EDHOC message_4. By doing so, the access token or the associated session identifier gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-9.1" class="relref">Section 9.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>).<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.2-4">Depending on the message flow used, the EDHOC messages will be carried either in CoAP POST requests or in CoAP 2.04 (Changed) responses, as detailed in <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2" class="relref">Appendix A.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.2-5">C <span class="bcp14">MUST</span> target the EDHOC resource at RS with the URI path specified in the "uri_path" field (if present) of the EDHOC_Information object within the access token response received from AS, when obtaining the first access token of a token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>). If the "uri_path" field is not present in that EDHOC_Information object, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
-<p id="section-4.2-6">RS has to ensure that no requests can be performed on an EDHOC resource other than for running the EDHOC protocol. Specifically, it <span class="bcp14">SHOULD NOT</span> be possible to perform any other operation than POST on an EDHOC resource.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.2-5">In case the access token is issued for a group-audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-6.9" class="relref">Section 6.9</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>) and the EDHOC reverse message flow is used, then C can send the first CoAP POST request over IP multicast <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span> as an EDHOC "roll call". For the sake of efficiency, it is expected that the group-audience is appropriately mapped with a CoAP group and/or application group (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-12#section-2" class="relref">Section 2</a> of [<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>), so that only the RSs belonging to the group-audience receive the request. After that, C receives an EDHOC message_1 from each of the different targeted RSs, and continues the EDHOC session by individually sending a different EDHOC message_2 to each RS that has sent an EDHOC message_1.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.2-6">C <span class="bcp14">MUST</span> target the EDHOC resource at RS with the URI path specified in the "uri_path" field (if present) of the EDHOC_Information object within the access token response received from AS, when obtaining the first access token of a token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>). If the "uri_path" field is not present in that EDHOC_Information object, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.2-7">RS has to ensure that no requests can be performed on an EDHOC resource other than for running the EDHOC protocol. Specifically, it <span class="bcp14">SHOULD NOT</span> be possible to perform any other operation than POST on an EDHOC resource.<a href="#section-4.2-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="forward">
@@ -3946,6 +3947,10 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
         <dd>
 <span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Alternative Workflow and OAuth Parameters for the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-workflow-and-params-03</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-workflow-and-params-03">https://datatracker.ietf.org/doc/html/draft-ietf-ace-workflow-and-params-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="I-D.ietf-core-groupcomm-bis">[I-D.ietf-core-groupcomm-bis]</dt>
+        <dd>
+<span class="refAuthor">Dijk, E.</span>, <span class="refAuthor">Wang, C.</span>, and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-12</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-12">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-12</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ietf-core-oscore-key-update">[I-D.ietf-core-oscore-key-update]</dt>
         <dd>
 <span class="refAuthor">Höglund, R.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Update for OSCORE (KUDOS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-key-update-09</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09</a>&gt;</span>. </dd>
@@ -4977,16 +4982,19 @@ x5u_ta_type = 35
             <p id="appendix-D.1-1.10.1">Revised examples in CBOR diagnostic notation.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.11">
-            <p id="appendix-D.1-1.11.1">Changed CBOR abbreviations to not collide with existing codepoints.<a href="#appendix-D.1-1.11.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.11.1">With a group-audience, the reverse message flow can use a roll call.<a href="#appendix-D.1-1.11.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.12">
-            <p id="appendix-D.1-1.12.1">Updates and fixes in the IANA considerations.<a href="#appendix-D.1-1.12.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.12.1">Changed CBOR abbreviations to not collide with existing codepoints.<a href="#appendix-D.1-1.12.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.13">
-            <p id="appendix-D.1-1.13.1">Updated references.<a href="#appendix-D.1-1.13.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.13.1">Updates and fixes in the IANA considerations.<a href="#appendix-D.1-1.13.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.14">
-            <p id="appendix-D.1-1.14.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.14.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.14.1">Updated references.<a href="#appendix-D.1-1.14.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.15">
+            <p id="appendix-D.1-1.15.1">Clarifications and editorial improvements.<a href="#appendix-D.1-1.15.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

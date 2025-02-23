@@ -116,6 +116,7 @@ Table of Contents
      4.10. Access Token Invalidity
      4.11. Authentication Credential Invalidity
      4.12. EDHOC Session Invalidity
+     4.13. Using AS Request Creation Hints
    5.  Secure Communication with AS
    6.  CWT Confirmation Methods
      6.1.  Ordered Chain of X.509 Certificates
@@ -1896,6 +1897,35 @@ Table of Contents
    those in Section 4.11, then RS and C that established the session
    MUST delete the OSCORE Security Context derived from that session
    (see Section 4.7).
+
+4.13.  Using AS Request Creation Hints
+
+   When replying to an unauthorized resource request message from a
+   client, RS can send an unprotected AS Request Creation Hints message
+   as a 4.01 (Unauthorized) error response (see Section 5.3 of
+   [RFC9200]).
+
+   The message payload can specify a number of parameters that help the
+   sender client acquire a valid access token from AS.  These parameters
+   include "audience" and "scope".
+
+   When using this profile and running EDHOC per its reverse message
+   flow (see Section 4.4), RS acts as EDHOC Initiator.  A compelling
+   reason to do so is the wish to protect the identity of RS against
+   active attackers, consistently with the EDHOC security properties.
+
+   However, the identity protection achieved through EDHOC can be
+   defeated if RS exposes information such as audience and scope, when
+   specifying the corresponding parameters in an unprotected AS Request
+   Creation Hints message.
+
+   Therefore, if RS supports the EDHOC reverse message and sends an AS
+   Request Creation Hints, the following applies:
+
+   *  The message payload MUST NOT include the "audience" parameter.
+
+   *  The message payload SHOULD NOT include the "scope" parameter,
+      unless its value cannot contribute to expose the identity of RS.
 
 5.  Secure Communication with AS
 
@@ -3700,6 +3730,9 @@ D.1.  Version -06 to -07
 
    *  Handling authentication credentials and EDHOC session that become
       invalid.
+
+   *  Limited use of ACE Request Creation Hints when supporting the
+      EDHOC reverse message flow.
 
    *  Changed CBOR abbreviations to not collide with existing
       codepoints.

@@ -90,7 +90,7 @@ Table of Contents
      3.2.  Token Series
      3.3.  AS-to-C: Response
        3.3.1.  Access Token
-       3.3.2.  Processing in C
+       3.3.2.  Processing at C
        3.3.3.  Update of Access Rights
      3.4.  EDHOC_Information
    4.  Client-RS Communication
@@ -458,8 +458,8 @@ Table of Contents
    the access token.  Together with the access token, AS provides C with
    a set of parameters that enable C to run EDHOC with RS.  In
    particular, these parameters include information about the
-   authentication credential of RS, AUTH_CRED_RS, which is transported
-   by value or uniquely referred to.
+   authentication credential AUTH_CRED_RS of RS, which is transported by
+   value or uniquely referred to.
 
    The request to the /token endpoint and the corresponding response can
    include EDHOC_Information, which is a CBOR map object containing
@@ -535,11 +535,11 @@ Table of Contents
    Figure 3: Example of C-to-AS POST /token request for an access token.
 
    If C wants to update its access rights without changing an existing
-   OSCORE Security Context, it MUST include EDHOC_Information in its
-   POST request to the /token endpoint.  The EDHOC_Information MUST
-   include the "session_id" field.  This POST request MUST NOT include
-   the "req_cnf" parameter.  An example of such a request is shown in
-   Figure 4.
+   OSCORE Security Context, it MUST specify an EDHOC_Information object
+   in the "edhoc_info" parameter of its POST request to the /token
+   endpoint.  The EDHOC_Information object MUST include the "session_id"
+   field.  This POST request MUST NOT include the "req_cnf" parameter.
+   An example of such a request is shown in Figure 4.
 
    The identifier "session_id" is assigned by AS as discussed in
    Section 3.2, and identifies an ongoing token series associated with
@@ -559,9 +559,10 @@ Table of Contents
    request identifies multiple, ongoing token series of which C has an
    access token, then C MUST specify the "audience" parameter in the
    POST request.  In particular, the value of the "audience" parameter
-   MUST be the same as in the POST request that C previously sent to AS,
-   for requesting the first access token in the token series to which
-   the new requested access token has to be added.
+   MUST be the same value of the "audience" parameter in the POST
+   request that C previously sent to AS, for requesting the first access
+   token in the token series to which the new requested access token has
+   to be added.
 
    AS MUST verify that the received "session_id" identifies a token
    series to which a still valid access token issued for C and RS
@@ -599,24 +600,26 @@ Table of Contents
    *  Issued for the same RS as identified by the same authentication
       credential.
 
-   Upon a successful update of access rights, the new issued access
-   token becomes the latest in its token series.  When the latest access
-   token of a token series becomes invalid (e.g., due to its expiration
-   or revocation), the token series it belongs to ends.
+   Upon a successful update of access rights (see Section 3.3.3), the
+   new issued access token becomes the latest in its token series.  When
+   the latest access token of a token series becomes invalid (e.g., due
+   to its expiration or revocation), the token series it belongs to
+   ends.
 
-   In this profile, a token series is characterized by access tokens
-   used between a given pair (C, RS) having the same "session_id" in the
-   EDHOC_Information (see Section 3.4) and bound to the same
-   authentication credential AUTH_CRED_C of C.
+   In this profile, a token series comprises access tokens that are used
+   between a given pair (C, RS), are bound to the same authentication
+   credential AUTH_CRED_C of C, and specify the same value in the
+   "session_id" field of the EDHOC_Information object (see Section 3.4)
+   in their "edhoc_info" claim.
 
-   AS assigns the "session_id" to the EDHOC_Information when issuing the
-   first access token of a new series.  That "session_id" remains fixed
+   AS assigns the value of "session_id" when issuing the first access
+   token of a new series.  That "session_id" value remains fixed
    throughout the series lifetime.
 
-   When assigning the identifier, AS MUST ensure that it was not used in
-   a previous series whose access tokens share both the following
-   properties with the access tokens of the new series, irrespective of
-   the used ACE profile:
+   When assigning the "session_id" value, AS MUST ensure that it was not
+   used in a previous series whose access tokens share both the
+   following properties with the access tokens of the new series,
+   irrespective of the used ACE profile:
 
    *  issued to the same client C; and
 
@@ -635,8 +638,8 @@ Table of Contents
    as detailed below.
 
    When using this profile, consistent with what is specified in
-   Section 3.1, the payload of the response from the AS MUST be encoded
-   in CBOR [RFC8949], i.e., the response has media-type "application/
+   Section 3.1, the payload of the response from AS MUST be encoded in
+   CBOR [RFC8949], i.e., the response has media-type "application/
    ace+cbor".
 
    If the request from C was invalid or not authorized, AS returns an
@@ -697,14 +700,14 @@ Table of Contents
 
       For AUTH_CRED_RS, its authentication credential type MUST be one
       of those supported by EDHOC.  Consequently, the "rs_cnf" parameter
-      specifies a confirmation method suitable for the type of
+      MUST specify a confirmation method suitable for the type of
       AUTH_CRED_RS.  That is, the same considerations about AUTH_CRED_C
       and the "req_cnf" parameter made in Section 3.1 hold for
       AUTH_CRED_RS and the "rs_cnf" parameter.
 
-   When issuing an access token for dynamically updating C's access
-   rights (i.e., the access token is not the first in its token series),
-   the response from AS MUST NOT include the "edhoc_info" and "rs_cnf"
+   When issuing an access token for dynamically updating access rights
+   (i.e., the access token is not the first in its token series), the
+   response from AS MUST NOT include the "edhoc_info" and "rs_cnf"
    parameters (see Section 3.3.3).
 
    Figure 5 shows an example of an AS response.  The "rs_cnf" parameter
@@ -740,8 +743,8 @@ Table of Contents
    To avoid the complexity of different encodings, an access token of
    this profile SHALL be a CBOR Web Token (CWT) [RFC8392].
 
-   When issuing any access token of a token series, AS MUST specify the
-   following data in the associated claims of the access token:
+   When issuing any access token of a token series, AS MUST include the
+   following claims in the access token:
 
    *  The "edhoc_info" claim defined in Section 14.5 and conveying an
       EDHOC_Information object (see Section 3.4).
@@ -779,12 +782,13 @@ Table of Contents
       using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is
       identified by reference in the "cnf" claim of the access token.
 
-   When issuing the first access token of a token series, AS MAY specify
-   additional EDHOC_Information data (see Section 3.4) in the
-   "edhoc_info" claim of the access token.  Specifically, if the
-   following EDHOC_Information data are specified in the response to C
-   from the /token endpoint, they MUST be included with the same values
-   in the access token.
+   When issuing the first access token of a token series, AS MAY include
+   additional fields in the EDHOC_Information object (see Section 3.4)
+   specified in the "edhoc_info" claim of the access token.
+   Specifically, if the following fields of the EDHOC_Information object
+   are specified in the response to C from the /token endpoint, they
+   MUST be included with the same values in the EDHOC_Information object
+   within the access token.
 
    *  osc_ms_len: The size of the OSCORE Master Secret.  If it is not
       included, the default value from Appendix A.1 of [RFC9528] is
@@ -815,7 +819,7 @@ Table of Contents
    in the EAD_3 field of EDHOC message_3 sent by C to RS, when using the
    EDHOC forward message flow (see Section 4.2).
 
-   Figure 6 shows an example CWT Claims Set, including the relevant
+   Figure 6 shows an example of CWT Claims Set, including the relevant
    EDHOC parameters in the "edhoc_info" claim.  The "cnf" claim
    specifies the authentication credential of C, as an X.509 certificate
    transported by value in the "x5chain" field.  The authentication
@@ -839,7 +843,7 @@ Table of Contents
 
          Figure 6: Example of CWT Claims Set with EDHOC parameters.
 
-3.3.2.  Processing in C
+3.3.2.  Processing at C
 
    When receiving an access token response including the "rs_cnf"
    parameter, C checks whether it is already storing the authentication

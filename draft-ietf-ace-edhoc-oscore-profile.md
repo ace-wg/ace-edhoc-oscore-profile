@@ -760,18 +760,31 @@ The processing of EDHOC message\_4 is specified in {{Section 5.5 of RFC9528}}, w
 
 ## OSCORE Security Context {#oscore-security-context}
 
-Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context, as defined in {{Section A.1 of RFC9528}}. In addition, the following applies.
+Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context, as defined in {{Section A.1 of RFC9528}}. In addition, the following applies:
 
-* The length in bytes of the OSCORE Master Secret (i.e., the oscore\_key\_length parameter, see {{Section A.1 of RFC9528}}) MUST be the value specified in the "osc\_ms\_size" field (if present) in the EDHOC\_Information of the access token response to C, and of the access token provisioned to RS, respectively.
+* The length in bytes of the OSCORE Master Secret (i.e., the oscore\_key\_length parameter, see {{Section A.1 of RFC9528}}) MUST be the value specified in the "osc\_ms\_size" field (if present) within the EDHOC\_Information object specified by:
 
-* The length in bytes of the OSCORE Master Salt (i.e., the oscore\_salt\_length parameter, see {{Section A.1 of RFC9528}}) MUST be the value specified in the "osc\_salt\_size" field (if present) in the EDHOC\_Information of the access token response to C, and of the access token provisioned to RS, respectively.
+  - The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see {{c-as}}).
 
-* C and RS MUST use the OSCORE version specified in the "osc\_version" field (if present) in the EDHOC\_Information of the access token response to C, and of the access token provisioned to RS, respectively.
+  - The "edhoc_info" claim of the access token provisioned to RS (see {{access-token}}).
 
-* RS associates the latest EDHOC session and the derived OSCORE Security Context
-with the stored access token, which is bound to the authentication credential AUTH_CRED_C used in the EDHOC session and with the session_id identifying the token series to which the access token belongs.
+* The length in bytes of the OSCORE Master Salt (i.e., the oscore\_salt\_length parameter, see {{Section A.1 of RFC9528}}) MUST be the value specified in the "osc\_salt\_size" field (if present) within the EDHOC\_Information object specified by:
 
-If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{RFC9668}}, unless the "comb\_req" field of the EDHOC\_Information was present in the access token response and set to the CBOR simple value "false" (0xf4). In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. For an example, see {{example-with-optimization}}. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2 and before sending EDHOC message\_3.
+  - The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see {{c-as}}).
+
+  - The "edhoc_info" claim of the access token provisioned to RS (see {{access-token}}).
+
+* C and RS MUST use the OSCORE version specified in the "osc\_version" field (if present) within the EDHOC\_Information object specified by:
+
+  - The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see {{c-as}}).
+
+  - The "edhoc_info" claim of the access token provisioned to RS (see {{access-token}}).
+
+* RS associates the latest EDHOC session and the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential AUTH\_CRED\_C used in the EDHOC session. The access token is also associated with the pair (SESSION\_ID, AUTH\_CRED\_C), where SESSION\_ID is the identifier of the token series to which the access token belongs.
+
+If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{RFC9668}}, unless the EDHOC\_Information object specified by the "edhoc_info" parameter of the access token response included the "comb\_req" field encoding the CBOR simple value "false" (0xf4).
+
+In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2 and before sending EDHOC message\_3. An example is provided in {{example-with-optimization}}.
 
 ## Update of Access Rights {#update-access-rights-c-rs}
 

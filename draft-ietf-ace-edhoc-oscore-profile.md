@@ -1895,7 +1895,7 @@ x5u_ta_type = 35
 
 * Added explicit validation of AUTH_CRED_C at AS.
 
-* "edhoc_info" on in AS-to-C response for first token in a series.
+* "edhoc_info" only in AS-to-C response for first token in a series.
 
 * With a group-audience, "edhoc_info" refers to the whole audience.
 

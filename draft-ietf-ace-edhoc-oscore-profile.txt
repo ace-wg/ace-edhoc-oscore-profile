@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 27 August 2025                                        M. Tiloca
+Expires: 4 September 2025                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                        23 February 2025
+                                                            3 March 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 August 2025.
+   This Internet-Draft will expire on 4 September 2025.
 
 Copyright Notice
 
@@ -3180,12 +3180,12 @@ Table of Contents
               workflow-and-params-03>.
 
    [I-D.ietf-core-groupcomm-bis]
-              Dijk, E., Wang, C., and M. Tiloca, "Group Communication
-              for the Constrained Application Protocol (CoAP)", Work in
+              Dijk, E. and M. Tiloca, "Group Communication for the
+              Constrained Application Protocol (CoAP)", Work in
               Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
-              12, 21 October 2024,
+              13, 24 February 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-bis-12>.
+              groupcomm-bis-13>.
 
    [I-D.ietf-core-oscore-id-update]
               Höglund, R. and M. Tiloca, "Identifier Update for OSCORE",
@@ -3719,7 +3719,7 @@ D.1.  Version -06 to -07
 
    *  Added explicit validation of AUTH_CRED_C at AS.
 
-   *  "edhoc_info" on in AS-to-C response for first token in a series.
+   *  "edhoc_info" only in AS-to-C response for first token in a series.
 
    *  With a group-audience, "edhoc_info" refers to the whole audience.
 

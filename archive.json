@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-16T00:57:54.564590+00:00",
+  "timestamp": "2025-03-18T00:53:53.648031+00:00",
   "repo": "ace-wg/ace-edhoc-oscore-profile",
   "labels": [
     {
@@ -168,9 +168,24 @@
       "labels": [],
       "body": "When a client wants to establish an EDHOC context through this profile, it may not yet know the relevant AS-and-audience combination to get a token with.\n\nWould it make sense to send request creation hints in an EAD2 item? (I think yes).\n\nWould this document be the right place to allocate that number? (Don't know).\n\nShould that EAD item contain a mechanism to solicit it? (Probably yes: Like we're moving towards using app-profiles so that servers can send ID_CRED_R as a reference unless the initiator asks to, a client might send RCH without a value to solicit the RCH).\n\nOn the implementation side, this is being explored in <https://github.com/ariel-os/ariel-os/issues/728>.",
       "createdAt": "2025-01-26T09:09:25Z",
-      "updatedAt": "2025-01-26T09:09:25Z",
+      "updatedAt": "2025-03-16T10:02:05Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "NONE",
+          "body": "Hackathon notes:\nFollowing the analogy of app-profiles that will register an SVCB record to express the equivalent of the app-profile already at DNS time in an SVCB parameter, this might also be a candidate for registering an SVCB parameter (but then maybe the parameter of request-creation-hints is more general than EDHOC, as it may apply to ACE-DTLS as well).",
+          "createdAt": "2025-03-16T04:34:33Z",
+          "updatedAt": "2025-03-16T04:34:33Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "NONE",
+          "body": "Given there is reverse flow or intend to do role switches, there could be also the empty request item in 2 and the response in 3 -- so whenever the EAD item is without a value, it's a request, and on the subsequent message, the same EAD item with a value comes back with a RCH.\n\n(That also means that a token might come in message 4, which is fine esp. if we do it in this document).",
+          "createdAt": "2025-03-16T10:02:03Z",
+          "updatedAt": "2025-03-16T10:02:03Z"
+        }
+      ]
     }
   ],
   "pulls": [

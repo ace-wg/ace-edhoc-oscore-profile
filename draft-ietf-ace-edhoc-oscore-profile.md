@@ -716,6 +716,8 @@ This section details the case where the EDHOC reverse message flow is used (see 
 
 Consistently with the EDHOC reverse message flow, C sends a trigger message, EDHOC message\_2, and (optionally) EDHOC message\_4 to RS as CoAP POST requests. RS sends EDHOC message\_1 and EDHOC message\_3 as CoAP 2.04 (Changed) responses.
 
+In this profile of ACE, if RS implements the EDHOC reverse message flow, then RS MUST implement EDHOC message_4.
+
 Exactly one of the EAD items EAD\_ACCESS\_TOKEN or EAD\_SESSION\_ID MUST be included in either the EAD\_2 field of EDHOC message\_2 or the EAD\_4 field of EDHOC message\_4. If this is not the case, RS MUST abort the EDHOC session.
 
 Specific instructions for the different messages are provided in the following subsections.

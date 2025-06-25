@@ -252,7 +252,7 @@ The client MUST send this POST request to the /token endpoint over a secure chan
 
 When using this profile, the payload of the POST request MUST be encoded in CBOR {{RFC8949}}, i.e., the request has media-type "application/ace+cbor". In order to reduce the number of libraries that C has to support, it is RECOMMENDED that C and AS use CoAP as message transfer protocol, OSCORE as security protocol, and EDHOC to establish an OSCORE Security Context.
 
-AUTH\_CRED\_C is specified in the "req_cnf" parameter {{RFC9201}} of the POST request, either transported by value or uniquely referred to.
+AUTH\_CRED\_C is specified in the "req_cnf" parameter {{RFC9201}} of the POST request, either transported by value or uniquely referred to. A method for AS to ask C to provide its authentication credential AUTH_CRED_C by value in the Access Token Request is defined in {{I-D.ietf-ace-workflow-and-params}}.
 
 For AUTH_CRED_C, its authentication credential type MUST be one of those supported by EDHOC, e.g., CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC5280}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Consequently, the "req_cnf" parameter MUST specify a confirmation method suitable for the type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is an X.509 certificate transported by value or referred to, respectively.
 
@@ -357,7 +357,7 @@ When issuing the first access token of a token series, AS MUST include the follo
 
   In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), the information specified in the EDHOC\_Information object refers to the group-audience as a whole. Therefore, it is appropriate for AS to define group-audiences comprising RSs that are all aligned in terms of supported EDHOC features and configurations.
 
-* A unique identification of the authentication credential of RS, AUTH\_CRED\_RS. This is specified in the "rs\_cnf" parameter defined in {{RFC9201}}. AUTH\_CRED\_RS can be transported by value or referred to by means of an appropriate identifier.
+* A unique identification of the authentication credential of RS, AUTH\_CRED\_RS. This is specified in the "rs\_cnf" parameter defined in {{RFC9201}}. AUTH\_CRED\_RS can be transported by value or referred to by means of an appropriate identifier.  A method for C to ask AS to provide AUTH_CRED_RS by value in the Access Token Response is defined in {{I-D.ietf-ace-workflow-and-params}}.
 
    When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH\_CRED\_C, AUTH\_CRED\_RS), it is expected that the response to C includes AUTH\_CRED\_RS by value.
 

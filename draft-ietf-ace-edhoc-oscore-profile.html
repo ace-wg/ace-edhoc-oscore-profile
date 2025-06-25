@@ -2456,8 +2456,9 @@ Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Den
         </h3>
 <p id="section-4.4-1">This section details the case where the EDHOC reverse message flow is used (see <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2.2" class="relref">Appendix A.2.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>), i.e., where C acts as the Responder R and RS acts as the Initiator I.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.4-2">Consistently with the EDHOC reverse message flow, C sends a trigger message, EDHOC message_2, and (optionally) EDHOC message_4 to RS as CoAP POST requests. RS sends EDHOC message_1 and EDHOC message_3 as CoAP 2.04 (Changed) responses.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
-<p id="section-4.4-3">Exactly one of the EAD items EAD_ACCESS_TOKEN or EAD_SESSION_ID <span class="bcp14">MUST</span> be included in either the EAD_2 field of EDHOC message_2 or the EAD_4 field of EDHOC message_4. If this is not the case, RS <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
-<p id="section-4.4-4">Specific instructions for the different messages are provided in the following subsections.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">In this profile of ACE, if RS implements the EDHOC reverse message flow, then RS <span class="bcp14">MUST</span> implement EDHOC message_4.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+<p id="section-4.4-4">Exactly one of the EAD items EAD_ACCESS_TOKEN or EAD_SESSION_ID <span class="bcp14">MUST</span> be included in either the EAD_2 field of EDHOC message_2 or the EAD_4 field of EDHOC message_4. If this is not the case, RS <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-5">Specific instructions for the different messages are provided in the following subsections.<a href="#section-4.4-5" class="pilcrow">¶</a></p>
 <div id="trigger-message">
 <section id="section-4.4.1">
           <h4 id="name-trigger-message">

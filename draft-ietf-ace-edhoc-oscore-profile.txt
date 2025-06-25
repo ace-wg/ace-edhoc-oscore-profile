@@ -1515,6 +1515,9 @@ Table of Contents
    CoAP POST requests.  RS sends EDHOC message_1 and EDHOC message_3 as
    CoAP 2.04 (Changed) responses.
 
+   In this profile of ACE, if RS implements the EDHOC reverse message
+   flow, then RS MUST implement EDHOC message_4.
+
    Exactly one of the EAD items EAD_ACCESS_TOKEN or EAD_SESSION_ID MUST
    be included in either the EAD_2 field of EDHOC message_2 or the EAD_4
    field of EDHOC message_4.  If this is not the case, RS MUST abort the

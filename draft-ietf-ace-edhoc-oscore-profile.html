@@ -15,22 +15,22 @@ It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual auth
 EDHOC also establishes an Object Security for Constrained RESTful Environments (OSCORE) Security Context, which is used to secure communications between the client and resource server when accessing protected resources according to the authorization information indicated in the access token.
 This profile can be used to delegate management of authorization information from a resource-constrained server to a trusted host with less severe limitations regarding processing power and memory. 
     " name="description">
-<meta content="xml2rfc 3.28.0" name="generator">
+<meta content="xml2rfc 3.29.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-ace-edhoc-oscore-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.0
-    Python 3.12.9
+  xml2rfc 3.29.0
+    Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
-    Jinja2 3.1.5
-    lxml 5.3.0
-    platformdirs 4.3.6
+    Jinja2 3.1.6
+    lxml 5.3.1
+    platformdirs 4.3.8
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.3
-    setuptools 70.3.0
+    requests 2.32.4
+    setuptools 80.9.0
     wcwidth 0.2.13
 -->
 <link href="draft-ietf-ace-edhoc-oscore-profile.xml" rel="alternate" type="application/rfc+xml">
@@ -1050,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">EDHOC and OSCORE profile of ACE</td>
-<td class="right">March 2025</td>
+<td class="right">June 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 4 September 2025</td>
+<td class="center">Expires 27 December 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-03-03" class="published">3 March 2025</time>
+<time datetime="2025-06-25" class="published">25 June 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-09-04">4 September 2025</time></dd>
+<dd class="expires"><time datetime="2025-12-27">27 December 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 4 September 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 27 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2663,7 +2663,7 @@ Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Den
 <a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-establishing-a-new-oscore-s" class="section-name selfRef">Establishing a New OSCORE Security Context</a>
         </h3>
 <p id="section-4.8-1">The procedure of provisioning a new access token to RS specified in this section applies to various cases when an OSCORE Security Context shared between C and RS has been deleted, for example as described in <a href="#discard-context" class="auto internal xref">Section 4.7</a>.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
-<p id="section-4.8-2">Another exceptional case is when there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS <span class="bcp14">SHALL</span> attempt to run the KUDOS key update protocol <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>, which is a lightweight alternative independent of ACE and EDHOC that does not require the uploading of an access token. If KUDOS is not supported, then C and RS falls back to EDHOC as outlined above.<a href="#section-4.8-2" class="pilcrow">¶</a></p>
+<p id="section-4.8-2">Another exceptional case is when there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS <span class="bcp14">MAY</span> attempt to run the KUDOS key update protocol <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>, which is a lightweight alternative independent of ACE and EDHOC that does not require the uploading of an access token. If KUDOS is not supported, then C and RS falls back to EDHOC as outlined above.<a href="#section-4.8-2" class="pilcrow">¶</a></p>
 <p id="section-4.8-3">In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS <span class="bcp14">MUST</span> associate the new OSCORE Security Context with the current (potentially re-uploaded) access token. Furthermore, the SESSION_ID identifying the token series to which the access token belongs to remains unchanged, even if C and RS have established a new EDHOC session. Unless C and RS re-run the EDHOC protocol, they preserve their OSCORE identifiers, i.e., their OSCORE Sender/Recipient IDs.<a href="#section-4.8-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -3934,7 +3934,7 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
 <dd class="break"></dd>
 <dt id="I-D.ietf-cose-cbor-encoded-cert">[I-D.ietf-cose-cbor-encoded-cert]</dt>
         <dd>
-<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, and <span class="refAuthor">M. Furuhed</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-12</span>, <time datetime="2025-01-08" class="refDate">8 January 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-12">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-12</a>&gt;</span>. </dd>
+<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, and <span class="refAuthor">M. Furuhed</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-14</span>, <time datetime="2025-06-23" class="refDate">23 June 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-14">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-14</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -4063,11 +4063,11 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
 <dl class="references">
 <dt id="I-D.ietf-ace-coap-est-oscore">[I-D.ietf-ace-coap-est-oscore]</dt>
         <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Furuhed, M.</span>, <span class="refAuthor">Vučinić, M.</span>, and <span class="refAuthor">T. Claeys</span>, <span class="refTitle">"Protecting EST Payloads with OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-coap-est-oscore-06</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-06">https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-06</a>&gt;</span>. </dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Furuhed, M.</span>, <span class="refAuthor">Vučinić, M.</span>, and <span class="refAuthor">T. Claeys</span>, <span class="refTitle">"Protecting EST Payloads with OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-coap-est-oscore-07</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-07">https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-07</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-ace-workflow-and-params">[I-D.ietf-ace-workflow-and-params]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Alternative Workflow and OAuth Parameters for the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-workflow-and-params-03</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-workflow-and-params-03">https://datatracker.ietf.org/doc/html/draft-ietf-ace-workflow-and-params-03</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Short Distribution Chain (SDC) Workflow and New OAuth Parameters for the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-workflow-and-params-04</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-workflow-and-params-04">https://datatracker.ietf.org/doc/html/draft-ietf-ace-workflow-and-params-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-groupcomm-bis">[I-D.ietf-core-groupcomm-bis]</dt>
         <dd>
@@ -4079,11 +4079,11 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-oscore-key-update">[I-D.ietf-core-oscore-key-update]</dt>
         <dd>
-<span class="refAuthor">Höglund, R.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Update for OSCORE (KUDOS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-key-update-09</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-09</a>&gt;</span>. </dd>
+<span class="refAuthor">Höglund, R.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Update for OSCORE (KUDOS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-key-update-10</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-lake-authz">[I-D.ietf-lake-authz]</dt>
         <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Vučinić, M.</span>, <span class="refAuthor">Fedrecheski, G.</span>, and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"Lightweight Authorization using Ephemeral Diffie-Hellman Over COSE (ELA)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-authz-03</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-authz-03">https://datatracker.ietf.org/doc/html/draft-ietf-lake-authz-03</a>&gt;</span>. </dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Vučinić, M.</span>, <span class="refAuthor">Fedrecheski, G.</span>, and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"Lightweight Authorization using Ephemeral Diffie-Hellman Over COSE (ELA)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-authz-04</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-authz-04">https://datatracker.ietf.org/doc/html/draft-ietf-lake-authz-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.serafin-lake-ta-hint">[I-D.serafin-lake-ta-hint]</dt>
         <dd>

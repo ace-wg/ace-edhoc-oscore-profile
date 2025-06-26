@@ -260,7 +260,11 @@ Note that EDHOC does not admit the use of naked COSE_Keys as authentication cred
 
 When receiving an Access Token request including the "req_cnf" parameter, AS checks whether it is already storing the authentication credential of C, namely AUTH_CRED_C, specified in "req_cnf" by value or reference.
 
-If this is not the case, AS retrieves AUTH_CRED_C, either using the "req_cnf" parameter or some other trusted source. After that, AS validates the actual AUTH_CRED_C. In case of successful validation, AS stores AUTH_CRED_C as a valid authentication credential. Otherwise, the Client-to-AS request MUST be declined with the error code "unsupported_pop_key" as defined in {{Section 5.8.3 of RFC9200}}.
+If this is not the case, AS retrieves AUTH_CRED_C, either using the "req_cnf" parameter or some other trusted source. After that, AS validates the actual AUTH_CRED_C.
+
+In either case, the AS also needs verify that C is in possession of the private key corresponding to the public key associated to AUTH_CRED_C. This may already have been established, for example, by C authenticating to AS using AUTHCRED_C as authentication credential, or by some other trusted party.
+
+In case of successful validations, AS stores AUTH_CRED_C as a valid authentication credential. Otherwise, the Client-to-AS request MUST be declined with the error code "unsupported_pop_key" as defined in {{Section 5.8.3 of RFC9200}}.
 
 An example of client-to-AS request is shown in {{token-request}}. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req\_cnf" parameter.
 

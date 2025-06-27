@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 28 December 2025                                      M. Tiloca
+Expires: 29 December 2025                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            26 June 2025
+                                                            27 June 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 December 2025.
+   This Internet-Draft will expire on 29 December 2025.
 
 Copyright Notice
 
@@ -299,14 +299,14 @@ Table of Contents
 
    In the CBOR diagnostic notation used in this document, constructs of
    the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME
-   in the CDDL model shown in Figure 9 of Appendix C.  For example,
+   in the CDDL model shown in Figure 10 of Appendix C.  For example,
    {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2
    : 3}.
 
    Note to RFC Editor: Please delete the paragraph immediately preceding
    this note.  Also, in the CBOR diagnostic notation used in this
    document, please replace the constructs of the form e'SOME_NAME' with
-   the value assigned to SOME_NAME in the CDDL model shown in Figure 9
+   the value assigned to SOME_NAME in the CDDL model shown in Figure 10
    of Appendix C.  Finally, please delete this note.
 
 2.  Protocol Overview
@@ -1942,6 +1942,35 @@ Table of Contents
 
    *  The message payload SHOULD NOT include the "scope" parameter,
       unless its value cannot contribute to expose the identity of RS.
+
+   AS Request Creation Hints may also be requested and retrieved through
+   a new EAD item defined here, see Figure 9.
+
+   ead_label = TBD
+   ? ead_value = bstr AS_request_creation_hints
+
+   AS_request_creation_hints : map
+
+               Figure 9: EAD item AS Request Creation Hints.
+
+   The AS_request_creation_hints is a CBOR map with keys defined in
+   Table 1 in Section 5.3 of [RFC9200].
+
+   This EAD item is intended to be used in EDHOC messages between C to
+   RS; in the forward message flow in EAD_1 and EAD_2, and in the
+   reverse message flow in EAD_2 and EAD_3.  In the first EDHOC message
+   from C to RS, an EAD item with ead_label = TBD with no ead_value asks
+   the RS to respond in the next EDHOC message with the same EAD item
+   containing AS Request Creation Hints.
+
+   Since C has not made an actual request targeting a specific
+   application resource, the RS may not know what resource C is
+   interested in accessing.  Hence, the information specified in this
+   EAD item is not expected to include "audience" and "scope".  However,
+   since EDHOC message_2 and messages_3 are protected against passive
+   and active attackers, respectively, this allows for information
+   contained in "audience" and "scope" of the AS Request Creation Hints
+   matching the privacy policy of the application.
 
 5.  Secure Communication with AS
 
@@ -3720,7 +3749,7 @@ Appendix C.  CDDL Model
    x5t_ta_type = 34
    x5u_ta_type = 35
 
-                            Figure 9: CDDL model
+                           Figure 10: CDDL model
 
 Appendix D.  Document Updates
 

@@ -918,6 +918,22 @@ Therefore, if RS supports the EDHOC reverse message flow and sends an AS Request
 
 * The message payload SHOULD NOT include the "scope" parameter, unless its value cannot contribute to expose the identity of RS.
 
+AS Request Creation Hints may also be requested and retrieved through a new EAD item defined here, see {{fig-ead-rch}}.
+
+~~~~~~~~~~~ CDDL
+ead_label = TBD
+? ead_value = bstr AS_request_creation_hints
+
+AS_request_creation_hints : map
+~~~~~~~~~~~
+{: #fig-ead-rch title="EAD item AS Request Creation Hints."}
+
+The AS_request_creation_hints is a CBOR map with keys defined in Table 1 in {{Section 5.3 of RFC9200}}.
+
+This EAD item is intended to be used in EDHOC messages between C to RS; in the forward message flow in EAD_1 and EAD_2, and in the reverse message flow in EAD_2 and EAD_3. In the first EDHOC message from C to RS, an EAD item with ead_label = TBD with no ead_value asks the RS to respond in the next EDHOC message with the same EAD item containing AS Request Creation Hints.
+
+Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Hence, the information specified in this EAD item is not expected to include "audience" and "scope". However, since EDHOC message_2 and messages_3 are protected against passive and active attackers, respectively, this allows for information contained in "audience" and "scope" of the AS Request Creation Hints matching the privacy policy of the application.
+
 
 # Secure Communication with AS # {#secure-comm-as}
 

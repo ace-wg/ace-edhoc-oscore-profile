@@ -932,8 +932,8 @@ Table of Contents
    |               |       | array | registry       | EDHOC cipher     |
    |               |       |       |                | suites           |
    +---------------+-------+-------+----------------+------------------+
-   | message_4     | 3     | True  |                | Support for      |
-   |               |       | or    |                | EDHOC            |
+   | message_4     | 3     | True  |                | Mandatory use    |
+   |               |       | or    |                | of EDHOC         |
    |               |       | False |                | message_4        |
    +---------------+-------+-------+----------------+------------------+
    | comb_req      | 4     | True  |                | Support for      |

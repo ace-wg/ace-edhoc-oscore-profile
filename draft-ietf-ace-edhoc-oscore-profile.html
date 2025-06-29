@@ -1909,24 +1909,13 @@ When issuing the first access token ever to a pair (C, RS) using a pair of corre
 When later issuing further access tokens to the same pair (C, RS) using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is identified by reference in the "cnf" claim of the access token.<a href="#section-3.3.1-3.2.5" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-3.3.1-4">When issuing the first access token of a token series, AS <span class="bcp14">MAY</span> include additional fields in the EDHOC_Information object (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) specified in the "edhoc_info" claim of the access token. Specifically, if the following fields of the EDHOC_Information object are specified in the response to C from the /token endpoint, they <span class="bcp14">MUST</span> be included with the same values in the EDHOC_Information object within the access token.<a href="#section-3.3.1-4" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3.3.1-5.1">
-              <p id="section-3.3.1-5.1.1">osc_ms_len: The size of the OSCORE Master Secret. If it is not included, the default value from <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span> is assumed.<a href="#section-3.3.1-5.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.1-5.2">
-              <p id="section-3.3.1-5.2.1">osc_salt_len: The size of the OSCORE Master Salt. If it is not included, the default value from <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span> is assumed.<a href="#section-3.3.1-5.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-3.3.1-5.3">
-              <p id="section-3.3.1-5.3.1">osc_version: The OSCORE version. If it is not included, the default value of 1 (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-5.4" class="relref">Section 5.4</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>) is assumed.<a href="#section-3.3.1-5.3.1" class="pilcrow">¶</a></p>
-</li>
-          </ul>
-<p id="section-3.3.1-6">The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. Also, RS has to be able to verify that the access token is issued by a trusted AS, by achieving source authentication. Depending on the use case and deployment, the access token may need to be confidentiality protected, for example due to privacy reasons.<a href="#section-3.3.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.3.1-7">AS protects the access token using a COSE method <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> as specified in <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>. Depending on the audience, there can be different ways to most appropriately ensure the confidentiality of an access token. For an audience comprising a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0. Instead, if the access token needs to be read by multiple RSs, then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection is applied during transport, by including the access token in the EAD_3 field of EDHOC message_3 sent by C to RS, when using the EDHOC forward message flow (see <a href="#edhoc-exec" class="auto internal xref">Section 4.2</a>).<a href="#section-3.3.1-7" class="pilcrow">¶</a></p>
-<p id="section-3.3.1-8"><a href="#fig-token" class="auto internal xref">Figure 6</a> shows an example of CWT Claims Set, including the relevant EDHOC parameters in the "edhoc_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.<a href="#section-3.3.1-8" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-4">When issuing the first access token of a token series, AS <span class="bcp14">MAY</span> include additional fields in the EDHOC_Information object (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) specified in the "edhoc_info" claim of the access token.<a href="#section-3.3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-5">The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. Also, RS has to be able to verify that the access token is issued by a trusted AS, by achieving source authentication. Depending on the use case and deployment, the access token may need to be confidentiality protected, for example due to privacy reasons.<a href="#section-3.3.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-6">AS protects the access token using a COSE method <span>[<a href="#RFC9052" class="cite xref">RFC9052</a>]</span> as specified in <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span>. Depending on the audience, there can be different ways to most appropriately ensure the confidentiality of an access token. For an audience comprising a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0. Instead, if the access token needs to be read by multiple RSs, then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection is applied during transport, by including the access token in the EAD_3 field of EDHOC message_3 sent by C to RS, when using the EDHOC forward message flow (see <a href="#edhoc-exec" class="auto internal xref">Section 4.2</a>).<a href="#section-3.3.1-6" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-7"><a href="#fig-token" class="auto internal xref">Figure 6</a> shows an example of CWT Claims Set, including the relevant EDHOC parameters in the "edhoc_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.<a href="#section-3.3.1-7" class="pilcrow">¶</a></p>
 <span id="name-example-of-cwt-claims-set-w"></span><div id="fig-token">
 <figure id="figure-6">
-            <div class="alignLeft art-text artwork" id="section-3.3.1-9.1">
+            <div class="alignLeft art-text artwork" id="section-3.3.1-8.1">
 <pre>
    {
     / aud /   3 : "tempSensorInLivingRoom",
@@ -2040,92 +2029,71 @@ When later issuing further access tokens to the same pair (C, RS) using the same
               <td class="text-left" rowspan="1" colspan="1">URI-path of the EDHOC resource</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">osc_ms_len</td>
-              <td class="text-left" rowspan="1" colspan="1">6</td>
-              <td class="text-left" rowspan="1" colspan="1">uint</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-              <td class="text-left" rowspan="1" colspan="1">Length in bytes of the OSCORE Master Secret to derive</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">osc_salt_len</td>
-              <td class="text-left" rowspan="1" colspan="1">7</td>
-              <td class="text-left" rowspan="1" colspan="1">uint</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-              <td class="text-left" rowspan="1" colspan="1">Length in bytes of the OSCORE Master Salt to derive</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">osc_version</td>
-              <td class="text-left" rowspan="1" colspan="1">8</td>
-              <td class="text-left" rowspan="1" colspan="1">uint</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-              <td class="text-left" rowspan="1" colspan="1">OSCORE version number to use</td>
-            </tr>
-            <tr>
               <td class="text-left" rowspan="1" colspan="1">cred_types</td>
-              <td class="text-left" rowspan="1" colspan="1">9</td>
+              <td class="text-left" rowspan="1" colspan="1">6</td>
               <td class="text-left" rowspan="1" colspan="1">int or array</td>
               <td class="text-left" rowspan="1" colspan="1">EDHOC Authentication Credential Types registry</td>
               <td class="text-left" rowspan="1" colspan="1">Set of supported types of authentication credentials for EDHOC</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">id_cred_types</td>
-              <td class="text-left" rowspan="1" colspan="1">10</td>
+              <td class="text-left" rowspan="1" colspan="1">7</td>
               <td class="text-left" rowspan="1" colspan="1">int or tstr or array</td>
               <td class="text-left" rowspan="1" colspan="1">COSE Header Parameters registry</td>
               <td class="text-left" rowspan="1" colspan="1">Set of supported types of authentication credential identifiers for EDHOC</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">eads</td>
-              <td class="text-left" rowspan="1" colspan="1">11</td>
+              <td class="text-left" rowspan="1" colspan="1">8</td>
               <td class="text-left" rowspan="1" colspan="1">uint or array</td>
               <td class="text-left" rowspan="1" colspan="1">EDHOC External Authorization Data registry</td>
               <td class="text-left" rowspan="1" colspan="1">Set of supported EDHOC External Authorization Data (EAD) items</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">initiator</td>
-              <td class="text-left" rowspan="1" colspan="1">12</td>
+              <td class="text-left" rowspan="1" colspan="1">9</td>
               <td class="text-left" rowspan="1" colspan="1">True or False</td>
               <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">Support for the EDHOC Initiator role</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">responder</td>
-              <td class="text-left" rowspan="1" colspan="1">13</td>
+              <td class="text-left" rowspan="1" colspan="1">10</td>
               <td class="text-left" rowspan="1" colspan="1">True or False</td>
               <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">Support for the EDHOC Responder role</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">max_msgsize</td>
-              <td class="text-left" rowspan="1" colspan="1">14</td>
+              <td class="text-left" rowspan="1" colspan="1">11</td>
               <td class="text-left" rowspan="1" colspan="1">uint</td>
               <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">Maximum size of EDHOC messages in bytes</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">coap_ct</td>
-              <td class="text-left" rowspan="1" colspan="1">15</td>
+              <td class="text-left" rowspan="1" colspan="1">12</td>
               <td class="text-left" rowspan="1" colspan="1">True of False</td>
               <td class="text-left" rowspan="1" colspan="1"> </td>
               <td class="text-left" rowspan="1" colspan="1">Mandatory use of the CoAP Content-Format Option in CoAP messages whose payload includes exclusively an EDHOC message, possibly prepended by an EDHOC connection identifier</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ep_id_types</td>
-              <td class="text-left" rowspan="1" colspan="1">16</td>
+              <td class="text-left" rowspan="1" colspan="1">13</td>
               <td class="text-left" rowspan="1" colspan="1">int or array</td>
               <td class="text-left" rowspan="1" colspan="1">EDHOC Endpoint Identity Types registry</td>
               <td class="text-left" rowspan="1" colspan="1">Set of supported types of endpoint identities for EDHOC</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">transports</td>
-              <td class="text-left" rowspan="1" colspan="1">17</td>
+              <td class="text-left" rowspan="1" colspan="1">14</td>
               <td class="text-left" rowspan="1" colspan="1">int or array</td>
               <td class="text-left" rowspan="1" colspan="1">EDHOC Transports registry</td>
               <td class="text-left" rowspan="1" colspan="1">Set of supported means for transporting EDHOC messages</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">trust_anchors</td>
-              <td class="text-left" rowspan="1" colspan="1">18</td>
+              <td class="text-left" rowspan="1" colspan="1">15</td>
               <td class="text-left" rowspan="1" colspan="1">map</td>
               <td class="text-left" rowspan="1" colspan="1">EDHOC Trust Anchor Purposes registry and EDHOC Trust Anchor Types registry</td>
               <td class="text-left" rowspan="1" colspan="1">Set of supported trust anchors</td>
@@ -2153,81 +2121,72 @@ When later issuing further access tokens to the same pair (C, RS) using the same
             <p id="section-3.4-6.6.1">uri_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri_path" value is a string. In CBOR, "uri_path" is a text string, and has label 6.<a href="#section-3.4-6.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-6.7">
-            <p id="section-3.4-6.7.1">osc_ms_len: This parameter specifies the size in bytes of the OSCORE Master Secret to derive after the EDHOC session, as per <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. In JSON, the "osc_ms_len" value is an integer. In CBOR, the "osc_ms_len" type is unsigned integer, and has label 7.<a href="#section-3.4-6.7.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-6.7.1">cred_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.5.2" class="relref">Section 3.5.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred_types" value is an integer or an array of integers. In CBOR, "cred_types" is an integer or an array of integers, and has label 6. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span>.<a href="#section-3.4-6.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-6.8">
-            <p id="section-3.4-6.8.1">osc_salt_len: This parameter specifies the size in bytes of the OSCORE Master Salt to derive after the EDHOC session, as per <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. In JSON, the "osc_salt_len" value is an integer. In CBOR, the "osc_salt_len" type is unsigned integer, and has label 8.<a href="#section-3.4-6.8.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-6.8.1">id_cred_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.5.3" class="relref">Section 3.5.3</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id_cred_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id_cred_types" is an integer or a text string, or an array of integers and text strings, and has label 7. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry <span>[<a href="#COSE.Header.Parameters" class="cite xref">COSE.Header.Parameters</a>]</span>.<a href="#section-3.4-6.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-6.9">
-            <p id="section-3.4-6.9.1">osc_version: This parameter specifies the OSCORE Version number that the two EDHOC peers have to use when using OSCORE. For more information about this parameter, see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-5.4" class="relref">Section 5.4</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>. In JSON, the "osc_version" value is an integer. In CBOR, the "osc_version" type is unsigned integer, and has label 9.<a href="#section-3.4-6.9.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-6.9.1">eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead_label (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single ead_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 8. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-3.4-6.9.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-6.10">
-            <p id="section-3.4-6.10.1">cred_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.5.2" class="relref">Section 3.5.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred_types" value is an integer or an array of integers. In CBOR, "cred_types" is an integer or an array of integers, and has label 9. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span>.<a href="#section-3.4-6.10.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-6.10.1">initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value "true" (0xf5) or "false" (0xf4), and has label 9.<a href="#section-3.4-6.10.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-6.11">
-            <p id="section-3.4-6.11.1">id_cred_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.5.3" class="relref">Section 3.5.3</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id_cred_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id_cred_types" is an integer or a text string, or an array of integers and text strings, and has label 10. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry <span>[<a href="#COSE.Header.Parameters" class="cite xref">COSE.Header.Parameters</a>]</span>.<a href="#section-3.4-6.11.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-6.11.1">responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value "true" (0xf5) or "false" (0xf4), and has label 10.<a href="#section-3.4-6.11.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-6.12">
-            <p id="section-3.4-6.12.1">eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead_label (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). If the set is composed of a single ead_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 11. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-3.4-6.12.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-6.12.1">max_msgsize: This parameter specifies the admitted maximum size of EDHOC messages in bytes. In JSON, the "max_msgsize" value is an unsigned integer. In CBOR, "max_msgsize" is an unsigned integer and has label 11.<a href="#section-3.4-6.12.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-6.13">
-            <p id="section-3.4-6.13.1">initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value "true" (0xf5) or "false" (0xf4), and has label 12.<a href="#section-3.4-6.13.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-6.13.1">coap_cf: This parameter specifies whether it is required that CoAP messages include the CoAP Content-Format Option with value 64 (application/edhoc+cbor-seq) or 65 (application/cid-edhoc+cbor-seq) as appropriate, when the message payload includes exclusively an EDHOC message possibly prepended by an EDHOC connection identifier (see Sections <a href="https://rfc-editor.org/rfc/rfc9528#section-3.4.1" class="relref">3.4.1</a> and <a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2" class="relref">A.2</a> of <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). In JSON, the "coap_cf" value is a boolean. In CBOR, "coap_cf" is the simple value <code>true</code> (0xf5) or <code>false</code> (0xf4), and has label 12.<a href="#section-3.4-6.13.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-6.14">
-            <p id="section-3.4-6.14.1">responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value "true" (0xf5) or "false" (0xf4), and has label 13.<a href="#section-3.4-6.14.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-6.14.1">ep_id_types: This parameter specifies a set of supported types of endpoint identities for EDHOC. If the set is composed of a single type of endpoint identity, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one type of endpoint identity as an integer. In JSON, the "ep_id_types" value is an integer or an array of integers. In CBOR, "ep_id_types" is an integer or an array of integers, and has label 13. The integer values are taken from the 'CBOR Label' column of the "EDHOC Endpoint Identity Types" registry defined in <a href="#iana-edhoc-endpoint-identity-types" class="auto internal xref">Section 14.10</a> of this document.<a href="#section-3.4-6.14.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-6.15">
-            <p id="section-3.4-6.15.1">max_msgsize: This parameter specifies the admitted maximum size of EDHOC messages in bytes. In JSON, the "max_msgsize" value is an unsigned integer. In CBOR, "max_msgsize" is an unsigned integer and has label 14.<a href="#section-3.4-6.15.1" class="pilcrow">¶</a></p>
+            <p id="section-3.4-6.15.1">transports: This parameter specifies a set of supported means for transporting EDHOC messages. If the set is composed of a single means for transporting EDHOC messages, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one means for transporting EDHOC messages as an integer. In JSON, the "transports" value is an integer or an array of integers. In CBOR, "transports" is an integer or an array of integers, and has label 14. The integer values are taken from the 'Transport ID' column of the "EDHOC Transports" Registry defined in <a href="#iana-edhoc-transports" class="auto internal xref">Section 14.11</a> of this document.<a href="#section-3.4-6.15.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.4-6.16">
-            <p id="section-3.4-6.16.1">coap_cf: This parameter specifies whether it is required that CoAP messages include the CoAP Content-Format Option with value 64 (application/edhoc+cbor-seq) or 65 (application/cid-edhoc+cbor-seq) as appropriate, when the message payload includes exclusively an EDHOC message possibly prepended by an EDHOC connection identifier (see Sections <a href="https://rfc-editor.org/rfc/rfc9528#section-3.4.1" class="relref">3.4.1</a> and <a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2" class="relref">A.2</a> of <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). In JSON, the "coap_cf" value is a boolean. In CBOR, "coap_cf" is the simple value <code>true</code> (0xf5) or <code>false</code> (0xf4), and has label 15.<a href="#section-3.4-6.16.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.4-6.17">
-            <p id="section-3.4-6.17.1">ep_id_types: This parameter specifies a set of supported types of endpoint identities for EDHOC. If the set is composed of a single type of endpoint identity, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one type of endpoint identity as an integer. In JSON, the "ep_id_types" value is an integer or an array of integers. In CBOR, "ep_id_types" is an integer or an array of integers, and has label 16. The integer values are taken from the 'CBOR Label' column of the "EDHOC Endpoint Identity Types" registry defined in <a href="#iana-edhoc-endpoint-identity-types" class="auto internal xref">Section 14.10</a> of this document.<a href="#section-3.4-6.17.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.4-6.18">
-            <p id="section-3.4-6.18.1">transports: This parameter specifies a set of supported means for transporting EDHOC messages. If the set is composed of a single means for transporting EDHOC messages, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one means for transporting EDHOC messages as an integer. In JSON, the "transports" value is an integer or an array of integers. In CBOR, "transports" is an integer or an array of integers, and has label 17. The integer values are taken from the 'Transport ID' column of the "EDHOC Transports" Registry defined in <a href="#iana-edhoc-transports" class="auto internal xref">Section 14.11</a> of this document.<a href="#section-3.4-6.18.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.4-6.19">
-            <p id="section-3.4-6.19.1">trust_anchors: This parameter specifies a collection of supported trust anchors for performing authentication. According to what is specified within the collection, these trust anchors are used for different purposes, e.g., for verifying authentication credentials of other EDHOC peers in EDHOC sessions.<a href="#section-3.4-6.19.1" class="pilcrow">¶</a></p>
-<p id="section-3.4-6.19.2">
-More in detail, the collection of trust anchors is composed of one or more sets. Each set includes one or more trust anchors to use for one specific purpose associated with that set.<a href="#section-3.4-6.19.2" class="pilcrow">¶</a></p>
-<p id="section-3.4-6.19.3">
-In particular, each set is composed of pairs, each of which specifies a trust anchor type and an identifier of a trust anchor of that type. If the set is composed of a single pair, this pair is specified as a single item. If the set is composed of multiple pairs, these pairs are specified as elements of an array.<a href="#section-3.4-6.19.3" class="pilcrow">¶</a></p>
-<p id="section-3.4-6.19.4">
-Trust anchor purposes are selected from the "EDHOC Trust Anchor Purposes" registry defined in <a href="#iana-edhoc-ta-purposes" class="auto internal xref">Section 14.12</a> of this document. Trust anchor types are selected from the "EDHOC Trust Anchor Types" registry defined in <a href="#iana-edhoc-ta-types" class="auto internal xref">Section 14.13</a> of this document.<a href="#section-3.4-6.19.4" class="pilcrow">¶</a></p>
-<p id="section-3.4-6.19.5">
-In JSON, the "trust_anchors" value is an object with one or more outer entries, each of which is associated with a trust anchor purpose. The following applies for each outer entry:<a href="#section-3.4-6.19.5" class="pilcrow">¶</a></p>
+            <p id="section-3.4-6.16.1">trust_anchors: This parameter specifies a collection of supported trust anchors for performing authentication. According to what is specified within the collection, these trust anchors are used for different purposes, e.g., for verifying authentication credentials of other EDHOC peers in EDHOC sessions.<a href="#section-3.4-6.16.1" class="pilcrow">¶</a></p>
+<p id="section-3.4-6.16.2">
+More in detail, the collection of trust anchors is composed of one or more sets. Each set includes one or more trust anchors to use for one specific purpose associated with that set.<a href="#section-3.4-6.16.2" class="pilcrow">¶</a></p>
+<p id="section-3.4-6.16.3">
+In particular, each set is composed of pairs, each of which specifies a trust anchor type and an identifier of a trust anchor of that type. If the set is composed of a single pair, this pair is specified as a single item. If the set is composed of multiple pairs, these pairs are specified as elements of an array.<a href="#section-3.4-6.16.3" class="pilcrow">¶</a></p>
+<p id="section-3.4-6.16.4">
+Trust anchor purposes are selected from the "EDHOC Trust Anchor Purposes" registry defined in <a href="#iana-edhoc-ta-purposes" class="auto internal xref">Section 14.12</a> of this document. Trust anchor types are selected from the "EDHOC Trust Anchor Types" registry defined in <a href="#iana-edhoc-ta-types" class="auto internal xref">Section 14.13</a> of this document.<a href="#section-3.4-6.16.4" class="pilcrow">¶</a></p>
+<p id="section-3.4-6.16.5">
+In JSON, the "trust_anchors" value is an object with one or more outer entries, each of which is associated with a trust anchor purpose. The following applies for each outer entry:<a href="#section-3.4-6.16.5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.4-6.19.6.1">
-                <p id="section-3.4-6.19.6.1.1">The outer entry's key specifies the associated trust anchor purpose taken from the 'Name' column' of the "EDHOC Trust Anchor Purposes" registry.<a href="#section-3.4-6.19.6.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.4-6.16.6.1">
+                <p id="section-3.4-6.16.6.1.1">The outer entry's key specifies the associated trust anchor purpose taken from the 'Name' column' of the "EDHOC Trust Anchor Purposes" registry.<a href="#section-3.4-6.16.6.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.4-6.19.6.2">
-                <p id="section-3.4-6.19.6.2.1">The outer entry's value is an object or an array of at least two objects. Each object includes one inner entry, specifying the pair for a trust anchor TA of type TYPE. The inner entry is formatted as follows:<a href="#section-3.4-6.19.6.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.4-6.16.6.2">
+                <p id="section-3.4-6.16.6.2.1">The outer entry's value is an object or an array of at least two objects. Each object includes one inner entry, specifying the pair for a trust anchor TA of type TYPE. The inner entry is formatted as follows:<a href="#section-3.4-6.16.6.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.4-6.19.6.2.2.1">
-                    <p id="section-3.4-6.19.6.2.2.1.1">The inner entry's key specifies the TA's type TYPE taken from the 'Name' column of the "EDHOC Trust Anchor Types" registry.<a href="#section-3.4-6.19.6.2.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.4-6.16.6.2.2.1">
+                    <p id="section-3.4-6.16.6.2.2.1.1">The inner entry's key specifies the TA's type TYPE taken from the 'Name' column of the "EDHOC Trust Anchor Types" registry.<a href="#section-3.4-6.16.6.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                  <li class="normal" id="section-3.4-6.19.6.2.2.2">
-                    <p id="section-3.4-6.19.6.2.2.2.1">The inner entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> to the CBOR encoding of the identifier of TA when "trust_anchors" is encoded in CBOR (see below).<a href="#section-3.4-6.19.6.2.2.2.1" class="pilcrow">¶</a></p>
+                  <li class="normal" id="section-3.4-6.16.6.2.2.2">
+                    <p id="section-3.4-6.16.6.2.2.2.1">The inner entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-6.1" class="relref">Section 6.1</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> to the CBOR encoding of the identifier of TA when "trust_anchors" is encoded in CBOR (see below).<a href="#section-3.4-6.16.6.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
                 </ul>
 </li>
             </ul>
-<p id="section-3.4-6.19.7">
-In CBOR, the "trust_anchors" value is a map and has label 18. The map includes one or more outer entries, each of which is associated with a trust anchor purpose. The following applies for each outer entry:<a href="#section-3.4-6.19.7" class="pilcrow">¶</a></p>
+<p id="section-3.4-6.16.7">
+In CBOR, the "trust_anchors" value is a map and has label 15. The map includes one or more outer entries, each of which is associated with a trust anchor purpose. The following applies for each outer entry:<a href="#section-3.4-6.16.7" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.4-6.19.8.1">
-                <p id="section-3.4-6.19.8.1.1">The outer entry's key specifies the associated trust anchor purpose encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Purposes" registry.<a href="#section-3.4-6.19.8.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.4-6.16.8.1">
+                <p id="section-3.4-6.16.8.1.1">The outer entry's key specifies the associated trust anchor purpose encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Purposes" registry.<a href="#section-3.4-6.16.8.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.4-6.19.8.2">
-                <p id="section-3.4-6.19.8.2.1">The outer entry's value is a map or an array of at least two maps. Each map includes one inner entry, specifying the pair for a trust anchor TA of type TYPE. The inner entry is formatted as follows:<a href="#section-3.4-6.19.8.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-3.4-6.16.8.2">
+                <p id="section-3.4-6.16.8.2.1">The outer entry's value is a map or an array of at least two maps. Each map includes one inner entry, specifying the pair for a trust anchor TA of type TYPE. The inner entry is formatted as follows:<a href="#section-3.4-6.16.8.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.4-6.19.8.2.2.1">
-                    <p id="section-3.4-6.19.8.2.2.1.1">The inner entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry.<a href="#section-3.4-6.19.8.2.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.4-6.16.8.2.2.1">
+                    <p id="section-3.4-6.16.8.2.2.1.1">The inner entry's key specifies the TA's type TYPE encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Types" registry.<a href="#section-3.4-6.16.8.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                  <li class="normal" id="section-3.4-6.19.8.2.2.2">
-                    <p id="section-3.4-6.19.8.2.2.2.1">The inner entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Name' column.<a href="#section-3.4-6.19.8.2.2.2.1" class="pilcrow">¶</a></p>
+                  <li class="normal" id="section-3.4-6.16.8.2.2.2">
+                    <p id="section-3.4-6.16.8.2.2.2.1">The inner entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "EDHOC Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Name' column.<a href="#section-3.4-6.16.8.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
                 </ul>
 </li>
@@ -2290,19 +2249,16 @@ EDHOC_Information = {
   ?  3 =&gt; true / false,           ; message_4
   ?  4 =&gt; true / false,           ; comb_req
   ?  5 =&gt; tstr,                   ; uri_path
-  ?  6 =&gt; uint,                   ; osc_ms_len
-  ?  7 =&gt; uint,                   ; osc_salt_len
-  ?  8 =&gt; uint,                   ; osc_version
-  ?  9 =&gt; int / array,            ; cred_types
-  ? 10 =&gt; int / tstr / array,     ; id_cred_types
-  ? 11 =&gt; uint / array,           ; eads
-  ? 12 =&gt; true / false,           ; initiator
-  ? 13 =&gt; true / false,           ; responder
-  ? 14 =&gt; uint,                   ; max_msgsize
-  ? 15 =&gt; true / false,           ; coap_ct
-  ? 16 =&gt; int / array,            ; ep_id_types
-  ? 17 =&gt; int / array,            ; transports
-  ? 18 =&gt; map,                    ; trust_anchors
+  ?  6 =&gt; int / array,            ; cred_types
+  ?  7 =&gt; int / tstr / array,     ; id_cred_types
+  ?  8 =&gt; uint / array,           ; eads
+  ?  9 =&gt; true / false,           ; initiator
+  ? 10 =&gt; true / false,           ; responder
+  ? 11 =&gt; uint,                   ; max_msgsize
+  ? 12 =&gt; true / false,           ; coap_ct
+  ? 13 =&gt; int / array,            ; ep_id_types
+  ? 14 =&gt; int / array,            ; transports
+  ? 15 =&gt; map,                    ; trust_anchors
   * int / tstr =&gt; any
 }
 </pre><a href="#section-3.4-12" class="pilcrow">¶</a>
@@ -2535,45 +2491,8 @@ Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Den
         <h3 id="name-oscore-security-context">
 <a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-oscore-security-context" class="section-name selfRef">OSCORE Security Context</a>
         </h3>
-<p id="section-4.5-1">Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context, as defined in <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>. In addition, the following applies:<a href="#section-4.5-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.5-2.1">
-            <p id="section-4.5-2.1.1">The length in bytes of the OSCORE Master Secret (i.e., the oscore_key_length parameter, see <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) <span class="bcp14">MUST</span> be the value specified in the "osc_ms_size" field (if present) within the EDHOC_Information object specified by:<a href="#section-4.5-2.1.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.5-2.1.2.1">
-                <p id="section-4.5-2.1.2.1.1">The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#section-4.5-2.1.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-4.5-2.1.2.2">
-                <p id="section-4.5-2.1.2.2.1">The "edhoc_info" claim of the access token provisioned to RS (see <a href="#access-token" class="auto internal xref">Section 3.3.1</a>).<a href="#section-4.5-2.1.2.2.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</li>
-          <li class="normal" id="section-4.5-2.2">
-            <p id="section-4.5-2.2.1">The length in bytes of the OSCORE Master Salt (i.e., the oscore_salt_length parameter, see <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) <span class="bcp14">MUST</span> be the value specified in the "osc_salt_size" field (if present) within the EDHOC_Information object specified by:<a href="#section-4.5-2.2.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.5-2.2.2.1">
-                <p id="section-4.5-2.2.2.1.1">The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#section-4.5-2.2.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-4.5-2.2.2.2">
-                <p id="section-4.5-2.2.2.2.1">The "edhoc_info" claim of the access token provisioned to RS (see <a href="#access-token" class="auto internal xref">Section 3.3.1</a>).<a href="#section-4.5-2.2.2.2.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</li>
-          <li class="normal" id="section-4.5-2.3">
-            <p id="section-4.5-2.3.1">C and RS <span class="bcp14">MUST</span> use the OSCORE version specified in the "osc_version" field (if present) within the EDHOC_Information object specified by:<a href="#section-4.5-2.3.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.5-2.3.2.1">
-                <p id="section-4.5-2.3.2.1.1">The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#section-4.5-2.3.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-4.5-2.3.2.2">
-                <p id="section-4.5-2.3.2.2.1">The "edhoc_info" claim of the access token provisioned to RS (see <a href="#access-token" class="auto internal xref">Section 3.3.1</a>).<a href="#section-4.5-2.3.2.2.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</li>
-          <li class="normal" id="section-4.5-2.4">
-            <p id="section-4.5-2.4.1">RS associates the latest EDHOC session and the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential AUTH_CRED_C used in the EDHOC session. The access token is also associated with the pair (SESSION_ID, AUTH_CRED_C), where SESSION_ID is the identifier of the token series to which the access token belongs.<a href="#section-4.5-2.4.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
+<p id="section-4.5-1">Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context as defined in <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.1" class="relref">Appendix A.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.5-2">In addition, RS associates the latest EDHOC session and the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential AUTH_CRED_C used in the EDHOC session. The access token is also associated with the pair (SESSION_ID, AUTH_CRED_C), where SESSION_ID is the identifier of the token series to which the access token belongs.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
 <p id="section-4.5-3">If supported by C, C <span class="bcp14">MAY</span> use the EDHOC + OSCORE combined request defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span>, unless the EDHOC_Information object specified by the "edhoc_info" parameter of the access token response included the "comb_req" field encoding the CBOR simple value "false" (0xf4).<a href="#section-4.5-3" class="pilcrow">¶</a></p>
 <p id="section-4.5-4">In the combined request, both EDHOC message_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message_2 and before sending EDHOC message_3. An example is provided in <a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a>.<a href="#section-4.5-4" class="pilcrow">¶</a></p>
 </section>
@@ -2675,7 +2594,7 @@ Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Den
         <h3 id="name-access-rights-verification">
 <a href="#section-4.9" class="section-number selfRef">4.9. </a><a href="#name-access-rights-verification" class="section-name selfRef">Access Rights Verification</a>
         </h3>
-<p id="section-4.9-1">RS <span class="bcp14">MUST</span> follow the procedures defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. That is, if RS receives an OSCORE-protected request targeting a protected resource from C, then RS processes the request according to <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, when Version 1 of OSCORE is used. Future specifications may define new versions of OSCORE, which AS can indicate C and RS to use by means of the "osc_version" field of the EDHOC_Information object (see <a href="#c-as-comm" class="auto internal xref">Section 3</a>).<a href="#section-4.9-1" class="pilcrow">¶</a></p>
+<p id="section-4.9-1">RS <span class="bcp14">MUST</span> follow the procedures defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.10.2" class="relref">Section 5.10.2</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. That is, if RS receives an OSCORE-protected request targeting a protected resource from C, then RS processes the request according to <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>.<a href="#section-4.9-1" class="pilcrow">¶</a></p>
 <p id="section-4.9-2">If OSCORE verification succeeds and the target resource requires authorization, RS retrieves the authorization information using the access token associated with the OSCORE Security Context. Then, RS <span class="bcp14">MUST</span> verify that the authorization information covers the target resource and the action intended by C on it.<a href="#section-4.9-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -5044,19 +4963,16 @@ cipher_suites = 2
 message_4 = 3
 comb_req = 4
 uri_path = 5
-osc_ms_len = 6
-osc_salt_len = 7
-osc_version = 8
-cred_types = 9
-id_cred_types = 10
-eads = 11
-initiator = 12
-responder = 13
-max_msgsize = 14
-coap_ct = 15
-ep_id_types = 16
-transports = 17
-trust_anchors = 18
+cred_types = 6
+id_cred_types = 7
+eads = 8
+initiator = 9
+responder = 10
+max_msgsize = 11
+coap_ct = 12
+ep_id_types = 13
+transports = 14
+trust_anchors = 15
 
 ; EDHOC Trust Anchor Purposes
 edhoc_cred = 0

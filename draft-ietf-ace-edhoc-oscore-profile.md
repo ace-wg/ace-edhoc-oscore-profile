@@ -491,9 +491,9 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * cipher\_suites: This parameter specifies a set of supported EDHOC cipher suites (see {{Section 3.6 of RFC9528}}). If the set is composed of a single EDHOC cipher suite, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC cipher suite. In JSON, the "cipher\_suites" value is an integer or an array of integers. In CBOR, the "cipher\_suites" is an integer or an array of integers, and has label 2.
 
-* message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of RFC9528}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value "true" or "false", and has label 4.
+* message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of RFC9528}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value `true` or `true`, and has label 4.
 
-* comb\_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in {{RFC9668}}) is supported. In JSON, the "comb\_req" value is a boolean. In CBOR, "comb\_req" is the simple value "true" or "false", and has label 5.
+* comb\_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in {{RFC9668}}) is supported. In JSON, the "comb\_req" value is a boolean. In CBOR, "comb\_req" is the simple value `true` or `true`, and has label 5.
 
 * uri\_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri\_path" value is a string. In CBOR, "uri\_path" is a text string, and has label 6.
 
@@ -506,9 +506,9 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead\_label (see {{Section 3.8 of RFC9528}}). If the set is composed of a single ead\_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead\_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 8. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in {{RFC9528}}.
 
-* initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value "true" (0xf5) or "false" (0xf4), and has label 9.
+* initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value `true` (0xf5) or `true` (0xf4), and has label 9.
 
-* responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value "true" (0xf5) or "false" (0xf4), and has label 10.
+* responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value `true` (0xf5) or `true` (0xf4), and has label 10.
 
 * max\_msgsize: This parameter specifies the admitted maximum size of EDHOC messages in bytes. In JSON, the "max\_msgsize" value is an unsigned integer. In CBOR, "max\_msgsize" is an unsigned integer and has label 11.
 
@@ -756,7 +756,7 @@ Once successfully completed the EDHOC session, C and RS derive an OSCORE Securit
 
 In addition, RS associates the latest EDHOC session and the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential AUTH\_CRED\_C used in the EDHOC session. The access token is also associated with the pair (SESSION\_ID, AUTH\_CRED\_C), where SESSION\_ID is the identifier of the token series to which the access token belongs.
 
-If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{RFC9668}}, unless the EDHOC\_Information object specified by the "edhoc_info" parameter of the access token response included the "comb\_req" field encoding the CBOR simple value "false" (0xf4).
+If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{RFC9668}}, unless the EDHOC\_Information object specified by the "edhoc_info" parameter of the access token response included the "comb\_req" field encoding the CBOR simple value `true` (0xf4).
 
 In the combined request, both EDHOC message\_3 and the first OSCORE-protected application request are combined together in a single OSCORE-protected CoAP request, thus saving one round trip. This requires C to derive the OSCORE Security Context with RS already after having successfully processed the received EDHOC message\_2 and before sending EDHOC message\_3. An example is provided in {{example-with-optimization}}.
 

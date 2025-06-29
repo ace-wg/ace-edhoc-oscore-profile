@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 29 December 2025                                      M. Tiloca
+Expires: 31 December 2025                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            27 June 2025
+                                                            29 June 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 December 2025.
+   This Internet-Draft will expire on 31 December 2025.
 
 Copyright Notice
 
@@ -995,7 +995,7 @@ Table of Contents
    |               |       |       |                | messages in      |
    |               |       |       |                | bytes            |
    +---------------+-------+-------+----------------+------------------+
-   | coap_ct       | 15    | True  |                | Requested use    |
+   | coap_ct       | 15    | True  |                | Mandatory use    |
    |               |       | of    |                | of the CoAP      |
    |               |       | False |                | Content-Format   |
    |               |       |       |                | Option in CoAP   |

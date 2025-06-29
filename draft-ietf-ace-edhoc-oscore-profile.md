@@ -415,13 +415,7 @@ When issuing any access token of a token series, AS MUST include the following c
 
    When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_C, it is expected that AUTH\_CRED\_C is identified by reference in the "cnf" claim of the access token.
 
-When issuing the first access token of a token series, AS MAY include additional fields in the EDHOC\_Information object (see {{edhoc-parameters-object}}) specified in the "edhoc\_info" claim of the access token. Specifically, if the following fields of the EDHOC\_Information object are specified in the response to C from the /token endpoint, they MUST be included with the same values in the EDHOC\_Information object within the access token.
-
-* osc\_ms\_len: The size of the OSCORE Master Secret. If it is not included, the default value from {{Section A.1 of RFC9528}} is assumed.
-
-* osc\_salt\_len: The size of the OSCORE Master Salt. If it is not included, the default value from {{Section A.1 of RFC9528}} is assumed.
-
-* osc\_version: The OSCORE version. If it is not included, the default value of 1 (see {{Section 5.4 of RFC8613}}) is assumed.
+When issuing the first access token of a token series, AS MAY include additional fields in the EDHOC\_Information object (see {{edhoc-parameters-object}}) specified in the "edhoc\_info" claim of the access token.
 
 The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. Also, RS has to be able to verify that the access token is issued by a trusted AS, by achieving source authentication. Depending on the use case and deployment, the access token may need to be confidentiality protected, for example due to privacy reasons.
 
@@ -479,19 +473,16 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 | message_4     | 3          | True or False        |                                                                            | Mandatory use of EDHOC message_4                                                                                                                                           |
 | comb_req      | 4          | True or False        |                                                                            | Support for the EDHOC + OSCORE combined request                                                                                                                            |
 | uri_path      | 5          | tstr                 |                                                                            | URI-path of the EDHOC resource                                                                                                                                             |
-| osc_ms_len    | 6          | uint                 |                                                                            | Length in bytes of the OSCORE Master Secret to derive                                                                                                                      |
-| osc_salt_len  | 7          | uint                 |                                                                            | Length in bytes of the OSCORE Master Salt to derive                                                                                                                        |
-| osc_version   | 8          | uint                 |                                                                            | OSCORE version number to use                                                                                                                                               |
-| cred_types    | 9          | int or array         | EDHOC Authentication Credential Types registry                             | Set of supported types of authentication credentials for EDHOC                                                                                                             |
-| id_cred_types | 10         | int or tstr or array | COSE Header Parameters registry                                            | Set of supported types of authentication credential identifiers for EDHOC                                                                                                  |
-| eads          | 11         | uint or array        | EDHOC External Authorization Data registry                                 | Set of supported EDHOC External Authorization Data (EAD) items                                                                                                             |
-| initiator     | 12         | True or False        |                                                                            | Support for the EDHOC Initiator role                                                                                                                                       |
-| responder     | 13         | True or False        |                                                                            | Support for the EDHOC Responder role                                                                                                                                       |
-| max_msgsize   | 14         | uint                 |                                                                            | Maximum size of EDHOC messages in bytes                                                                                                                                    |
-| coap_ct       | 15         | True of False        |                                                                            | Mandatory use of the CoAP Content-Format Option in CoAP messages whose payload includes exclusively an EDHOC message, possibly prepended by an EDHOC connection identifier |
-| ep_id_types   | 16         | int or array         | EDHOC Endpoint Identity Types registry                                     | Set of supported types of endpoint identities for EDHOC                                                                                                                    |
-| transports    | 17         | int or array         | EDHOC Transports registry                                                  | Set of supported means for transporting EDHOC messages                                                                                                                     |
-| trust_anchors | 18         | map                  | EDHOC Trust Anchor Purposes registry and EDHOC Trust Anchor Types registry | Set of supported trust anchors                                                                                                                                             |
+| cred_types    | 6          | int or array         | EDHOC Authentication Credential Types registry                             | Set of supported types of authentication credentials for EDHOC                                                                                                             |
+| id_cred_types | 7          | int or tstr or array | COSE Header Parameters registry                                            | Set of supported types of authentication credential identifiers for EDHOC                                                                                                  |
+| eads          | 8          | uint or array        | EDHOC External Authorization Data registry                                 | Set of supported EDHOC External Authorization Data (EAD) items                                                                                                             |
+| initiator     | 9          | True or False        |                                                                            | Support for the EDHOC Initiator role                                                                                                                                       |
+| responder     | 10         | True or False        |                                                                            | Support for the EDHOC Responder role                                                                                                                                       |
+| max_msgsize   | 11         | uint                 |                                                                            | Maximum size of EDHOC messages in bytes                                                                                                                                    |
+| coap_ct       | 12         | True of False        |                                                                            | Mandatory use of the CoAP Content-Format Option in CoAP messages whose payload includes exclusively an EDHOC message, possibly prepended by an EDHOC connection identifier |
+| ep_id_types   | 13         | int or array         | EDHOC Endpoint Identity Types registry                                     | Set of supported types of endpoint identities for EDHOC                                                                                                                    |
+| transports    | 14         | int or array         | EDHOC Transports registry                                                  | Set of supported means for transporting EDHOC messages                                                                                                                     |
+| trust_anchors | 15         | map                  | EDHOC Trust Anchor Purposes registry and EDHOC Trust Anchor Types registry | Set of supported trust anchors                                                                                                                                             |
 {: #table-cbor-key-edhoc-params title="EDHOC_Information Parameters" align="center"}
 
 * session\_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and has label 0.
@@ -506,29 +497,26 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
 * uri\_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri\_path" value is a string. In CBOR, "uri\_path" is a text string, and has label 6.
 
-* osc\_ms\_len: This parameter specifies the size in bytes of the OSCORE Master Secret to derive after the EDHOC session, as per {{Section A.1 of RFC9528}}. In JSON, the "osc\_ms\_len" value is an integer. In CBOR, the "osc\_ms\_len" type is unsigned integer, and has label 7.
 
-* osc\_salt\_len: This parameter specifies the size in bytes of the OSCORE Master Salt to derive after the EDHOC session, as per {{Section A.1 of RFC9528}}. In JSON, the "osc\_salt\_len" value is an integer. In CBOR, the "osc\_salt\_len" type is unsigned integer, and has label 8.
 
-* osc\_version: This parameter specifies the OSCORE Version number that the two EDHOC peers have to use when using OSCORE. For more information about this parameter, see {{Section 5.4 of RFC8613}}. In JSON, the "osc\_version" value is an integer. In CBOR, the "osc\_version" type is unsigned integer, and has label 9.
 
-* cred\_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see {{Section 3.5.2 of RFC9528}}). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred\_types" value is an integer or an array of integers. In CBOR, "cred\_types" is an integer or an array of integers, and has label 9. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in {{RFC9668}}.
+* cred\_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see {{Section 3.5.2 of RFC9528}}). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred\_types" value is an integer or an array of integers. In CBOR, "cred\_types" is an integer or an array of integers, and has label 6. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in {{RFC9668}}.
 
-* id\_cred\_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see {{Section 3.5.3 of RFC9528}}). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id\_cred\_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id\_cred\_types" is an integer or a text string, or an array of integers and text strings, and has label 10. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}}.
+* id\_cred\_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see {{Section 3.5.3 of RFC9528}}). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id\_cred\_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id\_cred\_types" is an integer or a text string, or an array of integers and text strings, and has label 7. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}}.
 
-* eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead\_label (see {{Section 3.8 of RFC9528}}). If the set is composed of a single ead\_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead\_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 11. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in {{RFC9528}}.
+* eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead\_label (see {{Section 3.8 of RFC9528}}). If the set is composed of a single ead\_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead\_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 8. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in {{RFC9528}}.
 
-* initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value "true" (0xf5) or "false" (0xf4), and has label 12.
+* initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value "true" (0xf5) or "false" (0xf4), and has label 9.
 
-* responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value "true" (0xf5) or "false" (0xf4), and has label 13.
+* responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value "true" (0xf5) or "false" (0xf4), and has label 10.
 
-* max\_msgsize: This parameter specifies the admitted maximum size of EDHOC messages in bytes. In JSON, the "max\_msgsize" value is an unsigned integer. In CBOR, "max\_msgsize" is an unsigned integer and has label 14.
+* max\_msgsize: This parameter specifies the admitted maximum size of EDHOC messages in bytes. In JSON, the "max\_msgsize" value is an unsigned integer. In CBOR, "max\_msgsize" is an unsigned integer and has label 11.
 
-* coap\_cf: This parameter specifies whether it is required that CoAP messages include the CoAP Content-Format Option with value 64 (application/edhoc+cbor-seq) or 65 (application/cid-edhoc+cbor-seq) as appropriate, when the message payload includes exclusively an EDHOC message possibly prepended by an EDHOC connection identifier (see {{Sections 3.4.1 and A.2 of RFC9528}}). In JSON, the "coap\_cf" value is a boolean. In CBOR, "coap\_cf" is the simple value `true` (0xf5) or `false` (0xf4), and has label 15.
+* coap\_cf: This parameter specifies whether it is required that CoAP messages include the CoAP Content-Format Option with value 64 (application/edhoc+cbor-seq) or 65 (application/cid-edhoc+cbor-seq) as appropriate, when the message payload includes exclusively an EDHOC message possibly prepended by an EDHOC connection identifier (see {{Sections 3.4.1 and A.2 of RFC9528}}). In JSON, the "coap\_cf" value is a boolean. In CBOR, "coap\_cf" is the simple value `true` (0xf5) or `false` (0xf4), and has label 12.
 
-* ep\_id\_types: This parameter specifies a set of supported types of endpoint identities for EDHOC. If the set is composed of a single type of endpoint identity, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one type of endpoint identity as an integer. In JSON, the "ep\_id\_types" value is an integer or an array of integers. In CBOR, "ep\_id\_types" is an integer or an array of integers, and has label 16. The integer values are taken from the 'CBOR Label' column of the "EDHOC Endpoint Identity Types" registry defined in {{iana-edhoc-endpoint-identity-types}} of this document.
+* ep\_id\_types: This parameter specifies a set of supported types of endpoint identities for EDHOC. If the set is composed of a single type of endpoint identity, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one type of endpoint identity as an integer. In JSON, the "ep\_id\_types" value is an integer or an array of integers. In CBOR, "ep\_id\_types" is an integer or an array of integers, and has label 13. The integer values are taken from the 'CBOR Label' column of the "EDHOC Endpoint Identity Types" registry defined in {{iana-edhoc-endpoint-identity-types}} of this document.
 
-* transports: This parameter specifies a set of supported means for transporting EDHOC messages. If the set is composed of a single means for transporting EDHOC messages, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one means for transporting EDHOC messages as an integer. In JSON, the "transports" value is an integer or an array of integers. In CBOR, "transports" is an integer or an array of integers, and has label 17. The integer values are taken from the 'Transport ID' column of the "EDHOC Transports" Registry defined in {{iana-edhoc-transports}} of this document.
+* transports: This parameter specifies a set of supported means for transporting EDHOC messages. If the set is composed of a single means for transporting EDHOC messages, this is encoded as an integer. Otherwise, the set is encoded as an array, where each array element encodes one means for transporting EDHOC messages as an integer. In JSON, the "transports" value is an integer or an array of integers. In CBOR, "transports" is an integer or an array of integers, and has label 14. The integer values are taken from the 'Transport ID' column of the "EDHOC Transports" Registry defined in {{iana-edhoc-transports}} of this document.
 
 * trust_anchors: This parameter specifies a collection of supported trust anchors for performing authentication. According to what is specified within the collection, these trust anchors are used for different purposes, e.g., for verifying authentication credentials of other EDHOC peers in EDHOC sessions.
 
@@ -548,7 +536,7 @@ The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. 
 
     - The inner entry's value is the identifier of TA, whose encoding depends on TYPE. Such an encoding is what results from applying the conversion in {{Section 6.1 of RFC8949}} to the CBOR encoding of the identifier of TA when "trust_anchors" is encoded in CBOR (see below).
 
-  In CBOR, the "trust_anchors" value is a map and has label 18. The map includes one or more outer entries, each of which is associated with a trust anchor purpose. The following applies for each outer entry:
+  In CBOR, the "trust_anchors" value is a map and has label 15. The map includes one or more outer entries, each of which is associated with a trust anchor purpose. The following applies for each outer entry:
 
   * The outer entry's key specifies the associated trust anchor purpose encoded as a CBOR integer, with integer value taken from the 'CBOR label' column of the "EDHOC Trust Anchor Purposes" registry.
 
@@ -604,19 +592,16 @@ EDHOC_Information = {
   ?  3 => true / false,           ; message_4
   ?  4 => true / false,           ; comb_req
   ?  5 => tstr,                   ; uri_path
-  ?  6 => uint,                   ; osc_ms_len
-  ?  7 => uint,                   ; osc_salt_len
-  ?  8 => uint,                   ; osc_version
-  ?  9 => int / array,            ; cred_types
-  ? 10 => int / tstr / array,     ; id_cred_types
-  ? 11 => uint / array,           ; eads
-  ? 12 => true / false,           ; initiator
-  ? 13 => true / false,           ; responder
-  ? 14 => uint,                   ; max_msgsize
-  ? 15 => true / false,           ; coap_ct
-  ? 16 => int / array,            ; ep_id_types
-  ? 17 => int / array,            ; transports
-  ? 18 => map,                    ; trust_anchors
+  ?  6 => int / array,            ; cred_types
+  ?  7 => int / tstr / array,     ; id_cred_types
+  ?  8 => uint / array,           ; eads
+  ?  9 => true / false,           ; initiator
+  ? 10 => true / false,           ; responder
+  ? 11 => uint,                   ; max_msgsize
+  ? 12 => true / false,           ; coap_ct
+  ? 13 => int / array,            ; ep_id_types
+  ? 14 => int / array,            ; transports
+  ? 15 => map,                    ; trust_anchors
   * int / tstr => any
 }
 ~~~~~~~~~~~
@@ -767,27 +752,9 @@ The processing of EDHOC message\_4 is specified in {{Section 5.5 of RFC9528}}, w
 
 ## OSCORE Security Context {#oscore-security-context}
 
-Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context, as defined in {{Section A.1 of RFC9528}}. In addition, the following applies:
+Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context as defined in {{Section A.1 of RFC9528}}.
 
-* The length in bytes of the OSCORE Master Secret (i.e., the oscore\_key\_length parameter, see {{Section A.1 of RFC9528}}) MUST be the value specified in the "osc\_ms\_size" field (if present) within the EDHOC\_Information object specified by:
-
-  - The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see {{c-as}}).
-
-  - The "edhoc_info" claim of the access token provisioned to RS (see {{access-token}}).
-
-* The length in bytes of the OSCORE Master Salt (i.e., the oscore\_salt\_length parameter, see {{Section A.1 of RFC9528}}) MUST be the value specified in the "osc\_salt\_size" field (if present) within the EDHOC\_Information object specified by:
-
-  - The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see {{c-as}}).
-
-  - The "edhoc_info" claim of the access token provisioned to RS (see {{access-token}}).
-
-* C and RS MUST use the OSCORE version specified in the "osc\_version" field (if present) within the EDHOC\_Information object specified by:
-
-  - The "edhoc_info" parameter of the access token response that C received from AS, through which C obtained the first access token of the token series (see {{c-as}}).
-
-  - The "edhoc_info" claim of the access token provisioned to RS (see {{access-token}}).
-
-* RS associates the latest EDHOC session and the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential AUTH\_CRED\_C used in the EDHOC session. The access token is also associated with the pair (SESSION\_ID, AUTH\_CRED\_C), where SESSION\_ID is the identifier of the token series to which the access token belongs.
+In addition, RS associates the latest EDHOC session and the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential AUTH\_CRED\_C used in the EDHOC session. The access token is also associated with the pair (SESSION\_ID, AUTH\_CRED\_C), where SESSION\_ID is the identifier of the token series to which the access token belongs.
 
 If supported by C, C MAY use the EDHOC + OSCORE combined request defined in {{RFC9668}}, unless the EDHOC\_Information object specified by the "edhoc_info" parameter of the access token response included the "comb\_req" field encoding the CBOR simple value "false" (0xf4).
 
@@ -872,7 +839,7 @@ In either case, C and RS establish a new OSCORE Security Context that replaces t
 
 ## Access Rights Verification # {#access-rights-verif}
 
-RS MUST follow the procedures defined in {{Section 5.10.2 of RFC9200}}. That is, if RS receives an OSCORE-protected request targeting a protected resource from C, then RS processes the request according to {{RFC8613}}, when Version 1 of OSCORE is used. Future specifications may define new versions of OSCORE, which AS can indicate C and RS to use by means of the "osc\_version" field of the EDHOC\_Information object (see {{c-as-comm}}).
+RS MUST follow the procedures defined in {{Section 5.10.2 of RFC9200}}. That is, if RS receives an OSCORE-protected request targeting a protected resource from C, then RS processes the request according to {{RFC8613}}.
 
 If OSCORE verification succeeds and the target resource requires authorization, RS retrieves the authorization information using the access token associated with the OSCORE Security Context. Then, RS MUST verify that the authorization information covers the target resource and the action intended by C on it.
 
@@ -1881,19 +1848,16 @@ cipher_suites = 2
 message_4 = 3
 comb_req = 4
 uri_path = 5
-osc_ms_len = 6
-osc_salt_len = 7
-osc_version = 8
-cred_types = 9
-id_cred_types = 10
-eads = 11
-initiator = 12
-responder = 13
-max_msgsize = 14
-coap_ct = 15
-ep_id_types = 16
-transports = 17
-trust_anchors = 18
+cred_types = 6
+id_cred_types = 7
+eads = 8
+initiator = 9
+responder = 10
+max_msgsize = 11
+coap_ct = 12
+ep_id_types = 13
+transports = 14
+trust_anchors = 15
 
 ; EDHOC Trust Anchor Purposes
 edhoc_cred = 0

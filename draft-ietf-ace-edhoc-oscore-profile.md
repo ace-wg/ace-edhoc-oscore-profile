@@ -89,6 +89,7 @@ informative:
   I-D.ietf-lake-authz:
   I-D.ietf-ace-coap-est-oscore:
   I-D.serafin-lake-ta-hint:
+  I-D.ietf-lake-app-profiles:
 
 entity:
   SELF: "[RFC-XXXX]"
@@ -462,28 +463,36 @@ EDHOC\_Information is an object including information that guides two peers towa
 
 In the "coap_edhoc_oscore" profile of the ACE-OAuth framework, which is specified in this document, the EDHOC\_Information object MUST be encoded as CBOR. However, for easy applicability to other contexts, we define also the JSON encoding.
 
-The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. The set of common fields that can appear in an EDHOC\_Information can be found in the IANA "EDHOC Information" registry defined in {{iana-edhoc-parameters}} for extensibility. The initial set of parameters defined in this document is specified below. All parameters are optional.
+The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. The set of common fields that can appear in an EDHOC\_Information can be found in the IANA "EDHOC Information" registry defined in {{iana-edhoc-parameters}} for extensibility.
 
-{{table-cbor-key-edhoc-params}} provides a summary of the EDHOC\_Information parameters defined in this section.
+All EDHOC\_Information parameters are optional. The initial set of parameters defined in this document is summarized in {{table-cbor-key-edhoc-params}} and is specified below.
 
-| Name          | CBOR label | CBOR type            | Registry                                                                   | Description                                                                                                                                                                |
-| session_id    | 0          | bstr                 |                                                                            | Identifier of a session                                                                                                                                                    |
-| methods       | 1          | int or array         | EDHOC Method Type registry                                                 | Set of supported EDHOC methods                                                                                                                                             |
-| cipher_suites | 2          | int or array         | EDHOC Cipher Suites registry                                               | Set of supported EDHOC cipher suites                                                                                                                                       |
-| message_4     | 3          | True or False        |                                                                            | Mandatory use of EDHOC message_4                                                                                                                                           |
-| comb_req      | 4          | True or False        |                                                                            | Support for the EDHOC + OSCORE combined request                                                                                                                            |
-| uri_path      | 5          | tstr                 |                                                                            | URI-path of the EDHOC resource                                                                                                                                             |
-| cred_types    | 6          | int or array         | EDHOC Authentication Credential Types registry                             | Set of supported types of authentication credentials for EDHOC                                                                                                             |
-| id_cred_types | 7          | int or tstr or array | COSE Header Parameters registry                                            | Set of supported types of authentication credential identifiers for EDHOC                                                                                                  |
-| eads          | 8          | uint or array        | EDHOC External Authorization Data registry                                 | Set of supported EDHOC External Authorization Data (EAD) items                                                                                                             |
-| initiator     | 9          | True or False        |                                                                            | Support for the EDHOC Initiator role                                                                                                                                       |
-| responder     | 10         | True or False        |                                                                            | Support for the EDHOC Responder role                                                                                                                                       |
-| max_msgsize   | 11         | uint                 |                                                                            | Maximum size of EDHOC messages in bytes                                                                                                                                    |
-| coap_ct       | 12         | True of False        |                                                                            | Mandatory use of the CoAP Content-Format Option in CoAP messages whose payload includes exclusively an EDHOC message, possibly prepended by an EDHOC connection identifier |
-| ep_id_types   | 13         | int or array         | EDHOC Endpoint Identity Types registry                                     | Set of supported types of endpoint identities for EDHOC                                                                                                                    |
-| transports    | 14         | int or array         | EDHOC Transports registry                                                  | Set of supported means for transporting EDHOC messages                                                                                                                     |
-| trust_anchors | 15         | map                  | EDHOC Trust Anchor Purposes registry and EDHOC Trust Anchor Types registry | Set of supported trust anchors                                                                                                                                             |
-{: #table-cbor-key-edhoc-params title="EDHOC_Information Parameters" align="center"}
+EDHOC_Information parameters are also categorized, i.e., each has one of two possible types, namely prescriptive or non-prescriptive:
+
+* A prescriptive parameter is used to provide an authoritative statement about how an execution of EDHOC has to be performed. An example is the "message_4" parameter indicating whether the use of EDHOC message_4 in an EDHOC session is mandatory or not.
+
+* A non-prescriptive parameter is used to provide convenient information to consider when executing EDHOC, e.g., in terms of features supported by other peers. Such information is not necessarily exhaustive. An example is the "methods" parameter indicating a set of supported EDHOC methods.
+
+This categorization helps coordinate the use of EDHOC application profiles {{Section 3.9 of RFC9528}} in a robust way, e.g., by using the means defined in {{I-D.ietf-lake-app-profiles}}.
+
+| Name          | CBOR label | CBOR type            | Registry                                                                   | Description                                                                                                                                                                | Type |
+| session_id    | 0          | bstr                 |                                                                            | Identifier of a session                                                                                                                                                    | P    |
+| methods       | 1          | int or array         | EDHOC Method Type registry                                                 | Set of supported EDHOC methods                                                                                                                                             | NP   |
+| cipher_suites | 2          | int or array         | EDHOC Cipher Suites registry                                               | Set of supported EDHOC cipher suites                                                                                                                                       | NP   |
+| message_4     | 3          | True or False        |                                                                            | Mandatory use of EDHOC message_4                                                                                                                                           | P    |
+| comb_req      | 4          | True or False        |                                                                            | Support for the EDHOC + OSCORE combined request                                                                                                                            | NP   |
+| uri_path      | 5          | tstr                 |                                                                            | URI-path of the EDHOC resource                                                                                                                                             | P    |
+| cred_types    | 6          | int or array         | EDHOC Authentication Credential Types registry                             | Set of supported types of authentication credentials for EDHOC                                                                                                             | NP   |
+| id_cred_types | 7          | int or tstr or array | COSE Header Parameters registry                                            | Set of supported types of authentication credential identifiers for EDHOC                                                                                                  | NP   |
+| eads          | 8          | uint or array        | EDHOC External Authorization Data registry                                 | Set of supported EDHOC External Authorization Data (EAD) items                                                                                                             | NP   |
+| initiator     | 9          | True or False        |                                                                            | Support for the EDHOC Initiator role                                                                                                                                       | NP   |
+| responder     | 10         | True or False        |                                                                            | Support for the EDHOC Responder role                                                                                                                                       | NP   |
+| max_msgsize   | 11         | uint                 |                                                                            | Maximum size of EDHOC messages in bytes                                                                                                                                    | P    |
+| coap_ct       | 12         | True of False        |                                                                            | Mandatory use of the CoAP Content-Format Option in CoAP messages whose payload includes exclusively an EDHOC message, possibly prepended by an EDHOC connection identifier | P    |
+| ep_id_types   | 13         | int or array         | EDHOC Endpoint Identity Types registry                                     | Set of supported types of endpoint identities for EDHOC                                                                                                                    | NP   |
+| transports    | 14         | int or array         | EDHOC Transports registry                                                  | Set of supported means for transporting EDHOC messages                                                                                                                     | NP   |
+| trust_anchors | 15         | map                  | EDHOC Trust Anchor Purposes registry and EDHOC Trust Anchor Types registry | Set of supported trust anchors                                                                                                                                             | NP   |
+{: #table-cbor-key-edhoc-params title="EDHOC_Information Parameters. Types: P (Prescriptive), NP (Non-Prescriptive)" align="center"}
 
 * session\_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and has label 0.
 
@@ -1339,7 +1348,9 @@ The columns of the registry are:
 
 * Registry: The registry that values of the item may come from, if one exists.
 
-* Description: A brief description of this item.
+* Description: A brief description of the item.
+
+* Type: The category of the item, i.e., P if prescriptive or NP if Non-Prescriptive.
 
 * Specification: A pointer to the public specification for the item, if one exists.
 

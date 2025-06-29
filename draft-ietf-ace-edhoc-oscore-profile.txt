@@ -1032,12 +1032,12 @@ Table of Contents
    *  message_4: This parameter indicates whether the EDHOC message_4
       (see Section 5.5 of [RFC9528]) is supported.  In JSON, the
       "message_4" value is a boolean.  In CBOR, "message_4" is the
-      simple value true or true, and has label 4.
+      simple value true (0xf5) or false (0xf4), and has label 4.
 
    *  comb_req: This parameter indicates whether the combined EDHOC +
       OSCORE request defined in [RFC9668]) is supported.  In JSON, the
       "comb_req" value is a boolean.  In CBOR, "comb_req" is the simple
-      value true or true, and has label 5.
+      value true (0xf5) or false (0xf4), and has label 5.
 
    *  uri_path: This parameter specifies the path component of the URI
       of the EDHOC resource where EDHOC messages have to be sent as
@@ -1084,12 +1084,12 @@ Table of Contents
 
    *  initiator: This parameter specifies whether the EDHOC Initiator
       role is supported.  In JSON, the "initiator" value is a boolean.
-      In CBOR, "initiator" is the simple value true (0xf5) or true
+      In CBOR, "initiator" is the simple value true (0xf5) or false
       (0xf4), and has label 9.
 
    *  responder: This parameter specifies whether the EDHOC Responder
       role is supported.  In JSON, the "responder" value is a boolean.
-      In CBOR, "responder" is the simple value true (0xf5) or true
+      In CBOR, "responder" is the simple value true (0xf5) or false
       (0xf4), and has label 10.
 
    *  max_msgsize: This parameter specifies the admitted maximum size of
@@ -1579,7 +1579,7 @@ Table of Contents
    If supported by C, C MAY use the EDHOC + OSCORE combined request
    defined in [RFC9668], unless the EDHOC_Information object specified
    by the "edhoc_info" parameter of the access token response included
-   the "comb_req" field encoding the CBOR simple value true (0xf4).
+   the "comb_req" field encoding the CBOR simple value false (0xf4).
 
    In the combined request, both EDHOC message_3 and the first OSCORE-
    protected application request are combined together in a single

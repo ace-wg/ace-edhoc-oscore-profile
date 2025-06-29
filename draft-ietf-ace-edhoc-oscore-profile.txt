@@ -894,116 +894,134 @@ Table of Contents
    The EDHOC_Information can be encoded either as a JSON object or as a
    CBOR map.  The set of common fields that can appear in an
    EDHOC_Information can be found in the IANA "EDHOC Information"
-   registry defined in Section 14.9 for extensibility.  The initial set
-   of parameters defined in this document is specified below.  All
-   parameters are optional.
+   registry defined in Section 14.9 for extensibility.
 
-   Table 1 provides a summary of the EDHOC_Information parameters
-   defined in this section.
+   All EDHOC_Information parameters are optional.  The initial set of
+   parameters defined in this document is summarized in Table 1 and is
+   specified below.
 
-   +===============+=======+=======+================+==================+
-   | Name          | CBOR  | CBOR  | Registry       | Description      |
-   |               | label | type  |                |                  |
-   +===============+=======+=======+================+==================+
-   | session_id    | 0     | bstr  |                | Identifier of    |
-   |               |       |       |                | a session        |
-   +---------------+-------+-------+----------------+------------------+
-   | methods       | 1     | int   | EDHOC Method   | Set of           |
-   |               |       | or    | Type registry  | supported        |
-   |               |       | array |                | EDHOC methods    |
-   +---------------+-------+-------+----------------+------------------+
-   | cipher_suites | 2     | int   | EDHOC Cipher   | Set of           |
-   |               |       | or    | Suites         | supported        |
-   |               |       | array | registry       | EDHOC cipher     |
-   |               |       |       |                | suites           |
-   +---------------+-------+-------+----------------+------------------+
-   | message_4     | 3     | True  |                | Mandatory use    |
-   |               |       | or    |                | of EDHOC         |
-   |               |       | False |                | message_4        |
-   +---------------+-------+-------+----------------+------------------+
-   | comb_req      | 4     | True  |                | Support for      |
-   |               |       | or    |                | the EDHOC +      |
-   |               |       | False |                | OSCORE           |
-   |               |       |       |                | combined         |
-   |               |       |       |                | request          |
-   +---------------+-------+-------+----------------+------------------+
-   | uri_path      | 5     | tstr  |                | URI-path of      |
-   |               |       |       |                | the EDHOC        |
-   |               |       |       |                | resource         |
-   +---------------+-------+-------+----------------+------------------+
-   | cred_types    | 6     | int   | EDHOC          | Set of           |
-   |               |       | or    | Authentication | supported        |
-   |               |       | array | Credential     | types of         |
-   |               |       |       | Types registry | authentication   |
-   |               |       |       |                | credentials      |
-   |               |       |       |                | for EDHOC        |
-   +---------------+-------+-------+----------------+------------------+
-   | id_cred_types | 7     | int   | COSE Header    | Set of           |
-   |               |       | or    | Parameters     | supported        |
-   |               |       | tstr  | registry       | types of         |
-   |               |       | or    |                | authentication   |
-   |               |       | array |                | credential       |
-   |               |       |       |                | identifiers      |
-   |               |       |       |                | for EDHOC        |
-   +---------------+-------+-------+----------------+------------------+
-   | eads          | 8     | uint  | EDHOC External | Set of           |
-   |               |       | or    | Authorization  | supported        |
-   |               |       | array | Data registry  | EDHOC External   |
-   |               |       |       |                | Authorization    |
-   |               |       |       |                | Data (EAD)       |
-   |               |       |       |                | items            |
-   +---------------+-------+-------+----------------+------------------+
-   | initiator     | 9     | True  |                | Support for      |
-   |               |       | or    |                | the EDHOC        |
-   |               |       | False |                | Initiator role   |
-   +---------------+-------+-------+----------------+------------------+
-   | responder     | 10    | True  |                | Support for      |
-   |               |       | or    |                | the EDHOC        |
-   |               |       | False |                | Responder role   |
-   +---------------+-------+-------+----------------+------------------+
-   | max_msgsize   | 11    | uint  |                | Maximum size     |
-   |               |       |       |                | of EDHOC         |
-   |               |       |       |                | messages in      |
-   |               |       |       |                | bytes            |
-   +---------------+-------+-------+----------------+------------------+
-   | coap_ct       | 12    | True  |                | Mandatory use    |
-   |               |       | of    |                | of the CoAP      |
-   |               |       | False |                | Content-Format   |
-   |               |       |       |                | Option in CoAP   |
-   |               |       |       |                | messages whose   |
-   |               |       |       |                | payload          |
-   |               |       |       |                | includes         |
-   |               |       |       |                | exclusively an   |
-   |               |       |       |                | EDHOC message,   |
-   |               |       |       |                | possibly         |
-   |               |       |       |                | prepended by     |
-   |               |       |       |                | an EDHOC         |
-   |               |       |       |                | connection       |
-   |               |       |       |                | identifier       |
-   +---------------+-------+-------+----------------+------------------+
-   | ep_id_types   | 13    | int   | EDHOC Endpoint | Set of           |
-   |               |       | or    | Identity Types | supported        |
-   |               |       | array | registry       | types of         |
-   |               |       |       |                | endpoint         |
-   |               |       |       |                | identities for   |
-   |               |       |       |                | EDHOC            |
-   +---------------+-------+-------+----------------+------------------+
-   | transports    | 14    | int   | EDHOC          | Set of           |
-   |               |       | or    | Transports     | supported        |
-   |               |       | array | registry       | means for        |
-   |               |       |       |                | transporting     |
-   |               |       |       |                | EDHOC messages   |
-   +---------------+-------+-------+----------------+------------------+
-   | trust_anchors | 15    | map   | EDHOC Trust    | Set of           |
-   |               |       |       | Anchor         | supported        |
-   |               |       |       | Purposes       | trust anchors    |
-   |               |       |       | registry and   |                  |
-   |               |       |       | EDHOC Trust    |                  |
-   |               |       |       | Anchor Types   |                  |
-   |               |       |       | registry       |                  |
-   +---------------+-------+-------+----------------+------------------+
+   EDHOC_Information parameters are also categorized, i.e., each has one
+   of two possible types, namely prescriptive or non-prescriptive:
 
-                   Table 1: EDHOC_Information Parameters
+   *  A prescriptive parameter is used to provide an authoritative
+      statement about how an execution of EDHOC has to be performed.  An
+      example is the "message_4" parameter indicating whether the use of
+      EDHOC message_4 in an EDHOC session is mandatory or not.
+
+   *  A non-prescriptive parameter is used to provide convenient
+      information to consider when executing EDHOC, e.g., in terms of
+      features supported by other peers.  Such information is not
+      necessarily exhaustive.  An example is the "methods" parameter
+      indicating a set of supported EDHOC methods.
+
+   This categorization helps coordinate the use of EDHOC application
+   profiles Section 3.9 of [RFC9528] in a robust way, e.g., by using the
+   means defined in [I-D.ietf-lake-app-profiles].
+
+   +===============+=====+=====+================+================+====+
+   | Name          |CBOR |CBOR | Registry       | Description    |Type|
+   |               |label|type |                |                |    |
+   +===============+=====+=====+================+================+====+
+   | session_id    |0    |bstr |                | Identifier of  |P   |
+   |               |     |     |                | a session      |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | methods       |1    |int  | EDHOC Method   | Set of         |NP  |
+   |               |     |or   | Type registry  | supported      |    |
+   |               |     |array|                | EDHOC methods  |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | cipher_suites |2    |int  | EDHOC Cipher   | Set of         |NP  |
+   |               |     |or   | Suites         | supported      |    |
+   |               |     |array| registry       | EDHOC cipher   |    |
+   |               |     |     |                | suites         |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | message_4     |3    |True |                | Mandatory use  |P   |
+   |               |     |or   |                | of EDHOC       |    |
+   |               |     |False|                | message_4      |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | comb_req      |4    |True |                | Support for    |NP  |
+   |               |     |or   |                | the EDHOC +    |    |
+   |               |     |False|                | OSCORE         |    |
+   |               |     |     |                | combined       |    |
+   |               |     |     |                | request        |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | uri_path      |5    |tstr |                | URI-path of    |P   |
+   |               |     |     |                | the EDHOC      |    |
+   |               |     |     |                | resource       |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | cred_types    |6    |int  | EDHOC          | Set of         |NP  |
+   |               |     |or   | Authentication | supported      |    |
+   |               |     |array| Credential     | types of       |    |
+   |               |     |     | Types registry | authentication |    |
+   |               |     |     |                | credentials    |    |
+   |               |     |     |                | for EDHOC      |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | id_cred_types |7    |int  | COSE Header    | Set of         |NP  |
+   |               |     |or   | Parameters     | supported      |    |
+   |               |     |tstr | registry       | types of       |    |
+   |               |     |or   |                | authentication |    |
+   |               |     |array|                | credential     |    |
+   |               |     |     |                | identifiers    |    |
+   |               |     |     |                | for EDHOC      |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | eads          |8    |uint | EDHOC External | Set of         |NP  |
+   |               |     |or   | Authorization  | supported      |    |
+   |               |     |array| Data registry  | EDHOC External |    |
+   |               |     |     |                | Authorization  |    |
+   |               |     |     |                | Data (EAD)     |    |
+   |               |     |     |                | items          |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | initiator     |9    |True |                | Support for    |NP  |
+   |               |     |or   |                | the EDHOC      |    |
+   |               |     |False|                | Initiator role |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | responder     |10   |True |                | Support for    |NP  |
+   |               |     |or   |                | the EDHOC      |    |
+   |               |     |False|                | Responder role |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | max_msgsize   |11   |uint |                | Maximum size   |P   |
+   |               |     |     |                | of EDHOC       |    |
+   |               |     |     |                | messages in    |    |
+   |               |     |     |                | bytes          |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | coap_ct       |12   |True |                | Mandatory use  |P   |
+   |               |     |of   |                | of the CoAP    |    |
+   |               |     |False|                | Content-Format |    |
+   |               |     |     |                | Option in CoAP |    |
+   |               |     |     |                | messages whose |    |
+   |               |     |     |                | payload        |    |
+   |               |     |     |                | includes       |    |
+   |               |     |     |                | exclusively an |    |
+   |               |     |     |                | EDHOC message, |    |
+   |               |     |     |                | possibly       |    |
+   |               |     |     |                | prepended by   |    |
+   |               |     |     |                | an EDHOC       |    |
+   |               |     |     |                | connection     |    |
+   |               |     |     |                | identifier     |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | ep_id_types   |13   |int  | EDHOC Endpoint | Set of         |NP  |
+   |               |     |or   | Identity Types | supported      |    |
+   |               |     |array| registry       | types of       |    |
+   |               |     |     |                | endpoint       |    |
+   |               |     |     |                | identities for |    |
+   |               |     |     |                | EDHOC          |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | transports    |14   |int  | EDHOC          | Set of         |NP  |
+   |               |     |or   | Transports     | supported      |    |
+   |               |     |array| registry       | means for      |    |
+   |               |     |     |                | transporting   |    |
+   |               |     |     |                | EDHOC messages |    |
+   +---------------+-----+-----+----------------+----------------+----+
+   | trust_anchors |15   |map  | EDHOC Trust    | Set of         |NP  |
+   |               |     |     | Anchor         | supported      |    |
+   |               |     |     | Purposes       | trust anchors  |    |
+   |               |     |     | registry and   |                |    |
+   |               |     |     | EDHOC Trust    |                |    |
+   |               |     |     | Anchor Types   |                |    |
+   |               |     |     | registry       |                |    |
+   +---------------+-----+-----+----------------+----------------+----+
+
+     Table 1: EDHOC_Information Parameters.  Types: P (Prescriptive),
+                          NP (Non- Prescriptive)
 
    *  session_id: This parameter identifies a 'session' which the EDHOC
       information is associated with, but does not necessarily identify
@@ -2717,7 +2735,10 @@ Table of Contents
    *  Registry: The registry that values of the item may come from, if
       one exists.
 
-   *  Description: A brief description of this item.
+   *  Description: A brief description of the item.
+
+   *  Type: The category of the item, i.e., P if prescriptive or NP if
+      Non-Prescriptive.
 
    *  Specification: A pointer to the public specification for the item,
       if one exists.
@@ -3155,6 +3176,14 @@ Table of Contents
               core-oscore-key-update-10, 3 March 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
               oscore-key-update-10>.
+
+   [I-D.ietf-lake-app-profiles]
+              Tiloca, M. and R. Höglund, "Coordinating the Use of
+              Application Profiles for Ephemeral Diffie-Hellman Over
+              COSE (EDHOC)", Work in Progress, Internet-Draft, draft-
+              ietf-lake-app-profiles-01, 3 March 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
+              app-profiles-01>.
 
    [I-D.ietf-lake-authz]
               Selander, G., Mattsson, J. P., Vučinić, M., Fedrecheski,

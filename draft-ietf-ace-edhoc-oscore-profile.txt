@@ -523,8 +523,8 @@ Table of Contents
    AUTH_CRED_C.  This may already have been accomplished, for example,
    by C authenticating to AS using AUTH_CRED_C as authentication
    credential, or by some other trusted party vouching for C to the AS.
-   Alternatively, it is possible to use an approach for demonstrating
-   proof-of-possession similar to Section 3.2 of
+   Alternatively, it is possible to use an approach for achieving proof-
+   of-possession similar to that in Section 3.2 of
    [I-D.ietf-ace-group-oscore-profile].
 
    In case of successful validations, AS stores AUTH_CRED_C as a valid

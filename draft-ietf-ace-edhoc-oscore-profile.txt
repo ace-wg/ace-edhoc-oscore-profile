@@ -486,10 +486,10 @@ Table of Contents
    establish an OSCORE Security Context.
 
    AUTH_CRED_C is specified in the "req_cnf" parameter [RFC9201] of the
-   POST request, either transported by value or uniquely referred to.  A
-   method for AS to ask C to provide its authentication credential
-   AUTH_CRED_C by value in the Access Token Request is defined in
-   [I-D.ietf-ace-workflow-and-params].
+   POST request, either transported by value or uniquely referred to.
+   AS could explicity ask C to provide its authentication credential
+   AUTH_CRED_C by value in the Access Token Request, ,e.g. by relying on
+   the method defined in [I-D.ietf-ace-workflow-and-params].
 
    For AUTH_CRED_C, its authentication credential type MUST be one of
    those supported by EDHOC, e.g., CBOR Web Tokens (CWTs) and CWT Claims
@@ -701,9 +701,10 @@ Table of Contents
    *  A unique identification of the authentication credential of RS,
       AUTH_CRED_RS.  This is specified in the "rs_cnf" parameter defined
       in [RFC9201].  AUTH_CRED_RS can be transported by value or
-      referred to by means of an appropriate identifier.  A method for C
-      to ask AS to provide AUTH_CRED_RS by value in the Access Token
-      Response is defined in [I-D.ietf-ace-workflow-and-params].
+      referred to by means of an appropriate identifier.  C could
+      explicitly ask AS to provide AUTH_CRED_RS by value in the Access
+      Token Response, e.g., by relying on the coordination method
+      defined in [I-D.ietf-ace-workflow-and-params].
 
       When issuing the first access token ever to a pair (C, RS) using a
       pair of corresponding authentication credentials (AUTH_CRED_C,

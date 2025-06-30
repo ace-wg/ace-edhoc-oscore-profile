@@ -1883,6 +1883,18 @@ x5u_ta_type = 35
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
 
+
+## Version -07 to -08 ## {#sec-07-08}
+
+* KUDOS is just an example of protocol to use for optional key update.
+* message_4 is mandatory to support for an RS that supports the reverse message flow.
+* Method in -workflow-and-params as example for coordinating the exchange of authentication credentials by value or reference.
+* Revised initial set of EDHOC_Information parameters.
+* Defined categorization of EDHOC_Information parameters.
+* New EAD item for C to retrieve Request Creation Hints information from RS.
+* Means for the AS to achive proof-of-possession of C's private key.
+* Editorial improvements.
+
 ## Version -06 to -07 ## {#sec-06-07}
 
 * Renamed id_ep_types as ep_id_types.

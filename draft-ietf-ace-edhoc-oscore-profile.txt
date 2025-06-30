@@ -488,8 +488,8 @@ Table of Contents
 
    AUTH_CRED_C is specified in the "req_cnf" parameter [RFC9201] of the
    POST request, either transported by value or uniquely referred to.
-   AS could explicity ask C to provide its authentication credential
-   AUTH_CRED_C by value in the Access Token Request, ,e.g. by relying on
+   AS could explicitly ask C to provide its authentication credential
+   AUTH_CRED_C by value in the Access Token Request, e.g., by relying on
    the method defined in [I-D.ietf-ace-workflow-and-params].
 
    For AUTH_CRED_C, its authentication credential type MUST be one of
@@ -706,8 +706,8 @@ Table of Contents
       in [RFC9201].  AUTH_CRED_RS can be transported by value or
       referred to by means of an appropriate identifier.  C could
       explicitly ask AS to provide AUTH_CRED_RS by value in the Access
-      Token Response, e.g., by relying on the coordination method
-      defined in [I-D.ietf-ace-workflow-and-params].
+      Token Response, e.g., by relying on the method defined in
+      [I-D.ietf-ace-workflow-and-params].
 
       When issuing the first access token ever to a pair (C, RS) using a
       pair of corresponding authentication credentials (AUTH_CRED_C,
@@ -1770,8 +1770,8 @@ Table of Contents
    Security Context but it needs to be updated, e.g., due to a policy
    limiting its use in terms of time or amount of processed data, or to
    the imminent exhaustion of the OSCORE Sender Sequence Number space.
-   In this case, C and RS MAY alternatively attempt run a key update
-   protocol that both supports.  One lightweight example is KUDOS
+   In this case, C and RS MAY alternatively attempt to run a key update
+   protocol that they both support.  One lightweight example is KUDOS
    [I-D.ietf-core-oscore-key-update], which is independent of ACE and
    EDHOC and does not require the uploading of an access token.  If C
    and RS does not support a common key update protocol to use for

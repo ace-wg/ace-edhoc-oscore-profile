@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 31 December 2025                                      M. Tiloca
+Expires: 1 January 2026                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            29 June 2025
+                                                            30 June 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 December 2025.
+   This Internet-Draft will expire on 1 January 2026.
 
 Copyright Notice
 
@@ -1766,11 +1766,13 @@ Table of Contents
    Security Context but it needs to be updated, e.g., due to a policy
    limiting its use in terms of time or amount of processed data, or to
    the imminent exhaustion of the OSCORE Sender Sequence Number space.
-   In this case, C and RS MAY attempt to run the KUDOS key update
-   protocol [I-D.ietf-core-oscore-key-update], which is a lightweight
-   alternative independent of ACE and EDHOC that does not require the
-   uploading of an access token.  If KUDOS is not supported, then C and
-   RS falls back to EDHOC as outlined above.
+   In this case, C and RS MAY alternatively attempt run a key update
+   protocol that both supports.  One lightweight example is KUDOS
+   [I-D.ietf-core-oscore-key-update], which is independent of ACE and
+   EDHOC and does not require the uploading of an access token.  If C
+   and RS does not support a common key update protocol to use for
+   updating their still valid OSCORE Security Context, then C and RS
+   fall back to EDHOC as outlined above.
 
    In either case, C and RS establish a new OSCORE Security Context that
    replaces the old one and will be used for protecting their

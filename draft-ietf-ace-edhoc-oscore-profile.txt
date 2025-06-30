@@ -517,16 +517,18 @@ Table of Contents
    "req_cnf" parameter or some other trusted source.  After that, AS
    validates the actual AUTH_CRED_C.
 
-   In either case, the AS also needs verify that C is in possession of
-   the private key corresponding to the public key associated to
-   AUTH_CRED_C.  This may already have been established, for example, by
-   C authenticating to AS using AUTHCRED_C as authentication credential,
-   or by some other trusted party.
+   In either case, the AS also needs to verify that C is in possession
+   of the private key corresponding to the public key associated with
+   AUTH_CRED_C.  This may already have been accomplished, for example,
+   by C authenticating to AS using AUTH_CRED_C as authentication
+   credential, or by some other trusted party vouching for C to the AS.
+   Alternatively, it is possible to use an approach for demonstrating
+   proof-of-possession similar to Section 3.2 of
+   [I-D.ietf-ace-group-oscore-profile].
 
    In case of successful validations, AS stores AUTH_CRED_C as a valid
    authentication credential.  Otherwise, the Client-to-AS request MUST
-   be declined with the error code "unsupported_pop_key" as defined in
-   Section 5.8.3 of [RFC9200].
+   be declined.
 
    An example of client-to-AS request is shown in Figure 3.  In this
    example, C specifies its own authentication credential by reference,
@@ -3150,6 +3152,16 @@ Table of Contents
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
               07, 3 March 2025, <https://datatracker.ietf.org/doc/html/
               draft-ietf-ace-coap-est-oscore-07>.
+
+   [I-D.ietf-ace-group-oscore-profile]
+              Tiloca, M., Höglund, R., and F. Palombini, "The Group
+              Object Security for Constrained RESTful Environments
+              (Group OSCORE) Profile of the Authentication and
+              Authorization for Constrained Environments (ACE)
+              Framework", Work in Progress, Internet-Draft, draft-ietf-
+              ace-group-oscore-profile-04, 3 March 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
+              group-oscore-profile-04>.
 
    [I-D.ietf-ace-workflow-and-params]
               Tiloca, M. and G. Selander, "Short Distribution Chain

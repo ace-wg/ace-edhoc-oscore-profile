@@ -895,17 +895,18 @@ AS Request Creation Hints may also be requested and retrieved through a new EAD 
 
 ~~~~~~~~~~~ CDDL
 ead_label = TBD
-? ead_value = bstr AS_request_creation_hints
+? ead_value = bstr .cbor AS_request_creation_hints
 
 AS_request_creation_hints : map
 ~~~~~~~~~~~
 {: #fig-ead-rch title="EAD item AS Request Creation Hints."}
 
-The AS_request_creation_hints is a CBOR map with keys defined in Table 1 in {{Section 5.3 of RFC9200}}.
+The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry
+"ACE Authorization Server Request Creation Hints".
 
-This EAD item is intended to be used in EDHOC messages between C to RS; in the forward message flow in EAD_1 and EAD_2, and in the reverse message flow in EAD_2 and EAD_3. In the first EDHOC message from C to RS, an EAD item with ead_label = TBD with no ead_value asks the RS to respond in the next EDHOC message with the same EAD item containing AS Request Creation Hints.
+This EAD item is intended to be used in EAD fields of EDHOC messages exchanged between C to RS: in the forward message flow in EAD_1 and EAD_2, and in the reverse message flow in EAD_2 and EAD_3. In the first EDHOC message from C to RS, an EAD item with ead_label = TBD with no ead_value asks the RS to include in the next EDHOC message the same EAD item with ead_value encoding the AS_request_creation_hints map. This EAD item is non-critical, i.e. it can be ignored by the receiving endpoint. It is OPTIONAL to implement.
 
-Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Hence, the information specified in this EAD item is not expected to include "audience" and "scope". However, since EDHOC message_2 and messages_3 are protected against passive and active attackers, respectively, this allows for information contained in "audience" and "scope" of the AS Request Creation Hints matching the privacy policy of the application.
+Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the "audience" and "scope" of the EAD item with AS Request Creation Hints SHOULD NOT be included in EAD_2.
 
 
 # Secure Communication with AS # {#secure-comm-as}

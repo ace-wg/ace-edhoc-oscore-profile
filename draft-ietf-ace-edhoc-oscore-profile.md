@@ -264,7 +264,7 @@ When receiving an Access Token request including the "req_cnf" parameter, AS che
 
 If this is not the case, AS retrieves AUTH_CRED_C, either using the "req_cnf" parameter or some other trusted source. After that, AS validates the actual AUTH_CRED_C.
 
-In either case, the AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for demonstrating proof-of-possession similar to {{Section 3.2 of I-D.ietf-ace-group-oscore-profile}}.
+In either case, the AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for achieving proof-of-possession similar to that in {{Section 3.2 of I-D.ietf-ace-group-oscore-profile}}.
 
 In case of successful validations, AS stores AUTH_CRED_C as a valid authentication credential. Otherwise, the Client-to-AS request MUST be declined.
 

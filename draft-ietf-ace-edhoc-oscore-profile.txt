@@ -502,7 +502,7 @@ Table of Contents
    an X.509 certificate transported by value or referred to,
    respectively.
 
-   Note that EDHOC does not admit the use of naked COSE_Keys as
+   Note that EDHOC does not admit the use of "naked" COSE_Keys as
    authentication credentials.  The closest admitted authentication
    credential type is a CCS containing a COSE_Key in a "cnf" claim and
    possibly other claims, which can be transported by value using the

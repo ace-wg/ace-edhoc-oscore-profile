@@ -258,7 +258,7 @@ AUTH\_CRED\_C is specified in the "req_cnf" parameter {{RFC9201}} of the POST re
 
 For AUTH_CRED_C, its authentication credential type MUST be one of those supported by EDHOC, e.g., CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC5280}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Consequently, the "req_cnf" parameter MUST specify a confirmation method suitable for the type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is an X.509 certificate transported by value or referred to, respectively.
 
-Note that EDHOC does not admit the use of naked COSE_Keys as authentication credentials. The closest admitted authentication credential type is a CCS containing a COSE_Key in a "cnf" claim and possibly other claims, which can be transported by value using the confirmation method "kccs". Therefore, the "req_cnf" parameter MUST NOT specify the confirmation method "COSE_Key" (CBOR abbreviation: 1).
+Note that EDHOC does not admit the use of "naked" COSE_Keys as authentication credentials. The closest admitted authentication credential type is a CCS containing a COSE_Key in a "cnf" claim and possibly other claims, which can be transported by value using the confirmation method "kccs". Therefore, the "req_cnf" parameter MUST NOT specify the confirmation method "COSE_Key" (CBOR abbreviation: 1).
 
 When receiving an Access Token request including the "req_cnf" parameter, AS checks whether it is already storing the authentication credential of C, namely AUTH_CRED_C, specified in "req_cnf" by value or reference.
 

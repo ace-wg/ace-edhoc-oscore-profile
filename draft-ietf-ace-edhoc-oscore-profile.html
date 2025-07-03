@@ -1282,6 +1282,9 @@ This profile can be used to delegate management of authorization information fro
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.13">
                 <p id="section-toc.1-1.4.2.13.1"><a href="#section-4.13" class="auto internal xref">4.13</a>. <a href="#name-using-as-request-creation-h" class="internal xref">Using AS Request Creation Hints</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.14">
+                <p id="section-toc.1-1.4.2.14.1"><a href="#section-4.14" class="auto internal xref">4.14</a>. <a href="#name-requesting-authentication-c" class="internal xref">Requesting Authentication Credential By Value</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
@@ -1520,8 +1523,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-1.1-8">The authorization information (authz-info) resource refers to the authorization information endpoint as specified in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. The term "claim" is used in this document with the same semantics as in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, i.e., it denotes information carried in the access token or returned from introspection.<a href="#section-1.1-8" class="pilcrow">¶</a></p>
 <p id="section-1.1-9">Concise Binary Object Representation (CBOR) <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span><span>[<a href="#RFC8742" class="cite xref">RFC8742</a>]</span> and Concise Data Definition Language (CDDL) <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> are used in this document. CDDL predefined type names, especially bstr for CBOR byte strings and tstr for CBOR text strings, are used extensively in this document.<a href="#section-1.1-9" class="pilcrow">¶</a></p>
 <p id="section-1.1-10">Examples throughout this document are expressed in CBOR diagnostic notation as defined in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-8" class="relref">Section 8</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8610#appendix-G" class="relref">Appendix G</a> of [<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>. Diagnostic notation comments are often used to provide a textual representation of the numeric parameter names and values.<a href="#section-1.1-10" class="pilcrow">¶</a></p>
-<p id="section-1.1-11">In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 10</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. For example, {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2 : 3}.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
-<p id="section-1.1-12">Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 10</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. Finally, please delete this note.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
+<p id="section-1.1-11">In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 11</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. For example, {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2 : 3}.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
+<p id="section-1.1-12">Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 11</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. Finally, please delete this note.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2712,6 +2715,31 @@ AS_request_creation_hints : map
 "ACE Authorization Server Request Creation Hints".<a href="#section-4.13-9" class="pilcrow">¶</a></p>
 <p id="section-4.13-10">This EAD item is intended to be used in EAD fields of EDHOC messages exchanged between C and RS: in the forward message flow in EAD_1 and EAD_2, and in the reverse message flow in EAD_2 and EAD_3. In the first EDHOC message from C to RS, an EAD item with ead_label = TBD with no ead_value asks the RS to include in the next EDHOC message the same EAD item with ead_value encoding the AS_request_creation_hints map. This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.13-10" class="pilcrow">¶</a></p>
 <p id="section-4.13-11">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS_request_creation_hints map <span class="bcp14">SHOULD NOT</span> include "audience" and "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-11" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="auth-cred-by-value">
+<section id="section-4.14">
+        <h3 id="name-requesting-authentication-c">
+<a href="#section-4.14" class="section-number selfRef">4.14. </a><a href="#name-requesting-authentication-c" class="section-name selfRef">Requesting Authentication Credential By Value</a>
+        </h3>
+<p id="section-4.14-1">EDHOC peers need access to each other's authentication credentials to complete the protocol. However, to reduce unnecessary overhead, the EDHOC protocol enables credential references to be sent instead of authentication credentials. The ACE protocol includes the initial transport of authentication credentials of C and RS and thus matches the use of credential references in EDHOC.<a href="#section-4.14-1" class="pilcrow">¶</a></p>
+<p id="section-4.14-2">However, if one of the parties has erased the other party's authentication credential from its cache, then there should be a way to restore it without requesting a new access token.<a href="#section-4.14-2" class="pilcrow">¶</a></p>
+<p id="section-4.14-3">If the Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This triggers the Initiator to restart the protocol with some other ID_CRED, typically the authentication credential by value thereby resolving the issue.<a href="#section-4.14-3" class="pilcrow">¶</a></p>
+<p id="section-4.14-4">However, in case the Responder sends a credential by reference in message_2, then returning a code 3 error message does not automatically solve the problem. Having aborted the protocol, the Responder has no reliable way to act differently in a following EDHOC session with the same Initiator.<a href="#section-4.14-4" class="pilcrow">¶</a></p>
+<p id="section-4.14-5">In order to remediate this situation, we specify a new EAD item for requesting the peer's authentication credential by value, see <a href="#fig-ead-req-authcred" class="auto internal xref">Figure 10</a>.<a href="#section-4.14-5" class="pilcrow">¶</a></p>
+<span id="name-ead-item-requesting-authent"></span><div id="fig-ead-req-authcred">
+<figure id="figure-10">
+          <div class="lang-CDDL sourcecode" id="section-4.14-6.1">
+<pre>
+ead_label = TBD
+</pre>
+</div>
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<a href="#name-ead-item-requesting-authent" class="selfRef">EAD item Requesting Authentication Credential By Value.</a>
+          </figcaption></figure>
+</div>
+<p id="section-4.14-7">This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the the Initiators's authentication credential by value in ID_CRED_I of message_3.<a href="#section-4.14-7" class="pilcrow">¶</a></p>
+<p id="section-4.14-8">This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.14-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -4974,7 +5002,7 @@ This is relevant in case AS and RS actually require a secure association (e.g., 
       </h2>
 <p id="appendix-C-1">This section is to be removed before publishing as an RFC.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <span id="name-cddl-model-2"></span><div id="fig-cddl-model">
-<figure id="figure-10">
+<figure id="figure-11">
         <div class="alignLeft art-CDDL art-text artwork" id="appendix-C-2.1">
 <pre>
 ; ACE Profiles
@@ -5026,7 +5054,7 @@ x5t_ta_type = 34
 x5u_ta_type = 35
 </pre>
 </div>
-<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
 <a href="#name-cddl-model-2" class="selfRef">CDDL model</a>
         </figcaption></figure>
 </div>

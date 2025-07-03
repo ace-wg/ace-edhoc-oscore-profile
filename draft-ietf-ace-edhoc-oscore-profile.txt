@@ -117,6 +117,7 @@ Table of Contents
      4.11. Authentication Credential Invalidity
      4.12. EDHOC Session Invalidity
      4.13. Using AS Request Creation Hints
+     4.14. Requesting Authentication Credential By Value
    5.  Secure Communication with AS
    6.  CWT Confirmation Methods
      6.1.  Ordered Chain of X.509 Certificates
@@ -300,14 +301,14 @@ Table of Contents
 
    In the CBOR diagnostic notation used in this document, constructs of
    the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME
-   in the CDDL model shown in Figure 10 of Appendix C.  For example,
+   in the CDDL model shown in Figure 11 of Appendix C.  For example,
    {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2
    : 3}.
 
    Note to RFC Editor: Please delete the paragraph immediately preceding
    this note.  Also, in the CBOR diagnostic notation used in this
    document, please replace the constructs of the form e'SOME_NAME' with
-   the value assigned to SOME_NAME in the CDDL model shown in Figure 10
+   the value assigned to SOME_NAME in the CDDL model shown in Figure 11
    of Appendix C.  Finally, please delete this note.
 
 2.  Protocol Overview
@@ -1908,6 +1909,47 @@ Table of Contents
    message_2 is only protected against passive attackers, the
    AS_request_creation_hints map SHOULD NOT include "audience" and
    "scope" when present in the EAD item conveyed in the EAD_2 field.
+
+4.14.  Requesting Authentication Credential By Value
+
+   EDHOC peers need access to each other's authentication credentials to
+   complete the protocol.  However, to reduce unnecessary overhead, the
+   EDHOC protocol enables credential references to be sent instead of
+   authentication credentials.  The ACE protocol includes the initial
+   transport of authentication credentials of C and RS and thus matches
+   the use of credential references in EDHOC.
+
+   However, if one of the parties has erased the other party's
+   authentication credential from its cache, then there should be a way
+   to restore it without requesting a new access token.
+
+   If the Initiator sends a credential by reference in message_3, then
+   Responder may return error code 3, Unknown credential referenced.
+   This triggers the Initiator to restart the protocol with some other
+   ID_CRED, typically the authentication credential by value thereby
+   resolving the issue.
+
+   However, in case the Responder sends a credential by reference in
+   message_2, then returning a code 3 error message does not
+   automatically solve the problem.  Having aborted the protocol, the
+   Responder has no reliable way to act differently in a following EDHOC
+   session with the same Initiator.
+
+   In order to remediate this situation, we specify a new EAD item for
+   requesting the peer's authentication credential by value, see
+   Figure 10.
+
+   ead_label = TBD
+
+     Figure 10: EAD item Requesting Authentication Credential By Value.
+
+   This EAD item has no ead_value.  When present in EAD_1, it requests
+   the Responder's authentication credential by value in ID_CRED_R of
+   message_2.  When present in EAD_2, it requests the the Initiators's
+   authentication credential by value in ID_CRED_I of message_3.
+
+   This EAD item is non-critical, i.e., it can be ignored by the
+   receiving peer.  It is OPTIONAL to implement.
 
 5.  Secure Communication with AS
 
@@ -3703,7 +3745,7 @@ Appendix C.  CDDL Model
    x5t_ta_type = 34
    x5u_ta_type = 35
 
-                           Figure 10: CDDL model
+                           Figure 11: CDDL model
 
 Appendix D.  Document Updates
 

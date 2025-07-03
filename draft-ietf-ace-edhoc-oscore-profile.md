@@ -1913,6 +1913,7 @@ x5u_ta_type = 35
 * Revised initial set of EDHOC_Information parameters.
 * Defined categorization of EDHOC_Information parameters.
 * New EAD item for C to retrieve Request Creation Hints information from RS.
+* New EAD item for requesting authentication credential by value.
 * Means for the AS to achive proof-of-possession of C's private key.
 * Editorial improvements.
 

@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 1 January 2026                                        M. Tiloca
+Expires: 4 January 2026                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            30 June 2025
+                                                             3 July 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 January 2026.
+   This Internet-Draft will expire on 4 January 2026.
 
 Copyright Notice
 
@@ -1905,9 +1905,9 @@ Table of Contents
    application resource, the RS may not know what resource C is
    interested in accessing.  Moreover, such information needs to be
    matched against the privacy policy of the application.  Since EDHOC
-   message_2 is only protected against passive attackers, the "audience"
-   and "scope" of the EAD item with AS Request Creation Hints SHOULD NOT
-   be included in EAD_2.
+   message_2 is only protected against passive attackers, the
+   AS_request_creation_hints map SHOULD NOT include "audience" and
+   "scope" when present in the EAD item conveyed in the EAD_2 field.
 
 5.  Secure Communication with AS
 
@@ -3177,9 +3177,8 @@ Table of Contents
               Dijk, E. and M. Tiloca, "Group Communication for the
               Constrained Application Protocol (CoAP)", Work in
               Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
-              13, 24 February 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-bis-13>.
+              14, 2 July 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-groupcomm-bis-14>.
 
    [I-D.ietf-core-oscore-id-update]
               Höglund, R. and M. Tiloca, "Identifier Update for OSCORE",

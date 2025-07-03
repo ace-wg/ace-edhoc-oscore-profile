@@ -910,6 +910,27 @@ This EAD item is intended to be used in EAD fields of EDHOC messages exchanged b
 Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS_request_creation_hints map SHOULD NOT include "audience" and "scope" when present in the EAD item conveyed in the EAD_2 field.
 
 
+## Requesting Authentication Credential By Value  {#auth-cred-by-value}
+
+EDHOC peers need access to each other's authentication credentials to complete the protocol. However, to reduce unnecessary overhead, the EDHOC protocol enables credential references to be sent instead of authentication credentials. The ACE protocol includes the initial transport of authentication credentials of C and RS and thus matches the use of credential references in EDHOC.
+
+However, if one of the parties has erased the other party's authentication credential from its cache, then there should be a way to restore it without requesting a new access token.
+
+If the Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This triggers the Initiator to restart the protocol with some other ID_CRED, typically the authentication credential by value thereby resolving the issue.
+
+However, in case the Responder sends a credential by reference in message_2, then returning a code 3 error message does not automatically solve the problem. Having aborted the protocol, the Responder has no reliable way to act differently in a following EDHOC session with the same Initiator.
+
+In order to remediate this situation, we specify a new EAD item for requesting the peer's authentication credential by value, see {{fig-ead-req-authcred}}.
+
+~~~~~~~~~~~ CDDL
+ead_label = TBD
+~~~~~~~~~~~
+{: #fig-ead-req-authcred title="EAD item Requesting Authentication Credential By Value."}
+
+This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the the Initiators's authentication credential by value in ID_CRED_I of message_3.
+
+This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
+
 # Secure Communication with AS # {#secure-comm-as}
 
 As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicates via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED. Other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} (such as HTTP and DTLS {{RFC9147}} or TLS {{RFC8446}}) MAY be used instead.

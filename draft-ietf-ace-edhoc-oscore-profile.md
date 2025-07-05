@@ -1086,6 +1086,8 @@ OSCORE is designed to secure point-to-point communication, providing a secure bi
 
 When using this profile, it is RECOMMENDED that RS stores only one access token per client. The use of multiple access tokens for a single client increases the strain on RS, since it must consider every access token associated with the client and calculate the actual permissions that client has. Also, access tokens indicating different or disjoint permissions from each other may lead RS to enforce wrong permissions.  If one of the access tokens expires earlier than others, the resulting permissions may offer insufficient protection. Developers SHOULD avoid using multiple access tokens for a same client. Furthermore, RS MUST NOT store more than one access token per client per PoP-key (i.e., per client's authentication credential).
 
+This profile defines confirmation methods "kcwt" and "kccs" corresponding to the use of CBOR Web Token (CWT) and CWT Claims Set (CCS), respectively. Security considerations of CWT and CCS, and of COSE header parameters "kcwt" and "kccs" are given in {{Section 9.8 of RFC9528}}, and apply also to confirmation methods. In particular, the contents of the CWT or CCS must be processed as untrusted input. The application needs to define a trust-establishment mechanism and identify the relevant trust anchors.
+
 # Privacy Considerations
 
 This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}. Thus, the general privacy considerations from the ACE framework also apply to this profile.

@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 4 January 2026                                        M. Tiloca
+Expires: 6 January 2026                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                             3 July 2025
+                                                             5 July 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 January 2026.
+   This Internet-Draft will expire on 6 January 2026.
 
 Copyright Notice
 
@@ -2300,6 +2300,15 @@ Table of Contents
    a same client.  Furthermore, RS MUST NOT store more than one access
    token per client per PoP-key (i.e., per client's authentication
    credential).
+
+   This profile defines confirmation methods "kcwt" and "kccs"
+   corresponding to the use of CBOR Web Token (CWT) and CWT Claims Set
+   (CCS), respectively.  Security considerations of CWT and CCS, and of
+   COSE header parameters "kcwt" and "kccs" are given in Section 9.8 of
+   [RFC9528], and apply also to confirmation methods.  In particular,
+   the contents of the CWT or CCS must be processed as untrusted input.
+   The application needs to define a trust-establishment mechanism and
+   identify the relevant trust anchors.
 
 13.  Privacy Considerations
 

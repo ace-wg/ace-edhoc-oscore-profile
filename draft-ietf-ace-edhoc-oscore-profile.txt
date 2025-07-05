@@ -1551,13 +1551,19 @@ Table of Contents
       session identifier SESSION_ID specified in the EAD item and with
       the AUTH_CRED_C used in the EDHOC session is valid.
 
-      The validation follows the procedure specified in Section 4.6.2.
-      If such validation fails, RS MUST reply to C with an EDHOC error
-      message with ERR_CODE = 1 (see Section 6 of [RFC9528]) and it MUST
-      abort the EDHOC session.
+   Note that in this case C uploads the Access Token or session ID
+   before RS is authenticated, since C will not learn about the identity
+   of RS until having verified message_3.  In particular, in the case of
+   a group-audience, when there may be multiple legitimate RS, C does
+   not yet know which group member it communicates with (if any).
 
-      Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE =
-      3 "Access Denied" defined in draft-ietf-lake-authz
+   The validation follows the procedure specified in Section 4.6.2.  If
+   such validation fails, RS MUST reply to C with an EDHOC error message
+   with ERR_CODE = 1 (see Section 6 of [RFC9528]) and it MUST abort the
+   EDHOC session.
+
+   Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3
+   "Access Denied" defined in draft-ietf-lake-authz
 
 4.4.4.  EDHOC message_3
 

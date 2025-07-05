@@ -2479,12 +2479,11 @@ Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Den
 </li>
             <li class="normal" id="section-4.4.3-2.2">
               <p id="section-4.4.3-2.2.1">If the EAD_2 field includes the EAD item EAD_ACCESS_TOKEN, then RS <span class="bcp14">MUST</span> ensure that the access token specified in the EAD item is valid. If the EAD_2 field includes the EAD item EAD_SESSION_ID, then RS <span class="bcp14">MUST</span> ensure that the access token associated with the session identifier SESSION_ID specified in the EAD item and with the AUTH_CRED_C used in the EDHOC session is valid.<a href="#section-4.4.3-2.2.1" class="pilcrow">¶</a></p>
-<p id="section-4.4.3-2.2.2">
-The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.3-2.2.2" class="pilcrow">¶</a></p>
-<p id="section-4.4.3-2.2.3">
-Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.3-2.2.3" class="pilcrow">¶</a></p>
 </li>
           </ul>
+<p id="section-4.4.3-3">Note that in this case C uploads the Access Token or session ID before RS is authenticated, since C will not learn about the identity of RS until having verified message_3. In particular, in the case of a group-audience, when there may be multiple legitimate RS, C does not yet know which group member it communicates with (if any).<a href="#section-4.4.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.4.3-4">The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.3-4" class="pilcrow">¶</a></p>
+<p id="section-4.4.3-5">Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="edhoc-message3-1">

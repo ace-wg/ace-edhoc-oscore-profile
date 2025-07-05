@@ -736,6 +736,8 @@ The processing of EDHOC message\_2 is specified in {{Section 5.3 of RFC9528}}, w
 
 * If the EAD\_2 field includes the EAD item EAD\_ACCESS\_TOKEN, then RS MUST ensure that the access token specified in the EAD item is valid. If the EAD\_2 field includes the EAD item EAD\_SESSION\_ID, then RS MUST ensure that the access token associated with the session identifier SESSION\_ID specified in the EAD item and with the AUTH\_CRED\_C used in the EDHOC session is valid.
 
+Note that in this case C uploads the Access Token or session ID before RS is authenticated, since C will not learn about the identity of RS until having verified message_3. In particular, in the case of a group-audience, when there may be multiple legitimate RS, C does not yet know which group member it communicates with (if any).
+
   The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the EDHOC session.
 
   Editor's note: Instead of ERR\_CODE = 1, consider to use ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz

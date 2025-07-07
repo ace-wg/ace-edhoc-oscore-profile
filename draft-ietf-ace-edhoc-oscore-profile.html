@@ -1054,7 +1054,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 6 January 2026</td>
+<td class="center">Expires 8 January 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-07-05" class="published">5 July 2025</time>
+<time datetime="2025-07-07" class="published">7 July 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-01-06">6 January 2026</time></dd>
+<dd class="expires"><time datetime="2026-01-08">8 January 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 6 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 8 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2481,7 +2481,7 @@ Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Den
               <p id="section-4.4.3-2.2.1">If the EAD_2 field includes the EAD item EAD_ACCESS_TOKEN, then RS <span class="bcp14">MUST</span> ensure that the access token specified in the EAD item is valid. If the EAD_2 field includes the EAD item EAD_SESSION_ID, then RS <span class="bcp14">MUST</span> ensure that the access token associated with the session identifier SESSION_ID specified in the EAD item and with the AUTH_CRED_C used in the EDHOC session is valid.<a href="#section-4.4.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-4.4.3-3">Note that in this case C uploads the Access Token or session ID before RS is authenticated, since C will not learn about the identity of RS until having verified message_3. In particular, in the case of a group-audience, when there may be multiple legitimate RS, C does not yet know which group member it communicates with (if any).<a href="#section-4.4.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.4.3-3">Note that in this case C uploads the Access Token or session ID before RS is authenticated, since C will not learn about the identity of RS until having verified message_3. In particular, in the case of a group-audience, when there may be multiple legitimate RS, C does not yet know which member of the group-audience it communicates with (if any).<a href="#section-4.4.3-3" class="pilcrow">¶</a></p>
 <p id="section-4.4.3-4">The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.3-4" class="pilcrow">¶</a></p>
 <p id="section-4.4.3-5">Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.3-5" class="pilcrow">¶</a></p>
 </section>
@@ -2722,13 +2722,12 @@ AS_request_creation_hints : map
 <a href="#section-4.14" class="section-number selfRef">4.14. </a><a href="#name-requesting-authentication-c" class="section-name selfRef">Requesting Authentication Credential By Value</a>
         </h3>
 <p id="section-4.14-1">EDHOC peers need access to each other's authentication credentials to complete the protocol. However, to reduce unnecessary overhead, the EDHOC protocol enables credential references to be sent instead of authentication credentials. The ACE protocol includes the initial transport of authentication credentials of C and RS and thus matches the use of credential references in EDHOC.<a href="#section-4.14-1" class="pilcrow">¶</a></p>
-<p id="section-4.14-2">However, if one of the parties has erased the other party's authentication credential from its cache, then there should be a way to restore it without requesting a new access token.<a href="#section-4.14-2" class="pilcrow">¶</a></p>
-<p id="section-4.14-3">If the Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This triggers the Initiator to restart the protocol with some other ID_CRED, typically the authentication credential by value thereby resolving the issue.<a href="#section-4.14-3" class="pilcrow">¶</a></p>
-<p id="section-4.14-4">However, in case the Responder sends a credential by reference in message_2, then returning a code 3 error message does not automatically solve the problem. Having aborted the protocol, the Responder has no reliable way to act differently in a following EDHOC session with the same Initiator.<a href="#section-4.14-4" class="pilcrow">¶</a></p>
-<p id="section-4.14-5">In order to remediate this situation, we specify a new EAD item for requesting the peer's authentication credential by value, see <a href="#fig-ead-req-authcred" class="auto internal xref">Figure 10</a>.<a href="#section-4.14-5" class="pilcrow">¶</a></p>
+<p id="section-4.14-2">However, if one of the parties has deleted the other party's authentication credential from its local storage, then there should be a way to restore it without requesting a new access token.<a href="#section-4.14-2" class="pilcrow">¶</a></p>
+<p id="section-4.14-3">Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This enables the Initiator to restart the protocol using some other ID_CRED, typically the authentication credential by value thereby resolving the issue. However, in case the ACE Resource Server / EDHOC Responder sends a credential by reference in message_2, then returning a code 3 EDHOC error message does not automatically solve the problem. Having aborted the protocol, the Responder has no reliable way to act differently in a following EDHOC session since it never authenticated the Initiator.<a href="#section-4.14-3" class="pilcrow">¶</a></p>
+<p id="section-4.14-4">In order to remediate this situation, this section specifies a new EAD item for requesting the peer's authentication credential by value, see <a href="#fig-ead-req-authcred" class="auto internal xref">Figure 10</a>.<a href="#section-4.14-4" class="pilcrow">¶</a></p>
 <span id="name-ead-item-requesting-authent"></span><div id="fig-ead-req-authcred">
 <figure id="figure-10">
-          <div class="lang-CDDL sourcecode" id="section-4.14-6.1">
+          <div class="lang-CDDL sourcecode" id="section-4.14-5.1">
 <pre>
 ead_label = TBD
 </pre>
@@ -2737,8 +2736,17 @@ ead_label = TBD
 <a href="#name-ead-item-requesting-authent" class="selfRef">EAD item Requesting Authentication Credential By Value.</a>
           </figcaption></figure>
 </div>
-<p id="section-4.14-7">This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the the Initiators's authentication credential by value in ID_CRED_I of message_3.<a href="#section-4.14-7" class="pilcrow">¶</a></p>
-<p id="section-4.14-8">This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.14-8" class="pilcrow">¶</a></p>
+<p id="section-4.14-6">This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.14-6" class="pilcrow">¶</a></p>
+<p id="section-4.14-7">Also in the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value.<a href="#section-4.14-7" class="pilcrow">¶</a></p>
+<p id="section-4.14-8">Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by the use of the EAD item.<a href="#section-4.14-8" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.14-9.1">
+            <p id="section-4.14-9.1.1">In case the ACE Client / EDHOC Responder sends a credential by reference in message_2 and receives a code 3 error message, then it can trigger a new EDHOC session and send credential by value this time.<a href="#section-4.14-9.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.14-9.2">
+            <p id="section-4.14-9.2.1">In case the ACE Resource Server / EDHOC Initiator sends a credential by reference in message_3 and receives a code 3 error message, then since the RS has authenticated C, it can store the authentication credential of C, and in the next session with C, the RS can send its credential by value.<a href="#section-4.14-9.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 </section>
@@ -3132,7 +3140,7 @@ ead_label = TBD
 <p id="section-12-4">Furthermore, RS achieves confirmation that C has PRK_out (proof-of-possession) when completing the EDHOC session. Instead, C achieves confirmation that RS has PRK_out (proof-of-possession) either when receiving the optional EDHOC message_4 from RS, or when successfully verifying a response from RS protected with the established OSCORE Security Context.<a href="#section-12-4" class="pilcrow">¶</a></p>
 <p id="section-12-5">OSCORE is designed to secure point-to-point communication, providing a secure binding between a request and the corresponding response(s). Thus, the basic OSCORE protocol is not intended for use in point-to-multipoint communication (e.g., enforced via multicast or a publish-subscribe model). Implementers of this profile should make sure that their use case of OSCORE corresponds to the expected one, in order to prevent weakening the security assurances provided by OSCORE.<a href="#section-12-5" class="pilcrow">¶</a></p>
 <p id="section-12-6">When using this profile, it is <span class="bcp14">RECOMMENDED</span> that RS stores only one access token per client. The use of multiple access tokens for a single client increases the strain on RS, since it must consider every access token associated with the client and calculate the actual permissions that client has. Also, access tokens indicating different or disjoint permissions from each other may lead RS to enforce wrong permissions.  If one of the access tokens expires earlier than others, the resulting permissions may offer insufficient protection. Developers <span class="bcp14">SHOULD</span> avoid using multiple access tokens for a same client. Furthermore, RS <span class="bcp14">MUST NOT</span> store more than one access token per client per PoP-key (i.e., per client's authentication credential).<a href="#section-12-6" class="pilcrow">¶</a></p>
-<p id="section-12-7">This profile defines confirmation methods "kcwt" and "kccs" corresponding to the use of CBOR Web Token (CWT) and CWT Claims Set (CCS), respectively. Security considerations of CWT and CCS, and of COSE header parameters "kcwt" and "kccs" are given in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-9.8" class="relref">Section 9.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, and apply also to confirmation methods. In particular, the contents of the CWT or CCS must be processed as untrusted input. The application needs to define a trust-establishment mechanism and identify the relevant trust anchors.<a href="#section-12-7" class="pilcrow">¶</a></p>
+<p id="section-12-7">This profile defines the confirmation methods "kcwt" and "kccs" corresponding to the use of CBOR Web Tokens (CWTs) and CWT Claims Set (CCSs), respectively. Security considerations of CWTs and CCSs, and of COSE header parameters "kcwt" and "kccs" are given in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-9.8" class="relref">Section 9.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, and apply also to confirmation methods. In particular, the contents of the CWT or CCS must be processed as untrusted input. The application needs to define a trust-establishment mechanism and identify the relevant trust anchors.<a href="#section-12-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="privacy-considerations">

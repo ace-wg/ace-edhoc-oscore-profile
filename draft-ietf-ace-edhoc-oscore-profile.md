@@ -736,7 +736,7 @@ The processing of EDHOC message\_2 is specified in {{Section 5.3 of RFC9528}}, w
 
 * If the EAD\_2 field includes the EAD item EAD\_ACCESS\_TOKEN, then RS MUST ensure that the access token specified in the EAD item is valid. If the EAD\_2 field includes the EAD item EAD\_SESSION\_ID, then RS MUST ensure that the access token associated with the session identifier SESSION\_ID specified in the EAD item and with the AUTH\_CRED\_C used in the EDHOC session is valid.
 
-Note that in this case C uploads the Access Token or session ID before RS is authenticated, since C will not learn about the identity of RS until having verified message_3. In particular, in the case of a group-audience, when there may be multiple legitimate RS, C does not yet know which group member it communicates with (if any).
+Note that in this case C uploads the Access Token or session ID before RS is authenticated, since C will not learn about the identity of RS until having verified message_3. In particular, in the case of a group-audience, when there may be multiple legitimate RS, C does not yet know which member of the group-audience it communicates with (if any).
 
   The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the EDHOC session.
 
@@ -916,22 +916,26 @@ Since C has not made an actual request targeting a specific application resource
 
 EDHOC peers need access to each other's authentication credentials to complete the protocol. However, to reduce unnecessary overhead, the EDHOC protocol enables credential references to be sent instead of authentication credentials. The ACE protocol includes the initial transport of authentication credentials of C and RS and thus matches the use of credential references in EDHOC.
 
-However, if one of the parties has erased the other party's authentication credential from its cache, then there should be a way to restore it without requesting a new access token.
+However, if one of the parties has deleted the other party's authentication credential from its local storage, then there should be a way to restore it without requesting a new access token.
 
-If the Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This triggers the Initiator to restart the protocol with some other ID_CRED, typically the authentication credential by value thereby resolving the issue.
+Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This enables the Initiator to restart the protocol using some other ID_CRED, typically the authentication credential by value thereby resolving the issue. However, in case the ACE Resource Server / EDHOC Responder sends a credential by reference in message_2, then returning a code 3 EDHOC error message does not automatically solve the problem. Having aborted the protocol, the Responder has no reliable way to act differently in a following EDHOC session since it never authenticated the Initiator.
 
-However, in case the Responder sends a credential by reference in message_2, then returning a code 3 error message does not automatically solve the problem. Having aborted the protocol, the Responder has no reliable way to act differently in a following EDHOC session with the same Initiator.
-
-In order to remediate this situation, we specify a new EAD item for requesting the peer's authentication credential by value, see {{fig-ead-req-authcred}}.
+In order to remediate this situation, this section specifies a new EAD item for requesting the peer's authentication credential by value, see {{fig-ead-req-authcred}}.
 
 ~~~~~~~~~~~ CDDL
 ead_label = TBD
 ~~~~~~~~~~~
 {: #fig-ead-req-authcred title="EAD item Requesting Authentication Credential By Value."}
 
-This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the the Initiators's authentication credential by value in ID_CRED_I of message_3.
+This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
 
-This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
+Also in the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value.
+
+Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by the use of the EAD item.
+
+* In case the ACE Client / EDHOC Responder sends a credential by reference in message_2 and receives a code 3 error message, then it can trigger a new EDHOC session and send credential by value this time.
+
+* In case the ACE Resource Server / EDHOC Initiator sends a credential by reference in message_3 and receives a code 3 error message, then since the RS has authenticated C, it can store the authentication credential of C, and in the next session with C, the RS can send its credential by value.
 
 # Secure Communication with AS # {#secure-comm-as}
 
@@ -1088,7 +1092,7 @@ OSCORE is designed to secure point-to-point communication, providing a secure bi
 
 When using this profile, it is RECOMMENDED that RS stores only one access token per client. The use of multiple access tokens for a single client increases the strain on RS, since it must consider every access token associated with the client and calculate the actual permissions that client has. Also, access tokens indicating different or disjoint permissions from each other may lead RS to enforce wrong permissions.  If one of the access tokens expires earlier than others, the resulting permissions may offer insufficient protection. Developers SHOULD avoid using multiple access tokens for a same client. Furthermore, RS MUST NOT store more than one access token per client per PoP-key (i.e., per client's authentication credential).
 
-This profile defines confirmation methods "kcwt" and "kccs" corresponding to the use of CBOR Web Token (CWT) and CWT Claims Set (CCS), respectively. Security considerations of CWT and CCS, and of COSE header parameters "kcwt" and "kccs" are given in {{Section 9.8 of RFC9528}}, and apply also to confirmation methods. In particular, the contents of the CWT or CCS must be processed as untrusted input. The application needs to define a trust-establishment mechanism and identify the relevant trust anchors.
+This profile defines the confirmation methods "kcwt" and "kccs" corresponding to the use of CBOR Web Tokens (CWTs) and CWT Claims Set (CCSs), respectively. Security considerations of CWTs and CCSs, and of COSE header parameters "kcwt" and "kccs" are given in {{Section 9.8 of RFC9528}}, and apply also to confirmation methods. In particular, the contents of the CWT or CCS must be processed as untrusted input. The application needs to define a trust-establishment mechanism and identify the relevant trust anchors.
 
 # Privacy Considerations
 

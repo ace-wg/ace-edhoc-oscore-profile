@@ -171,14 +171,15 @@ Table of Contents
    Appendix B.  Profile Requirements
    Appendix C.  CDDL Model
    Appendix D.  Document Updates
-     D.1.  Version -07 to -08
-     D.2.  Version -06 to -07
-     D.3.  Version -05 to -06
-     D.4.  Version -04 to -05
-     D.5.  Version -03 to -04
-     D.6.  Version -02 to -03
-     D.7.  Version -01 to -02
-     D.8.  Version -00 to -01
+     D.1.  Version -08 to -09
+     D.2.  Version -07 to -08
+     D.3.  Version -06 to -07
+     D.4.  Version -05 to -06
+     D.5.  Version -04 to -05
+     D.6.  Version -03 to -04
+     D.7.  Version -02 to -03
+     D.8.  Version -01 to -02
+     D.9.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -3791,7 +3792,11 @@ Appendix D.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-D.1.  Version -07 to -08
+D.1.  Version -08 to -09
+
+   *  Clarification about content of "cnf" claim in the access token.
+
+D.2.  Version -07 to -08
 
    *  KUDOS is just an example of protocol to use for optional key
       update.
@@ -3813,11 +3818,9 @@ D.1.  Version -07 to -08
 
    *  Means for the AS to achive proof-of-possession of C's private key.
 
-   *  Clarification about content of "cnf" claim in the access token.
-
    *  Editorial improvements.
 
-D.2.  Version -06 to -07
+D.3.  Version -06 to -07
 
    *  Renamed id_ep_types as ep_id_types.
 
@@ -3864,7 +3867,7 @@ D.2.  Version -06 to -07
 
    *  Clarifications and editorial improvements.
 
-D.3.  Version -05 to -06
+D.4.  Version -05 to -06
 
    *  The access token can be uploaded through EDHOC in EAD_3, EAD_2, or
       EAD_4.
@@ -3885,7 +3888,7 @@ D.3.  Version -05 to -06
 
    *  Clarifications and editorial improvements.
 
-D.4.  Version -04 to -05
+D.5.  Version -04 to -05
 
    *  CBOR diagnostic notation uses placeholders from a CDDL model.
 
@@ -3905,7 +3908,7 @@ D.4.  Version -04 to -05
 
    *  Editorial fixes and improvements.
 
-D.5.  Version -03 to -04
+D.6.  Version -03 to -04
 
    *  Fixed column name and prefilling of the "EDHOC Information"
       registry.
@@ -3924,7 +3927,7 @@ D.5.  Version -03 to -04
 
    *  Editorial fixes and improvements.
 
-D.6.  Version -02 to -03
+D.7.  Version -02 to -03
 
    *  Restructured presentation of content.
 
@@ -3940,7 +3943,7 @@ D.6.  Version -02 to -03
 
    *  Clarifications and editorial improvements.
 
-D.7.  Version -01 to -02
+D.8.  Version -01 to -02
 
    *  Removed use of EDHOC_KeyUpdate.
 
@@ -3954,7 +3957,7 @@ D.7.  Version -01 to -02
 
    *  Editorial improvements.
 
-D.8.  Version -00 to -01
+D.9.  Version -00 to -01
 
    *  Fixed semantics of the ead_value for transporting an Access Token
       in the EAD_1 field.

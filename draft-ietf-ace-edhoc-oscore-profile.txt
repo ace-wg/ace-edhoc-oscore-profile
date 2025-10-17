@@ -1429,6 +1429,15 @@ Table of Contents
    EDHOC_Information object, C assumes the target resource at RS to be
    the well-known EDHOC resource at the path /.well-known/edhoc.
 
+   In this profile of ACE, RS MUST implement the CoAP Uri-Path-Abbrev
+   Option specified in [I-D.ietf-core-uri-path-abbrev] and MUST
+   understand the corresponding Uri-Path-Abbrev value 2 that abbreviates
+   the path /.well-known/edhoc.  While there is no equivalent
+   requirement for C, the above ensures that C can possibly use the CoAP
+   Uri-Path-Abbrev Option when sending an EDHOC message that targets the
+   well-known EDHOC resource at the path /.well-known/edhoc, being sure
+   that the option and its value are going to be understood by RS.
+
    RS has to ensure that no requests can be performed on an EDHOC
    resource other than for running the EDHOC protocol.  Specifically, it
    SHOULD NOT be possible to perform any other operation than POST on an
@@ -3077,6 +3086,13 @@ Table of Contents
               <https://www.iana.org/assignments/cose/cose.xhtml#header-
               parameters>.
 
+   [I-D.ietf-core-uri-path-abbrev]
+              Amsüss, C. and M. Richardson, "URI-Path abbreviation in
+              CoAP", Work in Progress, Internet-Draft, draft-ietf-core-
+              uri-path-abbrev-01, 26 September 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              uri-path-abbrev-01>.
+
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
@@ -3795,6 +3811,9 @@ Appendix D.  Document Updates
 D.1.  Version -08 to -09
 
    *  Clarification about content of "cnf" claim in the access token.
+
+   *  RS must support the CoAP Uri-Path-Abbrev Option and its value
+      abbreviating /.well-known/edhoc.
 
 D.2.  Version -07 to -08
 

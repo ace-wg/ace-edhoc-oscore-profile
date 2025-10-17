@@ -372,6 +372,8 @@ When issuing the first access token of a token series, AS MUST include the follo
 
    For AUTH_CRED_RS, its authentication credential type MUST be one of those supported by EDHOC. Consequently, the "rs\_cnf" parameter MUST specify a confirmation method suitable for the type of AUTH_CRED_RS. That is, the same considerations about AUTH_CRED_C and the "req_cnf" parameter made in {{c-as}} hold for AUTH_CRED_RS and the "rs\_cnf" parameter.
 
+When issuing any access token of a token series, the response from AS MUST NOT include the "cnf" parameter.
+
 When issuing an access token for dynamically updating access rights (i.e., the access token is not the first in its token series), the response from AS MUST NOT include the "edhoc\_info" and "rs\_cnf" parameters (see {{update-access-rights-c-as}}).
 
 {{fig-token-response}} shows an example of an AS response. The "rs_cnf" parameter specifies the authentication credential of RS, as an X.509 certificate transported by value in the "x5chain" field. The access token and the authentication credential of RS have been truncated for readability.
@@ -1918,6 +1920,8 @@ x5u_ta_type = 35
 {:removeinrfc}
 
 ## Version -08 to -09 ## {#sec-08-09}
+
+* Parameter "cnf" explicitly forbidden in the Access Token Response.
 
 * Clarification about content of "cnf" claim in the access token.
 

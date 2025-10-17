@@ -727,6 +727,9 @@ Table of Contents
       and the "req_cnf" parameter made in Section 3.1 hold for
       AUTH_CRED_RS and the "rs_cnf" parameter.
 
+   When issuing any access token of a token series, the response from AS
+   MUST NOT include the "cnf" parameter.
+
    When issuing an access token for dynamically updating access rights
    (i.e., the access token is not the first in its token series), the
    response from AS MUST NOT include the "edhoc_info" and "rs_cnf"
@@ -3809,6 +3812,8 @@ Appendix D.  Document Updates
    This section is to be removed before publishing as an RFC.
 
 D.1.  Version -08 to -09
+
+   *  Parameter "cnf" explicitly forbidden in the Access Token Response.
 
    *  Clarification about content of "cnf" claim in the access token.
 

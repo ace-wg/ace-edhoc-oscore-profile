@@ -1863,11 +1863,12 @@ When later issuing further access tokens to the same pair (C, RS) using the same
 For AUTH_CRED_RS, its authentication credential type <span class="bcp14">MUST</span> be one of those supported by EDHOC. Consequently, the "rs_cnf" parameter <span class="bcp14">MUST</span> specify a confirmation method suitable for the type of AUTH_CRED_RS. That is, the same considerations about AUTH_CRED_C and the "req_cnf" parameter made in <a href="#c-as" class="auto internal xref">Section 3.1</a> hold for AUTH_CRED_RS and the "rs_cnf" parameter.<a href="#section-3.3-7.2.4" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.3-8">When issuing an access token for dynamically updating access rights (i.e., the access token is not the first in its token series), the response from AS <span class="bcp14">MUST NOT</span> include the "edhoc_info" and "rs_cnf" parameters (see <a href="#update-access-rights-c-as" class="auto internal xref">Section 3.3.3</a>).<a href="#section-3.3-8" class="pilcrow">¶</a></p>
-<p id="section-3.3-9"><a href="#fig-token-response" class="auto internal xref">Figure 5</a> shows an example of an AS response. The "rs_cnf" parameter specifies the authentication credential of RS, as an X.509 certificate transported by value in the "x5chain" field. The access token and the authentication credential of RS have been truncated for readability.<a href="#section-3.3-9" class="pilcrow">¶</a></p>
+<p id="section-3.3-8">When issuing any access token of a token series, the response from AS <span class="bcp14">MUST NOT</span> include the "cnf" parameter.<a href="#section-3.3-8" class="pilcrow">¶</a></p>
+<p id="section-3.3-9">When issuing an access token for dynamically updating access rights (i.e., the access token is not the first in its token series), the response from AS <span class="bcp14">MUST NOT</span> include the "edhoc_info" and "rs_cnf" parameters (see <a href="#update-access-rights-c-as" class="auto internal xref">Section 3.3.3</a>).<a href="#section-3.3-9" class="pilcrow">¶</a></p>
+<p id="section-3.3-10"><a href="#fig-token-response" class="auto internal xref">Figure 5</a> shows an example of an AS response. The "rs_cnf" parameter specifies the authentication credential of RS, as an X.509 certificate transported by value in the "x5chain" field. The access token and the authentication credential of RS have been truncated for readability.<a href="#section-3.3-10" class="pilcrow">¶</a></p>
 <span id="name-example-of-as-to-c-access-t"></span><div id="fig-token-response">
 <figure id="figure-5">
-          <div class="alignLeft art-text artwork" id="section-3.3-10.1">
+          <div class="alignLeft art-text artwork" id="section-3.3-11.1">
 <pre>
    Header: Created (Code=2.01)
       Content-Format: application/ace+cbor
@@ -5091,10 +5092,13 @@ x5u_ta_type = 35
         </h3>
 <ul class="normal">
 <li class="normal" id="appendix-D.1-1.1">
-            <p id="appendix-D.1-1.1.1">Clarification about content of "cnf" claim in the access token.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.1.1">Parameter "cnf" explicitly forbidden in the Access Token Response.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.2">
-            <p id="appendix-D.1-1.2.1">RS must support the CoAP Uri-Path-Abbrev Option and its value abbreviating /.well-known/edhoc.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.2.1">Clarification about content of "cnf" claim in the access token.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.3">
+            <p id="appendix-D.1-1.3.1">RS must support the CoAP Uri-Path-Abbrev Option and its value abbreviating /.well-known/edhoc.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

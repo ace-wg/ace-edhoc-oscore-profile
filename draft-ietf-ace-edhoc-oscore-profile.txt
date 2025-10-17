@@ -1433,10 +1433,10 @@ Table of Contents
    Option specified in [I-D.ietf-core-uri-path-abbrev] and MUST
    understand the corresponding Uri-Path-Abbrev value 2 that abbreviates
    the path /.well-known/edhoc.  While there is no equivalent
-   requirement for C, the above ensures that C can possibly use the CoAP
-   Uri-Path-Abbrev Option when sending an EDHOC message that targets the
-   well-known EDHOC resource at the path /.well-known/edhoc, being sure
-   that the option and its value are going to be understood by RS.
+   requirement for C, the above ensures that the CoAP Uri-Path-Abbrev
+   Option and its value are going to be understood by RS, if C includes
+   the Option in a CoAP request that carries an EDHOC message and
+   targets the well-known EDHOC resource at the path /.well-known/edhoc.
 
    RS has to ensure that no requests can be performed on an EDHOC
    resource other than for running the EDHOC protocol.  Specifically, it

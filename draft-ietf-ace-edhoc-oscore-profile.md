@@ -1914,6 +1914,9 @@ x5u_ta_type = 35
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
 
+## Version -08 to -09 ## {#sec-08-09}
+
+* Clarification about content of "cnf" claim in the access token.
 
 ## Version -07 to -08 ## {#sec-07-08}
 
@@ -1932,8 +1935,6 @@ x5u_ta_type = 35
 * New EAD item for requesting authentication credential by value.
 
 * Means for the AS to achive proof-of-possession of C's private key.
-
-* Clarification about content of "cnf" claim in the access token.
 
 * Editorial improvements.
 

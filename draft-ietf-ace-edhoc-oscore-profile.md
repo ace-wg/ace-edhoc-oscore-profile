@@ -70,6 +70,7 @@ normative:
   RFC9562:
   RFC9668:
   I-D.ietf-cose-cbor-encoded-cert:
+  I-D.ietf-core-uri-path-abbrev:
   COSE.Header.Parameters:
     author:
       org: IANA
@@ -671,6 +672,8 @@ Any previous EDHOC session associated with the same access token and with the sa
 Depending on the message flow used, the EDHOC messages will be carried either in CoAP POST requests or in CoAP 2.04 (Changed) responses, as detailed in {{Section A.2 of RFC9528}}.
 
 C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field (if present) of the EDHOC\_Information object within the access token response received from AS, through which C obtained the first access token of the token series (see {{c-as}}). If the "uri_path" field is not present in that EDHOC\_Information object, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.
+
+In this profile of ACE, RS MUST implement the CoAP Uri-Path-Abbrev Option specified in {{I-D.ietf-core-uri-path-abbrev}} and MUST understand the corresponding Uri-Path-Abbrev value 2 that abbreviates the path /.well-known/edhoc. While there is no equivalent requirement for C, the above ensures that C can possibly use the CoAP Uri-Path-Abbrev Option when sending an EDHOC message that targets the well-known EDHOC resource at the path /.well-known/edhoc, being sure that the option and its value are going to be understood by RS.
 
 RS has to ensure that no requests can be performed on an EDHOC resource other than for running the EDHOC protocol. Specifically, it SHOULD NOT be possible to perform any other operation than POST on an EDHOC resource.
 
@@ -1917,6 +1920,8 @@ x5u_ta_type = 35
 ## Version -08 to -09 ## {#sec-08-09}
 
 * Clarification about content of "cnf" claim in the access token.
+
+* RS must support the CoAP Uri-Path-Abbrev Option and its value abbreviating /.well-known/edhoc.
 
 ## Version -07 to -08 ## {#sec-07-08}
 

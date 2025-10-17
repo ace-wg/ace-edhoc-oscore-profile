@@ -417,6 +417,8 @@ When issuing any access token of a token series, AS MUST include the following c
 
    When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_C, it is expected that AUTH\_CRED\_C is identified by reference in the "cnf" claim of the access token.
 
+   The "cnf" claim MUST specify either; 1) the authentication credential AUTH\_CRED\_C that C specified in its POST request to the /token endpoint when requesting the first access token in the series which the issued access token belongs, or 2) a reference to that specific authentication credential AUTH\_CRED\_C.
+
 When issuing the first access token of a token series, AS MAY include additional fields in the EDHOC\_Information object (see {{edhoc-parameters-object}}) specified in the "edhoc\_info" claim of the access token.
 
 The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. Also, RS has to be able to verify that the access token is issued by a trusted AS, by achieving source authentication. Depending on the use case and deployment, the access token may need to be confidentiality protected, for example due to privacy reasons.
@@ -1916,13 +1918,23 @@ x5u_ta_type = 35
 ## Version -07 to -08 ## {#sec-07-08}
 
 * KUDOS is just an example of protocol to use for optional key update.
+
 * message_4 is mandatory to support for an RS that supports the reverse message flow.
+
 * Method in -workflow-and-params as example for coordinating the exchange of authentication credentials by value or reference.
+
 * Revised initial set of EDHOC_Information parameters.
+
 * Defined categorization of EDHOC_Information parameters.
+
 * New EAD item for C to retrieve Request Creation Hints information from RS.
+
 * New EAD item for requesting authentication credential by value.
+
 * Means for the AS to achive proof-of-possession of C's private key.
+
+* Clarification about content of "cnf" claim in the access token.
+
 * Editorial improvements.
 
 ## Version -06 to -07 ## {#sec-06-07}

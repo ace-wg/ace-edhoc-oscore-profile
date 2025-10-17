@@ -15,23 +15,23 @@ It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual auth
 EDHOC also establishes an Object Security for Constrained RESTful Environments (OSCORE) Security Context, which is used to secure communications between the client and resource server when accessing protected resources according to the authorization information indicated in the access token.
 This profile can be used to delegate management of authorization information from a resource-constrained server to a trusted host with less severe limitations regarding processing power and memory. 
     " name="description">
-<meta content="xml2rfc 3.29.0" name="generator">
+<meta content="xml2rfc 3.30.2" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-ace-edhoc-oscore-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.29.0
+  xml2rfc 3.30.2
     Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.1
-    platformdirs 4.3.8
+    platformdirs 4.4.0
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.4
+    requests 2.32.5
     setuptools 80.9.0
-    wcwidth 0.2.13
+    wcwidth 0.2.14
 -->
 <link href="draft-ietf-ace-edhoc-oscore-profile.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1050,11 +1050,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">EDHOC and OSCORE profile of ACE</td>
-<td class="right">July 2025</td>
+<td class="right">October 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 8 January 2026</td>
+<td class="center">Expires 20 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-07-07" class="published">7 July 2025</time>
+<time datetime="2025-10-17" class="published">17 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-01-08">8 January 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-20">20 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 8 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 20 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1745,7 +1745,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-3.1-6">Note that EDHOC does not admit the use of "naked" COSE_Keys as authentication credentials. The closest admitted authentication credential type is a CCS containing a COSE_Key in a "cnf" claim and possibly other claims, which can be transported by value using the confirmation method "kccs". Therefore, the "req_cnf" parameter <span class="bcp14">MUST NOT</span> specify the confirmation method "COSE_Key" (CBOR abbreviation: 1).<a href="#section-3.1-6" class="pilcrow">¶</a></p>
 <p id="section-3.1-7">When receiving an Access Token request including the "req_cnf" parameter, AS checks whether it is already storing the authentication credential of C, namely AUTH_CRED_C, specified in "req_cnf" by value or reference.<a href="#section-3.1-7" class="pilcrow">¶</a></p>
 <p id="section-3.1-8">If this is not the case, AS retrieves AUTH_CRED_C, either using the "req_cnf" parameter or some other trusted source. After that, AS validates the actual AUTH_CRED_C.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
-<p id="section-3.1-9">In either case, the AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for achieving proof-of-possession similar to that in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-group-oscore-profile-04#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-ace-group-oscore-profile" class="cite xref">I-D.ietf-ace-group-oscore-profile</a>]</span>.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
+<p id="section-3.1-9">In either case, the AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for achieving proof-of-possession similar to that in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-group-oscore-profile-05#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-ace-group-oscore-profile" class="cite xref">I-D.ietf-ace-group-oscore-profile</a>]</span>.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
 <p id="section-3.1-10">In case of successful validations, AS stores AUTH_CRED_C as a valid authentication credential. Otherwise, the Client-to-AS request <span class="bcp14">MUST</span> be declined.<a href="#section-3.1-10" class="pilcrow">¶</a></p>
 <p id="section-3.1-11">An example of client-to-AS request is shown in <a href="#token-request" class="auto internal xref">Figure 3</a>. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req_cnf" parameter.<a href="#section-3.1-11" class="pilcrow">¶</a></p>
 <span id="name-example-of-c-to-as-post-tok"></span><div id="token-request">
@@ -1913,6 +1913,8 @@ When issuing the first access token of a token series, the confirmation method u
 When issuing the first access token ever to a pair (C, RS) using a pair of corresponding authentication credentials (AUTH_CRED_C, AUTH_CRED_RS), it is expected that AUTH_CRED_C is included by value in the "cnf" claim of the access token.<a href="#section-3.3.1-3.2.4" class="pilcrow">¶</a></p>
 <p id="section-3.3.1-3.2.5">
 When later issuing further access tokens to the same pair (C, RS) using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is identified by reference in the "cnf" claim of the access token.<a href="#section-3.3.1-3.2.5" class="pilcrow">¶</a></p>
+<p id="section-3.3.1-3.2.6">
+The "cnf" claim <span class="bcp14">MUST</span> specify either; 1) the authentication credential AUTH_CRED_C that C specified in its POST request to the /token endpoint when requesting the first access token in the series which the issued access token belongs, or 2) a reference to that specific authentication credential AUTH_CRED_C.<a href="#section-3.3.1-3.2.6" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-3.3.1-4">When issuing the first access token of a token series, AS <span class="bcp14">MAY</span> include additional fields in the EDHOC_Information object (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) specified in the "edhoc_info" claim of the access token.<a href="#section-3.3.1-4" class="pilcrow">¶</a></p>
@@ -2456,7 +2458,7 @@ Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Den
 <a href="#section-4.4.1" class="section-number selfRef">4.4.1. </a><a href="#name-trigger-message" class="section-name selfRef">Trigger Message</a>
           </h4>
 <p id="section-4.4.1-1">As specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2.2" class="relref">Appendix A.2.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, the trigger message is an empty POST request that C sends to the EDHOC resource at RS, as intended to trigger a response conveying EDHOC message_1.<a href="#section-4.4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.4.1-2">In case the access token is issued for a group-audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-6.9" class="relref">Section 6.9</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), then C can perform an EDHOC "roll call", by sending the trigger message as a group request over IP multicast <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>. For the sake of efficiency, it is expected that the group-audience is appropriately associated with a CoAP group and/or application group (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-14#section-2" class="relref">Section 2</a> of [<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>), so that only the RSs belonging to the group-audience receive the trigger message. After that, C can receive a different EDHOC message_1 from each of the targeted RSs and separately progresses the corresponding EDHOC sessions, by sending a different EDHOC message_2 to each RS that has replied with an EDHOC message_1.<a href="#section-4.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.4.1-2">In case the access token is issued for a group-audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-6.9" class="relref">Section 6.9</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), then C can perform an EDHOC "roll call", by sending the trigger message as a group request over IP multicast <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>. For the sake of efficiency, it is expected that the group-audience is appropriately associated with a CoAP group and/or application group (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-15#section-2" class="relref">Section 2</a> of [<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>), so that only the RSs belonging to the group-audience receive the trigger message. After that, C can receive a different EDHOC message_1 from each of the targeted RSs and separately progresses the corresponding EDHOC sessions, by sending a different EDHOC message_2 to each RS that has replied with an EDHOC message_1.<a href="#section-4.4.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="edhoc-message1-1">
@@ -3944,7 +3946,7 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
 <dd class="break"></dd>
 <dt id="I-D.ietf-cose-cbor-encoded-cert">[I-D.ietf-cose-cbor-encoded-cert]</dt>
         <dd>
-<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, and <span class="refAuthor">M. Furuhed</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-14</span>, <time datetime="2025-06-23" class="refDate">23 June 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-14">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-14</a>&gt;</span>. </dd>
+<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Höglund, J.</span>, and <span class="refAuthor">M. Furuhed</span>, <span class="refTitle">"CBOR Encoded X.509 Certificates (C509 Certificates)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cose-cbor-encoded-cert-15</span>, <time datetime="2025-08-18" class="refDate">18 August 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-15">https://datatracker.ietf.org/doc/html/draft-ietf-cose-cbor-encoded-cert-15</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -4073,35 +4075,35 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
 <dl class="references">
 <dt id="I-D.ietf-ace-coap-est-oscore">[I-D.ietf-ace-coap-est-oscore]</dt>
         <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Furuhed, M.</span>, <span class="refAuthor">Vučinić, M.</span>, and <span class="refAuthor">T. Claeys</span>, <span class="refTitle">"Protecting EST Payloads with OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-coap-est-oscore-07</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-07">https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-07</a>&gt;</span>. </dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Raza, S.</span>, <span class="refAuthor">Furuhed, M.</span>, <span class="refAuthor">Vučinić, M.</span>, and <span class="refAuthor">T. Claeys</span>, <span class="refTitle">"Protecting EST Payloads with OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-coap-est-oscore-08</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-08">https://datatracker.ietf.org/doc/html/draft-ietf-ace-coap-est-oscore-08</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-ace-group-oscore-profile">[I-D.ietf-ace-group-oscore-profile]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"The Group Object Security for Constrained RESTful Environments (Group OSCORE) Profile of the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-group-oscore-profile-04</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-group-oscore-profile-04">https://datatracker.ietf.org/doc/html/draft-ietf-ace-group-oscore-profile-04</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"The Group Object Security for Constrained RESTful Environments (Group OSCORE) Profile of the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-group-oscore-profile-05</span>, <time datetime="2025-09-03" class="refDate">3 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-group-oscore-profile-05">https://datatracker.ietf.org/doc/html/draft-ietf-ace-group-oscore-profile-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-ace-workflow-and-params">[I-D.ietf-ace-workflow-and-params]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Short Distribution Chain (SDC) Workflow and New OAuth Parameters for the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-workflow-and-params-04</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-workflow-and-params-04">https://datatracker.ietf.org/doc/html/draft-ietf-ace-workflow-and-params-04</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Short Distribution Chain (SDC) Workflow and New OAuth Parameters for the Authentication and Authorization for Constrained Environments (ACE) Framework"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ace-workflow-and-params-05</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-workflow-and-params-05">https://datatracker.ietf.org/doc/html/draft-ietf-ace-workflow-and-params-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-groupcomm-bis">[I-D.ietf-core-groupcomm-bis]</dt>
         <dd>
-<span class="refAuthor">Dijk, E.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-14</span>, <time datetime="2025-07-02" class="refDate">2 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-14">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-14</a>&gt;</span>. </dd>
+<span class="refAuthor">Dijk, E.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-15</span>, <time datetime="2025-09-25" class="refDate">25 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-15">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-15</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-oscore-id-update">[I-D.ietf-core-oscore-id-update]</dt>
         <dd>
-<span class="refAuthor">Höglund, R.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Identifier Update for OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-id-update-02</span>, <time datetime="2025-01-08" class="refDate">8 January 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-id-update-02">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-id-update-02</a>&gt;</span>. </dd>
+<span class="refAuthor">Höglund, R.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Identifier Update for OSCORE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-id-update-04</span>, <time datetime="2025-07-20" class="refDate">20 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-id-update-04">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-id-update-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-oscore-key-update">[I-D.ietf-core-oscore-key-update]</dt>
         <dd>
-<span class="refAuthor">Höglund, R.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Update for OSCORE (KUDOS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-key-update-10</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-10</a>&gt;</span>. </dd>
+<span class="refAuthor">Höglund, R.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Key Update for OSCORE (KUDOS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-key-update-11</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-11">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-key-update-11</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-lake-app-profiles">[I-D.ietf-lake-app-profiles]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Coordinating the Use of Application Profiles for Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-app-profiles-01</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-app-profiles-01">https://datatracker.ietf.org/doc/html/draft-ietf-lake-app-profiles-01</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Coordinating the Use of Application Profiles for Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-app-profiles-02</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-app-profiles-02">https://datatracker.ietf.org/doc/html/draft-ietf-lake-app-profiles-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-lake-authz">[I-D.ietf-lake-authz]</dt>
         <dd>
-<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Vučinić, M.</span>, <span class="refAuthor">Fedrecheski, G.</span>, and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"Lightweight Authorization using Ephemeral Diffie-Hellman Over COSE (ELA)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-authz-04</span>, <time datetime="2025-03-03" class="refDate">3 March 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-authz-04">https://datatracker.ietf.org/doc/html/draft-ietf-lake-authz-04</a>&gt;</span>. </dd>
+<span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Vučinić, M.</span>, <span class="refAuthor">Fedrecheski, G.</span>, and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"Lightweight Authorization using Ephemeral Diffie-Hellman Over COSE (ELA)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lake-authz-05</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lake-authz-05">https://datatracker.ietf.org/doc/html/draft-ietf-lake-authz-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.serafin-lake-ta-hint">[I-D.serafin-lake-ta-hint]</dt>
         <dd>
@@ -5105,7 +5107,10 @@ x5u_ta_type = 35
             <p id="appendix-D.1-1.8.1">Means for the AS to achive proof-of-possession of C's private key.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.9">
-            <p id="appendix-D.1-1.9.1">Editorial improvements.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.9.1">Clarification about content of "cnf" claim in the access token.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.10">
+            <p id="appendix-D.1-1.10.1">Editorial improvements.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

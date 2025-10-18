@@ -420,7 +420,7 @@ When issuing any access token of a token series, AS MUST include the following c
 
    When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_C, it is expected that AUTH\_CRED\_C is identified by reference in the "cnf" claim of the access token.
 
-   The "cnf" claim MUST specify either; 1) the authentication credential AUTH\_CRED\_C that C specified in its POST request to the /token endpoint when requesting the first access token in the series which the issued access token belongs, or 2) a reference to that specific authentication credential AUTH\_CRED\_C.
+   Either transported by value or identified by reference, the authentication credential specified in the "cnf" claim MUST be exactly the one that was specified in the "req_cnf" parameter of the POST request to the /token endpoint, when C requested the first access token in the series which the issued access token belongs to. That is, AS MUST NOT bind to the access token an authentication credential other than the one specified by C.
 
 When issuing the first access token of a token series, AS MAY include additional fields in the EDHOC\_Information object (see {{edhoc-parameters-object}}) specified in the "edhoc\_info" claim of the access token.
 

@@ -15,22 +15,21 @@ It utilizes Ephemeral Diffie-Hellman Over COSE (EDHOC) for achieving mutual auth
 EDHOC also establishes an Object Security for Constrained RESTful Environments (OSCORE) Security Context, which is used to secure communications between the client and resource server when accessing protected resources according to the authorization information indicated in the access token.
 This profile can be used to delegate management of authorization information from a resource-constrained server to a trusted host with less severe limitations regarding processing power and memory. 
     " name="description">
-<meta content="xml2rfc 3.30.2" name="generator">
+<meta content="xml2rfc 3.31.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-ace-edhoc-oscore-profile-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.30.2
-    Python 3.12.11
+  xml2rfc 3.31.0
+    Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.1
-    platformdirs 4.4.0
+    platformdirs 4.5.0
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.5
-    setuptools 80.9.0
     wcwidth 0.2.14
 -->
 <link href="draft-ietf-ace-edhoc-oscore-profile.xml" rel="alternate" type="application/rfc+xml">
@@ -1054,7 +1053,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 20 April 2026</td>
+<td class="center">Expires 21 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-17" class="published">17 October 2025</time>
+<time datetime="2025-10-18" class="published">18 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-20">20 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-21">21 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1135,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1918,7 +1917,7 @@ When issuing the first access token ever to a pair (C, RS) using a pair of corre
 <p id="section-3.3.1-3.2.5">
 When later issuing further access tokens to the same pair (C, RS) using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is identified by reference in the "cnf" claim of the access token.<a href="#section-3.3.1-3.2.5" class="pilcrow">¶</a></p>
 <p id="section-3.3.1-3.2.6">
-The "cnf" claim <span class="bcp14">MUST</span> specify either; 1) the authentication credential AUTH_CRED_C that C specified in its POST request to the /token endpoint when requesting the first access token in the series which the issued access token belongs, or 2) a reference to that specific authentication credential AUTH_CRED_C.<a href="#section-3.3.1-3.2.6" class="pilcrow">¶</a></p>
+Either transported by value or identified by reference, the authentication credential specified in the "cnf" claim <span class="bcp14">MUST</span> be exactly the one that was specified in the "req_cnf" parameter of the POST request to the /token endpoint, when C requested the first access token in the series which the issued access token belongs to. That is, AS <span class="bcp14">MUST NOT</span> bind to the access token an authentication credential other than the one specified by C.<a href="#section-3.3.1-3.2.6" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-3.3.1-4">When issuing the first access token of a token series, AS <span class="bcp14">MAY</span> include additional fields in the EDHOC_Information object (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>) specified in the "edhoc_info" claim of the access token.<a href="#section-3.3.1-4" class="pilcrow">¶</a></p>

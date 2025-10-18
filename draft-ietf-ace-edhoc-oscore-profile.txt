@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 20 April 2026                                         M. Tiloca
+Expires: 21 April 2026                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         17 October 2025
+                                                         18 October 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 April 2026.
+   This Internet-Draft will expire on 21 April 2026.
 
 Copyright Notice
 
@@ -807,11 +807,13 @@ Table of Contents
       using the same AUTH_CRED_C, it is expected that AUTH_CRED_C is
       identified by reference in the "cnf" claim of the access token.
 
-      The "cnf" claim MUST specify either; 1) the authentication
-      credential AUTH_CRED_C that C specified in its POST request to the
-      /token endpoint when requesting the first access token in the
-      series which the issued access token belongs, or 2) a reference to
-      that specific authentication credential AUTH_CRED_C.
+      Either transported by value or identified by reference, the
+      authentication credential specified in the "cnf" claim MUST be
+      exactly the one that was specified in the "req_cnf" parameter of
+      the POST request to the /token endpoint, when C requested the
+      first access token in the series which the issued access token
+      belongs to.  That is, AS MUST NOT bind to the access token an
+      authentication credential other than the one specified by C.
 
    When issuing the first access token of a token series, AS MAY include
    additional fields in the EDHOC_Information object (see Section 3.4)

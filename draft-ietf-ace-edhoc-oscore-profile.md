@@ -949,7 +949,7 @@ ead_label = TBD
 ~~~~~~~~~~~
 {: #fig-ead-req-authcred title="EAD item EAD_CRED_BY_VALUE."}
 
-This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
+This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
 
 Example: Assuming IANA label 15 and non-critical, so ead_label = 15 (0x0F), and considering that this EAD item has no ead_value:
 
@@ -1899,7 +1899,7 @@ The following describes an example scenario where this functionality is used in 
 
    Note that this applies also if C uses the EDHOC + OSCORE combined request (see {{RFC9668}}), hence combining EDHOC message\_3 with the first OSCORE-protected request to access a protected resource at the RS.
 
-If, instead, the reverse reverse message flow is used, then the following differences compared to what is described above apply:
+If, instead, the reverse message flow is used, then the following differences compared to what is described above apply:
 
 * EAD\_REQUEST\_CREATION\_HINTS and EAD\_CRED\_BY\_VALUE are included in EDHOC message\_2 by C, in order to ask the RS to provide the Request Creation Hints information and to specify AUTH\_CRED\_the RS by value in ID\_CRED\_I, respectively.
 

@@ -921,8 +921,13 @@ AS_request_creation_hints : map
 ~~~~~~~~~~~
 {: #fig-ead-rch title="EAD item EAD_REQUEST_CREATION_HINTS."}
 
-The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry
-"ACE Authorization Server Request Creation Hints".
+The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry "ACE Authorization Server Request Creation Hints".
+
+Example: Assuming IANA label 12 and non-critical, so ead_label = 12 (0x0C), and the AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS):
+
+* EAD_REQUEST_CREATION_HINTS = 0x0CA101781C636F61703A2F2F7777772E6578616D706C652E636F6D2F746F6B656E
+
+Editor's note: Replace IANA label with TBD value registered for EAD_REQUEST_CREATION_HINTS in {{iana-edhoc-ead}}.
 
 This EAD item is intended to be used in EAD fields of EDHOC messages exchanged between C and RS: in the forward message flow in EAD_1 and EAD_2, and in the reverse message flow in EAD_2 and EAD_3. In the first EDHOC message from C to RS, an EAD item with ead_label = TBD with no ead_value asks the RS to include in the next EDHOC message the same EAD item with ead_value encoding the AS_request_creation_hints map. This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
 
@@ -946,9 +951,13 @@ ead_label = TBD
 
 This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
 
-Also in the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value.
+Example: Assuming IANA label 15 and non-critical, so ead_label = 15 (0x0F), and considering that this EAD item has no ead_value:
 
-Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by the use of the EAD item.
+* EAD_CRED_BY_VALUE = 0x0F
+
+Editor's note: Replace IANA label with TBD value registered for EAD_CRED_BY_VALUE in {{iana-edhoc-ead}}.
+
+In the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value. Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by the use of the EAD item.
 
 * In case the ACE Client / EDHOC Responder sends a credential by reference in message_2 and receives a code 3 error message, then it can trigger a new EDHOC session and send credential by value this time.
 
@@ -1994,6 +2003,8 @@ x5u_ta_type = 35
 * RS must support the CoAP Uri-Path-Abbrev Option and its value abbreviating /.well-known/edhoc.
 
 * Example of Request Creation Hints provided in EAD item.
+
+* Examples showing content of new EAD items.
 
 ## Version -07 to -08 ## {#sec-07-08}
 

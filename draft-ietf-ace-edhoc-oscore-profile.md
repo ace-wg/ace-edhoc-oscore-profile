@@ -640,7 +640,12 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   EAD\_ACCESS\_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights (see {{update-access-rights-c-rs}}).
 
-  Editor's note: Add example.
+  Example: Assuming IANA label 26 and critical, so ead_label = -26 (0x3819), and 180 bytes access\_token = h'8343a1010aa2044c53...0f6a' (partly omitted for brevity):
+
+  * EAD_ACCESS_TOKEN = 0x381958B48343a1010aa2044c53...0f6a
+
+  Editor's note: Replace IANA label with TBD value registered for ACE-OAuth Access Token in {{iana-edhoc-ead}}.
+
 
 * EAD\_SESSION\_ID  = (ead\_label, ead\_value), where:
 
@@ -651,7 +656,12 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   EAD\_SESSION\_ID is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.
 
-  Editor's note: Add example.
+  Example: Assuming IANA label 5 and critical, so ead_label = -5 (0x24), and session\_id =  h'1645'
+
+  * EAD_ACCESS_TOKEN = 0x24421645
+
+  Editor's note: Replace IANA label with TBD value for Session ID registered in {{iana-edhoc-ead}}.
+
 
 ## EDHOC Session {#edhoc-exec}
 

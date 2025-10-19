@@ -2812,7 +2812,7 @@ Table of Contents
       credential specified transported by value (and not identified by
       reference)
 
-   *  Reference: [RFC-XXXX], Section 4.1
+   *  Reference: [RFC-XXXX], Section 4.14
 
 
 
@@ -2823,7 +2823,7 @@ Table of Contents
    *  Description: AS Request Creation Hints or empty value signaling a
       wish to receive AS Request Creation Hints
 
-   *  Reference: [RFC-XXXX], Section 4.1
+   *  Reference: [RFC-XXXX], Section 4.13
 
 14.9.  EDHOC Information Registry
 

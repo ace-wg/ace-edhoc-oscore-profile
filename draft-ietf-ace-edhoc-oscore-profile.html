@@ -1444,6 +1444,9 @@ This profile can be used to delegate management of authorization information fro
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16.2.2">
                 <p id="section-toc.1-1.16.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-workflow-with-optimizations" class="internal xref">Workflow with Optimizations</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16.2.3">
+                <p id="section-toc.1-1.16.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-request-creation-hints-prov" class="internal xref">Request Creation Hints provided in EAD item</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
@@ -2715,8 +2718,8 @@ Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3 "Access Den
             <p id="section-4.13-6.2.1">The message payload <span class="bcp14">SHOULD NOT</span> include the "scope" parameter, unless its value cannot contribute to expose the identity of RS.<a href="#section-4.13-6.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.13-7">AS Request Creation Hints may also be requested and retrieved through a new EAD item defined here, see <a href="#fig-ead-rch" class="auto internal xref">Figure 9</a>.<a href="#section-4.13-7" class="pilcrow">¶</a></p>
-<span id="name-ead-item-as-request-creatio"></span><div id="fig-ead-rch">
+<p id="section-4.13-7">AS Request Creation Hints may also be requested and retrieved through a new EAD item defined here, see <a href="#fig-ead-rch" class="auto internal xref">Figure 9</a> and <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.13-7" class="pilcrow">¶</a></p>
+<span id="name-ead-item-ead_request_creati"></span><div id="fig-ead-rch">
 <figure id="figure-9">
           <div class="lang-CDDL sourcecode" id="section-4.13-8.1">
 <pre>
@@ -2727,7 +2730,7 @@ AS_request_creation_hints : map
 </pre>
 </div>
 <figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
-<a href="#name-ead-item-as-request-creatio" class="selfRef">EAD item AS Request Creation Hints.</a>
+<a href="#name-ead-item-ead_request_creati" class="selfRef">EAD item EAD_REQUEST_CREATION_HINTS.</a>
           </figcaption></figure>
 </div>
 <p id="section-4.13-9">The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry
@@ -2744,8 +2747,8 @@ AS_request_creation_hints : map
 <p id="section-4.14-1">EDHOC peers need access to each other's authentication credentials to complete the protocol. However, to reduce unnecessary overhead, the EDHOC protocol enables credential references to be sent instead of authentication credentials. The ACE protocol includes the initial transport of authentication credentials of C and RS and thus matches the use of credential references in EDHOC.<a href="#section-4.14-1" class="pilcrow">¶</a></p>
 <p id="section-4.14-2">However, if one of the parties has deleted the other party's authentication credential from its local storage, then there should be a way to restore it without requesting a new access token.<a href="#section-4.14-2" class="pilcrow">¶</a></p>
 <p id="section-4.14-3">Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This enables the Initiator to restart the protocol using some other ID_CRED, typically the authentication credential by value thereby resolving the issue. However, in case the ACE Resource Server / EDHOC Responder sends a credential by reference in message_2, then returning a code 3 EDHOC error message does not automatically solve the problem. Having aborted the protocol, the Responder has no reliable way to act differently in a following EDHOC session since it never authenticated the Initiator.<a href="#section-4.14-3" class="pilcrow">¶</a></p>
-<p id="section-4.14-4">In order to remediate this situation, this section specifies a new EAD item for requesting the peer's authentication credential by value, see <a href="#fig-ead-req-authcred" class="auto internal xref">Figure 10</a>.<a href="#section-4.14-4" class="pilcrow">¶</a></p>
-<span id="name-ead-item-requesting-authent"></span><div id="fig-ead-req-authcred">
+<p id="section-4.14-4">In order to remediate this situation, this section specifies a new EAD item for requesting the peer's authentication credential by value, see <a href="#fig-ead-req-authcred" class="auto internal xref">Figure 10</a> and <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.14-4" class="pilcrow">¶</a></p>
+<span id="name-ead-item-ead_cred_by_value"></span><div id="fig-ead-req-authcred">
 <figure id="figure-10">
           <div class="lang-CDDL sourcecode" id="section-4.14-5.1">
 <pre>
@@ -2753,7 +2756,7 @@ ead_label = TBD
 </pre>
 </div>
 <figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
-<a href="#name-ead-item-requesting-authent" class="selfRef">EAD item Requesting Authentication Credential By Value.</a>
+<a href="#name-ead-item-ead_cred_by_value" class="selfRef">EAD item EAD_CRED_BY_VALUE.</a>
           </figcaption></figure>
 </div>
 <p id="section-4.14-6">This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.14-6" class="pilcrow">¶</a></p>
@@ -3750,6 +3753,36 @@ ead_label = TBD
 </li>
           <li class="normal" id="section-14.8-4.4">
             <p id="section-14.8-4.4.1">Reference: [RFC-XXXX], <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a><a href="#section-14.8-4.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-14.8-5"><br></p>
+<ul class="normal">
+<li class="normal" id="section-14.8-6.1">
+            <p id="section-14.8-6.1.1">Name: EAD_CRED_BY_VALUE<a href="#section-14.8-6.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-14.8-6.2">
+            <p id="section-14.8-6.2.1">Label: TBD (value between 1 and 23)<a href="#section-14.8-6.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-14.8-6.3">
+            <p id="section-14.8-6.3.1">Description: This peer wishes to receive the other peer's credential specified transported by value (and not identified by reference)<a href="#section-14.8-6.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-14.8-6.4">
+            <p id="section-14.8-6.4.1">Reference: [RFC-XXXX], <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a><a href="#section-14.8-6.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-14.8-7"><br></p>
+<ul class="normal">
+<li class="normal" id="section-14.8-8.1">
+            <p id="section-14.8-8.1.1">Name: EAD_REQUEST_CREATION_HINTS<a href="#section-14.8-8.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-14.8-8.2">
+            <p id="section-14.8-8.2.1">Label: TBD (value between 1 and 23)<a href="#section-14.8-8.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-14.8-8.3">
+            <p id="section-14.8-8.3.1">Description: AS Request Creation Hints or empty value signaling a wish to receive AS Request Creation Hints<a href="#section-14.8-8.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-14.8-8.4">
+            <p id="section-14.8-8.4.1">Reference: [RFC-XXXX], <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a><a href="#section-14.8-8.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -4979,6 +5012,69 @@ This is relevant in case AS and RS actually require a secure association (e.g., 
 </div>
 </section>
 </div>
+<div id="example-ead-request-creation-hints">
+<section id="appendix-A.3">
+        <h3 id="name-request-creation-hints-prov">
+<a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-request-creation-hints-prov" class="section-name selfRef">Request Creation Hints provided in EAD item</a>
+        </h3>
+<p id="appendix-A.3-1">When this profile is used, the Client (C) might not be able to determine in advance the appropriate Authorization Server (AS) to contact. In such cases, C may initiate EDHOC with the Resource Server (RS) prior to obtaining an access token and rely on the RS to provide this information.<a href="#appendix-A.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-2">One approach, as detailed in this section, is for the RS to convey this information by including an External Authorization Data (EAD) item in EDHOC message_2. The content of this EAD item is the information conveyed in a Request Creation Hints response, thereby helping C to identify the correct AS, and possibly other relevant parameters needed to request an access token.<a href="#appendix-A.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-3">The following describes an example scenario where this functionality is used in the forward message flow, in particular taking advantage of the new EAD items EAD_REQUEST_CREATION_HINTS (see <a href="#as-creation-hints" class="auto internal xref">Section 4.13</a>) and EAD_CRED_BY_VALUE (see <a href="#auth-cred-by-value" class="auto internal xref">Section 4.14</a>).<a href="#appendix-A.3-3" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="appendix-A.3-4">
+<li id="appendix-A.3-4.1">
+            <p id="appendix-A.3-4.1.1">Without having an access token, C sends EDHOC message_1 to the RS, including in EAD_1:<a href="#appendix-A.3-4.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.3-4.1.2.1">
+                <p id="appendix-A.3-4.1.2.1.1">A new EAD item EAD_REQUEST_CREATION_HINTS, here specifying no ead_value.<a href="#appendix-A.3-4.1.2.1.1" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-4.1.2.1.2">
+By doing so, C is asking the RS to include the same EAD item in EAD_2, specifying the information that would be included in a Request Creation Hints response.<a href="#appendix-A.3-4.1.2.1.2" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-A.3-4.1.2.2">
+                <p id="appendix-A.3-4.1.2.2.1">A new EAD item EAD_CRED_BY_VALUE, asking the RS to specify its authentication credential AUTH_CRED_the RS by value in ID_CRED_R.<a href="#appendix-A.3-4.1.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li id="appendix-A.3-4.2">
+            <p id="appendix-A.3-4.2.1">the RS replies with EDHOC message_2, including in EAD_2:<a href="#appendix-A.3-4.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.3-4.2.2.1">
+                <p id="appendix-A.3-4.2.2.1.1">The new EAD item EAD_REQUEST_CREATION_HINTS, whose CBOR byte string specified as ead_value encodes the information that would have been included in a Request Creation Hints response to an unauthorized request sent to the RS. In particular, this information includes the URI to the /token endpoint at the AS.<a href="#appendix-A.3-4.2.2.1.1" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-4.2.2.1.2">
+However, note that C has not made an actual request with a specific request method and targeting a specific application resource. That is, the RS does not know yet what resources C is actually interested in accessing later on. Hence, the information specified in this EAD_REQUEST_CREATION_HINTS item is typically not expected to include "audience" and "scope".<a href="#appendix-A.3-4.2.2.1.2" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li id="appendix-A.3-4.3">
+            <p id="appendix-A.3-4.3.1">C requests an access token for the right audience and scope from the right AS, based on pre-configured parameters on the client and the information from EAD_REQUEST_CREATION_HINTS within EDHOC message_2, like if C had received a Request Creation Hints response.<a href="#appendix-A.3-4.3.1" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-4.3.2">
+C should already know the right audience and scope to specify in the Access Token Request, as that information is not expected to be provided by the RS in the EAD_REQUEST_CREATION_HINTS item of message_2. There may also be default audience and scope set at the AS to use, if none is specified by C in its Access Token Request.<a href="#appendix-A.3-4.3.2" class="pilcrow">¶</a></p>
+</li>
+          <li id="appendix-A.3-4.4">
+            <p id="appendix-A.3-4.4.1">C sends EDHOC message_3, specifying the access token in EAD_3 as value of the EAD item "EAD_ACCESS_TOKEN".<a href="#appendix-A.3-4.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li id="appendix-A.3-4.5">
+            <p id="appendix-A.3-4.5.1">If the protected request from C for accessing a resource at the RS is not authorized per the issued access token, then the RS replies with a protected error response. Within that error response, the RS can provide C with information that would have been specified in a Request Creation Hints response. This time, that information also includes "audience" and "scope". After this, C can follow-up requesting a new access token that dynamically updates access rights accordingly.<a href="#appendix-A.3-4.5.1" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-4.5.2">
+Note that this applies also if C uses the EDHOC + OSCORE combined request (see <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span>), hence combining EDHOC message_3 with the first OSCORE-protected request to access a protected resource at the RS.<a href="#appendix-A.3-4.5.2" class="pilcrow">¶</a></p>
+</li>
+        </ol>
+<p id="appendix-A.3-5">If, instead, the reverse reverse message flow is used, then the following differences compared to what is described above apply:<a href="#appendix-A.3-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.3-6.1">
+            <p id="appendix-A.3-6.1.1">EAD_REQUEST_CREATION_HINTS and EAD_CRED_BY_VALUE are included in EDHOC message_2 by C, in order to ask the RS to provide the Request Creation Hints information and to specify AUTH_CRED_the RS by value in ID_CRED_I, respectively.<a href="#appendix-A.3-6.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-6.2">
+            <p id="appendix-A.3-6.2.1">EAD_REQUEST_CREATION_HINTS is included in EDHOC message_3 by the RS, with value the Request Creation Hints information.<a href="#appendix-A.3-6.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-6.3">
+            <p id="appendix-A.3-6.3.1">After receiving EDHOC message_3, C requests the access token to the AS, based on the information from EAD_REQUEST_CREATION_HINTS in message_3.<a href="#appendix-A.3-6.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-6.4">
+            <p id="appendix-A.3-6.4.1">Finally, C sends EDHOC message_4, specifying the access token in EAD_4 as value of the EAD item "EAD_ACCESS_TOKEN".<a href="#appendix-A.3-6.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
 </section>
 </div>
 <div id="sec-profile-requirements">
@@ -5112,6 +5208,9 @@ x5u_ta_type = 35
 </li>
           <li class="normal" id="appendix-D.1-1.3">
             <p id="appendix-D.1-1.3.1">RS must support the CoAP Uri-Path-Abbrev Option and its value abbreviating /.well-known/edhoc.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.4">
+            <p id="appendix-D.1-1.4.1">Example of Request Creation Hints provided in EAD item.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

@@ -168,6 +168,7 @@ Table of Contents
    Appendix A.  Examples
      A.1.  Workflow without Optimizations
      A.2.  Workflow with Optimizations
+     A.3.  Request Creation Hints provided in EAD item
    Appendix B.  Profile Requirements
    Appendix C.  CDDL Model
    Appendix D.  Document Updates
@@ -1921,14 +1922,14 @@ Table of Contents
       unless its value cannot contribute to expose the identity of RS.
 
    AS Request Creation Hints may also be requested and retrieved through
-   a new EAD item defined here, see Figure 9.
+   a new EAD item defined here, see Figure 9 and Section 14.8.
 
    ead_label = TBD
    ? ead_value = bstr .cbor AS_request_creation_hints
 
    AS_request_creation_hints : map
 
-               Figure 9: EAD item AS Request Creation Hints.
+               Figure 9: EAD item EAD_REQUEST_CREATION_HINTS.
 
    The AS_request_creation_hints is a CBOR map with keys defined in the
    IANA registry "ACE Authorization Server Request Creation Hints".
@@ -1978,11 +1979,11 @@ Table of Contents
 
    In order to remediate this situation, this section specifies a new
    EAD item for requesting the peer's authentication credential by
-   value, see Figure 10.
+   value, see Figure 10 and Section 14.8.
 
    ead_label = TBD
 
-     Figure 10: EAD item Requesting Authentication Credential By Value.
+                   Figure 10: EAD item EAD_CRED_BY_VALUE.
 
    This EAD item has no ead_value.  When present in EAD_1, it requests
    the Responder's authentication credential by value in ID_CRED_R of
@@ -2798,6 +2799,29 @@ Table of Contents
    *  Label: TBD (value between 1 and 23)
 
    *  Description: The identifier of an EDHOC session
+
+   *  Reference: [RFC-XXXX], Section 4.1
+
+
+
+   *  Name: EAD_CRED_BY_VALUE
+
+   *  Label: TBD (value between 1 and 23)
+
+   *  Description: This peer wishes to receive the other peer's
+      credential specified transported by value (and not identified by
+      reference)
+
+   *  Reference: [RFC-XXXX], Section 4.1
+
+
+
+   *  Name: EAD_REQUEST_CREATION_HINTS
+
+   *  Label: TBD (value between 1 and 23)
+
+   *  Description: AS Request Creation Hints or empty value signaling a
+      wish to receive AS Request Creation Hints
 
    *  Reference: [RFC-XXXX], Section 4.1
 
@@ -3707,6 +3731,104 @@ A.2.  Workflow with Optimizations
  M08 |<----------------------------------------------------------------+
      |                                    |                            |
 
+A.3.  Request Creation Hints provided in EAD item
+
+   When this profile is used, the Client (C) might not be able to
+   determine in advance the appropriate Authorization Server (AS) to
+   contact.  In such cases, C may initiate EDHOC with the Resource
+   Server (RS) prior to obtaining an access token and rely on the RS to
+   provide this information.
+
+   One approach, as detailed in this section, is for the RS to convey
+   this information by including an External Authorization Data (EAD)
+   item in EDHOC message_2.  The content of this EAD item is the
+   information conveyed in a Request Creation Hints response, thereby
+   helping C to identify the correct AS, and possibly other relevant
+   parameters needed to request an access token.
+
+   The following describes an example scenario where this functionality
+   is used in the forward message flow, in particular taking advantage
+   of the new EAD items EAD_REQUEST_CREATION_HINTS (see Section 4.13)
+   and EAD_CRED_BY_VALUE (see Section 4.14).
+
+   1.  Without having an access token, C sends EDHOC message_1 to the
+       RS, including in EAD_1:
+
+       *  A new EAD item EAD_REQUEST_CREATION_HINTS, here specifying no
+          ead_value.
+
+          By doing so, C is asking the RS to include the same EAD item
+          in EAD_2, specifying the information that would be included in
+          a Request Creation Hints response.
+
+       *  A new EAD item EAD_CRED_BY_VALUE, asking the RS to specify its
+          authentication credential AUTH_CRED_the RS by value in
+          ID_CRED_R.
+
+   2.  the RS replies with EDHOC message_2, including in EAD_2:
+
+       *  The new EAD item EAD_REQUEST_CREATION_HINTS, whose CBOR byte
+          string specified as ead_value encodes the information that
+          would have been included in a Request Creation Hints response
+          to an unauthorized request sent to the RS.  In particular,
+          this information includes the URI to the /token endpoint at
+          the AS.
+
+          However, note that C has not made an actual request with a
+          specific request method and targeting a specific application
+          resource.  That is, the RS does not know yet what resources C
+          is actually interested in accessing later on.  Hence, the
+          information specified in this EAD_REQUEST_CREATION_HINTS item
+          is typically not expected to include "audience" and "scope".
+
+   3.  C requests an access token for the right audience and scope from
+       the right AS, based on pre-configured parameters on the client
+       and the information from EAD_REQUEST_CREATION_HINTS within EDHOC
+       message_2, like if C had received a Request Creation Hints
+       response.
+
+       C should already know the right audience and scope to specify in
+       the Access Token Request, as that information is not expected to
+       be provided by the RS in the EAD_REQUEST_CREATION_HINTS item of
+       message_2.  There may also be default audience and scope set at
+       the AS to use, if none is specified by C in its Access Token
+       Request.
+
+   4.  C sends EDHOC message_3, specifying the access token in EAD_3 as
+       value of the EAD item "EAD_ACCESS_TOKEN".
+
+   5.  If the protected request from C for accessing a resource at the
+       RS is not authorized per the issued access token, then the RS
+       replies with a protected error response.  Within that error
+       response, the RS can provide C with information that would have
+       been specified in a Request Creation Hints response.  This time,
+       that information also includes "audience" and "scope".  After
+       this, C can follow-up requesting a new access token that
+       dynamically updates access rights accordingly.
+
+       Note that this applies also if C uses the EDHOC + OSCORE combined
+       request (see [RFC9668]), hence combining EDHOC message_3 with the
+       first OSCORE-protected request to access a protected resource at
+       the RS.
+
+   If, instead, the reverse reverse message flow is used, then the
+   following differences compared to what is described above apply:
+
+   *  EAD_REQUEST_CREATION_HINTS and EAD_CRED_BY_VALUE are included in
+      EDHOC message_2 by C, in order to ask the RS to provide the
+      Request Creation Hints information and to specify AUTH_CRED_the RS
+      by value in ID_CRED_I, respectively.
+
+   *  EAD_REQUEST_CREATION_HINTS is included in EDHOC message_3 by the
+      RS, with value the Request Creation Hints information.
+
+   *  After receiving EDHOC message_3, C requests the access token to
+      the AS, based on the information from EAD_REQUEST_CREATION_HINTS
+      in message_3.
+
+   *  Finally, C sends EDHOC message_4, specifying the access token in
+      EAD_4 as value of the EAD item "EAD_ACCESS_TOKEN".
+
 Appendix B.  Profile Requirements
 
    This section lists the specifications of this profile based on the
@@ -3834,6 +3956,8 @@ D.1.  Version -08 to -09
 
    *  RS must support the CoAP Uri-Path-Abbrev Option and its value
       abbreviating /.well-known/edhoc.
+
+   *  Example of Request Creation Hints provided in EAD item.
 
 D.2.  Version -07 to -08
 

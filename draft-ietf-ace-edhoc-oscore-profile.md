@@ -1379,14 +1379,14 @@ IANA is asked to add the following entries to the "EDHOC External Authorization 
 * Name: EAD\_CRED\_BY\_VALUE
 * Label: TBD (value between 1 and 23)
 * Description: This peer wishes to receive the other peer's credential specified transported by value (and not identified by reference)
-* Reference: {{&SELF}}, {{AT-in-EAD}}
+* Reference: {{&SELF}}, {{auth-cred-by-value}}
 
 <br>
 
 * Name: EAD\_REQUEST\_CREATION\_HINTS
 * Label: TBD (value between 1 and 23)
 * Description: AS Request Creation Hints or empty value signaling a wish to receive AS Request Creation Hints
-* Reference: {{&SELF}}, {{AT-in-EAD}}
+* Reference: {{&SELF}}, {{as-creation-hints}}
 
 ## EDHOC Information Registry # {#iana-edhoc-parameters}
 

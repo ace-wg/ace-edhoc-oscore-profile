@@ -658,7 +658,7 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   Example: Assuming IANA label 5 and critical, so ead_label = -5 (0x24), and session\_id =  h'1645'
 
-  * EAD_ACCESS_TOKEN = 0x24421645
+  * EAD_SESSION_ID = 0x24421645
 
   Editor's note: Replace IANA label with TBD value for Session ID registered in {{iana-edhoc-ead}}.
 

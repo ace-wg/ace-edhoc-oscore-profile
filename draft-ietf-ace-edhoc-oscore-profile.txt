@@ -1940,8 +1940,9 @@ Table of Contents
    text string "coap://www.example.com/token" with key 1 (the absolute
    URI of the /token endpoint at the AS):
 
-   *  EAD_REQUEST_CREATION_HINTS = 0x0CA101781C636F61703A2F2F7777772E657
-      8616D706C652E636F6D2F746F6B656E
+   *  EAD_REQUEST_CREATION_HINTS =
+      0x0C5820A101781C636F61703A2F2F7777772E6578616D70
+      6C652E636F6D2F746F6B656E
 
    Editor's note: Replace IANA label with TBD value registered for
    EAD_REQUEST_CREATION_HINTS in Section 14.8.

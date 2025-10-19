@@ -911,7 +911,7 @@ Therefore, if RS supports the EDHOC reverse message flow and sends an AS Request
 
 * The message payload SHOULD NOT include the "scope" parameter, unless its value cannot contribute to expose the identity of RS.
 
-AS Request Creation Hints may also be requested and retrieved through a new EAD item defined here, see {{fig-ead-rch}} and {{iana-edhoc-ead}}.
+AS Request Creation Hints may also be requested and retrieved through a new EAD item defined here, see {{fig-ead-rch}}, {{iana-edhoc-ead}}, and an example of its usage in {{example-ead-request-creation-hints}}.
 
 ~~~~~~~~~~~ CDDL
 ead_label = TBD
@@ -942,7 +942,7 @@ However, if one of the parties has deleted the other party's authentication cred
 
 Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This enables the Initiator to restart the protocol using some other ID_CRED, typically the authentication credential by value thereby resolving the issue. However, in case the ACE Resource Server / EDHOC Responder sends a credential by reference in message_2, then returning a code 3 EDHOC error message does not automatically solve the problem. Having aborted the protocol, the Responder has no reliable way to act differently in a following EDHOC session since it never authenticated the Initiator.
 
-In order to remediate this situation, this section specifies a new EAD item for requesting the peer's authentication credential by value, see {{fig-ead-req-authcred}} and {{iana-edhoc-ead}}.
+In order to remediate this situation, this section specifies a new EAD item for requesting the peer's authentication credential by value, see {{fig-ead-req-authcred}}, {{iana-edhoc-ead}}, and an example of its usage in {{example-ead-request-creation-hints}}.
 
 ~~~~~~~~~~~ CDDL
 ead_label = TBD
@@ -1867,7 +1867,7 @@ M08 |<----------------------------------------------------------------+
     |                                    |                            |
 ~~~~~~~~~~~
 
-## Request Creation Hints provided in EAD item # {#example-ead-request-creation-hints}
+# Request Creation Hints provided in EAD item # {#example-ead-request-creation-hints}
 
 When this profile is used, the Client (C) might not be able to determine in advance the appropriate Authorization Server (AS) to contact. In such cases, C may initiate EDHOC with the Resource Server (RS) prior to obtaining an access token and rely on the RS to provide this information.
 

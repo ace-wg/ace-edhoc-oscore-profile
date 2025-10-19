@@ -2733,10 +2733,16 @@ AS_request_creation_hints : map
 <a href="#name-ead-item-ead_request_creati" class="selfRef">EAD item EAD_REQUEST_CREATION_HINTS.</a>
           </figcaption></figure>
 </div>
-<p id="section-4.13-9">The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry
-"ACE Authorization Server Request Creation Hints".<a href="#section-4.13-9" class="pilcrow">¶</a></p>
-<p id="section-4.13-10">This EAD item is intended to be used in EAD fields of EDHOC messages exchanged between C and RS: in the forward message flow in EAD_1 and EAD_2, and in the reverse message flow in EAD_2 and EAD_3. In the first EDHOC message from C to RS, an EAD item with ead_label = TBD with no ead_value asks the RS to include in the next EDHOC message the same EAD item with ead_value encoding the AS_request_creation_hints map. This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.13-10" class="pilcrow">¶</a></p>
-<p id="section-4.13-11">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS_request_creation_hints map <span class="bcp14">SHOULD NOT</span> include "audience" and "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-11" class="pilcrow">¶</a></p>
+<p id="section-4.13-9">The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry "ACE Authorization Server Request Creation Hints".<a href="#section-4.13-9" class="pilcrow">¶</a></p>
+<p id="section-4.13-10">Example: Assuming IANA label 12 and non-critical, so ead_label = 12 (0x0C), and the AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS):<a href="#section-4.13-10" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.13-11.1">
+            <p id="section-4.13-11.1.1">EAD_REQUEST_CREATION_HINTS = 0x0CA101781C636F61703A2F2F7777772E6578616D706C652E636F6D2F746F6B656E<a href="#section-4.13-11.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-4.13-12">Editor's note: Replace IANA label with TBD value registered for EAD_REQUEST_CREATION_HINTS in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.13-12" class="pilcrow">¶</a></p>
+<p id="section-4.13-13">This EAD item is intended to be used in EAD fields of EDHOC messages exchanged between C and RS: in the forward message flow in EAD_1 and EAD_2, and in the reverse message flow in EAD_2 and EAD_3. In the first EDHOC message from C to RS, an EAD item with ead_label = TBD with no ead_value asks the RS to include in the next EDHOC message the same EAD item with ead_value encoding the AS_request_creation_hints map. This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.13-13" class="pilcrow">¶</a></p>
+<p id="section-4.13-14">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS_request_creation_hints map <span class="bcp14">SHOULD NOT</span> include "audience" and "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-14" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="auth-cred-by-value">
@@ -2760,14 +2766,20 @@ ead_label = TBD
           </figcaption></figure>
 </div>
 <p id="section-4.14-6">This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.14-6" class="pilcrow">¶</a></p>
-<p id="section-4.14-7">Also in the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value.<a href="#section-4.14-7" class="pilcrow">¶</a></p>
-<p id="section-4.14-8">Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by the use of the EAD item.<a href="#section-4.14-8" class="pilcrow">¶</a></p>
+<p id="section-4.14-7">Example: Assuming IANA label 15 and non-critical, so ead_label = 15 (0x0F), and considering that this EAD item has no ead_value:<a href="#section-4.14-7" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.14-9.1">
-            <p id="section-4.14-9.1.1">In case the ACE Client / EDHOC Responder sends a credential by reference in message_2 and receives a code 3 error message, then it can trigger a new EDHOC session and send credential by value this time.<a href="#section-4.14-9.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.14-8.1">
+            <p id="section-4.14-8.1.1">EAD_CRED_BY_VALUE = 0x0F<a href="#section-4.14-8.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.14-9.2">
-            <p id="section-4.14-9.2.1">In case the ACE Resource Server / EDHOC Initiator sends a credential by reference in message_3 and receives a code 3 error message, then since the RS has authenticated C, it can store the authentication credential of C, and in the next session with C, the RS can send its credential by value.<a href="#section-4.14-9.2.1" class="pilcrow">¶</a></p>
+        </ul>
+<p id="section-4.14-9">Editor's note: Replace IANA label with TBD value registered for EAD_CRED_BY_VALUE in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.14-9" class="pilcrow">¶</a></p>
+<p id="section-4.14-10">In the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value. Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by the use of the EAD item.<a href="#section-4.14-10" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.14-11.1">
+            <p id="section-4.14-11.1.1">In case the ACE Client / EDHOC Responder sends a credential by reference in message_2 and receives a code 3 error message, then it can trigger a new EDHOC session and send credential by value this time.<a href="#section-4.14-11.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.14-11.2">
+            <p id="section-4.14-11.2.1">In case the ACE Resource Server / EDHOC Initiator sends a credential by reference in message_3 and receives a code 3 error message, then since the RS has authenticated C, it can store the authentication credential of C, and in the next session with C, the RS can send its credential by value.<a href="#section-4.14-11.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -5211,6 +5223,9 @@ x5u_ta_type = 35
 </li>
           <li class="normal" id="appendix-D.1-1.4">
             <p id="appendix-D.1-1.4.1">Example of Request Creation Hints provided in EAD item.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.5">
+            <p id="appendix-D.1-1.5.1">Examples showing content of new EAD items.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

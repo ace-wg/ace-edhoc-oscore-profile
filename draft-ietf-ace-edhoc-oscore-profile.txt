@@ -168,19 +168,19 @@ Table of Contents
    Appendix A.  Examples
      A.1.  Workflow without Optimizations
      A.2.  Workflow with Optimizations
-     A.3.  Request Creation Hints provided in EAD item
-   Appendix B.  Profile Requirements
-   Appendix C.  CDDL Model
-   Appendix D.  Document Updates
-     D.1.  Version -08 to -09
-     D.2.  Version -07 to -08
-     D.3.  Version -06 to -07
-     D.4.  Version -05 to -06
-     D.5.  Version -04 to -05
-     D.6.  Version -03 to -04
-     D.7.  Version -02 to -03
-     D.8.  Version -01 to -02
-     D.9.  Version -00 to -01
+   Appendix B.  Request Creation Hints provided in EAD item
+   Appendix C.  Profile Requirements
+   Appendix D.  CDDL Model
+   Appendix E.  Document Updates
+     E.1.  Version -08 to -09
+     E.2.  Version -07 to -08
+     E.3.  Version -06 to -07
+     E.4.  Version -05 to -06
+     E.5.  Version -04 to -05
+     E.6.  Version -03 to -04
+     E.7.  Version -02 to -03
+     E.8.  Version -01 to -02
+     E.9.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -303,7 +303,7 @@ Table of Contents
 
    In the CBOR diagnostic notation used in this document, constructs of
    the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME
-   in the CDDL model shown in Figure 11 of Appendix C.  For example,
+   in the CDDL model shown in Figure 11 of Appendix D.  For example,
    {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2
    : 3}.
 
@@ -311,7 +311,7 @@ Table of Contents
    this note.  Also, in the CBOR diagnostic notation used in this
    document, please replace the constructs of the form e'SOME_NAME' with
    the value assigned to SOME_NAME in the CDDL model shown in Figure 11
-   of Appendix C.  Finally, please delete this note.
+   of Appendix D.  Finally, please delete this note.
 
 2.  Protocol Overview
 
@@ -1922,7 +1922,8 @@ Table of Contents
       unless its value cannot contribute to expose the identity of RS.
 
    AS Request Creation Hints may also be requested and retrieved through
-   a new EAD item defined here, see Figure 9 and Section 14.8.
+   a new EAD item defined here, see Figure 9, Section 14.8, and an
+   example of its usage in Appendix B.
 
    ead_label = TBD
    ? ead_value = bstr .cbor AS_request_creation_hints
@@ -1990,7 +1991,8 @@ Table of Contents
 
    In order to remediate this situation, this section specifies a new
    EAD item for requesting the peer's authentication credential by
-   value, see Figure 10 and Section 14.8.
+   value, see Figure 10, Section 14.8, and an example of its usage in
+   Appendix B.
 
    ead_label = TBD
 
@@ -3749,7 +3751,7 @@ A.2.  Workflow with Optimizations
  M08 |<----------------------------------------------------------------+
      |                                    |                            |
 
-A.3.  Request Creation Hints provided in EAD item
+Appendix B.  Request Creation Hints provided in EAD item
 
    When this profile is used, the Client (C) might not be able to
    determine in advance the appropriate Authorization Server (AS) to
@@ -3847,7 +3849,7 @@ A.3.  Request Creation Hints provided in EAD item
    *  Finally, C sends EDHOC message_4, specifying the access token in
       EAD_4 as value of the EAD item "EAD_ACCESS_TOKEN".
 
-Appendix B.  Profile Requirements
+Appendix C.  Profile Requirements
 
    This section lists the specifications of this profile based on the
    requirements of the framework, as requested in Appendix C of
@@ -3908,7 +3910,7 @@ Appendix B.  Profile Requirements
       EDHOC with RS, by including the access token in the EAD_3 field of
       EDHOC message_3 (see Section 4.2).
 
-Appendix C.  CDDL Model
+Appendix D.  CDDL Model
 
    This section is to be removed before publishing as an RFC.
 
@@ -3962,11 +3964,11 @@ Appendix C.  CDDL Model
 
                            Figure 11: CDDL model
 
-Appendix D.  Document Updates
+Appendix E.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-D.1.  Version -08 to -09
+E.1.  Version -08 to -09
 
    *  Parameter "cnf" explicitly forbidden in the Access Token Response.
 
@@ -3979,7 +3981,7 @@ D.1.  Version -08 to -09
 
    *  Examples showing content of new EAD items.
 
-D.2.  Version -07 to -08
+E.2.  Version -07 to -08
 
    *  KUDOS is just an example of protocol to use for optional key
       update.
@@ -4003,7 +4005,7 @@ D.2.  Version -07 to -08
 
    *  Editorial improvements.
 
-D.3.  Version -06 to -07
+E.3.  Version -06 to -07
 
    *  Renamed id_ep_types as ep_id_types.
 
@@ -4050,7 +4052,7 @@ D.3.  Version -06 to -07
 
    *  Clarifications and editorial improvements.
 
-D.4.  Version -05 to -06
+E.4.  Version -05 to -06
 
    *  The access token can be uploaded through EDHOC in EAD_3, EAD_2, or
       EAD_4.
@@ -4071,7 +4073,7 @@ D.4.  Version -05 to -06
 
    *  Clarifications and editorial improvements.
 
-D.5.  Version -04 to -05
+E.5.  Version -04 to -05
 
    *  CBOR diagnostic notation uses placeholders from a CDDL model.
 
@@ -4091,7 +4093,7 @@ D.5.  Version -04 to -05
 
    *  Editorial fixes and improvements.
 
-D.6.  Version -03 to -04
+E.6.  Version -03 to -04
 
    *  Fixed column name and prefilling of the "EDHOC Information"
       registry.
@@ -4110,7 +4112,7 @@ D.6.  Version -03 to -04
 
    *  Editorial fixes and improvements.
 
-D.7.  Version -02 to -03
+E.7.  Version -02 to -03
 
    *  Restructured presentation of content.
 
@@ -4126,7 +4128,7 @@ D.7.  Version -02 to -03
 
    *  Clarifications and editorial improvements.
 
-D.8.  Version -01 to -02
+E.8.  Version -01 to -02
 
    *  Removed use of EDHOC_KeyUpdate.
 
@@ -4140,7 +4142,7 @@ D.8.  Version -01 to -02
 
    *  Editorial improvements.
 
-D.9.  Version -00 to -01
+E.9.  Version -00 to -01
 
    *  Fixed semantics of the ead_value for transporting an Access Token
       in the EAD_1 field.

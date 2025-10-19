@@ -168,19 +168,19 @@ Table of Contents
    Appendix A.  Examples
      A.1.  Workflow without Optimizations
      A.2.  Workflow with Optimizations
-   Appendix B.  Request Creation Hints provided in EAD item
-   Appendix C.  Profile Requirements
-   Appendix D.  CDDL Model
-   Appendix E.  Document Updates
-     E.1.  Version -08 to -09
-     E.2.  Version -07 to -08
-     E.3.  Version -06 to -07
-     E.4.  Version -05 to -06
-     E.5.  Version -04 to -05
-     E.6.  Version -03 to -04
-     E.7.  Version -02 to -03
-     E.8.  Version -01 to -02
-     E.9.  Version -00 to -01
+     A.3.  Non-sequential Workflow
+   Appendix B.  Profile Requirements
+   Appendix C.  CDDL Model
+   Appendix D.  Document Updates
+     D.1.  Version -08 to -09
+     D.2.  Version -07 to -08
+     D.3.  Version -06 to -07
+     D.4.  Version -05 to -06
+     D.5.  Version -04 to -05
+     D.6.  Version -03 to -04
+     D.7.  Version -02 to -03
+     D.8.  Version -01 to -02
+     D.9.  Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -303,7 +303,7 @@ Table of Contents
 
    In the CBOR diagnostic notation used in this document, constructs of
    the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME
-   in the CDDL model shown in Figure 11 of Appendix D.  For example,
+   in the CDDL model shown in Figure 11 of Appendix C.  For example,
    {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2
    : 3}.
 
@@ -311,7 +311,7 @@ Table of Contents
    this note.  Also, in the CBOR diagnostic notation used in this
    document, please replace the constructs of the form e'SOME_NAME' with
    the value assigned to SOME_NAME in the CDDL model shown in Figure 11
-   of Appendix D.  Finally, please delete this note.
+   of Appendix C.  Finally, please delete this note.
 
 2.  Protocol Overview
 
@@ -1923,7 +1923,7 @@ Table of Contents
 
    AS Request Creation Hints may also be requested and retrieved through
    a new EAD item defined here, see Figure 9, Section 14.8, and an
-   example of its usage in Appendix B.
+   example of its usage in Appendix A.3.
 
    ead_label = TBD
    ? ead_value = bstr .cbor AS_request_creation_hints
@@ -1992,7 +1992,7 @@ Table of Contents
    In order to remediate this situation, this section specifies a new
    EAD item for requesting the peer's authentication credential by
    value, see Figure 10, Section 14.8, and an example of its usage in
-   Appendix B.
+   Appendix A.3.
 
    ead_label = TBD
 
@@ -2828,9 +2828,8 @@ Table of Contents
 
    *  Label: TBD (value between 1 and 23)
 
-   *  Description: This peer wishes to receive the other peer's
-      credential specified transported by value (and not identified by
-      reference)
+   *  Description: The sender peer wishes to receive the other peer's
+      credential transported by value (and not identified by reference)
 
    *  Reference: [RFC-XXXX], Section 4.14
 
@@ -2840,8 +2839,7 @@ Table of Contents
 
    *  Label: TBD (value between 1 and 23)
 
-   *  Description: AS Request Creation Hints or empty value signaling a
-      wish to receive AS Request Creation Hints
+   *  Description: Request or convey AS Request Creation Hints
 
    *  Reference: [RFC-XXXX], Section 4.13
 
@@ -3407,6 +3405,12 @@ Appendix A.  Examples
       hence reducing the roundtrips of the interactions between C and
       RS.
 
+   *  Appendix A.3 makes use of the EAD items EAD_CRED_BY_VALUE and
+      EAD_REQUEST_CREATION_HINTS, allowing C to receive AS Request
+      Creation Hints from the RS transported in an EAD item.  This is
+      useful if C is not be able to determine in advance the appropriate
+      AS to contact.
+
    All these examples build on the following assumptions, as relying on
    expected early procedures performed at AS.  These include the
    registration of resource servers by the respective resource owners as
@@ -3751,53 +3755,50 @@ A.2.  Workflow with Optimizations
  M08 |<----------------------------------------------------------------+
      |                                    |                            |
 
-Appendix B.  Request Creation Hints provided in EAD item
+A.3.  Non-sequential Workflow
 
-   When this profile is used, the Client (C) might not be able to
-   determine in advance the appropriate Authorization Server (AS) to
-   contact.  In such cases, C may initiate EDHOC with the Resource
-   Server (RS) prior to obtaining an access token and rely on the RS to
+   When this profile is used, the C might not be able to determine in
+   advance the appropriate AS to contact.  In such cases, C may initiate
+   EDHOC with RS prior to obtaining an access token and rely on RS to
    provide this information.
 
-   One approach, as detailed in this section, is for the RS to convey
-   this information by including an External Authorization Data (EAD)
-   item in EDHOC message_2.  The content of this EAD item is the
-   information conveyed in a Request Creation Hints response, thereby
-   helping C to identify the correct AS, and possibly other relevant
-   parameters needed to request an access token.
+   One approach, as detailed in this section, is for RS to convey this
+   information by including an External Authorization Data (EAD) item in
+   EDHOC message_2.  The content of this EAD item is the information
+   conveyed in a Request Creation Hints response, thereby helping C to
+   identify the correct AS, and possibly other relevant parameters
+   needed to request an access token.
 
    The following describes an example scenario where this functionality
-   is used in the forward message flow, in particular taking advantage
-   of the new EAD items EAD_REQUEST_CREATION_HINTS (see Section 4.13)
-   and EAD_CRED_BY_VALUE (see Section 4.14).
+   is used in the EDHOC forward message flow, in particular taking
+   advantage of the new EAD items EAD_REQUEST_CREATION_HINTS (see
+   Section 4.13) and EAD_CRED_BY_VALUE (see Section 4.14).
 
-   1.  Without having an access token, C sends EDHOC message_1 to the
-       RS, including in EAD_1:
+   1.  Without having an access token, C sends EDHOC message_1 to RS,
+       including in EAD_1:
 
        *  A new EAD item EAD_REQUEST_CREATION_HINTS, here specifying no
           ead_value.
 
-          By doing so, C is asking the RS to include the same EAD item
-          in EAD_2, specifying the information that would be included in
-          a Request Creation Hints response.
+          By doing so, C is asking RS to include the same EAD item in
+          EAD_2, specifying the information that would be included in a
+          Request Creation Hints response.
 
-       *  A new EAD item EAD_CRED_BY_VALUE, asking the RS to specify its
-          authentication credential AUTH_CRED_the RS by value in
-          ID_CRED_R.
+       *  A new EAD item EAD_CRED_BY_VALUE, asking RS to specify its
+          authentication credential AUTH_CRED_RS by value in ID_CRED_R.
 
-   2.  the RS replies with EDHOC message_2, including in EAD_2:
+   2.  RS replies with EDHOC message_2, including in EAD_2:
 
        *  The new EAD item EAD_REQUEST_CREATION_HINTS, whose CBOR byte
           string specified as ead_value encodes the information that
           would have been included in a Request Creation Hints response
-          to an unauthorized request sent to the RS.  In particular,
-          this information includes the URI to the /token endpoint at
-          the AS.
+          to an unauthorized request sent to RS.  In particular, this
+          information includes the URI to the /token endpoint at the AS.
 
           However, note that C has not made an actual request with a
           specific request method and targeting a specific application
-          resource.  That is, the RS does not know yet what resources C
-          is actually interested in accessing later on.  Hence, the
+          resource.  That is, RS does not know yet what resources C is
+          actually interested in accessing later on.  Hence, the
           information specified in this EAD_REQUEST_CREATION_HINTS item
           is typically not expected to include "audience" and "scope".
 
@@ -3809,47 +3810,47 @@ Appendix B.  Request Creation Hints provided in EAD item
 
        C should already know the right audience and scope to specify in
        the Access Token Request, as that information is not expected to
-       be provided by the RS in the EAD_REQUEST_CREATION_HINTS item of
+       be provided by RS in the EAD_REQUEST_CREATION_HINTS item of EDHOC
        message_2.  There may also be default audience and scope set at
        the AS to use, if none is specified by C in its Access Token
        Request.
 
-   4.  C sends EDHOC message_3, specifying the access token in EAD_3 as
-       value of the EAD item "EAD_ACCESS_TOKEN".
+   4.  C sends EDHOC message_3 to RS, specifying the access token in
+       EAD_3 as value of the EAD item "EAD_ACCESS_TOKEN".
 
-   5.  If the protected request from C for accessing a resource at the
-       RS is not authorized per the issued access token, then the RS
-       replies with a protected error response.  Within that error
-       response, the RS can provide C with information that would have
-       been specified in a Request Creation Hints response.  This time,
-       that information also includes "audience" and "scope".  After
-       this, C can follow-up requesting a new access token that
-       dynamically updates access rights accordingly.
+   5.  If a protected request from C for accessing a resource at RS is
+       not authorized per the issued access token, then RS replies with
+       a protected error response.  Within that error response, RS can
+       provide C with information that would have been specified in a
+       Request Creation Hints response.  This time, that information
+       also includes "audience" and "scope".  After this, C can follow-
+       up requesting a new access token that dynamically updates access
+       rights accordingly (see Section 3.1).
 
        Note that this applies also if C uses the EDHOC + OSCORE combined
        request (see [RFC9668]), hence combining EDHOC message_3 with the
        first OSCORE-protected request to access a protected resource at
-       the RS.
+       RS (see Appendix A.2).
 
-   If, instead, the reverse message flow is used, then the following
-   differences compared to what is described above apply:
+   If, instead, the EDHOC reverse message flow is used, then the
+   following differences compared to what is described above apply:
 
    *  EAD_REQUEST_CREATION_HINTS and EAD_CRED_BY_VALUE are included in
-      EDHOC message_2 by C, in order to ask the RS to provide the
-      Request Creation Hints information and to specify AUTH_CRED_the RS
-      by value in ID_CRED_I, respectively.
+      EDHOC message_2 by C, in order to ask RS to provide the Request
+      Creation Hints information and to specify AUTH_CRED_RS by value in
+      ID_CRED_I, respectively.
 
-   *  EAD_REQUEST_CREATION_HINTS is included in EDHOC message_3 by the
-      RS, with value the Request Creation Hints information.
+   *  EAD_REQUEST_CREATION_HINTS is included in EDHOC message_3 by RS,
+      with value the Request Creation Hints information.
 
    *  After receiving EDHOC message_3, C requests the access token to
       the AS, based on the information from EAD_REQUEST_CREATION_HINTS
-      in message_3.
+      in EDHOC message_3.
 
-   *  Finally, C sends EDHOC message_4, specifying the access token in
-      EAD_4 as value of the EAD item "EAD_ACCESS_TOKEN".
+   *  Finally, C sends EDHOC message_4 to RS, specifying the access
+      token in EAD_4 as value of the EAD item "EAD_ACCESS_TOKEN".
 
-Appendix C.  Profile Requirements
+Appendix B.  Profile Requirements
 
    This section lists the specifications of this profile based on the
    requirements of the framework, as requested in Appendix C of
@@ -3910,7 +3911,7 @@ Appendix C.  Profile Requirements
       EDHOC with RS, by including the access token in the EAD_3 field of
       EDHOC message_3 (see Section 4.2).
 
-Appendix D.  CDDL Model
+Appendix C.  CDDL Model
 
    This section is to be removed before publishing as an RFC.
 
@@ -3964,11 +3965,11 @@ Appendix D.  CDDL Model
 
                            Figure 11: CDDL model
 
-Appendix E.  Document Updates
+Appendix D.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-E.1.  Version -08 to -09
+D.1.  Version -08 to -09
 
    *  Parameter "cnf" explicitly forbidden in the Access Token Response.
 
@@ -3981,7 +3982,7 @@ E.1.  Version -08 to -09
 
    *  Examples showing content of new EAD items.
 
-E.2.  Version -07 to -08
+D.2.  Version -07 to -08
 
    *  KUDOS is just an example of protocol to use for optional key
       update.
@@ -4005,7 +4006,7 @@ E.2.  Version -07 to -08
 
    *  Editorial improvements.
 
-E.3.  Version -06 to -07
+D.3.  Version -06 to -07
 
    *  Renamed id_ep_types as ep_id_types.
 
@@ -4052,7 +4053,7 @@ E.3.  Version -06 to -07
 
    *  Clarifications and editorial improvements.
 
-E.4.  Version -05 to -06
+D.4.  Version -05 to -06
 
    *  The access token can be uploaded through EDHOC in EAD_3, EAD_2, or
       EAD_4.
@@ -4073,7 +4074,7 @@ E.4.  Version -05 to -06
 
    *  Clarifications and editorial improvements.
 
-E.5.  Version -04 to -05
+D.5.  Version -04 to -05
 
    *  CBOR diagnostic notation uses placeholders from a CDDL model.
 
@@ -4093,7 +4094,7 @@ E.5.  Version -04 to -05
 
    *  Editorial fixes and improvements.
 
-E.6.  Version -03 to -04
+D.6.  Version -03 to -04
 
    *  Fixed column name and prefilling of the "EDHOC Information"
       registry.
@@ -4112,7 +4113,7 @@ E.6.  Version -03 to -04
 
    *  Editorial fixes and improvements.
 
-E.7.  Version -02 to -03
+D.7.  Version -02 to -03
 
    *  Restructured presentation of content.
 
@@ -4128,7 +4129,7 @@ E.7.  Version -02 to -03
 
    *  Clarifications and editorial improvements.
 
-E.8.  Version -01 to -02
+D.8.  Version -01 to -02
 
    *  Removed use of EDHOC_KeyUpdate.
 
@@ -4142,7 +4143,7 @@ E.8.  Version -01 to -02
 
    *  Editorial improvements.
 
-E.9.  Version -00 to -01
+D.9.  Version -00 to -01
 
    *  Fixed semantics of the ead_value for transporting an Access Token
       in the EAD_1 field.

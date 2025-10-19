@@ -1998,7 +1998,7 @@ Table of Contents
 
    This EAD item has no ead_value.  When present in EAD_1, it requests
    the Responder's authentication credential by value in ID_CRED_R of
-   message_2.  When present in EAD_2, it requests the the Initiator's
+   message_2.  When present in EAD_2, it requests the Initiator's
    authentication credential by value in ID_CRED_I of message_3.  The
    EAD item is non-critical, i.e., it can be ignored by the receiving
    peer.  It is OPTIONAL to implement.
@@ -3829,8 +3829,8 @@ A.3.  Request Creation Hints provided in EAD item
        first OSCORE-protected request to access a protected resource at
        the RS.
 
-   If, instead, the reverse reverse message flow is used, then the
-   following differences compared to what is described above apply:
+   If, instead, the reverse message flow is used, then the following
+   differences compared to what is described above apply:
 
    *  EAD_REQUEST_CREATION_HINTS and EAD_CRED_BY_VALUE are included in
       EDHOC message_2 by C, in order to ask the RS to provide the

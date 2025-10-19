@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 21 April 2026                                         M. Tiloca
+Expires: 22 April 2026                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         18 October 2025
+                                                         19 October 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 April 2026.
+   This Internet-Draft will expire on 22 April 2026.
 
 Copyright Notice
 
@@ -1330,7 +1330,14 @@ Table of Contents
       token of a token series, but not for the update of access rights
       (see Section 4.6).
 
-      Editor's note: Add example.
+      Example: Assuming IANA label 26 and critical, so ead_label = -26
+      (0x3819), and 180 bytes access_token =
+      h'8343a1010aa2044c53...0f6a' (partly omitted for brevity):
+
+      -  EAD_ACCESS_TOKEN = 0x381958B48343a1010aa2044c53...0f6a
+
+      Editor's note: Replace IANA label with TBD value registered for
+      ACE-OAuth Access Token in Section 14.8.
 
    *  EAD_SESSION_ID = (ead_label, ead_value), where:
 
@@ -1355,7 +1362,13 @@ Table of Contents
       provisioned to RS and is valid, but there is a need to establish a
       (new) OSCORE Security Context between C and RS through EDHOC.
 
-      Editor's note: Add example.
+      Example: Assuming IANA label 5 and critical, so ead_label = -5
+      (0x24), and session_id = h'1645'
+
+      -  EAD_ACCESS_TOKEN = 0x24421645
+
+      Editor's note: Replace IANA label with TBD value for Session ID
+      registered in Section 14.8.
 
 4.2.  EDHOC Session
 

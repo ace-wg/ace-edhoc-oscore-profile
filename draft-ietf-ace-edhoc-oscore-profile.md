@@ -1385,14 +1385,14 @@ IANA is asked to add the following entries to the "EDHOC External Authorization 
 
 <br>
 
-* Name: EAD\_CRED\_BY\_VALUE
+* Name: Credential By Value
 * Label: TBD (value between 1 and 23)
 * Description: The sender peer wishes to receive the other peer's credential transported by value (and not identified by reference)
 * Reference: {{&SELF}}, {{auth-cred-by-value}}
 
 <br>
 
-* Name: EAD\_REQUEST\_CREATION\_HINTS
+* Name: Request Creation Hints
 * Label: TBD (value between 1 and 23)
 * Description: Request or convey AS Request Creation Hints
 * Reference: {{&SELF}}, {{as-creation-hints}}
@@ -1545,7 +1545,7 @@ This appendix provides examples where this profile of ACE is used. In particular
 
 * {{example-with-optimization}} makes use of the optimizations defined in {{RFC9668}}, hence reducing the roundtrips of the interactions between C and RS.
 
-* {{example-non-sequential-workflow}} makes use of the EAD items EAD\_CRED\_BY\_VALUE and EAD\_REQUEST\_CREATION\_HINTS, allowing C to receive AS Request Creation Hints from the RS transported in an EAD item. This is useful if C is not be able to determine in advance the appropriate AS to contact.
+* {{example-non-sequential-workflow}} makes use of the EAD items EEAD\_REQUEST\_CREATION\_HINTS (see {{as-creation-hints}}) and EAD\_CRED\_BY\_VALUE (see {{auth-cred-by-value}}), allowing C to receive AS Request Creation Hints from the RS transported in an EAD item. This is useful if C is not be able to determine in advance the appropriate AS to contact.
 
 All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of resource servers by the respective resource owners as well as the registrations of clients authorized to request access tokens for those resource servers.
 

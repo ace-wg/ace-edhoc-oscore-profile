@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 22 April 2026                                         M. Tiloca
+Expires: 23 April 2026                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         19 October 2025
+                                                         20 October 2025
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 April 2026.
+   This Internet-Draft will expire on 23 April 2026.
 
 Copyright Notice
 
@@ -2825,7 +2825,7 @@ Table of Contents
 
 
 
-   *  Name: EAD_CRED_BY_VALUE
+   *  Name: Credential By Value
 
    *  Label: TBD (value between 1 and 23)
 
@@ -2836,7 +2836,7 @@ Table of Contents
 
 
 
-   *  Name: EAD_REQUEST_CREATION_HINTS
+   *  Name: Request Creation Hints
 
    *  Label: TBD (value between 1 and 23)
 
@@ -3406,11 +3406,12 @@ Appendix A.  Examples
       hence reducing the roundtrips of the interactions between C and
       RS.
 
-   *  Appendix A.3 makes use of the EAD items EAD_CRED_BY_VALUE and
-      EAD_REQUEST_CREATION_HINTS, allowing C to receive AS Request
-      Creation Hints from the RS transported in an EAD item.  This is
-      useful if C is not be able to determine in advance the appropriate
-      AS to contact.
+   *  Appendix A.3 makes use of the EAD items
+      EEAD_REQUEST_CREATION_HINTS (see Section 4.13) and
+      EAD_CRED_BY_VALUE (see Section 4.14), allowing C to receive AS
+      Request Creation Hints from the RS transported in an EAD item.
+      This is useful if C is not be able to determine in advance the
+      appropriate AS to contact.
 
    All these examples build on the following assumptions, as relying on
    expected early procedures performed at AS.  These include the

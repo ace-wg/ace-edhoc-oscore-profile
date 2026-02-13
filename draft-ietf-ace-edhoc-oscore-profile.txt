@@ -527,8 +527,8 @@ Table of Contents
    AUTH_CRED_C.  This may already have been accomplished, for example,
    by C authenticating to AS using AUTH_CRED_C as authentication
    credential, or by some other trusted party vouching for C to the AS.
-   Alternatively, it is possible to use an approach for achieving proof-
-   of-possession similar to that in Section 3.2 of
+   Alternatively, it is possible to use an approach for achieving proof
+   of possession similar to that in Section 3.2 of
    [I-D.ietf-ace-group-oscore-profile].
 
    In case of successful validations, AS stores AUTH_CRED_C as a valid
@@ -2367,9 +2367,9 @@ Table of Contents
    secret key PRK_out enjoying forward secrecy.  This is in turn used by
    C and RS to establish an OSCORE Security Context.
 
-   Furthermore, RS achieves confirmation that C has PRK_out (proof-of-
+   Furthermore, RS achieves confirmation that C has PRK_out (proof of
    possession) when completing the EDHOC session.  Instead, C achieves
-   confirmation that RS has PRK_out (proof-of-possession) either when
+   confirmation that RS has PRK_out (proof of possession) either when
    receiving the optional EDHOC message_4 from RS, or when successfully
    verifying a response from RS protected with the established OSCORE
    Security Context.
@@ -3901,10 +3901,10 @@ Appendix B.  Profile Requirements
    *  Specify the proof-of-possession protocol(s) and how to select one,
       if several are available.  Also specify which key types (e.g.,
       symmetric/asymmetric) are supported by a specific proof-of-
-      possession protocol: proof-of-possession is first achieved by RS
+      possession protocol: proof of possession is first achieved by RS
       when successfully processing EDHOC message_3 during the EDHOC
       session with C, through EDHOC algorithms and symmetric EDHOC
-      session keys.  Also, proof-of-possession is later achieved by C
+      session keys.  Also, proof of possession is later achieved by C
       when receiving from RS: i) the optional EDHOC message_4 during the
       EDHOC session with RS, through EDHOC algorithms and symmetric
       EDHOC session keys; or ii) the first response protected with the
@@ -4025,7 +4025,8 @@ D.3.  Version -07 to -08
 
    *  New EAD item for requesting authentication credential by value.
 
-   *  Means for the AS to achive proof-of-possession of C's private key.
+   *  Means for the AS to achieve proof of possession of C's private
+      key.
 
    *  Editorial improvements.
 

@@ -506,11 +506,11 @@ This categorization helps coordinate the use of EDHOC application profiles {{Sec
 
 * cipher\_suites: This parameter specifies a set of supported EDHOC cipher suites (see {{Section 3.6 of RFC9528}}). If the set is composed of a single EDHOC cipher suite, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC cipher suite. In JSON, the "cipher\_suites" value is an integer or an array of integers. In CBOR, the "cipher\_suites" is an integer or an array of integers, and has label 2.
 
-* message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of RFC9528}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value `true` (0xf5) or `false` (0xf4), and has label 4.
+* message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of RFC9528}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value `true` (0xf5) or `false` (0xf4), and has label 3.
 
-* comb\_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in {{RFC9668}}) is supported. In JSON, the "comb\_req" value is a boolean. In CBOR, "comb\_req" is the simple value `true` (0xf5) or `false` (0xf4), and has label 5.
+* comb\_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in {{RFC9668}}) is supported. In JSON, the "comb\_req" value is a boolean. In CBOR, "comb\_req" is the simple value `true` (0xf5) or `false` (0xf4), and has label 4.
 
-* uri\_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri\_path" value is a string. In CBOR, "uri\_path" is a text string, and has label 6.
+* uri\_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri\_path" value is a string. In CBOR, "uri\_path" is a text string, and has label 5.
 
 * cred\_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see {{Section 3.5.2 of RFC9528}}). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred\_types" value is an integer or an array of integers. In CBOR, "cred\_types" is an integer or an array of integers, and has label 6. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in {{RFC9668}}.
 
@@ -598,24 +598,37 @@ The CDDL grammar describing the CBOR EDHOC_Information is:
 
 ~~~~~~~~~~~
 EDHOC_Information = {
-  ?  0 => bstr,                   ; id
-  ?  1 => int / array,            ; methods
-  ?  2 => int / array,            ; cipher_suites
-  ?  3 => true / false,           ; message_4
-  ?  4 => true / false,           ; comb_req
-  ?  5 => tstr,                   ; uri_path
-  ?  6 => int / array,            ; cred_types
-  ?  7 => int / tstr / array,     ; id_cred_types
-  ?  8 => uint / array,           ; eads
-  ?  9 => true / false,           ; initiator
-  ? 10 => true / false,           ; responder
-  ? 11 => uint,                   ; max_msgsize
-  ? 12 => true / false,           ; coap_ct
-  ? 13 => int / array,            ; ep_id_types
-  ? 14 => int / array,            ; transports
-  ? 15 => map,                    ; trust_anchors
-  * int / tstr => any
+  ?  0 => bstr,                               ; id
+  ?  1 => int / [2* int],                     ; methods
+  ?  2 => int / [2* int],                     ; cipher_suites
+  ?  3 => true / false,                       ; message_4
+  ?  4 => true / false,                       ; comb_req
+  ?  5 => tstr,                               ; uri_path
+  ?  6 => int / [2* int],                     ; cred_types
+  ?  7 => int / tstr / [2* (int / tstr)],     ; id_cred_types
+  ?  8 => uint / [2* uint],                   ; eads
+  ?  9 => true / false,                       ; initiator
+  ? 10 => true / false,                       ; responder
+  ? 11 => uint,                               ; max_msgsize
+  ? 12 => true / false,                       ; coap_ct
+  ? 13 => int / [2* int],                     ; ep_id_types
+  ? 14 => int / [2* int],                     ; transports
+  ? 15 => trust_anchors_value,                ; trust_anchors
+  * (int / tstr) => any
 }
+
+trust_anchors_value = {
+  1* int => trust_anchors_outer_entry_value
+}
+
+trust_anchors_outer_entry_value =
+  trust_anchors_container / [2* trust_anchors_container]
+
+trust_anchors_container = {
+  int => trust_anchors_inner_entry_value
+}
+
+trust_anchors_inner_entry_value = any
 ~~~~~~~~~~~
 
 
@@ -1995,6 +2008,12 @@ x5u_ta_type = 35
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -09 to -10 ## {#sec-09-10}
+
+* Fixed CDDL definition of the EDHOC_Information object.
+
+* Editorial fixes and improvements.
 
 ## Version -08 to -09 ## {#sec-08-09}
 

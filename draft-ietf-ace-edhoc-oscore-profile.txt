@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 23 April 2026                                         M. Tiloca
+Expires: 17 August 2026                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         20 October 2025
+                                                        13 February 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,11 +64,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 April 2026.
+   This Internet-Draft will expire on 17 August 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -172,15 +172,16 @@ Table of Contents
    Appendix B.  Profile Requirements
    Appendix C.  CDDL Model
    Appendix D.  Document Updates
-     D.1.  Version -08 to -09
-     D.2.  Version -07 to -08
-     D.3.  Version -06 to -07
-     D.4.  Version -05 to -06
-     D.5.  Version -04 to -05
-     D.6.  Version -03 to -04
-     D.7.  Version -02 to -03
-     D.8.  Version -01 to -02
-     D.9.  Version -00 to -01
+     D.1.  Version -09 to -10
+     D.2.  Version -08 to -09
+     D.3.  Version -07 to -08
+     D.4.  Version -06 to -07
+     D.5.  Version -05 to -06
+     D.6.  Version -04 to -05
+     D.7.  Version -03 to -04
+     D.8.  Version -02 to -03
+     D.9.  Version -01 to -02
+     D.10. Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -1068,17 +1069,17 @@ Table of Contents
    *  message_4: This parameter indicates whether the EDHOC message_4
       (see Section 5.5 of [RFC9528]) is supported.  In JSON, the
       "message_4" value is a boolean.  In CBOR, "message_4" is the
-      simple value true (0xf5) or false (0xf4), and has label 4.
+      simple value true (0xf5) or false (0xf4), and has label 3.
 
    *  comb_req: This parameter indicates whether the combined EDHOC +
       OSCORE request defined in [RFC9668]) is supported.  In JSON, the
       "comb_req" value is a boolean.  In CBOR, "comb_req" is the simple
-      value true (0xf5) or false (0xf4), and has label 5.
+      value true (0xf5) or false (0xf4), and has label 4.
 
    *  uri_path: This parameter specifies the path component of the URI
       of the EDHOC resource where EDHOC messages have to be sent as
       requests.  In JSON, the "uri_path" value is a string.  In CBOR,
-      "uri_path" is a text string, and has label 6.
+      "uri_path" is a text string, and has label 5.
 
    *  cred_types: This parameter specifies a set of supported types of
       authentication credentials for EDHOC (see Section 3.5.2 of
@@ -1270,24 +1271,37 @@ Table of Contents
    The CDDL grammar describing the CBOR EDHOC_Information is:
 
    EDHOC_Information = {
-     ?  0 => bstr,                   ; id
-     ?  1 => int / array,            ; methods
-     ?  2 => int / array,            ; cipher_suites
-     ?  3 => true / false,           ; message_4
-     ?  4 => true / false,           ; comb_req
-     ?  5 => tstr,                   ; uri_path
-     ?  6 => int / array,            ; cred_types
-     ?  7 => int / tstr / array,     ; id_cred_types
-     ?  8 => uint / array,           ; eads
-     ?  9 => true / false,           ; initiator
-     ? 10 => true / false,           ; responder
-     ? 11 => uint,                   ; max_msgsize
-     ? 12 => true / false,           ; coap_ct
-     ? 13 => int / array,            ; ep_id_types
-     ? 14 => int / array,            ; transports
-     ? 15 => map,                    ; trust_anchors
-     * int / tstr => any
+     ?  0 => bstr,                               ; id
+     ?  1 => int / [2* int],                     ; methods
+     ?  2 => int / [2* int],                     ; cipher_suites
+     ?  3 => true / false,                       ; message_4
+     ?  4 => true / false,                       ; comb_req
+     ?  5 => tstr,                               ; uri_path
+     ?  6 => int / [2* int],                     ; cred_types
+     ?  7 => int / tstr / [2* (int / tstr)],     ; id_cred_types
+     ?  8 => uint / [2* uint],                   ; eads
+     ?  9 => true / false,                       ; initiator
+     ? 10 => true / false,                       ; responder
+     ? 11 => uint,                               ; max_msgsize
+     ? 12 => true / false,                       ; coap_ct
+     ? 13 => int / [2* int],                     ; ep_id_types
+     ? 14 => int / [2* int],                     ; transports
+     ? 15 => trust_anchors_value,                ; trust_anchors
+     * (int / tstr) => any
    }
+
+   trust_anchors_value = {
+     1* int => trust_anchors_outer_entry_value
+   }
+
+   trust_anchors_outer_entry_value =
+     trust_anchors_container / [2* trust_anchors_container]
+
+   trust_anchors_container = {
+     int => trust_anchors_inner_entry_value
+   }
+
+   trust_anchors_inner_entry_value = any
 
 4.  Client-RS Communication
 
@@ -3150,17 +3164,17 @@ Table of Contents
    [I-D.ietf-core-uri-path-abbrev]
               Amsüss, C. and M. Richardson, "URI-Path abbreviation in
               CoAP", Work in Progress, Internet-Draft, draft-ietf-core-
-              uri-path-abbrev-01, 26 September 2025,
+              uri-path-abbrev-02, 20 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              uri-path-abbrev-01>.
+              uri-path-abbrev-02>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-15, 18 August 2025,
+              ietf-cose-cbor-encoded-cert-16, 25 January 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-15>.
+              cbor-encoded-cert-16>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -3310,8 +3324,9 @@ Table of Contents
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              08, 7 July 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-coap-est-oscore-08>.
+              09, 20 October 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
+              coap-est-oscore-09>.
 
    [I-D.ietf-ace-group-oscore-profile]
               Tiloca, M., Höglund, R., and F. Palombini, "The Group
@@ -3328,47 +3343,47 @@ Table of Contents
               (SDC) Workflow and New OAuth Parameters for the
               Authentication and Authorization for Constrained
               Environments (ACE) Framework", Work in Progress, Internet-
-              Draft, draft-ietf-ace-workflow-and-params-05, 7 July 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              workflow-and-params-05>.
+              Draft, draft-ietf-ace-workflow-and-params-06, 20 October
+              2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              ace-workflow-and-params-06>.
 
    [I-D.ietf-core-groupcomm-bis]
               Dijk, E. and M. Tiloca, "Group Communication for the
               Constrained Application Protocol (CoAP)", Work in
               Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
-              15, 25 September 2025,
+              18, 10 February 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-bis-15>.
+              groupcomm-bis-18>.
 
    [I-D.ietf-core-oscore-id-update]
               Höglund, R. and M. Tiloca, "Identifier Update for OSCORE",
               Work in Progress, Internet-Draft, draft-ietf-core-oscore-
-              id-update-04, 20 July 2025,
+              id-update-05, 20 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-id-update-04>.
+              oscore-id-update-05>.
 
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-key-update-11, 7 July 2025,
+              core-oscore-key-update-12, 20 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-key-update-11>.
+              oscore-key-update-12>.
 
    [I-D.ietf-lake-app-profiles]
               Tiloca, M. and R. Höglund, "Coordinating the Use of
               Application Profiles for Ephemeral Diffie-Hellman Over
               COSE (EDHOC)", Work in Progress, Internet-Draft, draft-
-              ietf-lake-app-profiles-02, 7 July 2025,
+              ietf-lake-app-profiles-03, 20 October 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
-              app-profiles-02>.
+              app-profiles-03>.
 
    [I-D.ietf-lake-authz]
               Selander, G., Mattsson, J. P., Vučinić, M., Fedrecheski,
               G., and M. Richardson, "Lightweight Authorization using
               Ephemeral Diffie-Hellman Over COSE (ELA)", Work in
-              Progress, Internet-Draft, draft-ietf-lake-authz-05, 7 July
-              2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              lake-authz-05>.
+              Progress, Internet-Draft, draft-ietf-lake-authz-06, 20
+              October 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-lake-authz-06>.
 
    [I-D.serafin-lake-ta-hint]
               Serafin, M. and G. Selander, "Trust Anchor Hints in
@@ -3971,7 +3986,13 @@ Appendix D.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-D.1.  Version -08 to -09
+D.1.  Version -09 to -10
+
+   *  Fixed CDDL definition of the EDHOC_Information object.
+
+   *  Editorial fixes and improvements.
+
+D.2.  Version -08 to -09
 
    *  Parameter "cnf" explicitly forbidden in the Access Token Response.
 
@@ -3984,7 +4005,7 @@ D.1.  Version -08 to -09
 
    *  Examples showing content of new EAD items.
 
-D.2.  Version -07 to -08
+D.3.  Version -07 to -08
 
    *  KUDOS is just an example of protocol to use for optional key
       update.
@@ -4008,7 +4029,7 @@ D.2.  Version -07 to -08
 
    *  Editorial improvements.
 
-D.3.  Version -06 to -07
+D.4.  Version -06 to -07
 
    *  Renamed id_ep_types as ep_id_types.
 
@@ -4055,7 +4076,7 @@ D.3.  Version -06 to -07
 
    *  Clarifications and editorial improvements.
 
-D.4.  Version -05 to -06
+D.5.  Version -05 to -06
 
    *  The access token can be uploaded through EDHOC in EAD_3, EAD_2, or
       EAD_4.
@@ -4076,7 +4097,7 @@ D.4.  Version -05 to -06
 
    *  Clarifications and editorial improvements.
 
-D.5.  Version -04 to -05
+D.6.  Version -04 to -05
 
    *  CBOR diagnostic notation uses placeholders from a CDDL model.
 
@@ -4096,7 +4117,7 @@ D.5.  Version -04 to -05
 
    *  Editorial fixes and improvements.
 
-D.6.  Version -03 to -04
+D.7.  Version -03 to -04
 
    *  Fixed column name and prefilling of the "EDHOC Information"
       registry.
@@ -4115,7 +4136,7 @@ D.6.  Version -03 to -04
 
    *  Editorial fixes and improvements.
 
-D.7.  Version -02 to -03
+D.8.  Version -02 to -03
 
    *  Restructured presentation of content.
 
@@ -4131,7 +4152,7 @@ D.7.  Version -02 to -03
 
    *  Clarifications and editorial improvements.
 
-D.8.  Version -01 to -02
+D.9.  Version -01 to -02
 
    *  Removed use of EDHOC_KeyUpdate.
 
@@ -4145,7 +4166,7 @@ D.8.  Version -01 to -02
 
    *  Editorial improvements.
 
-D.9.  Version -00 to -01
+D.10.  Version -00 to -01
 
    *  Fixed semantics of the ead_value for transporting an Access Token
       in the EAD_1 field.

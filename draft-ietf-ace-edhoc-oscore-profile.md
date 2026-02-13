@@ -265,7 +265,7 @@ When receiving an Access Token request including the "req_cnf" parameter, AS che
 
 If this is not the case, AS retrieves AUTH_CRED_C, either using the "req_cnf" parameter or some other trusted source. After that, AS validates the actual AUTH_CRED_C.
 
-In either case, the AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for achieving proof-of-possession similar to that in {{Section 3.2 of I-D.ietf-ace-group-oscore-profile}}.
+In either case, the AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for achieving proof of possession similar to that in {{Section 3.2 of I-D.ietf-ace-group-oscore-profile}}.
 
 In case of successful validations, AS stores AUTH_CRED_C as a valid authentication credential. Otherwise, the Client-to-AS request MUST be declined.
 
@@ -1125,7 +1125,7 @@ Furthermore, the security considerations from OSCORE {{RFC8613}} and from EDHOC 
 
 As previously stated, once completed the EDHOC session, C and RS are mutually authenticated through their respective authentication credentials, whose retrieval has been facilitated by AS. Also, once completed the EDHOC session, C and RS have established a long-term secret key PRK\_out enjoying forward secrecy. This is in turn used by C and RS to establish an OSCORE Security Context.
 
-Furthermore, RS achieves confirmation that C has PRK\_out (proof-of-possession) when completing the EDHOC session. Instead, C achieves confirmation that RS has PRK\_out (proof-of-possession) either when receiving the optional EDHOC message\_4 from RS, or when successfully verifying a response from RS protected with the established OSCORE Security Context.
+Furthermore, RS achieves confirmation that C has PRK\_out (proof of possession) when completing the EDHOC session. Instead, C achieves confirmation that RS has PRK\_out (proof of possession) either when receiving the optional EDHOC message\_4 from RS, or when successfully verifying a response from RS protected with the established OSCORE Security Context.
 
 OSCORE is designed to secure point-to-point communication, providing a secure binding between a request and the corresponding response(s). Thus, the basic OSCORE protocol is not intended for use in point-to-multipoint communication (e.g., enforced via multicast or a publish-subscribe model). Implementers of this profile should make sure that their use case of OSCORE corresponds to the expected one, in order to prevent weakening the security assurances provided by OSCORE.
 
@@ -1940,7 +1940,7 @@ This section lists the specifications of this profile based on the requirements 
 
 * Specify how the client and RS mutually authenticate: Explicitly, by successfully executing the EDHOC protocol, after which a common OSCORE Security Context is exported from the EDHOC session. As per the EDHOC authentication method used during the EDHOC session, authentication is provided by digital signatures, or by Message Authentication Codes (MACs) computed from an ephemeral-static ECDH shared secret.
 
-* Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of-possession protocol: proof-of-possession is first achieved by RS when successfully processing EDHOC message\_3 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys. Also, proof-of-possession is later achieved by C when receiving from RS: i) the optional EDHOC message\_4 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC session with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
+* Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of-possession protocol: proof of possession is first achieved by RS when successfully processing EDHOC message\_3 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys. Also, proof of possession is later achieved by C when receiving from RS: i) the optional EDHOC message\_4 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC session with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
 
 * Specify a unique ace_profile identifier: coap_edhoc_oscore
 
@@ -2043,7 +2043,7 @@ x5u_ta_type = 35
 
 * New EAD item for requesting authentication credential by value.
 
-* Means for the AS to achive proof-of-possession of C's private key.
+* Means for the AS to achieve proof of possession of C's private key.
 
 * Editorial improvements.
 

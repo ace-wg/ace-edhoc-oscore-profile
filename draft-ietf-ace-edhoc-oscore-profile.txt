@@ -119,48 +119,50 @@ Table of Contents
      4.13. Using AS Request Creation Hints
      4.14. Requesting Authentication Credential By Value
    5.  Secure Communication with AS
-   6.  CWT Confirmation Methods
-     6.1.  Ordered Chain of X.509 Certificates
-     6.2.  Unordered Bag of X.509 Certificates
-     6.3.  Hash of an X.509 Certificate
-     6.4.  URI Pointing to an Ordered Chain of X.509 Certificates
-     6.5.  Ordered Chain of C509 Certificates
-     6.6.  Unordered Bag of C509 Certificates
-     6.7.  Hash of a C509 Certificate
-     6.8.  URI Pointing to an Ordered Chain of C509 Certificates
-     6.9.  CWT Containing a COSE_Key
-     6.10. CCS Containing a COSE_Key
-   7.  JWT Confirmation Methods
+   6.  Use with Application Profiles of ACE for Group Key Provisioning
+   7.  CWT Confirmation Methods
      7.1.  Ordered Chain of X.509 Certificates
      7.2.  Unordered Bag of X.509 Certificates
      7.3.  Hash of an X.509 Certificate
      7.4.  URI Pointing to an Ordered Chain of X.509 Certificates
      7.5.  Ordered Chain of C509 Certificates
      7.6.  Unordered Bag of C509 Certificates
-     7.7.  Hash of a C09 Certificate
+     7.7.  Hash of a C509 Certificate
      7.8.  URI Pointing to an Ordered Chain of C509 Certificates
      7.9.  CWT Containing a COSE_Key
      7.10. CCS Containing a COSE_Key
-   8.  EDHOC Trust Anchor Purposes
-   9.  EDHOC Trust Anchor Types
-   10. Security Considerations
-   11. Privacy Considerations
-   12. IANA Considerations
-     12.1.  ACE Profiles Registry
-     12.2.  OAuth Parameters Registry
-     12.3.  OAuth Parameters CBOR Mappings Registry
-     12.4.  JSON Web Token Claims Registry
-     12.5.  CBOR Web Token (CWT) Claims Registry
-     12.6.  JWT Confirmation Methods Registry
-     12.7.  CWT Confirmation Methods Registry
-     12.8.  EDHOC External Authorization Data Registry
-     12.9.  EDHOC Information Registry
-     12.10. EDHOC Trust Anchor Purposes Registry
-     12.11. EDHOC Trust Anchor Types Registry
-     12.12. Expert Review Instructions
-   13. References
-     13.1.  Normative References
-     13.2.  Informative References
+   8.  JWT Confirmation Methods
+     8.1.  Ordered Chain of X.509 Certificates
+     8.2.  Unordered Bag of X.509 Certificates
+     8.3.  Hash of an X.509 Certificate
+     8.4.  URI Pointing to an Ordered Chain of X.509 Certificates
+     8.5.  Ordered Chain of C509 Certificates
+     8.6.  Unordered Bag of C509 Certificates
+     8.7.  Hash of a C09 Certificate
+     8.8.  URI Pointing to an Ordered Chain of C509 Certificates
+     8.9.  CWT Containing a COSE_Key
+     8.10. CCS Containing a COSE_Key
+   9.  EDHOC Trust Anchor Purposes
+   10. EDHOC Trust Anchor Types
+   11. Security Considerations
+   12. Privacy Considerations
+   13. IANA Considerations
+     13.1.  ACE Profiles Registry
+     13.2.  OAuth Parameters Registry
+     13.3.  OAuth Parameters CBOR Mappings Registry
+     13.4.  JSON Web Token Claims Registry
+     13.5.  CBOR Web Token (CWT) Claims Registry
+     13.6.  JWT Confirmation Methods Registry
+     13.7.  CWT Confirmation Methods Registry
+     13.8.  EDHOC External Authorization Data Registry
+     13.9.  EDHOC Exporter Labels
+     13.10. EDHOC Information Registry
+     13.11. EDHOC Trust Anchor Purposes Registry
+     13.12. EDHOC Trust Anchor Types Registry
+     13.13. Expert Review Instructions
+   14. References
+     14.1.  Normative References
+     14.2.  Informative References
    Appendix A.  Examples
      A.1.  Workflow without Optimizations
      A.2.  Workflow with Optimizations
@@ -469,7 +471,7 @@ Table of Contents
    include EDHOC_Information, which is a CBOR map object containing
    information related to an EDHOC implementation (see Section 3.4).
    This object is transported in the "edhoc_info" parameter registered
-   in Section 12.2 and Section 12.3.
+   in Section 13.2 and Section 13.3.
 
 3.1.  C-to-AS: POST to /token endpoint
 
@@ -769,7 +771,7 @@ Table of Contents
    When issuing any access token of a token series, AS MUST include the
    following claims in the access token:
 
-   *  The "edhoc_info" claim defined in Section 12.5 and conveying an
+   *  The "edhoc_info" claim defined in Section 13.5 and conveying an
       EDHOC_Information object (see Section 3.4).
 
       The EDHOC_Information object MUST include the "session_id" field
@@ -909,7 +911,7 @@ Table of Contents
    The EDHOC_Information can be encoded either as a JSON object or as a
    CBOR map.  The set of common fields that can appear in an
    EDHOC_Information can be found in the IANA "EDHOC Information"
-   registry defined in Section 12.9 for extensibility.
+   registry defined in Section 13.10 for extensibility.
 
    All EDHOC_Information parameters are optional.  The initial set of
    parameters defined in this document is summarized in Table 1 and is
@@ -1109,9 +1111,9 @@ Table of Contents
       pairs, these pairs are specified as elements of an array.
 
       Trust anchor purposes are selected from the "EDHOC Trust Anchor
-      Purposes" registry defined in Section 12.10 of this document.
+      Purposes" registry defined in Section 13.11 of this document.
       Trust anchor types are selected from the "EDHOC Trust Anchor
-      Types" registry defined in Section 12.11 of this document.
+      Types" registry defined in Section 13.12 of this document.
 
       In JSON, the "trust_anchors" value is an object with one or more
       outer entries, each of which is associated with a trust anchor
@@ -1251,7 +1253,7 @@ Table of Contents
 
    *  EAD_ACCESS_TOKEN = (ead_label, ead_value), where:
 
-      -  ead_label is the integer value TBD registered in Section 12.8.
+      -  ead_label is the integer value TBD registered in Section 13.8.
 
       -  ead_value is a CBOR byte string equal to the value of the
          "access_token" field of the access token response from AS (see
@@ -1275,11 +1277,11 @@ Table of Contents
       -  EAD_ACCESS_TOKEN = 0x381958B48343a1010aa2044c53...0f6a
 
       Editor's note: Replace IANA label with TBD value registered for
-      ACE-OAuth Access Token in Section 12.8.
+      ACE-OAuth Access Token in Section 13.8.
 
    *  EAD_SESSION_ID = (ead_label, ead_value), where:
 
-      -  ead_label is the integer value TBD registered in Section 12.8.
+      -  ead_label is the integer value TBD registered in Section 13.8.
 
       -  ead_value is a CBOR byte string equal to the value of the
          "session_id" field within the EDHOC_Information object
@@ -1306,7 +1308,7 @@ Table of Contents
       -  EAD_SESSION_ID = 0x24421645
 
       Editor's note: Replace IANA label with TBD value for Session ID
-      registered in Section 12.8.
+      registered in Section 13.8.
 
 4.2.  EDHOC Session
 
@@ -1859,7 +1861,7 @@ Table of Contents
       unless its value cannot contribute to expose the identity of RS.
 
    AS Request Creation Hints may also be requested and retrieved through
-   a new EAD item defined here, see Figure 9, Section 12.8, and an
+   a new EAD item defined here, see Figure 9, Section 13.8, and an
    example of its usage in Appendix A.3.
 
    ead_label = TBD
@@ -1882,7 +1884,7 @@ Table of Contents
       6C652E636F6D2F746F6B656E
 
    Editor's note: Replace IANA label with TBD value registered for
-   EAD_REQUEST_CREATION_HINTS in Section 12.8.
+   EAD_REQUEST_CREATION_HINTS in Section 13.8.
 
    This EAD item is intended to be used in EAD fields of EDHOC messages
    exchanged between C and RS: in the forward message flow in EAD_1 and
@@ -1929,7 +1931,7 @@ Table of Contents
 
    In order to remediate this situation, this section specifies a new
    EAD item for requesting the peer's authentication credential by
-   value, see Figure 10, Section 12.8, and an example of its usage in
+   value, see Figure 10, Section 13.8, and an example of its usage in
    Appendix A.3.
 
    ead_label = TBD
@@ -1949,7 +1951,7 @@ Table of Contents
    *  EAD_CRED_BY_VALUE = 0x0F
 
    Editor's note: Replace IANA label with TBD value registered for
-   EAD_CRED_BY_VALUE in Section 12.8.
+   EAD_CRED_BY_VALUE in Section 13.8.
 
    In the EDHOC reverse message flow this EAD item can be applied for
    better control of the use of credential by value.  Note that in the
@@ -1987,59 +1989,125 @@ Table of Contents
    the upload of access tokens from AS directly to RS as described in
    [I-D.ietf-ace-workflow-and-params].
 
-6.  CWT Confirmation Methods
+6.  Use with Application Profiles of ACE for Group Key Provisioning
+
+   The EDHOC and OSCORE profile specified in the present document can be
+   used in combination with application profiles of ACE for key
+   provisioning for group communication [RFC9594], such as
+   [I-D.ietf-ace-key-groupcomm-oscore] and
+   [I-D.ietf-ace-coap-pubsub-profile].
+
+   When doing so, the EDHOC and OSCORE profile is used by a client and
+   an RS that acts as Key Distribution Center (KDC) responsible for a
+   security group.  According to what is defined in the present
+   document, the client does not upload the first access token of a
+   token series to the /authz-info endpoint at RS over an unprotected
+   channel.  Consequently, the client does not obtain the N_S challenge
+   from RS (see Section 3.3 of [RFC9594]).
+
+   Therefore, the following holds for computing the N_S challenge used
+   in the two application profiles of [RFC9594] mentioned above.
+
+   *  In the ACE application profile specified in
+      [I-D.ietf-ace-key-groupcomm-oscore], when the provisioning of the
+      access token to the Group Manager (i.e., the KDC) has relied on
+      the EDHOC and OSCORE profile of ACE specified in the present
+      document and the access token was specified in the EAD item ACE-
+      OAuth Access Token (see Section 4.1), then N_S is derived using
+      the EDHOC_Exporter interface defined in Section 4.2.1 of
+      [RFC9528].
+
+      Specifically, N_S is exported from the EDHOC session associated
+      with the access token and established between the client and the
+      Group Manager.  The following is provided as input to the
+      EDHOC_Exporter interface:
+
+      -  The 'exporter_label' parameter is the unsigned integer
+         EXPORTER_LABEL_TBD_26, which is registered in Section 13.9 of
+         the present document.
+
+      -  The 'context' parameter is h'' (0x40), i.e., the empty CBOR
+         byte string.
+
+      -  The 'length' parameter is 32, i.e., the intended length of N_S
+         in bytes.
+
+   *  In the ACE application profile specified in
+      [I-D.ietf-ace-coap-pubsub-profile], when the provisioning of the
+      access token to the KDC has relied on the EDHOC and OSCORE profile
+      of ACE specified in the present document and the access token was
+      specified in the EAD item ACE-OAuth Access Token (see
+      Section 4.1), then N_S is derived using the EDHOC_Exporter
+      interface defined in Section 4.2.1 of [RFC9528].
+
+      Specifically, N_S is exported from the EDHOC session associated
+      with the access token and established between the client and the
+      KDC.  The following is provided as input to the EDHOC_Exporter
+      interface:
+
+      -  The 'exporter_label' parameter is the unsigned integer
+         EXPORTER_LABEL_TBD_27, which is registered in Section 13.9 of
+         the present document.
+
+      -  The 'context' parameter is h'' (0x40), i.e., the empty CBOR
+         byte string.
+
+      -  The 'length' parameter is 32, i.e., the intended length of N_S
+         in bytes.
+
+7.  CWT Confirmation Methods
 
    This document defines a number of new CWT confirmation methods, which
-   are registered in Section 12.7.  The semantics of each confirmation
+   are registered in Section 13.7.  The semantics of each confirmation
    method is defined below.
 
-6.1.  Ordered Chain of X.509 Certificates
+7.1.  Ordered Chain of X.509 Certificates
 
    The confirmation method "x5chain" specifies an ordered array of X.509
    certificates [RFC5280].  The semantics of "x5chain" is like that of
    the "x5chain" COSE Header Parameter specified in [RFC9360].
 
-6.2.  Unordered Bag of X.509 Certificates
+7.2.  Unordered Bag of X.509 Certificates
 
    The confirmation method "x5bag" specifies a bag of X.509 certificates
    [RFC5280].  The semantics of "x5bag" is like that of the "x5bag" COSE
    Header Parameter specified in [RFC9360].
 
-6.3.  Hash of an X.509 Certificate
+7.3.  Hash of an X.509 Certificate
 
    The confirmation method "x5t" specifies the hash value of the end-
    entity X.509 certificate [RFC5280].  The semantics of "x5t" is like
    that of the "x5t" COSE Header Parameter specified in [RFC9360].
 
-6.4.  URI Pointing to an Ordered Chain of X.509 Certificates
+7.4.  URI Pointing to an Ordered Chain of X.509 Certificates
 
    The confirmation method "x5u" specifies the URI [RFC3986] of an
    ordered chain of X.509 certificates [RFC5280].  The semantics of
    "x5u" is like that of the "x5u" COSE Header Parameter specified in
    [RFC9360].
 
-6.5.  Ordered Chain of C509 Certificates
+7.5.  Ordered Chain of C509 Certificates
 
    The confirmation method "c5c" specifies an ordered array of C509
    certificates [I-D.ietf-cose-cbor-encoded-cert].  The semantics of
    "c5c" is like that of the "c5c" COSE Header Parameter specified in
    [I-D.ietf-cose-cbor-encoded-cert].
 
-6.6.  Unordered Bag of C509 Certificates
+7.6.  Unordered Bag of C509 Certificates
 
    The confirmation method "c5b" specifies a bag of C509 certificates
    [I-D.ietf-cose-cbor-encoded-cert].  The semantics of "c5b" is like
    that of the "c5b" COSE Header Parameter specified in
    [I-D.ietf-cose-cbor-encoded-cert].
 
-6.7.  Hash of a C509 Certificate
+7.7.  Hash of a C509 Certificate
 
    The confirmation method "c5t" specifies the hash value of the end-
    entity C509 certificate [I-D.ietf-cose-cbor-encoded-cert].  The
    semantics of "c5t" is like that of the "c5t" COSE Header Parameter
    specified in [I-D.ietf-cose-cbor-encoded-cert].
 
-6.8.  URI Pointing to an Ordered Chain of C509 Certificates
+7.8.  URI Pointing to an Ordered Chain of C509 Certificates
 
    The confirmation method "c5u" specifies the URI [RFC3986] of a
    COSE_C509 containing an ordered chain of C509 certificates
@@ -2048,27 +2116,27 @@ Table of Contents
    that of the "c5u" COSE Header Parameter specified in
    [I-D.ietf-cose-cbor-encoded-cert].
 
-6.9.  CWT Containing a COSE_Key
+7.9.  CWT Containing a COSE_Key
 
    The confirmation method "kcwt" specifies a CBOR Web Token (CWT)
    [RFC8392] containing a COSE_Key [RFC9053] in a 'cnf' claim and
    possibly other claims.  The semantics of "kcwt" is like that of the
    "kcwt" COSE Header Parameter specified in [RFC9528].
 
-6.10.  CCS Containing a COSE_Key
+7.10.  CCS Containing a COSE_Key
 
    The confirmation method "kccs" specifies a CWT Claims Set (CCS)
    [RFC8392] containing a COSE_Key [RFC9053] in a 'cnf' claim and
    possibly other claims.  The semantics of "kccs" is like that of the
    "kccs" COSE Header Parameter specified in [RFC9528].
 
-7.  JWT Confirmation Methods
+8.  JWT Confirmation Methods
 
    This document defines a number of new JWT confirmation methods, which
-   are registered in Section 12.6.  The semantics of each confirmation
+   are registered in Section 13.6.  The semantics of each confirmation
    method is defined below.
 
-7.1.  Ordered Chain of X.509 Certificates
+8.1.  Ordered Chain of X.509 Certificates
 
    The confirmation method "x5c" specifies an ordered array of X.509
    certificates [RFC5280].  The semantics of "x5c" is like that of the
@@ -2077,24 +2145,24 @@ Table of Contents
    in the first certificate is the proof-of-possession key and does not
    have to correspond to a key used to digitally sign the JWS.
 
-7.2.  Unordered Bag of X.509 Certificates
+8.2.  Unordered Bag of X.509 Certificates
 
    The confirmation method "x5b" specifies a bag of X.509 certificates
    [RFC5280].  The semantics of the "x5b" is like that of the "x5c" JWT
-   confirmation method defined in Section 7.1, with the following
+   confirmation method defined in Section 8.1, with the following
    differences.  First, the set of certificates is unordered and may
    contain self-signed certificates.  Second, the composition and
    processing of "x5b" are like for the "x5bag" COSE Header Parameter
    defined in [RFC9360].
 
-7.3.  Hash of an X.509 Certificate
+8.3.  Hash of an X.509 Certificate
 
    The confirmation method "x5t" specifies the hash value of the end-
    entity X.509 certificate [RFC5280].  The semantics of "x5t" is like
    that of the "x5t" JSON Web Signature and Encryption Header Parameter
    specified in [RFC7515].
 
-7.4.  URI Pointing to an Ordered Chain of X.509 Certificates
+8.4.  URI Pointing to an Ordered Chain of X.509 Certificates
 
    The confirmation method "x5u" specifies the URI [RFC3986] of an
    ordered chain of X.509 certificates [RFC5280].  The semantics of
@@ -2103,63 +2171,63 @@ Table of Contents
    in the first certificate is the proof-of-possession key and does not
    have to correspond to a key used to digitally sign the JWS.
 
-7.5.  Ordered Chain of C509 Certificates
+8.5.  Ordered Chain of C509 Certificates
 
    The confirmation method "c5c" specifies an ordered array of C509
    certificates [I-D.ietf-cose-cbor-encoded-cert].  The semantics of
    "c5c" is like that of the "x5c" JWT confirmation method defined in
-   Section 7.1, with the following difference.  Each string in the JSON
+   Section 8.1, with the following difference.  Each string in the JSON
    array is a base64-encoded (Section 4 of [RFC4648] - not base64url-
    encoded) C509 certificate.
 
-7.6.  Unordered Bag of C509 Certificates
+8.6.  Unordered Bag of C509 Certificates
 
    The confirmation method "c5b" specifies a bag of C509 certificates
    [I-D.ietf-cose-cbor-encoded-cert].  The semantics of "c5b" is like
-   that of the "c5c" JWT confirmation method defined in Section 7.5,
+   that of the "c5c" JWT confirmation method defined in Section 8.5,
    with the following differences.  First, the set of certificates is
    unordered and may contain self-signed certificates.  Second, the
    composition and processing of "c5b" is like for the "c5b" COSE Header
    Parameter defined in [I-D.ietf-cose-cbor-encoded-cert].
 
-7.7.  Hash of a C09 Certificate
+8.7.  Hash of a C09 Certificate
 
    The confirmation method "c5t" specifies the hash value of the end-
    entity C509 certificate [I-D.ietf-cose-cbor-encoded-cert].  The
    semantics of "c5t" is like that of the "x5t" JWT confirmation method
-   defined in Section 7.3, with the following differences.  First, the
+   defined in Section 8.3, with the following differences.  First, the
    base64url-encoded SHA-1 thumbprint is computed over the C509
    certificate.  Second, the public key contained in the C509
    certificate does not have to correspond to a key used to digitally
    sign the JWS.
 
-7.8.  URI Pointing to an Ordered Chain of C509 Certificates
+8.8.  URI Pointing to an Ordered Chain of C509 Certificates
 
    The confirmation method "c5u" specifies the URI [RFC3986] of
    COSE_C509 containing an ordered chain of C509 certificates
    [I-D.ietf-cose-cbor-encoded-cert].  COSE_C509 is defined in
    [I-D.ietf-cose-cbor-encoded-cert].  The semantics of "c5u" is like
-   that of the "x5u" JWT confirmation method defined in Section 7.4,
+   that of the "x5u" JWT confirmation method defined in Section 8.4,
    with the following differences.  First, the URI refers to a resource
    for the C509 certificate chain.  Second, the public key contained in
    one of the C509 certificates and acting as proof-of-possession key
    does not have to correspond to a key used to digitally sign the JWS.
 
-7.9.  CWT Containing a COSE_Key
+8.9.  CWT Containing a COSE_Key
 
    The confirmation method "kcwt" specifies a CBOR Web Token (CWT)
    [RFC8392] containing a COSE_Key [RFC9053] in a 'cnf' claim and
    possibly other claims.  The format of "kcwt" is the base64url-encoded
    serialization of the CWT.
 
-7.10.  CCS Containing a COSE_Key
+8.10.  CCS Containing a COSE_Key
 
    The confirmation method "kccs" specifies a CWT Claims Set (CCS)
    [RFC8392] containing a COSE_Key [RFC9053] in a 'cnf' claim and
    possibly other claims.  The format of "kcwt" is the base64url-encoded
    serialization of the CWT.
 
-8.  EDHOC Trust Anchor Purposes
+9.  EDHOC Trust Anchor Purposes
 
    This document defines the following EDHOC trust anchor purpose.
 
@@ -2184,7 +2252,7 @@ Table of Contents
    and they typically are authentication credentials of Certificate
    Authorities (CAs).
 
-9.  EDHOC Trust Anchor Types
+10.  EDHOC Trust Anchor Types
 
    This document defines the following EDHOC trust anchor types.
 
@@ -2223,7 +2291,7 @@ Table of Contents
 
                     Table 3: EDHOC Trust Anchor Types
 
-10.  Security Considerations
+11.  Security Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -2278,7 +2346,7 @@ Table of Contents
    The application needs to define a trust-establishment mechanism and
    identify the relevant trust anchors.
 
-11.  Privacy Considerations
+12.  Privacy Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -2319,14 +2387,14 @@ Table of Contents
    e.g., by using the method defined in
    [I-D.ietf-core-oscore-id-update].
 
-12.  IANA Considerations
+13.  IANA Considerations
 
    This document has the following actions for IANA.
 
    Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
    with the RFC number of this specification and delete this paragraph.
 
-12.1.  ACE Profiles Registry
+13.1.  ACE Profiles Registry
 
    IANA is asked to add the following entry to the "ACE Profiles"
    registry, following the procedure specified in [RFC9200].
@@ -2343,7 +2411,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-12.2.  OAuth Parameters Registry
+13.2.  OAuth Parameters Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters"
    registry.
@@ -2356,7 +2424,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-12.3.  OAuth Parameters CBOR Mappings Registry
+13.3.  OAuth Parameters CBOR Mappings Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters
    CBOR Mappings" registry, following the procedure specified in
@@ -2372,7 +2440,7 @@ Table of Contents
 
    *  Original Specification: [RFC-XXXX]
 
-12.4.  JSON Web Token Claims Registry
+13.4.  JSON Web Token Claims Registry
 
    IANA is asked to add the following entries to the "JSON Web Token
    Claims" registry, following the procedure specified in [RFC7519].
@@ -2385,7 +2453,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-12.5.  CBOR Web Token (CWT) Claims Registry
+13.5.  CBOR Web Token (CWT) Claims Registry
 
    IANA is asked to add the following entries to the "CBOR Web Token
    (CWT) Claims" registry, following the procedure specified in
@@ -2405,7 +2473,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-12.6.  JWT Confirmation Methods Registry
+13.6.  JWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "JWT Confirmation
    Methods" registry, following the procedure specified in [RFC7800].
@@ -2417,7 +2485,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 7.1 of [RFC-XXXX]
+   *  Reference: Section 8.1 of [RFC-XXXX]
 
 
 
@@ -2428,7 +2496,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 7.2 of [RFC-XXXX]
+   *  Reference: Section 8.2 of [RFC-XXXX]
 
 
 
@@ -2438,7 +2506,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 7.3 of [RFC-XXXX]
+   *  Reference: Section 8.3 of [RFC-XXXX]
 
 
 
@@ -2449,7 +2517,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 7.4 of [RFC-XXXX]
+   *  Reference: Section 8.4 of [RFC-XXXX]
 
 
 
@@ -2460,7 +2528,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 7.5 of [RFC-XXXX]
+   *  Reference: Section 8.5 of [RFC-XXXX]
 
 
 
@@ -2471,7 +2539,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 7.6 of [RFC-XXXX]
+   *  Reference: Section 8.6 of [RFC-XXXX]
 
 
 
@@ -2481,7 +2549,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 7.7 of [RFC-XXXX]
+   *  Reference: Section 8.7 of [RFC-XXXX]
 
 
 
@@ -2492,7 +2560,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 7.8 of [RFC-XXXX]
+   *  Reference: Section 8.8 of [RFC-XXXX]
 
 
 
@@ -2503,7 +2571,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 7.9 of [RFC-XXXX]
+   *  Reference: Section 8.9 of [RFC-XXXX]
 
 
 
@@ -2514,9 +2582,9 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 7.10 of [RFC-XXXX]
+   *  Reference: Section 8.10 of [RFC-XXXX]
 
-12.7.  CWT Confirmation Methods Registry
+13.7.  CWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "CWT Confirmation
    Methods" registry, following the procedure specified in [RFC8747].
@@ -2534,7 +2602,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 6.1 of [RFC-XXXX]
+   *  Reference: Section 7.1 of [RFC-XXXX]
 
 
 
@@ -2551,7 +2619,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 6.2 of [RFC-XXXX]
+   *  Reference: Section 7.2 of [RFC-XXXX]
 
 
 
@@ -2567,7 +2635,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 6.3 of [RFC-XXXX]
+   *  Reference: Section 7.3 of [RFC-XXXX]
 
 
 
@@ -2584,7 +2652,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 6.4 of [RFC-XXXX]
+   *  Reference: Section 7.4 of [RFC-XXXX]
 
 
 
@@ -2601,7 +2669,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 6.5 of [RFC-XXXX]
+   *  Reference: Section 7.5 of [RFC-XXXX]
 
 
 
@@ -2618,7 +2686,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 6.6 of [RFC-XXXX]
+   *  Reference: Section 7.6 of [RFC-XXXX]
 
 
 
@@ -2634,7 +2702,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 6.7 of [RFC-XXXX]
+   *  Reference: Section 7.7 of [RFC-XXXX]
 
 
 
@@ -2651,7 +2719,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 6.8 of [RFC-XXXX]
+   *  Reference: Section 7.8 of [RFC-XXXX]
 
 
 
@@ -2668,7 +2736,7 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 6.9 of [RFC-XXXX]
+   *  Reference: Section 7.9 of [RFC-XXXX]
 
 
 
@@ -2685,9 +2753,9 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   *  Reference: Section 6.10 of [RFC-XXXX]
+   *  Reference: Section 7.10 of [RFC-XXXX]
 
-12.8.  EDHOC External Authorization Data Registry
+13.8.  EDHOC External Authorization Data Registry
 
    IANA is asked to add the following entries to the "EDHOC External
    Authorization Data" registry defined in Section 10.5 of [RFC9528].
@@ -2732,7 +2800,35 @@ Table of Contents
 
    *  Reference: [RFC-XXXX], Section 4.13
 
-12.9.  EDHOC Information Registry
+13.9.  EDHOC Exporter Labels
+
+   IANA is asked to register the following entries in the "EDHOC
+   Exporter Labels" registry, within the "Ephemeral Diffie-Hellman Over
+   COSE (EDHOC)" registry group.
+
+   *  Label: 26 (suggested value)
+
+   *  Description: Derived N_S challenge for key provisioning for Group
+      OSCORE using the ACE framework
+      [I-D.ietf-ace-key-groupcomm-oscore].
+
+   *  Change Controller: IETF
+
+   *  Reference: [RFC-XXXX, Section 6]
+
+
+
+   *  Label: 27 (suggested value)
+
+   *  Description: Derived N_S challenge for key provisioning for CoAP
+      Pub-Sub using the ACE framework
+      [I-D.ietf-ace-coap-pubsub-profile].
+
+   *  Change Controller: IETF
+
+   *  Reference: [RFC-XXXX, Section 6]
+
+13.10.  EDHOC Information Registry
 
    IANA is requested to create a new "EDHOC Information" registry within
    the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group
@@ -2741,7 +2837,7 @@ Table of Contents
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", "Specification Required" per Section 4.6 of
    [RFC8126], or "Expert Review" per Section 4.5 of [RFC8126].  "Expert
-   Review" guidelines are provided in Section 12.12.
+   Review" guidelines are provided in Section 13.13.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2795,7 +2891,7 @@ Table of Contents
    In the "Specification" column, the value for all of these entries
    will be [RFC-XXXX] and [RFC9528].
 
-12.10.  EDHOC Trust Anchor Purposes Registry
+13.11.  EDHOC Trust Anchor Purposes Registry
 
    IANA is requested to create a new "EDHOC Trust Anchor Purposes"
    registry within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)"
@@ -2803,7 +2899,7 @@ Table of Contents
 
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 12.12.
+   [RFC8126].  "Expert Review" guidelines are provided in Section 13.13.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2842,9 +2938,9 @@ Table of Contents
       specification for the trust anchor purpose.
 
    This registry has been initially populated with the values in
-   Section 8.
+   Section 9.
 
-12.11.  EDHOC Trust Anchor Types Registry
+13.12.  EDHOC Trust Anchor Types Registry
 
    IANA is requested to create a new "EDHOC Trust Anchor Types" registry
    within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry
@@ -2852,7 +2948,7 @@ Table of Contents
 
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 12.12.
+   [RFC8126].  "Expert Review" guidelines are provided in Section 13.13.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2896,7 +2992,7 @@ Table of Contents
    This registry has been initially populated with the values in
    Table 3.
 
-12.12.  Expert Review Instructions
+13.13.  Expert Review Instructions
 
    "Standards Action with Expert Review", "Specification Required", and
    "Expert Review" are three of the registration policies defined for
@@ -2938,14 +3034,31 @@ Table of Contents
       it will be used on, and the number of code points left that encode
       to that size.
 
-13.  References
+14.  References
 
-13.1.  Normative References
+14.1.  Normative References
 
    [COSE.Header.Parameters]
               IANA, "COSE Header Parameters",
               <https://www.iana.org/assignments/cose/cose.xhtml#header-
               parameters>.
+
+   [I-D.ietf-ace-coap-pubsub-profile]
+              Palombini, F., Sengul, C., and M. Tiloca, "CoAP Publish-
+              Subscribe Profile for Authentication and Authorization for
+              Constrained Environments (ACE)", Work in Progress,
+              Internet-Draft, draft-ietf-ace-coap-pubsub-profile-03, 9
+              February 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-coap-pubsub-profile-03>.
+
+   [I-D.ietf-ace-key-groupcomm-oscore]
+              Tiloca, M. and F. Palombini, "Key Management for Group
+              Object Security for Constrained RESTful Environments
+              (Group OSCORE) Using Authentication and Authorization for
+              Constrained Environments (ACE)", Work in Progress,
+              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-19, 24
+              January 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-key-groupcomm-oscore-19>.
 
    [I-D.ietf-core-uri-path-abbrev]
               Amsüss, C. and M. Richardson, "URI-Path abbreviation in
@@ -3097,6 +3210,12 @@ Table of Contents
               IDentifiers (UUIDs)", RFC 9562, DOI 10.17487/RFC9562, May
               2024, <https://www.rfc-editor.org/rfc/rfc9562>.
 
+   [RFC9594]  Palombini, F. and M. Tiloca, "Key Provisioning for Group
+              Communication Using Authentication and Authorization for
+              Constrained Environments (ACE)", RFC 9594,
+              DOI 10.17487/RFC9594, September 2024,
+              <https://www.rfc-editor.org/rfc/rfc9594>.
+
    [RFC9668]  Palombini, F., Tiloca, M., Höglund, R., Hristozov, S., and
               G. Selander, "Using Ephemeral Diffie-Hellman Over COSE
               (EDHOC) with the Constrained Application Protocol (CoAP)
@@ -3104,7 +3223,7 @@ Table of Contents
               (OSCORE)", RFC 9668, DOI 10.17487/RFC9668, November 2024,
               <https://www.rfc-editor.org/rfc/rfc9668>.
 
-13.2.  Informative References
+14.2.  Informative References
 
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
@@ -3777,6 +3896,9 @@ D.1.  Version -09 to -10
 
    *  Removed definition of some IANA registries: "EDHOC Endpoint
       Identity Types" and "EDHOC Transports".
+
+   *  Defined derivation of N_S, when combining this profile with
+      application profiles of RFC 9594.
 
    *  Editorial fixes and improvements.
 

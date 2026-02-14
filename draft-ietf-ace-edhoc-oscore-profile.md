@@ -68,9 +68,12 @@ normative:
   RFC9360:
   RFC9528:
   RFC9562:
+  RFC9594:
   RFC9668:
   I-D.ietf-cose-cbor-encoded-cert:
   I-D.ietf-core-uri-path-abbrev:
+  I-D.ietf-ace-key-groupcomm-oscore:
+  I-D.ietf-ace-coap-pubsub-profile:
   COSE.Header.Parameters:
     author:
       org: IANA
@@ -966,6 +969,34 @@ As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the
 
 If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{example-without-optimization}} and {{example-with-optimization}}. This also applies for communication between RS and AS, for example to protect the upload of access tokens from AS directly to RS as described in {{I-D.ietf-ace-workflow-and-params}}.
 
+# Use with Application Profiles of ACE for Group Key Provisioning # {#use-with-key-groupcomm-profiles}
+
+The EDHOC and OSCORE profile specified in the present document can be used in combination with application profiles of ACE for key provisioning for group communication {{RFC9594}}, such as {{I-D.ietf-ace-key-groupcomm-oscore}} and {{I-D.ietf-ace-coap-pubsub-profile}}.
+
+When doing so, the EDHOC and OSCORE profile is used by a client and an RS that acts as Key Distribution Center (KDC) responsible for a security group. According to what is defined in the present document, the client does not upload the first access token of a token series  to the /authz-info endpoint at RS over an unprotected channel. Consequently, the client does not obtain the N_S challenge from RS (see {{Section 3.3 of RFC9594}}).
+
+Therefore, the following holds for computing the N_S challenge used in the two application profiles of {{RFC9594}} mentioned above.
+
+* In the ACE application profile specified in {{I-D.ietf-ace-key-groupcomm-oscore}}, when the provisioning of the access token to the Group Manager (i.e., the KDC) has relied on the EDHOC and OSCORE profile of ACE specified in the present document and the access token was specified in the EAD item ACE-OAuth Access Token (see {{AT-in-EAD}}), then N_S is derived using the EDHOC_Exporter interface defined in {{Section 4.2.1 of RFC9528}}.
+
+  Specifically, N_S is exported from the EDHOC session associated with the access token and established between the client and the Group Manager. The following is provided as input to the EDHOC_Exporter interface:
+
+  * The 'exporter_label' parameter is the unsigned integer EXPORTER_LABEL_TBD_26, which is registered in {{iana-edhoc-exporter-labels}} of the present document.
+
+  * The 'context' parameter is h'' (0x40), i.e., the empty CBOR byte string.
+
+  * The 'length' parameter is 32, i.e., the intended length of N_S in bytes.
+
+* In the ACE application profile specified in {{I-D.ietf-ace-coap-pubsub-profile}}, when the provisioning of the access token to the KDC has relied on the EDHOC and OSCORE profile of ACE specified in the present document and the access token was specified in the EAD item ACE-OAuth Access Token (see {{AT-in-EAD}}), then N_S is derived using the EDHOC_Exporter interface defined in {{Section 4.2.1 of RFC9528}}.
+
+  Specifically, N_S is exported from the EDHOC session associated with the access token and established between the client and the KDC. The following is provided as input to the EDHOC_Exporter interface:
+
+  * The 'exporter_label' parameter is the unsigned integer EXPORTER_LABEL_TBD_27, which is registered in {{iana-edhoc-exporter-labels}} of the present document.
+
+  * The 'context' parameter is h'' (0x40), i.e., the empty CBOR byte string.
+
+  * The 'length' parameter is 32, i.e., the intended length of N_S in bytes.
+
 # CWT Confirmation Methods
 
 This document defines a number of new CWT confirmation methods, which are registered in {{iana-cwt-confirmation-methods}}. The semantics of each confirmation method is defined below.
@@ -1373,6 +1404,28 @@ IANA is asked to add the following entries to the "EDHOC External Authorization 
 * Label: TBD (value between 1 and 23)
 * Description: Request or convey AS Request Creation Hints
 * Reference: {{&SELF}}, {{as-creation-hints}}
+
+## EDHOC Exporter Labels # {#iana-edhoc-exporter-labels}
+
+IANA is asked to register the following entries in the "EDHOC Exporter Labels" registry, within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group.
+
+* Label: 26 (suggested value)
+
+* Description: Derived N_S challenge for key provisioning for Group OSCORE using the ACE framework {{I-D.ietf-ace-key-groupcomm-oscore}}.
+
+* Change Controller: IETF
+
+* Reference: \[RFC-XXXX, {{use-with-key-groupcomm-profiles}}\]
+
+<br>
+
+* Label: 27 (suggested value)
+
+* Description: Derived N_S challenge for key provisioning for CoAP Pub-Sub using the ACE framework {{I-D.ietf-ace-coap-pubsub-profile}}.
+
+* Change Controller: IETF
+
+* Reference: \[RFC-XXXX, {{use-with-key-groupcomm-profiles}}\]
 
 ## EDHOC Information Registry # {#iana-edhoc-parameters}
 
@@ -1936,6 +1989,8 @@ x5u_ta_type = 35
 * Removed excessive EDHOC_Information parameters: "max_msgsize", "coap_ct", "ep_id_types", and "transports".
 
 * Removed definition of some IANA registries: "EDHOC Endpoint Identity Types" and "EDHOC Transports".
+
+* Defined derivation of N_S, when combining this profile with application profiles of RFC 9594.
 
 * Editorial fixes and improvements.
 

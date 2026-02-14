@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 17 August 2026                                        M. Tiloca
+Expires: 18 August 2026                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                        13 February 2026
+                                                        14 February 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 August 2026.
+   This Internet-Draft will expire on 18 August 2026.
 
 Copyright Notice
 
@@ -141,30 +141,26 @@ Table of Contents
      7.8.  URI Pointing to an Ordered Chain of C509 Certificates
      7.9.  CWT Containing a COSE_Key
      7.10. CCS Containing a COSE_Key
-   8.  EDHOC Endpoint Identity Types
-   9.  EDHOC Transports
-   10. EDHOC Trust Anchor Purposes
-   11. EDHOC Trust Anchor Types
-   12. Security Considerations
-   13. Privacy Considerations
-   14. IANA Considerations
-     14.1.  ACE Profiles Registry
-     14.2.  OAuth Parameters Registry
-     14.3.  OAuth Parameters CBOR Mappings Registry
-     14.4.  JSON Web Token Claims Registry
-     14.5.  CBOR Web Token (CWT) Claims Registry
-     14.6.  JWT Confirmation Methods Registry
-     14.7.  CWT Confirmation Methods Registry
-     14.8.  EDHOC External Authorization Data Registry
-     14.9.  EDHOC Information Registry
-     14.10. EDHOC Endpoint Identity Types Registry
-     14.11. EDHOC Transports Registry
-     14.12. EDHOC Trust Anchor Purposes Registry
-     14.13. EDHOC Trust Anchor Types Registry
-     14.14. Expert Review Instructions
-   15. References
-     15.1.  Normative References
-     15.2.  Informative References
+   8.  EDHOC Trust Anchor Purposes
+   9.  EDHOC Trust Anchor Types
+   10. Security Considerations
+   11. Privacy Considerations
+   12. IANA Considerations
+     12.1.  ACE Profiles Registry
+     12.2.  OAuth Parameters Registry
+     12.3.  OAuth Parameters CBOR Mappings Registry
+     12.4.  JSON Web Token Claims Registry
+     12.5.  CBOR Web Token (CWT) Claims Registry
+     12.6.  JWT Confirmation Methods Registry
+     12.7.  CWT Confirmation Methods Registry
+     12.8.  EDHOC External Authorization Data Registry
+     12.9.  EDHOC Information Registry
+     12.10. EDHOC Trust Anchor Purposes Registry
+     12.11. EDHOC Trust Anchor Types Registry
+     12.12. Expert Review Instructions
+   13. References
+     13.1.  Normative References
+     13.2.  Informative References
    Appendix A.  Examples
      A.1.  Workflow without Optimizations
      A.2.  Workflow with Optimizations
@@ -473,7 +469,7 @@ Table of Contents
    include EDHOC_Information, which is a CBOR map object containing
    information related to an EDHOC implementation (see Section 3.4).
    This object is transported in the "edhoc_info" parameter registered
-   in Section 14.2 and Section 14.3.
+   in Section 12.2 and Section 12.3.
 
 3.1.  C-to-AS: POST to /token endpoint
 
@@ -773,7 +769,7 @@ Table of Contents
    When issuing any access token of a token series, AS MUST include the
    following claims in the access token:
 
-   *  The "edhoc_info" claim defined in Section 14.5 and conveying an
+   *  The "edhoc_info" claim defined in Section 12.5 and conveying an
       EDHOC_Information object (see Section 3.4).
 
       The EDHOC_Information object MUST include the "session_id" field
@@ -913,7 +909,7 @@ Table of Contents
    The EDHOC_Information can be encoded either as a JSON object or as a
    CBOR map.  The set of common fields that can appear in an
    EDHOC_Information can be found in the IANA "EDHOC Information"
-   registry defined in Section 14.9 for extensibility.
+   registry defined in Section 12.9 for extensibility.
 
    All EDHOC_Information parameters are optional.  The initial set of
    parameters defined in this document is summarized in Table 1 and is
@@ -997,40 +993,7 @@ Table of Contents
    |               |     |or   |                | the EDHOC      |    |
    |               |     |False|                | Responder role |    |
    +---------------+-----+-----+----------------+----------------+----+
-   | max_msgsize   |11   |uint |                | Maximum size   |P   |
-   |               |     |     |                | of EDHOC       |    |
-   |               |     |     |                | messages in    |    |
-   |               |     |     |                | bytes          |    |
-   +---------------+-----+-----+----------------+----------------+----+
-   | coap_ct       |12   |True |                | Mandatory use  |P   |
-   |               |     |of   |                | of the CoAP    |    |
-   |               |     |False|                | Content-Format |    |
-   |               |     |     |                | Option in CoAP |    |
-   |               |     |     |                | messages whose |    |
-   |               |     |     |                | payload        |    |
-   |               |     |     |                | includes       |    |
-   |               |     |     |                | exclusively an |    |
-   |               |     |     |                | EDHOC message, |    |
-   |               |     |     |                | possibly       |    |
-   |               |     |     |                | prepended by   |    |
-   |               |     |     |                | an EDHOC       |    |
-   |               |     |     |                | connection     |    |
-   |               |     |     |                | identifier     |    |
-   +---------------+-----+-----+----------------+----------------+----+
-   | ep_id_types   |13   |int  | EDHOC Endpoint | Set of         |NP  |
-   |               |     |or   | Identity Types | supported      |    |
-   |               |     |array| registry       | types of       |    |
-   |               |     |     |                | endpoint       |    |
-   |               |     |     |                | identities for |    |
-   |               |     |     |                | EDHOC          |    |
-   +---------------+-----+-----+----------------+----------------+----+
-   | transports    |14   |int  | EDHOC          | Set of         |NP  |
-   |               |     |or   | Transports     | supported      |    |
-   |               |     |array| registry       | means for      |    |
-   |               |     |     |                | transporting   |    |
-   |               |     |     |                | EDHOC messages |    |
-   +---------------+-----+-----+----------------+----------------+----+
-   | trust_anchors |15   |map  | EDHOC Trust    | Set of         |NP  |
+   | trust_anchors |11   |map  | EDHOC Trust    | Set of         |NP  |
    |               |     |     | Anchor         | supported      |    |
    |               |     |     | Purposes       | trust anchors  |    |
    |               |     |     | registry and   |                |    |
@@ -1129,42 +1092,6 @@ Table of Contents
       In CBOR, "responder" is the simple value true (0xf5) or false
       (0xf4), and has label 10.
 
-   *  max_msgsize: This parameter specifies the admitted maximum size of
-      EDHOC messages in bytes.  In JSON, the "max_msgsize" value is an
-      unsigned integer.  In CBOR, "max_msgsize" is an unsigned integer
-      and has label 11.
-
-   *  coap_cf: This parameter specifies whether it is required that CoAP
-      messages include the CoAP Content-Format Option with value 64
-      (application/edhoc+cbor-seq) or 65 (application/cid-edhoc+cbor-
-      seq) as appropriate, when the message payload includes exclusively
-      an EDHOC message possibly prepended by an EDHOC connection
-      identifier (see Sections 3.4.1 and A.2 of [RFC9528]).  In JSON,
-      the "coap_cf" value is a boolean.  In CBOR, "coap_cf" is the
-      simple value true (0xf5) or false (0xf4), and has label 12.
-
-   *  ep_id_types: This parameter specifies a set of supported types of
-      endpoint identities for EDHOC.  If the set is composed of a single
-      type of endpoint identity, this is encoded as an integer.
-      Otherwise, the set is encoded as an array, where each array
-      element encodes one type of endpoint identity as an integer.  In
-      JSON, the "ep_id_types" value is an integer or an array of
-      integers.  In CBOR, "ep_id_types" is an integer or an array of
-      integers, and has label 13.  The integer values are taken from the
-      'CBOR Label' column of the "EDHOC Endpoint Identity Types"
-      registry defined in Section 14.10 of this document.
-
-   *  transports: This parameter specifies a set of supported means for
-      transporting EDHOC messages.  If the set is composed of a single
-      means for transporting EDHOC messages, this is encoded as an
-      integer.  Otherwise, the set is encoded as an array, where each
-      array element encodes one means for transporting EDHOC messages as
-      an integer.  In JSON, the "transports" value is an integer or an
-      array of integers.  In CBOR, "transports" is an integer or an
-      array of integers, and has label 14.  The integer values are taken
-      from the 'Transport ID' column of the "EDHOC Transports" Registry
-      defined in Section 14.11 of this document.
-
    *  trust_anchors: This parameter specifies a collection of supported
       trust anchors for performing authentication.  According to what is
       specified within the collection, these trust anchors are used for
@@ -1182,9 +1109,9 @@ Table of Contents
       pairs, these pairs are specified as elements of an array.
 
       Trust anchor purposes are selected from the "EDHOC Trust Anchor
-      Purposes" registry defined in Section 14.12 of this document.
+      Purposes" registry defined in Section 12.10 of this document.
       Trust anchor types are selected from the "EDHOC Trust Anchor
-      Types" registry defined in Section 14.13 of this document.
+      Types" registry defined in Section 12.11 of this document.
 
       In JSON, the "trust_anchors" value is an object with one or more
       outer entries, each of which is associated with a trust anchor
@@ -1209,7 +1136,7 @@ Table of Contents
             the CBOR encoding of the identifier of TA when
             "trust_anchors" is encoded in CBOR (see below).
 
-      In CBOR, the "trust_anchors" value is a map and has label 15.  The
+      In CBOR, the "trust_anchors" value is a map and has label 11.  The
       map includes one or more outer entries, each of which is
       associated with a trust anchor purpose.  The following applies for
       each outer entry:
@@ -1282,11 +1209,7 @@ Table of Contents
      ?  8 => uint / [2* uint],                   ; eads
      ?  9 => true / false,                       ; initiator
      ? 10 => true / false,                       ; responder
-     ? 11 => uint,                               ; max_msgsize
-     ? 12 => true / false,                       ; coap_ct
-     ? 13 => int / [2* int],                     ; ep_id_types
-     ? 14 => int / [2* int],                     ; transports
-     ? 15 => trust_anchors_value,                ; trust_anchors
+     ? 11 => trust_anchors_value,                ; trust_anchors
      * (int / tstr) => any
    }
 
@@ -1328,7 +1251,7 @@ Table of Contents
 
    *  EAD_ACCESS_TOKEN = (ead_label, ead_value), where:
 
-      -  ead_label is the integer value TBD registered in Section 14.8.
+      -  ead_label is the integer value TBD registered in Section 12.8.
 
       -  ead_value is a CBOR byte string equal to the value of the
          "access_token" field of the access token response from AS (see
@@ -1352,11 +1275,11 @@ Table of Contents
       -  EAD_ACCESS_TOKEN = 0x381958B48343a1010aa2044c53...0f6a
 
       Editor's note: Replace IANA label with TBD value registered for
-      ACE-OAuth Access Token in Section 14.8.
+      ACE-OAuth Access Token in Section 12.8.
 
    *  EAD_SESSION_ID = (ead_label, ead_value), where:
 
-      -  ead_label is the integer value TBD registered in Section 14.8.
+      -  ead_label is the integer value TBD registered in Section 12.8.
 
       -  ead_value is a CBOR byte string equal to the value of the
          "session_id" field within the EDHOC_Information object
@@ -1383,7 +1306,7 @@ Table of Contents
       -  EAD_SESSION_ID = 0x24421645
 
       Editor's note: Replace IANA label with TBD value for Session ID
-      registered in Section 14.8.
+      registered in Section 12.8.
 
 4.2.  EDHOC Session
 
@@ -1936,7 +1859,7 @@ Table of Contents
       unless its value cannot contribute to expose the identity of RS.
 
    AS Request Creation Hints may also be requested and retrieved through
-   a new EAD item defined here, see Figure 9, Section 14.8, and an
+   a new EAD item defined here, see Figure 9, Section 12.8, and an
    example of its usage in Appendix A.3.
 
    ead_label = TBD
@@ -1959,7 +1882,7 @@ Table of Contents
       6C652E636F6D2F746F6B656E
 
    Editor's note: Replace IANA label with TBD value registered for
-   EAD_REQUEST_CREATION_HINTS in Section 14.8.
+   EAD_REQUEST_CREATION_HINTS in Section 12.8.
 
    This EAD item is intended to be used in EAD fields of EDHOC messages
    exchanged between C and RS: in the forward message flow in EAD_1 and
@@ -2006,7 +1929,7 @@ Table of Contents
 
    In order to remediate this situation, this section specifies a new
    EAD item for requesting the peer's authentication credential by
-   value, see Figure 10, Section 14.8, and an example of its usage in
+   value, see Figure 10, Section 12.8, and an example of its usage in
    Appendix A.3.
 
    ead_label = TBD
@@ -2026,7 +1949,7 @@ Table of Contents
    *  EAD_CRED_BY_VALUE = 0x0F
 
    Editor's note: Replace IANA label with TBD value registered for
-   EAD_CRED_BY_VALUE in Section 14.8.
+   EAD_CRED_BY_VALUE in Section 12.8.
 
    In the EDHOC reverse message flow this EAD item can be applied for
    better control of the use of credential by value.  Note that in the
@@ -2067,7 +1990,7 @@ Table of Contents
 6.  CWT Confirmation Methods
 
    This document defines a number of new CWT confirmation methods, which
-   are registered in Section 14.7.  The semantics of each confirmation
+   are registered in Section 12.7.  The semantics of each confirmation
    method is defined below.
 
 6.1.  Ordered Chain of X.509 Certificates
@@ -2142,7 +2065,7 @@ Table of Contents
 7.  JWT Confirmation Methods
 
    This document defines a number of new JWT confirmation methods, which
-   are registered in Section 14.6.  The semantics of each confirmation
+   are registered in Section 12.6.  The semantics of each confirmation
    method is defined below.
 
 7.1.  Ordered Chain of X.509 Certificates
@@ -2236,56 +2159,7 @@ Table of Contents
    possibly other claims.  The format of "kcwt" is the base64url-encoded
    serialization of the CWT.
 
-8.  EDHOC Endpoint Identity Types
-
-   This document defines the following identifier of type of endpoint
-   identity for EDHOC.
-
-   Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
-   with the RFC number of this specification and delete this paragraph.
-
-    +========+============+====================+=====================+
-    | Name   | CBOR label | Description        | Reference           |
-    +========+============+====================+=====================+
-    | EUI-64 | 0          | An EUI-64 identity | [RFC-XXXX][RFC4291] |
-    +--------+------------+--------------------+---------------------+
-
-                  Table 2: EDHOC Endpoint Identity Types
-
-9.  EDHOC Transports
-
-   This document defines the following identifiers of means for
-   transporting EDHOC messages.
-
-    +===========+============+===================+====================+
-    | Transport | Name       | Description       | Reference          |
-    | ID        |            |                   |                    |
-    +===========+============+===================+====================+
-    | 0         | CoAP over  | EDHOC messages    | [RFC7252],         |
-    |           | UDP        | are transported   | Appendix A.2 of    |
-    |           |            | as payload of     | [RFC9528]          |
-    |           |            | CoAP messages, in |                    |
-    |           |            | turn transported  |                    |
-    |           |            | over UDP          |                    |
-    +-----------+------------+-------------------+--------------------+
-    | 1         | CoAP over  | EDHOC messages    | [RFC7252][RFC8323] |
-    |           | TCP        | are transported   |                    |
-    |           |            | as payload of     |                    |
-    |           |            | CoAP messages, in |                    |
-    |           |            | turn transported  |                    |
-    |           |            | over TCP          |                    |
-    +-----------+------------+-------------------+--------------------+
-    | 2         | CoAP over  | EDHOC messages    | [RFC7252][RFC8323] |
-    |           | WebSockets | are transported   |                    |
-    |           |            | as payload of     |                    |
-    |           |            | CoAP messages, in |                    |
-    |           |            | turn transported  |                    |
-    |           |            | over WebSockets   |                    |
-    +-----------+------------+-------------------+--------------------+
-
-                         Table 3: EDHOC Transports
-
-10.  EDHOC Trust Anchor Purposes
+8.  EDHOC Trust Anchor Purposes
 
    This document defines the following EDHOC trust anchor purpose.
 
@@ -2303,14 +2177,14 @@ Table of Contents
      |            |       | in EDHOC sessions |                     |
      +------------+-------+-------------------+---------------------+
 
-                   Table 4: EDHOC Trust Anchor Purposes
+                   Table 2: EDHOC Trust Anchor Purposes
 
    Trust anchors with purpose "edhoc_cred" are used for verifying
    authentication credentials of other EDHOC peers in an EDHOC session,
    and they typically are authentication credentials of Certificate
    Authorities (CAs).
 
-11.  EDHOC Trust Anchor Types
+9.  EDHOC Trust Anchor Types
 
    This document defines the following EDHOC trust anchor types.
 
@@ -2347,9 +2221,9 @@ Table of Contents
    |      |       |               | certificate     |                 |
    +------+-------+---------------+-----------------+-----------------+
 
-                    Table 5: EDHOC Trust Anchor Types
+                    Table 3: EDHOC Trust Anchor Types
 
-12.  Security Considerations
+10.  Security Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -2404,7 +2278,7 @@ Table of Contents
    The application needs to define a trust-establishment mechanism and
    identify the relevant trust anchors.
 
-13.  Privacy Considerations
+11.  Privacy Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -2445,14 +2319,14 @@ Table of Contents
    e.g., by using the method defined in
    [I-D.ietf-core-oscore-id-update].
 
-14.  IANA Considerations
+12.  IANA Considerations
 
    This document has the following actions for IANA.
 
    Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
    with the RFC number of this specification and delete this paragraph.
 
-14.1.  ACE Profiles Registry
+12.1.  ACE Profiles Registry
 
    IANA is asked to add the following entry to the "ACE Profiles"
    registry, following the procedure specified in [RFC9200].
@@ -2469,7 +2343,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-14.2.  OAuth Parameters Registry
+12.2.  OAuth Parameters Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters"
    registry.
@@ -2482,7 +2356,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-14.3.  OAuth Parameters CBOR Mappings Registry
+12.3.  OAuth Parameters CBOR Mappings Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters
    CBOR Mappings" registry, following the procedure specified in
@@ -2498,7 +2372,7 @@ Table of Contents
 
    *  Original Specification: [RFC-XXXX]
 
-14.4.  JSON Web Token Claims Registry
+12.4.  JSON Web Token Claims Registry
 
    IANA is asked to add the following entries to the "JSON Web Token
    Claims" registry, following the procedure specified in [RFC7519].
@@ -2511,7 +2385,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-14.5.  CBOR Web Token (CWT) Claims Registry
+12.5.  CBOR Web Token (CWT) Claims Registry
 
    IANA is asked to add the following entries to the "CBOR Web Token
    (CWT) Claims" registry, following the procedure specified in
@@ -2531,7 +2405,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-14.6.  JWT Confirmation Methods Registry
+12.6.  JWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "JWT Confirmation
    Methods" registry, following the procedure specified in [RFC7800].
@@ -2642,7 +2516,7 @@ Table of Contents
 
    *  Reference: Section 7.10 of [RFC-XXXX]
 
-14.7.  CWT Confirmation Methods Registry
+12.7.  CWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "CWT Confirmation
    Methods" registry, following the procedure specified in [RFC8747].
@@ -2813,7 +2687,7 @@ Table of Contents
 
    *  Reference: Section 6.10 of [RFC-XXXX]
 
-14.8.  EDHOC External Authorization Data Registry
+12.8.  EDHOC External Authorization Data Registry
 
    IANA is asked to add the following entries to the "EDHOC External
    Authorization Data" registry defined in Section 10.5 of [RFC9528].
@@ -2858,7 +2732,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX], Section 4.13
 
-14.9.  EDHOC Information Registry
+12.9.  EDHOC Information Registry
 
    IANA is requested to create a new "EDHOC Information" registry within
    the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group
@@ -2867,7 +2741,7 @@ Table of Contents
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", "Specification Required" per Section 4.6 of
    [RFC8126], or "Expert Review" per Section 4.5 of [RFC8126].  "Expert
-   Review" guidelines are provided in Section 14.14.
+   Review" guidelines are provided in Section 12.12.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2921,95 +2795,7 @@ Table of Contents
    In the "Specification" column, the value for all of these entries
    will be [RFC-XXXX] and [RFC9528].
 
-14.10.  EDHOC Endpoint Identity Types Registry
-
-   IANA is requested to create a new "EDHOC Endpoint Identity Types"
-   registry within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)"
-   registry group defined in [RFC9528].
-
-   The registration policy is either "Private Use", "Standards Action
-   with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 14.14.
-
-   All assignments according to "Standards Action with Expert Review"
-   are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
-   with Expert Review additionally required per Section 4.5 of
-   [RFC8126].  The procedure for early IANA allocation of Standards
-   Track code points defined in [RFC7120] also applies.  When such a
-   procedure is used, IANA will ask the designated expert(s) to approve
-   the early allocation before registration.  In addition, WG chairs are
-   encouraged to consult the expert(s) early during the process outlined
-   in Section 3.1 of [RFC7120].
-
-   The columns of this registry are:
-
-   *  Name: This field contains the name of the EDHOC endpoint identity
-      type.
-
-   *  CBOR label: The value to be used to identify this EDHOC endpoint
-      identity type.  These values MUST be unique.  The value can be a
-      positive integer or a negative integer.  Different ranges of
-      values use different registration policies [RFC8126].  Integer
-      values from -24 to 23 are designated as "Standards Action with
-      Expert Review".  Integer values from -65536 to -25 and from 24 to
-      65535 are designated as "Specification Required".  Integer values
-      smaller than -65536 and greater than 65535 are marked as "Private
-      Use".
-
-   *  Description: This field contains a short description of the EDHOC
-      endpoint identity type.
-
-   *  Reference: This field contains a pointer to the public
-      specification for the EDHOC endpoint identity type.
-
-   This registry has been initially populated with the values in
-   Table 2.
-
-14.11.  EDHOC Transports Registry
-
-   IANA is requested to create a new "EDHOC Transports" registry within
-   the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group
-   defined in [RFC9528].
-
-   The registration policy is either "Private Use", "Standards Action
-   with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 14.14.
-
-   All assignments according to "Standards Action with Expert Review"
-   are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
-   with Expert Review additionally required per Section 4.5 of
-   [RFC8126].  The procedure for early IANA allocation of Standards
-   Track code points defined in [RFC7120] also applies.  When such a
-   procedure is used, IANA will ask the designated expert(s) to approve
-   the early allocation before registration.  In addition, WG chairs are
-   encouraged to consult the expert(s) early during the process outlined
-   in Section 3.1 of [RFC7120].
-
-   The columns of this registry are:
-
-   *  Transport ID: The value to be used to identify this means for
-      transporting EDHOC messages.  These values MUST be unique.  The
-      value can be a positive integer or a negative integer.  Different
-      ranges of values use different registration policies [RFC8126].
-      Integer values from -24 to 23 are designated as "Standards Action
-      with Expert Review".  Integer values from -65536 to -25 and from
-      24 to 65535 are designated as "Specification Required".  Integer
-      values smaller than -65536 and greater than 65535 are marked as
-      "Private Use".
-
-   *  Name: This field contains the name of the means for transporting
-      EDHOC messages.
-
-   *  Description: This field contains a short description of the means
-      used for transporting EDHOC messages.
-
-   *  Reference: This field contains a pointer to the public
-      specification for the means used for transporting EDHOC messages.
-
-   This registry has been initially populated with the values in
-   Table 3.
-
-14.12.  EDHOC Trust Anchor Purposes Registry
+12.10.  EDHOC Trust Anchor Purposes Registry
 
    IANA is requested to create a new "EDHOC Trust Anchor Purposes"
    registry within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)"
@@ -3017,7 +2803,7 @@ Table of Contents
 
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 14.14.
+   [RFC8126].  "Expert Review" guidelines are provided in Section 12.12.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -3056,9 +2842,9 @@ Table of Contents
       specification for the trust anchor purpose.
 
    This registry has been initially populated with the values in
-   Section 10.
+   Section 8.
 
-14.13.  EDHOC Trust Anchor Types Registry
+12.11.  EDHOC Trust Anchor Types Registry
 
    IANA is requested to create a new "EDHOC Trust Anchor Types" registry
    within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry
@@ -3066,7 +2852,7 @@ Table of Contents
 
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 14.14.
+   [RFC8126].  "Expert Review" guidelines are provided in Section 12.12.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -3108,9 +2894,9 @@ Table of Contents
       specification for the type of trust anchor.
 
    This registry has been initially populated with the values in
-   Table 5.
+   Table 3.
 
-14.14.  Expert Review Instructions
+12.12.  Expert Review Instructions
 
    "Standards Action with Expert Review", "Specification Required", and
    "Expert Review" are three of the registration policies defined for
@@ -3152,9 +2938,9 @@ Table of Contents
       it will be used on, and the number of code points left that encode
       to that size.
 
-15.  References
+13.  References
 
-15.1.  Normative References
+13.1.  Normative References
 
    [COSE.Header.Parameters]
               IANA, "COSE Header Parameters",
@@ -3318,7 +3104,7 @@ Table of Contents
               (OSCORE)", RFC 9668, DOI 10.17487/RFC9668, November 2024,
               <https://www.rfc-editor.org/rfc/rfc9668>.
 
-15.2.  Informative References
+13.2.  Informative References
 
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
@@ -3965,11 +3751,7 @@ Appendix C.  CDDL Model
    eads = 8
    initiator = 9
    responder = 10
-   max_msgsize = 11
-   coap_ct = 12
-   ep_id_types = 13
-   transports = 14
-   trust_anchors = 15
+   trust_anchors = 11
 
    ; EDHOC Trust Anchor Purposes
    edhoc_cred = 0
@@ -3989,6 +3771,12 @@ Appendix D.  Document Updates
 D.1.  Version -09 to -10
 
    *  Fixed CDDL definition of the EDHOC_Information object.
+
+   *  Removed excessive EDHOC_Information parameters: "max_msgsize",
+      "coap_ct", "ep_id_types", and "transports".
+
+   *  Removed definition of some IANA registries: "EDHOC Endpoint
+      Identity Types" and "EDHOC Transports".
 
    *  Editorial fixes and improvements.
 

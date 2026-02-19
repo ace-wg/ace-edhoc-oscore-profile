@@ -1310,7 +1310,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: x5u
 * Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
 * JWT Confirmation Method Name: x5u
-* Confirmation Key: TBD (value between 1 and 23)
+* Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: uri
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-x5u}} of {{&SELF}}
@@ -1350,7 +1350,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 * Confirmation Method Name: c5u
 * Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
 * JWT Confirmation Method Name: c5u
-* Confirmation Key: TBD (value between 1 and 23)
+* Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: uri
 * Change Controller: IETF
 * Reference: {{ssec-cwt-conf-c5u}} of {{&SELF}}

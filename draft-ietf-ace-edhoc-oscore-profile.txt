@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 18 August 2026                                        M. Tiloca
+Expires: 23 August 2026                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                        14 February 2026
+                                                        19 February 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 August 2026.
+   This Internet-Draft will expire on 23 August 2026.
 
 Copyright Notice
 
@@ -2646,7 +2646,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: x5u
 
-   *  Confirmation Key: TBD (value between 1 and 23)
+   *  Confirmation Key: TBD (value between 24 and 255)
 
    *  Confirmation Value Type: uri
 
@@ -2713,7 +2713,7 @@ Table of Contents
 
    *  JWT Confirmation Method Name: c5u
 
-   *  Confirmation Key: TBD (value between 1 and 23)
+   *  Confirmation Key: TBD (value between 24 and 255)
 
    *  Confirmation Value Type: uri
 

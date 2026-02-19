@@ -913,19 +913,20 @@ Therefore, if RS supports the EDHOC reverse message flow and sends an AS Request
 
 AS Request Creation Hints may also be requested and retrieved through a new EAD item defined here, see {{fig-ead-rch}}, {{iana-edhoc-ead}}, and an example of its usage in {{example-non-sequential-workflow}}.
 
-~~~~~~~~~~~ CDDL
-ead_label = TBD
-? ead_value = bstr .cbor AS_request_creation_hints
-
-AS_request_creation_hints : map
+~~~~~~~~~~~ cddl
+ead_request_creation_hints = (
+  ead_label : e'ead_request_creation_hints_label',
+  ? ead_value : bstr .cbor AS_request_creation_hints
+)
+AS_request_creation_hints = map
 ~~~~~~~~~~~
 {: #fig-ead-rch title="EAD item EAD_REQUEST_CREATION_HINTS."}
 
 The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry "ACE Authorization Server Request Creation Hints".
 
-Example: Assuming IANA label 12 and non-critical, so ead_label = 12 (0x0C), and the AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS):
+Example: Assuming IANA label 2 and non-critical, so ead_label = 2 (0x02), and the AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS):
 
-* EAD_REQUEST_CREATION_HINTS = 0x0C5820A101781C636F61703A2F2F7777772E6578616D70
+* EAD_REQUEST_CREATION_HINTS = 0x025820A101781C636F61703A2F2F7777772E6578616D70
                                6C652E636F6D2F746F6B656E
 
 Editor's note: Replace IANA label with TBD value registered for EAD_REQUEST_CREATION_HINTS in {{iana-edhoc-ead}}.
@@ -944,8 +945,10 @@ Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiat
 
 In order to remediate this situation, this section specifies a new EAD item for requesting the peer's authentication credential by value, see {{fig-ead-req-authcred}}, {{iana-edhoc-ead}}, and an example of its usage in {{example-non-sequential-workflow}}.
 
-~~~~~~~~~~~ CDDL
-ead_label = TBD
+~~~~~~~~~~~ cddl
+ead_credential_by_value = (
+  ead_label : e'ead_credential_by_value_label'
+)
 ~~~~~~~~~~~
 {: #fig-ead-req-authcred title="EAD item EAD_CRED_BY_VALUE."}
 
@@ -1932,7 +1935,7 @@ This section lists the specifications of this profile based on the requirements 
 # CDDL Model # {#sec-cddl-model}
 {:removeinrfc}
 
-~~~~~~~~~~~~~~~~~~~~ CDDL
+~~~~~~~~~~~~~~~~~~~~ cddl
 ; ACE Profiles
 coap_edhoc_oscore = 4
 
@@ -1953,6 +1956,10 @@ x5chain = 24
 x5bag = 25
 c5c = 26
 c5b = 27
+
+; EDHOC External Authorization Data
+ead_request_creation_hints_label = 2
+ead_credential_by_value_label = 15
 
 ; EDHOC Information
 session_id = 0

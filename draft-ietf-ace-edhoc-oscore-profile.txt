@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 23 August 2026                                        M. Tiloca
+Expires: 30 August 2026                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                        19 February 2026
+                                                        26 February 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 August 2026.
+   This Internet-Draft will expire on 30 August 2026.
 
 Copyright Notice
 
@@ -1461,7 +1461,7 @@ Table of Contents
       message with ERR_CODE = 1 (see Section 6 of [RFC9528]) and it MUST
       abort the EDHOC session.
 
-      Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE =
+      Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE =
       3 "Access Denied" defined in draft-ietf-lake-authz
 
 4.4.  Reverse Message Flow
@@ -1537,7 +1537,7 @@ Table of Contents
    with ERR_CODE = 1 (see Section 6 of [RFC9528]) and it MUST abort the
    EDHOC session.
 
-   Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE = 3
+   Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3
    "Access Denied" defined in draft-ietf-lake-authz
 
 4.4.4.  EDHOC message_3
@@ -1565,7 +1565,7 @@ Table of Contents
       message with ERR_CODE = 1 (see Section 6 of [RFC9528]) and it MUST
       abort the EDHOC session.
 
-      Editor's note: Instead of ERR_CODE = 1, consider to use ERR_CODE =
+      Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE =
       3 "Access Denied" defined in draft-ietf-lake-authz
 
 4.5.  OSCORE Security Context
@@ -1743,7 +1743,7 @@ Table of Contents
 
 4.8.  Establishing a New OSCORE Security Context
 
-   The procedure of provisioning a new access token to RS specified in
+   The procedure for provisioning a new access token to RS specified in
    this section applies to various cases when an OSCORE Security Context
    shared between C and RS has been deleted, for example as described in
    Section 4.7.
@@ -1765,7 +1765,7 @@ Table of Contents
    communications from then on.  In particular, RS MUST associate the
    new OSCORE Security Context with the current (potentially re-
    uploaded) access token.  Furthermore, the SESSION_ID identifying the
-   token series to which the access token belongs to remains unchanged,
+   token series to which the access token belongs remains unchanged,
    even if C and RS have established a new EDHOC session.  Unless C and
    RS re-run the EDHOC protocol, they preserve their OSCORE identifiers,
    i.e., their OSCORE Sender/Recipient IDs.
@@ -1817,7 +1817,7 @@ Table of Contents
       (see Section 3.3).
 
    *  C MUST delete every stored access token that C specified (by value
-      or be reference) during an EDHOC session that used AUTH_CRED_RS
+      or by reference) during an EDHOC session that used AUTH_CRED_RS
       and successfully completed.
 
    *  RS and C MUST abort and purge all the EDHOC sessions that used
@@ -1864,23 +1864,24 @@ Table of Contents
    a new EAD item defined here, see Figure 9, Section 13.8, and an
    example of its usage in Appendix A.3.
 
-   ead_label = TBD
-   ? ead_value = bstr .cbor AS_request_creation_hints
-
-   AS_request_creation_hints : map
+   ead_request_creation_hints = (
+     ead_label : e'ead_request_creation_hints_label',
+     ? ead_value : bstr .cbor AS_request_creation_hints
+   )
+   AS_request_creation_hints = map
 
                Figure 9: EAD item EAD_REQUEST_CREATION_HINTS.
 
    The AS_request_creation_hints is a CBOR map with keys defined in the
    IANA registry "ACE Authorization Server Request Creation Hints".
 
-   Example: Assuming IANA label 12 and non-critical, so ead_label = 12
-   (0x0C), and the AS_request_creation_hints map containing one CBOR
+   Example: Assuming IANA label 2 and non-critical, so ead_label = 2
+   (0x02), and the AS_request_creation_hints map containing one CBOR
    text string "coap://www.example.com/token" with key 1 (the absolute
    URI of the /token endpoint at the AS):
 
    *  EAD_REQUEST_CREATION_HINTS =
-      0x0C5820A101781C636F61703A2F2F7777772E6578616D70
+      0x025820A101781C636F61703A2F2F7777772E6578616D70
       6C652E636F6D2F746F6B656E
 
    Editor's note: Replace IANA label with TBD value registered for
@@ -1934,7 +1935,9 @@ Table of Contents
    value, see Figure 10, Section 13.8, and an example of its usage in
    Appendix A.3.
 
-   ead_label = TBD
+   ead_credential_by_value = (
+     ead_label : e'ead_credential_by_value_label'
+   )
 
                    Figure 10: EAD item EAD_CRED_BY_VALUE.
 
@@ -1956,8 +1959,7 @@ Table of Contents
    In the EDHOC reverse message flow this EAD item can be applied for
    better control of the use of credential by value.  Note that in the
    reverse flow both C and RS may recover from error code 3, but at the
-   cost of more round trips which can be avoided by the use of the EAD
-   item.
+   cost of more round trips which can be avoided by using the EAD item.
 
    *  In case the ACE Client / EDHOC Responder sends a credential by
       reference in message_2 and receives a code 3 error message, then
@@ -1973,7 +1975,7 @@ Table of Contents
 5.  Secure Communication with AS
 
    As specified in the ACE framework (see Sections 5.8 and 5.9 of
-   [RFC9200]), the requesting entity (RS and/or C) and AS communicates
+   [RFC9200]), the requesting entity (RS and/or C) and AS communicate
    via the /token or /introspect endpoint.  When using this profile, the
    use of CoAP [RFC7252] and OSCORE [RFC8613] for this communication is
    RECOMMENDED.  Other protocols fulfilling the security requirements
@@ -2333,7 +2335,7 @@ Table of Contents
    enforce wrong permissions.  If one of the access tokens expires
    earlier than others, the resulting permissions may offer insufficient
    protection.  Developers SHOULD avoid using multiple access tokens for
-   a same client.  Furthermore, RS MUST NOT store more than one access
+   the same client.  Furthermore, RS MUST NOT store more than one access
    token per client per PoP-key (i.e., per client's authentication
    credential).
 
@@ -3007,7 +3009,7 @@ Table of Contents
       check the clarity of purpose and use of the requested entries.
       Experts need to make sure that the object of registration is
       clearly defined in the corresponding specification.  Entries that
-      do not meet these objective of clarity and completeness must not
+      do not meet these objectives of clarity and completeness must not
       be registered.
 
    *  Point squatting should be discouraged.  Reviewers are encouraged
@@ -3056,9 +3058,9 @@ Table of Contents
               Object Security for Constrained RESTful Environments
               (Group OSCORE) Using Authentication and Authorization for
               Constrained Environments (ACE)", Work in Progress,
-              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-19, 24
-              January 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-key-groupcomm-oscore-19>.
+              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-20, 25
+              February 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-key-groupcomm-oscore-20>.
 
    [I-D.ietf-core-uri-path-abbrev]
               Amsüss, C. and M. Richardson, "URI-Path abbreviation in
@@ -3320,7 +3322,7 @@ Appendix A.  Examples
    This appendix provides examples where this profile of ACE is used.
    In particular:
 
-   *  Appendix A.1 does not make use of use of any optimization.
+   *  Appendix A.1 does not make use of any optimization.
 
    *  Appendix A.2 makes use of the optimizations defined in [RFC9668],
       hence reducing the roundtrips of the interactions between C and
@@ -3330,7 +3332,7 @@ Appendix A.  Examples
       EEAD_REQUEST_CREATION_HINTS (see Section 4.13) and
       EAD_CRED_BY_VALUE (see Section 4.14), allowing C to receive AS
       Request Creation Hints from the RS transported in an EAD item.
-      This is useful if C is not be able to determine in advance the
+      This is useful if C is not able to determine in advance the
       appropriate AS to contact.
 
    All these examples build on the following assumptions, as relying on
@@ -3857,6 +3859,10 @@ Appendix C.  CDDL Model
    x5bag = 25
    c5c = 26
    c5b = 27
+
+   ; EDHOC External Authorization Data
+   ead_request_creation_hints_label = 2
+   ead_credential_by_value_label = 15
 
    ; EDHOC Information
    session_id = 0

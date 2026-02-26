@@ -1538,7 +1538,7 @@ This appendix provides examples where this profile of ACE is used. In particular
 
 * {{example-with-optimization}} makes use of the optimizations defined in {{RFC9668}}, hence reducing the roundtrips of the interactions between C and RS.
 
-* {{example-non-sequential-workflow}} makes use of the EAD items EEAD\_REQUEST\_CREATION\_HINTS (see {{as-creation-hints}}) and EAD\_CRED\_BY\_VALUE (see {{auth-cred-by-value}}), allowing C to receive AS Request Creation Hints from the RS transported in an EAD item. This is useful if C is not able to determine in advance the appropriate AS to contact.
+* {{example-non-sequential-workflow}} makes use of the EAD items EAD\_REQUEST\_CREATION\_HINTS (see {{as-creation-hints}}) and EAD\_CRED\_BY\_VALUE (see {{auth-cred-by-value}}), allowing C to receive AS Request Creation Hints from the RS transported in an EAD item. This is useful if C is not able to determine in advance the appropriate AS to contact.
 
 All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of resource servers by the respective resource owners as well as the registrations of clients authorized to request access tokens for those resource servers.
 

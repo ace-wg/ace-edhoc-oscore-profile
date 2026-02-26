@@ -721,7 +721,7 @@ The processing of EDHOC message\_3 is specified in {{Section 5.4 of RFC9528}}, w
 
   The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the EDHOC session.
 
-  Editor's note: Instead of ERR\_CODE = 1, consider to use ERR\_CODE = 3 "Access Denied" defined in draft-ietf-lake-authz
+  Editor's note: Instead of ERR\_CODE = 1, consider using ERR\_CODE = 3 "Access Denied" defined in draft-ietf-lake-authz
 
 ## Reverse Message Flow {#reverse}
 
@@ -757,7 +757,7 @@ Note that in this case C uploads the Access Token or session ID before RS is aut
 
   The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the EDHOC session.
 
-  Editor's note: Instead of ERR\_CODE = 1, consider to use ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz
+  Editor's note: Instead of ERR\_CODE = 1, consider using ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz
 
 ### EDHOC message\_3
 
@@ -773,7 +773,7 @@ The processing of EDHOC message\_4 is specified in {{Section 5.5 of RFC9528}}, w
 
   The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the EDHOC session.
 
-  Editor's note: Instead of ERR\_CODE = 1, consider to use ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz
+  Editor's note: Instead of ERR\_CODE = 1, consider using ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz
 
 
 ## OSCORE Security Context {#oscore-security-context}
@@ -857,11 +857,11 @@ Furthermore, implementations may want to cancel CoAP observations at RS, if regi
 
 ## Establishing a New OSCORE Security Context {#establish-new-context}
 
-The procedure of provisioning a new access token to RS specified in this section applies to various cases when an OSCORE Security Context shared between C and RS has been deleted, for example as described in {{discard-context}}.
+The procedure for provisioning a new access token to RS specified in this section applies to various cases when an OSCORE Security Context shared between C and RS has been deleted, for example as described in {{discard-context}}.
 
 Another exceptional case is when there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS MAY alternatively attempt to run a key update protocol that they both support. One lightweight example is KUDOS {{I-D.ietf-core-oscore-key-update}}, which is independent of ACE and EDHOC and does not require the uploading of an access token. If C and RS does not support a common key update protocol to use for updating their still valid OSCORE Security Context, then C and RS fall back to EDHOC as outlined above.
 
-In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS MUST associate the new OSCORE Security Context with the current (potentially re-uploaded) access token. Furthermore, the SESSION\_ID identifying the token series to which the access token belongs to remains unchanged, even if C and RS have established a new EDHOC session. Unless C and RS re-run the EDHOC protocol, they preserve their OSCORE identifiers, i.e., their OSCORE Sender/Recipient IDs.
+In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS MUST associate the new OSCORE Security Context with the current (potentially re-uploaded) access token. Furthermore, the SESSION\_ID identifying the token series to which the access token belongs remains unchanged, even if C and RS have established a new EDHOC session. Unless C and RS re-run the EDHOC protocol, they preserve their OSCORE identifiers, i.e., their OSCORE Sender/Recipient IDs.
 
 ## Access Rights Verification # {#access-rights-verif}
 
@@ -887,7 +887,7 @@ If an authentication credential AUTH\_CRED\_RS of RS is invalidated (e.g., it ex
 
 * C MUST delete every stored access token such that C obtained the first access token of the same series through an access token response specifying AUTH\_CRED\_RS, e.g., in the 'rs_cnf' parameter (see {{as-c}}).
 
-* C MUST delete every stored access token that C specified (by value or be reference) during an EDHOC session that used AUTH\_CRED\_RS and successfully completed.
+* C MUST delete every stored access token that C specified (by value or by reference) during an EDHOC session that used AUTH\_CRED\_RS and successfully completed.
 
 * RS and C MUST abort and purge all the EDHOC sessions that used AUTH\_CRED\_RS and successfully completed, as well as the OSCORE Security Context derived from those sessions (see {{discard-context}}).
 
@@ -960,7 +960,7 @@ Example: Assuming IANA label 15 and non-critical, so ead_label = 15 (0x0F), and 
 
 Editor's note: Replace IANA label with TBD value registered for EAD_CRED_BY_VALUE in {{iana-edhoc-ead}}.
 
-In the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value. Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by the use of the EAD item.
+In the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value. Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by using the EAD item.
 
 * In case the ACE Client / EDHOC Responder sends a credential by reference in message_2 and receives a code 3 error message, then it can trigger a new EDHOC session and send credential by value this time.
 
@@ -968,7 +968,7 @@ In the EDHOC reverse message flow this EAD item can be applied for better contro
 
 # Secure Communication with AS # {#secure-comm-as}
 
-As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicates via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED. Other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} (such as HTTP and DTLS {{RFC9147}} or TLS {{RFC8446}}) MAY be used instead.
+As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicate via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED. Other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} (such as HTTP and DTLS {{RFC9147}} or TLS {{RFC8446}}) MAY be used instead.
 
 If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{example-without-optimization}} and {{example-with-optimization}}. This also applies for communication between RS and AS, for example to protect the upload of access tokens from AS directly to RS as described in {{I-D.ietf-ace-workflow-and-params}}.
 
@@ -1127,7 +1127,7 @@ Furthermore, RS achieves confirmation that C has PRK\_out (proof of possession) 
 
 OSCORE is designed to secure point-to-point communication, providing a secure binding between a request and the corresponding response(s). Thus, the basic OSCORE protocol is not intended for use in point-to-multipoint communication (e.g., enforced via multicast or a publish-subscribe model). Implementers of this profile should make sure that their use case of OSCORE corresponds to the expected one, in order to prevent weakening the security assurances provided by OSCORE.
 
-When using this profile, it is RECOMMENDED that RS stores only one access token per client. The use of multiple access tokens for a single client increases the strain on RS, since it must consider every access token associated with the client and calculate the actual permissions that client has. Also, access tokens indicating different or disjoint permissions from each other may lead RS to enforce wrong permissions.  If one of the access tokens expires earlier than others, the resulting permissions may offer insufficient protection. Developers SHOULD avoid using multiple access tokens for a same client. Furthermore, RS MUST NOT store more than one access token per client per PoP-key (i.e., per client's authentication credential).
+When using this profile, it is RECOMMENDED that RS stores only one access token per client. The use of multiple access tokens for a single client increases the strain on RS, since it must consider every access token associated with the client and calculate the actual permissions that client has. Also, access tokens indicating different or disjoint permissions from each other may lead RS to enforce wrong permissions.  If one of the access tokens expires earlier than others, the resulting permissions may offer insufficient protection. Developers SHOULD avoid using multiple access tokens for the same client. Furthermore, RS MUST NOT store more than one access token per client per PoP-key (i.e., per client's authentication credential).
 
 This profile defines the confirmation methods "kcwt" and "kccs" corresponding to the use of CBOR Web Tokens (CWTs) and CWT Claims Set (CCSs), respectively. Security considerations of CWTs and CCSs, and of COSE header parameters "kcwt" and "kccs" are given in {{Section 9.8 of RFC9528}}, and apply also to confirmation methods. In particular, the contents of the CWT or CCS must be processed as untrusted input. The application needs to define a trust-establishment mechanism and identify the relevant trust anchors.
 
@@ -1520,7 +1520,7 @@ This registry has been initially populated with the values in {{table-edhoc-ta-t
 
 Expert reviewers should take into consideration the following points:
 
-* Clarity and correctness of registrations. Experts are expected to check the clarity of purpose and use of the requested entries. Experts need to make sure that the object of registration is clearly defined in the corresponding specification. Entries that do not meet these objective of clarity and completeness must not be registered.
+* Clarity and correctness of registrations. Experts are expected to check the clarity of purpose and use of the requested entries. Experts need to make sure that the object of registration is clearly defined in the corresponding specification. Entries that do not meet these objectives of clarity and completeness must not be registered.
 
 * Point squatting should be discouraged. Reviewers are encouraged to get sufficient information for registration requests to ensure that the usage is not going to duplicate one that is already registered and that the point is likely to be used in deployments. The zones tagged as "Private Use" are intended for testing purposes and closed environments. Code points in other ranges should not be assigned for testing.
 
@@ -1534,11 +1534,11 @@ Expert reviewers should take into consideration the following points:
 
 This appendix provides examples where this profile of ACE is used. In particular:
 
-* {{example-without-optimization}} does not make use of use of any optimization.
+* {{example-without-optimization}} does not make use of any optimization.
 
 * {{example-with-optimization}} makes use of the optimizations defined in {{RFC9668}}, hence reducing the roundtrips of the interactions between C and RS.
 
-* {{example-non-sequential-workflow}} makes use of the EAD items EEAD\_REQUEST\_CREATION\_HINTS (see {{as-creation-hints}}) and EAD\_CRED\_BY\_VALUE (see {{auth-cred-by-value}}), allowing C to receive AS Request Creation Hints from the RS transported in an EAD item. This is useful if C is not be able to determine in advance the appropriate AS to contact.
+* {{example-non-sequential-workflow}} makes use of the EAD items EEAD\_REQUEST\_CREATION\_HINTS (see {{as-creation-hints}}) and EAD\_CRED\_BY\_VALUE (see {{auth-cred-by-value}}), allowing C to receive AS Request Creation Hints from the RS transported in an EAD item. This is useful if C is not able to determine in advance the appropriate AS to contact.
 
 All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of resource servers by the respective resource owners as well as the registrations of clients authorized to request access tokens for those resource servers.
 

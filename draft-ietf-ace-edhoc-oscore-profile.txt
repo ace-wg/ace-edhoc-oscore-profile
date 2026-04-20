@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 30 August 2026                                        M. Tiloca
+Expires: 22 October 2026                                       M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                        26 February 2026
+                                                           20 April 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 August 2026.
+   This Internet-Draft will expire on 22 October 2026.
 
 Copyright Notice
 
@@ -3049,33 +3049,33 @@ Table of Contents
               Palombini, F., Sengul, C., and M. Tiloca, "CoAP Publish-
               Subscribe Profile for Authentication and Authorization for
               Constrained Environments (ACE)", Work in Progress,
-              Internet-Draft, draft-ietf-ace-coap-pubsub-profile-03, 9
-              February 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-coap-pubsub-profile-03>.
+              Internet-Draft, draft-ietf-ace-coap-pubsub-profile-04, 19
+              March 2026, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-ace-coap-pubsub-profile-04>.
 
    [I-D.ietf-ace-key-groupcomm-oscore]
               Tiloca, M. and F. Palombini, "Key Management for Group
               Object Security for Constrained RESTful Environments
               (Group OSCORE) Using Authentication and Authorization for
               Constrained Environments (ACE)", Work in Progress,
-              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-20, 25
-              February 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-key-groupcomm-oscore-20>.
+              Internet-Draft, draft-ietf-ace-key-groupcomm-oscore-21, 14
+              March 2026, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-ace-key-groupcomm-oscore-21>.
 
    [I-D.ietf-core-uri-path-abbrev]
               Amsüss, C. and M. Richardson, "URI-Path abbreviation in
               CoAP", Work in Progress, Internet-Draft, draft-ietf-core-
-              uri-path-abbrev-02, 20 October 2025,
+              uri-path-abbrev-04, 19 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              uri-path-abbrev-02>.
+              uri-path-abbrev-04>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
               M. Furuhed, "CBOR Encoded X.509 Certificates (C509
               Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-16, 25 January 2026,
+              ietf-cose-cbor-encoded-cert-17, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-16>.
+              cbor-encoded-cert-17>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -3231,9 +3231,8 @@ Table of Contents
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
               Claeys, "Protecting EST Payloads with OSCORE", Work in
               Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              09, 20 October 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              coap-est-oscore-09>.
+              10, 2 March 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-ace-coap-est-oscore-10>.
 
    [I-D.ietf-ace-group-oscore-profile]
               Tiloca, M., Höglund, R., and F. Palombini, "The Group
@@ -3241,18 +3240,18 @@ Table of Contents
               (Group OSCORE) Profile of the Authentication and
               Authorization for Constrained Environments (ACE)
               Framework", Work in Progress, Internet-Draft, draft-ietf-
-              ace-group-oscore-profile-05, 3 September 2025,
+              ace-group-oscore-profile-06, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ace-
-              group-oscore-profile-05>.
+              group-oscore-profile-06>.
 
    [I-D.ietf-ace-workflow-and-params]
               Tiloca, M. and G. Selander, "Short Distribution Chain
               (SDC) Workflow and New OAuth Parameters for the
               Authentication and Authorization for Constrained
               Environments (ACE) Framework", Work in Progress, Internet-
-              Draft, draft-ietf-ace-workflow-and-params-06, 20 October
-              2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              ace-workflow-and-params-06>.
+              Draft, draft-ietf-ace-workflow-and-params-07, 2 March
+              2026, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              ace-workflow-and-params-07>.
 
    [I-D.ietf-core-groupcomm-bis]
               Dijk, E. and M. Tiloca, "Group Communication for the
@@ -3265,32 +3264,32 @@ Table of Contents
    [I-D.ietf-core-oscore-id-update]
               Höglund, R. and M. Tiloca, "Identifier Update for OSCORE",
               Work in Progress, Internet-Draft, draft-ietf-core-oscore-
-              id-update-05, 20 October 2025,
+              id-update-06, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-id-update-05>.
+              oscore-id-update-06>.
 
    [I-D.ietf-core-oscore-key-update]
               Höglund, R. and M. Tiloca, "Key Update for OSCORE
               (KUDOS)", Work in Progress, Internet-Draft, draft-ietf-
-              core-oscore-key-update-12, 20 October 2025,
+              core-oscore-key-update-13, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              oscore-key-update-12>.
+              oscore-key-update-13>.
 
    [I-D.ietf-lake-app-profiles]
               Tiloca, M. and R. Höglund, "Coordinating the Use of
               Application Profiles for Ephemeral Diffie-Hellman Over
               COSE (EDHOC)", Work in Progress, Internet-Draft, draft-
-              ietf-lake-app-profiles-03, 20 October 2025,
+              ietf-lake-app-profiles-04, 2 March 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
-              app-profiles-03>.
+              app-profiles-04>.
 
    [I-D.ietf-lake-authz]
               Selander, G., Mattsson, J. P., Vučinić, M., Fedrecheski,
               G., and M. Richardson, "Lightweight Authorization using
               Ephemeral Diffie-Hellman Over COSE (ELA)", Work in
-              Progress, Internet-Draft, draft-ietf-lake-authz-06, 20
-              October 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-lake-authz-06>.
+              Progress, Internet-Draft, draft-ietf-lake-authz-07, 2
+              March 2026, <https://datatracker.ietf.org/doc/html/draft-
+              ietf-lake-authz-07>.
 
    [I-D.serafin-lake-ta-hint]
               Serafin, M. and G. Selander, "Trust Anchor Hints in
@@ -3470,7 +3469,7 @@ A.1.  Workflow without Optimizations
      |  Access to protected resource    |                              |
      |  (OSCORE-protected message)      |                              |
      |  (access control is enforced)    |                              |
- M08 +---------------------------------------------------------------->|
+ M09 +---------------------------------------------------------------->|
      |                                  |                              |
      |  Response                        |                              |
      |  (OSCORE-protected message)      |                              |
@@ -3772,6 +3771,105 @@ A.3.  Non-sequential Workflow
 
    *  Finally, C sends EDHOC message_4 to RS, specifying the access
       token in EAD_4 as value of the EAD item "EAD_ACCESS_TOKEN".
+
+   The interactions between AS, RS, and C are shown in the following
+   example.
+
+     C                                 AS                             RS
+     |                                    |                            |
+     |  EDHOC message_1 to /edhoc         |                            |
+     |  (no access control is enforced)   |                            |
+ M01 +---------------------------------------------------------------->|
+     |  EAD_1 contains                    |                            |
+     |  - EAD_REQUEST_CREATION_HINTS      |                            |
+     |      (no value)                    |                            |
+     |  - EAD_CRED_BY_VALUE               |                            |
+     |      (request AUTH_CRED_RS         |                            |
+     |       by value in ID_CRED_R)       |                            |
+     |                                    |                            |
+     |                                    |                            |
+     |  EDHOC message_2                   |                            |
+ M02 |<----------------------------------------------------------------+
+     |  EAD_2 contains                    |                            |
+     |  - EAD_REQUEST_CREATION_HINTS      |                            |
+     |      including the URI of the      |                            |
+     |      /token endpoint at AS         |                            |
+     |                                    |                            |
+     |  ID_CRED_R identifies              |                            |
+     |     CRED_R = AUTH_CRED_RS          |                            |
+     |     by value                       |                            |
+     |                                    |                            |
+     |                                    |                            |
+     |  EDHOC message_1 to /edhoc         |                            |
+ M03 +----------------------------------->|                            |
+     |                                    |                            |
+     |                                    |                            |
+     |  EDHOC message_2                   |                            |
+ M04 |<-----------------------------------+                            |
+     |  ID_CRED_R identifies              |                            |
+     |     CRED_R = AUTH_CRED_AS          |                            |
+     |     by reference                   |                            |
+     |                                    |                            |
+     |                                    |                            |
+     |  EDHOC message_3 to /edhoc         |                            |
+ M05 +----------------------------------->|                            |
+     |  ID_CRED_I identifies              |                            |
+     |     CRED_I = AUTH_CRED_C           |                            |
+     |     by reference                   |                            |
+     |                                    |                            |
+     |                                    |                            |
+     |  Token request to /token           |                            |
+     |  (OSCORE-protected message)        |                            |
+ M06 +----------------------------------->|                            |
+     |  "req_cnf" identifies              |                            |
+     |     AUTH_CRED_C by reference       |                            |
+     |                                    |                            |
+     |                                    |                            |
+     |  Token response                    |                            |
+     |  (OSCORE-protected message)        |                            |
+ M06 |<-----------------------------------+                            |
+     |  "rs_cnf" specifies                |                            |
+     |     AUTH_CRED_RS by value          |                            |
+     |                                    |                            |
+     |  "ace_profile" specifies the       |                            |
+     |  ACE profile "coap_edhoc_oscore"   |                            |
+     |                                    |                            |
+     |  "edhoc_info" specifies:           |                            |
+     |     {                              |                            |
+     |       e'session_id' : h'01',       |                            |
+     |       e'cipher_suites' : 2,        |                            |
+     |       e'methods' : 3,              |                            |
+     |       e'uri_path' : "/edhoc"       |                            |
+     |     }                              |                            |
+     |                                    |                            |
+     |  In the access token:              |                            |
+     |  - the "cnf" claim specifies       |                            |
+     |    AUTH_CRED_C by value            |                            |
+     |  - the "edhoc_info" claim          |                            |
+     |    specifies the same as           |                            |
+     |    "edhoc_info" above              |                            |
+     |                                    |                            |
+     |                                    |                            |
+     |  EDHOC message_3 to /edhoc         |                            |
+     |  (no access control is enforced)   |                            |
+ M08 +---------------------------------------------------------------->|
+     |  EAD_3 contains access token       |                            |
+     |  (EAD_ACCESS_TOKEN)                |                            |
+     |                                    |                            |
+     |                                    |                            |
+     |  Access to protected resource      |                            |
+     |  (OSCORE-protected message)        |                            |
+     |  (access control is enforced)      |                            |
+ M09 +---------------------------------------------------------------->|
+     |                                    |                            |
+     |  Response                          |                            |
+     |  (OSCORE-protected message)        |                            |
+ M10 |<----------------------------------------------------------------+
+     |                                    |                            |
+
+      If instead access is not authorized, RS replies with a protected
+      error response including updated Request Creation Hints.
+      C can then request a new access token from AS.
 
 Appendix B.  Profile Requirements
 

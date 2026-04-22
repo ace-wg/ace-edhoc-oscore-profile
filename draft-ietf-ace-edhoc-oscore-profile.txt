@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 22 October 2026                                       M. Tiloca
+Expires: 24 October 2026                                       M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                           20 April 2026
+                                                           22 April 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 October 2026.
+   This Internet-Draft will expire on 24 October 2026.
 
 Copyright Notice
 
@@ -170,16 +170,17 @@ Table of Contents
    Appendix B.  Profile Requirements
    Appendix C.  CDDL Model
    Appendix D.  Document Updates
-     D.1.  Version -09 to -10
-     D.2.  Version -08 to -09
-     D.3.  Version -07 to -08
-     D.4.  Version -06 to -07
-     D.5.  Version -05 to -06
-     D.6.  Version -04 to -05
-     D.7.  Version -03 to -04
-     D.8.  Version -02 to -03
-     D.9.  Version -01 to -02
-     D.10. Version -00 to -01
+     D.1.  Version -10 to -11
+     D.2.  Version -09 to -10
+     D.3.  Version -08 to -09
+     D.4.  Version -07 to -08
+     D.5.  Version -06 to -07
+     D.6.  Version -05 to -06
+     D.7.  Version -04 to -05
+     D.8.  Version -03 to -04
+     D.9.  Version -02 to -03
+     D.10. Version -01 to -02
+     D.11. Version -00 to -01
    Acknowledgments
    Authors' Addresses
 
@@ -3070,12 +3071,12 @@ Table of Contents
               uri-path-abbrev-04>.
 
    [I-D.ietf-cose-cbor-encoded-cert]
-              Mattsson, J. P., Selander, G., Raza, S., Höglund, J., and
-              M. Furuhed, "CBOR Encoded X.509 Certificates (C509
-              Certificates)", Work in Progress, Internet-Draft, draft-
-              ietf-cose-cbor-encoded-cert-17, 2 March 2026,
+              Mattsson, J. P., Selander, G., Raza, S., Höglund, J.,
+              Furuhed, M., and L. Liao, "CBOR Encoded X.509 Certificates
+              (C509 Certificates)", Work in Progress, Internet-Draft,
+              draft-ietf-cose-cbor-encoded-cert-18, 22 April 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-17>.
+              cbor-encoded-cert-18>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -3679,7 +3680,7 @@ A.2.  Workflow with Optimizations
 
 A.3.  Non-sequential Workflow
 
-   When this profile is used, the C might not be able to determine in
+   When this profile is used, C might not be able to determine in
    advance the appropriate AS to contact.  In such cases, C may initiate
    EDHOC with RS prior to obtaining an access token and rely on RS to
    provide this information.
@@ -3709,7 +3710,9 @@ A.3.  Non-sequential Workflow
        *  A new EAD item EAD_CRED_BY_VALUE, asking RS to specify its
           authentication credential AUTH_CRED_RS by value in ID_CRED_R.
 
-   2.  RS replies with EDHOC message_2, including in EAD_2:
+   2.  RS replies with EDHOC message_2, specifying its authentication
+       credential AUTH_CRED_RS by value in ID_CRED_R and including in
+       EAD_2:
 
        *  The new EAD item EAD_REQUEST_CREATION_HINTS, whose CBOR byte
           string specified as ead_value encodes the information that
@@ -3773,7 +3776,7 @@ A.3.  Non-sequential Workflow
       token in EAD_4 as value of the EAD item "EAD_ACCESS_TOKEN".
 
    The interactions between AS, RS, and C are shown in the following
-   example.
+   example, where the EDHOC forward message flow is used.
 
      C                                 AS                             RS
      |                                    |                            |
@@ -3827,7 +3830,7 @@ A.3.  Non-sequential Workflow
      |                                    |                            |
      |  Token response                    |                            |
      |  (OSCORE-protected message)        |                            |
- M06 |<-----------------------------------+                            |
+ M07 |<-----------------------------------+                            |
      |  "rs_cnf" specifies                |                            |
      |     AUTH_CRED_RS by value          |                            |
      |                                    |                            |
@@ -3867,8 +3870,8 @@ A.3.  Non-sequential Workflow
  M10 |<----------------------------------------------------------------+
      |                                    |                            |
 
-      If instead access is not authorized, RS replies with a protected
-      error response including updated Request Creation Hints.
+      If instead access is not authorized, RS replies to M09 with a
+      protected error response including updated Request Creation Hints.
       C can then request a new access token from AS.
 
 Appendix B.  Profile Requirements
@@ -3990,7 +3993,13 @@ Appendix D.  Document Updates
 
    This section is to be removed before publishing as an RFC.
 
-D.1.  Version -09 to -10
+D.1.  Version -10 to -11
+
+   *  Added figure with message flow for Non-sequential Workflow
+
+   *  Editorial improvements.
+
+D.2.  Version -09 to -10
 
    *  Fixed CDDL definition of the EDHOC_Information object.
 
@@ -4005,7 +4014,7 @@ D.1.  Version -09 to -10
 
    *  Editorial fixes and improvements.
 
-D.2.  Version -08 to -09
+D.3.  Version -08 to -09
 
    *  Parameter "cnf" explicitly forbidden in the Access Token Response.
 
@@ -4018,7 +4027,7 @@ D.2.  Version -08 to -09
 
    *  Examples showing content of new EAD items.
 
-D.3.  Version -07 to -08
+D.4.  Version -07 to -08
 
    *  KUDOS is just an example of protocol to use for optional key
       update.
@@ -4043,7 +4052,7 @@ D.3.  Version -07 to -08
 
    *  Editorial improvements.
 
-D.4.  Version -06 to -07
+D.5.  Version -06 to -07
 
    *  Renamed id_ep_types as ep_id_types.
 
@@ -4090,7 +4099,7 @@ D.4.  Version -06 to -07
 
    *  Clarifications and editorial improvements.
 
-D.5.  Version -05 to -06
+D.6.  Version -05 to -06
 
    *  The access token can be uploaded through EDHOC in EAD_3, EAD_2, or
       EAD_4.
@@ -4111,7 +4120,7 @@ D.5.  Version -05 to -06
 
    *  Clarifications and editorial improvements.
 
-D.6.  Version -04 to -05
+D.7.  Version -04 to -05
 
    *  CBOR diagnostic notation uses placeholders from a CDDL model.
 
@@ -4131,7 +4140,7 @@ D.6.  Version -04 to -05
 
    *  Editorial fixes and improvements.
 
-D.7.  Version -03 to -04
+D.8.  Version -03 to -04
 
    *  Fixed column name and prefilling of the "EDHOC Information"
       registry.
@@ -4150,7 +4159,7 @@ D.7.  Version -03 to -04
 
    *  Editorial fixes and improvements.
 
-D.8.  Version -02 to -03
+D.9.  Version -02 to -03
 
    *  Restructured presentation of content.
 
@@ -4166,7 +4175,7 @@ D.8.  Version -02 to -03
 
    *  Clarifications and editorial improvements.
 
-D.9.  Version -01 to -02
+D.10.  Version -01 to -02
 
    *  Removed use of EDHOC_KeyUpdate.
 
@@ -4180,7 +4189,7 @@ D.9.  Version -01 to -02
 
    *  Editorial improvements.
 
-D.10.  Version -00 to -01
+D.11.  Version -00 to -01
 
    *  Fixed semantics of the ead_value for transporting an Access Token
       in the EAD_1 field.

@@ -1864,7 +1864,7 @@ M08 |<----------------------------------------------------------------+
 
 ## Non-sequential Workflow # {#example-non-sequential-workflow}
 
-When this profile is used, the C might not be able to determine in advance the appropriate AS to contact. In such cases, C may initiate EDHOC with RS prior to obtaining an access token and rely on RS to provide this information.
+When this profile is used, C might not be able to determine in advance the appropriate AS to contact. In such cases, C may initiate EDHOC with RS prior to obtaining an access token and rely on RS to provide this information.
 
 One approach, as detailed in this section, is for RS to convey this information by including an External Authorization Data (EAD) item in EDHOC message\_2. The content of this EAD item is the information conveyed in a Request Creation Hints response, thereby helping C to identify the correct AS, and possibly other relevant parameters needed to request an access token.
 
@@ -1878,7 +1878,7 @@ The following describes an example scenario where this functionality is used in 
 
     * A new EAD item EAD\_CRED\_BY\_VALUE, asking RS to specify its authentication credential AUTH\_CRED\_RS by value in ID\_CRED\_R.
 
-2. RS replies with EDHOC message\_2, including in EAD\_2:
+2. RS replies with EDHOC message\_2, specifying its authentication credential AUTH\_CRED\_RS by value in ID\_CRED\_R and including in EAD\_2:
 
    * The new EAD item EAD\_REQUEST\_CREATION\_HINTS, whose CBOR byte string specified as ead\_value encodes the information that would have been included in a Request Creation Hints response to an unauthorized request sent to RS. In particular, this information includes the URI to the /token endpoint at the AS.
 
@@ -1904,7 +1904,7 @@ If, instead, the EDHOC reverse message flow is used, then the following differen
 
 * Finally, C sends EDHOC message\_4 to RS, specifying the access token in EAD\_4 as value of the EAD item "EAD\_ACCESS\_TOKEN".
 
-The interactions between AS, RS, and C are shown in the following example.
+The interactions between AS, RS, and C are shown in the following example, where the EDHOC forward message flow is used.
 
 ~~~~~~~~~~~ aasvg
     C                                 AS                             RS
@@ -1959,7 +1959,7 @@ M06 +----------------------------------->|                            |
     |                                    |                            |
     |  Token response                    |                            |
     |  (OSCORE-protected message)        |                            |
-M06 |<-----------------------------------+                            |
+M07 |<-----------------------------------+                            |
     |  "rs_cnf" specifies                |                            |
     |     AUTH_CRED_RS by value          |                            |
     |                                    |                            |
@@ -1999,8 +1999,8 @@ M09 +---------------------------------------------------------------->|
 M10 |<----------------------------------------------------------------+
     |                                    |                            |
 
-     If instead access is not authorized, RS replies with a protected
-     error response including updated Request Creation Hints.
+     If instead access is not authorized, RS replies to M09 with a
+     protected error response including updated Request Creation Hints.
      C can then request a new access token from AS.
 ~~~~~~~~~~~
 
@@ -2088,6 +2088,12 @@ x5u_ta_type = 35
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}
+
+## Version -10 to -11 ## {#sec-10-11}
+
+* Added figure with message flow for Non-sequential Workflow
+
+* Editorial improvements.
 
 ## Version -09 to -10 ## {#sec-09-10}
 

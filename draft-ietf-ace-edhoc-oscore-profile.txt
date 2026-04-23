@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 24 October 2026                                       M. Tiloca
+Expires: 25 October 2026                                       M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                           22 April 2026
+                                                           23 April 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 October 2026.
+   This Internet-Draft will expire on 25 October 2026.
 
 Copyright Notice
 
@@ -219,10 +219,11 @@ Table of Contents
    [RFC9200]) and recommends otherwise (see Section 3 of [RFC9200]).
 
    An authentication credential can be a raw public key, e.g., encoded
-   as a CWT Claims Set (CCS) [RFC8392]; or a public key certificate,
-   e.g., an X.509 certificate [RFC5280] or a CBOR-encoded C509
-   certificate [I-D.ietf-cose-cbor-encoded-cert]); or a different type
-   of data structure containing the public key of the peer in question.
+   as a CBOR Web Token (CWT) or a CWT Claims Set (CCS) [RFC8392]; or a
+   public key certificate, e.g., an X.509 certificate [RFC5280] or a
+   CBOR-encoded C509 certificate [I-D.ietf-cose-cbor-encoded-cert]); or
+   a different type of data structure containing the public key of the
+   peer in question.
 
    The ACE framework establishes what those authentication credentials
    are, and may transport the actual authentication credentials by value

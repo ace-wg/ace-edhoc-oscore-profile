@@ -640,9 +640,9 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   EAD\_ACCESS\_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights (see {{update-access-rights-c-rs}}).
 
-  Example: Assuming IANA label 26 and critical, so ead_label = -26 (0x3819), and 180 bytes access\_token = h'8343a1010aa2044c53...0f6a' (partly omitted for brevity):
+  Example: Assuming IANA label 26, used as a critical label (negative), and an access\_token = h'8343a1010aa2044c53...0f6a' (partly omitted for brevity):
 
-  * EAD_ACCESS_TOKEN = 0x381958B48343a1010aa2044c53...0f6a
+  * EAD_ACCESS_TOKEN = (-26, h'8343a1010aa2044c53...0f6a')
 
   Editor's note: Replace IANA label with TBD value registered for ACE-OAuth Access Token in {{iana-edhoc-ead}}.
 
@@ -656,9 +656,9 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   EAD\_SESSION\_ID is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.
 
-  Example: Assuming IANA label 5 and critical, so ead_label = -5 (0x24), and session\_id =  h'1645'
+  Example: Assuming IANA label 5, used as a critical label (negative), and session\_id =  h'1645'
 
-  * EAD_SESSION_ID = 0x24421645
+  * EAD_SESSION_ID = (-5, h'1645')
 
   Editor's note: Replace IANA label with TBD value for Session ID registered in {{iana-edhoc-ead}}.
 
@@ -924,10 +924,10 @@ AS_request_creation_hints = map
 
 The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry "ACE Authorization Server Request Creation Hints".
 
-Example: Assuming IANA label 2 and non-critical, so ead_label = 2 (0x02), and the AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS):
+Example: Assuming IANA label 2, used as a non-critical label (positive), and a AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS):
 
-* EAD_REQUEST_CREATION_HINTS = 0x025820A101781C636F61703A2F2F7777772E6578616D70
-                               6C652E636F6D2F746F6B656E
+* EAD_REQUEST_CREATION_HINTS = (2, h'A101781C636F61703A2F2F7777772E6578616D706C
+                               652E636F6D2F746F6B656E')
 
 Editor's note: Replace IANA label with TBD value registered for EAD_REQUEST_CREATION_HINTS in {{iana-edhoc-ead}}.
 
@@ -954,9 +954,9 @@ ead_credential_by_value = (
 
 This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
 
-Example: Assuming IANA label 15 and non-critical, so ead_label = 15 (0x0F), and considering that this EAD item has no ead_value:
+Example: Assuming IANA label 15, used as a non-critical label (positive), and considering that this EAD item has no ead_value:
 
-* EAD_CRED_BY_VALUE = 0x0F
+* EAD_CRED_BY_VALUE = (15, h'')
 
 Editor's note: Replace IANA label with TBD value registered for EAD_CRED_BY_VALUE in {{iana-edhoc-ead}}.
 

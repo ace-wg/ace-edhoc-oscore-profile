@@ -306,9 +306,9 @@ Here on the AS, a series might be ongoing for (C, RS1) and another series might 
 The text above has been revisited, also based on the revised safer criterion for assigning new sender IDs at the AS in the next subsection.
 -->
 
-If the identifier specified in the "session\_id" parameter of the POST request identifies multiple, ongoing token series of which C has an access token, then C MUST specify the "audience" parameter in the POST request. In particular, the value of the "audience" parameter MUST be the same value of the "audience" parameter in the POST request that C previously sent to AS, for requesting the first access token in the token series to which the new requested access token has to be added.
+The "audience" parameter MUST be included in the POST request, if it was included in the POST request that C previously sent to AS for requesting the first access token in the token series to which the new requested access token has to be added. If the "audience" parameter is included in the present POST request, its value MUST be the same value of the "audience" parameter in that previous POST request.
 
-AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token issued for C and RS belongs. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid_request" as defined in {{Section 5.8.3 of RFC9200}}.
+AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token belongs, such that the access token is issued for C and for the audience specified by the "audience" parameter of the POST Request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid\_request" as defined in {{Section 5.8.3 of RFC9200}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
    Header: POST (Code=0.02)

@@ -2102,7 +2102,11 @@ x5u_ta_type = 35
 
 ## Version -10 to -11 ## {#sec-10-11}
 
-* Added figure with message flow for Non-sequential Workflow
+* Added figure with message flow for Non-sequential Workflow.
+
+* Clarify instructions on when to include audience when C performs update of access rights.
+
+* Added the "Operational Considerations" section.
 
 * Editorial improvements.
 

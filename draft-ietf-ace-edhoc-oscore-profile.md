@@ -968,7 +968,7 @@ In the first EDHOC message from RS to C, the EAD item has ead_value. In particul
 
 This EAD item is non-critical, i.e., it can be ignored by the receiving peer. The EAD item is OPTIONAL to implement.
 
-Example: assuming ead\_label 1 and the AS Request Creation Hints CBOR map containing one element with key 1 and value the CBOR text string encoding "coap://www.example.com/token" (i.e., the absolute URI of the /token endpoint at the AS), the non-critical EAD item is as follows::
+Example: assuming ead\_label 1 and the AS Request Creation Hints CBOR map containing one element with key 1 and with value the CBOR text string encoding "coap://www.example.com/token" (i.e., the absolute URI of the /token endpoint at the AS), the non-critical EAD item in the first EDHOC message from RS to C is as follows:
 
 ~~~~~~~~~~~ cbor-diag
 1, h'a101781c636f61703a2f2f7777772e6578616d706c652e636f6d2f746f6b656e'

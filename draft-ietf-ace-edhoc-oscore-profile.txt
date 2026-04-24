@@ -1275,10 +1275,10 @@ Table of Contents
 
       Example: assuming ead_label 24 and the value of the "access_token"
       field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic
-      notation, elided for brevity), the critical EAD item is as
-      follows:
+      notation, elided for brevity), the CBOR diagnostic notation of the
+      critical EAD item is as follows:
 
-      -  EAD_ACCESS_TOKEN = (-24, h'8343a1010aa2044c53...0f6a')
+      -24, h'8343a1010aa2044c53...0f6a'
 
       Editor's note: Replace the ead_label above with the TBD value
       registered for ACE-OAuth Access Token in Section 13.8.
@@ -1307,10 +1307,10 @@ Table of Contents
       (new) OSCORE Security Context between C and RS through EDHOC.
 
       Example: assuming ead_label 2 and the value of the "session_id"
-      field equal to h'1645' (in CBOR diagnostic notation), the critical
-      EAD item is as follows:
+      field equal to h'1645' (in CBOR diagnostic notation), the CBOR
+      diagnostic notation of the critical EAD item is as follows:
 
-      -  EAD_SESSION_ID = (-2, h'1645')
+      -2, h'1645'
 
       Editor's note: Replace the ead_label above with the TBD value
       registered for Session ID in Section 13.8.
@@ -1882,12 +1882,10 @@ Table of Contents
 
    Example: assuming ead_label 1 and an AS_request_creation_hints map
    containing one CBOR text string "coap://www.example.com/token" with
-   key 1 (the absolute URI of the /token endpoint at the AS), the non-
-   critical EAD item is as follows::
+   key 1 (the absolute URI of the /token endpoint at the AS), the CBOR
+   diagnostic notation of the non-critical EAD item is as follows::
 
-   *  EAD_REQUEST_CREATION_HINTS = (1,
-      h'A101781C636F61703A2F2F7777772E6578616D706C
-      652E636F6D2F746F6B656E')
+   1, h'A101781C636F61703A2F2F7777772E6578616D706C652E636F6D2F746F6B656E'
 
    Editor's note: Replace the ead_label above with the TBD value
    registered for EAD_REQUEST_CREATION_HINTS in Section 13.8.
@@ -1932,14 +1930,14 @@ Table of Contents
    resolving the issue.  However, in case the ACE Resource Server /
    EDHOC Responder sends a credential by reference in message_2, then
    returning a code 3 EDHOC error message does not automatically solve
-   the problem.  Having aborted the protocol, the Responder has no
-   reliable way to act differently in a following EDHOC session since it
-   never authenticated the Initiator.
+   the problem.  Having aborted the EDHOC session, the Responder has no
+   reliable way to act differently in a following EDHOC session, since
+   it never authenticated the Initiator.
 
    In order to remediate this situation, this section specifies a new
-   EAD item for requesting the peer's authentication credential by
-   value, see Figure 10, Section 13.8, and an example of its usage in
-   Appendix A.3.
+   EAD item EAD_CRED_BY_VALUE for requesting the peer's authentication
+   credential by value, see Figure 10, Section 13.8, and an example of
+   its usage in Appendix A.3.
 
    ead_credential_by_value = (
      ead_label : e'ead_credential_by_value_label'
@@ -1955,9 +1953,10 @@ Table of Contents
    peer.  It is OPTIONAL to implement.
 
    Example: assuming ead_label 15 and considering that this EAD item has
-   no ead_value, the non-critical EAD item is as follows:
+   no ead_value, the CBOR diagnostic notation of the non-critical EAD
+   item is as follows:
 
-   *  EAD_CRED_BY_VALUE = (15, h'')
+   15
 
    Editor's note: Replace the ead_label above with the TBD value
    registered for EAD_CRED_BY_VALUE in Section 13.8.
@@ -3966,7 +3965,7 @@ Appendix C.  CDDL Model
    c5b = 27
 
    ; EDHOC External Authorization Data
-   ead_request_creation_hints_label = 2
+   ead_request_creation_hints_label = 1
    ead_credential_by_value_label = 15
 
    ; EDHOC Information

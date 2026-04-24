@@ -1255,15 +1255,16 @@ Table of Contents
    This document defines EAD items (see Section 3.8 of [RFC9528]) for
    transporting an access token or a session identifier in EDHOC.
 
-   *  EAD_ACCESS_TOKEN, whose CDDL grammar is shown in Figure 9.
+   *  The EAD item ACE-OAuth Access Token, whose CDDL grammar is shown
+      in Figure 9.
 
-      ead_ace-oauth-access-token = (
+      ead_ace_oauth_access_token = (
         ead_label : e'ead_ace_oauth_access_token_label',
         ead_value : access_token
       )
       access_token = bstr
 
-                     Figure 9: EAD item EAD_ACCESS_TOKEN.
+                  Figure 9: EAD item ACE-OAuth Access Token.
 
       In particular:
 
@@ -1280,9 +1281,9 @@ Table of Contents
       or resource server supporting the profile of ACE defined in this
       document MUST support this EAD item.
 
-      EAD_ACCESS_TOKEN is used only when uploading the first access
-      token of a token series, but not for the update of access rights
-      (see Section 4.6).
+      This EAD item is used only when uploading the first access token
+      of a token series, but not for the update of access rights (see
+      Section 4.6).
 
       Example: assuming ead_label 24 and the value of the "access_token"
       field equal to h'8343a1010aa2044c53...0f6a' (elided for brevity),
@@ -1293,7 +1294,7 @@ Table of Contents
       Editor's note: Replace the ead_label above with the TBD value
       registered for ACE-OAuth Access Token in Section 14.8.
 
-   *  EAD_SESSION_ID, whose CDDL grammar is shown in Figure 10.
+   *  The EAD item Session ID, whose CDDL grammar is shown in Figure 10.
 
       ead_session_id = (
         ead_label : e'ead_session_id_label',
@@ -1301,7 +1302,7 @@ Table of Contents
       )
       session_id = bstr
 
-                     Figure 10: EAD item EAD_SESSION_ID.
+                   Figure 10: EAD item EAD item Session ID.
 
       In particular:
 
@@ -1322,7 +1323,7 @@ Table of Contents
       the profile of ACE defined in this document MUST support this EAD
       item.
 
-      EAD_SESSION_ID is used only if the access token has been
+      This EAD item is used only if the access token has been
       provisioned to RS and is valid, but there is a need to establish a
       (new) OSCORE Security Context between C and RS through EDHOC.
 
@@ -1340,9 +1341,9 @@ Table of Contents
    for authorized access according to the profile described in this
    document, C and RS run the EDHOC protocol augmented with an access
    token.  During the EDHOC session, C specifies the access token to RS
-   by value as conveyed in EAD item EAD_ACCESS_TOKEN, or by reference
-   through a session identifier SESSION_ID conveyed in the EAD item
-   EAD_SESSION_ID (see Section 4.1).
+   by value as conveyed in the EAD item ACE-OAuth Access Token, or by
+   reference through a session identifier SESSION_ID conveyed in the EAD
+   item Session ID (see Section 4.1).
 
    As per Appendix A.2 of [RFC9528], EDHOC can be transferred over CoAP
    using either the forward or the reverse message flow, thus
@@ -1365,34 +1366,35 @@ Table of Contents
    protection by EDHOC as provided to the authentication credential used
    by C in the EDHOC session (see Section 9.1 of [RFC9528]).
 
-   When RS processes the EAD item EAD_ACCESS_TOKEN or EAD_SESSION_ID, RS
-   MUST verify that the authentication credential AUTH_CRED_C that C
-   specifies in the ID_CRED_X field during the EDHOC session is the same
-   authentication credential correlated with the EAD item.  If such a
-   verification fails, RS MUST abort the EDHOC session.  Note that:
+   When RS processes the EAD item ACE-OAuth Access Token or the EAD item
+   Session ID, RS MUST verify that the authentication credential
+   AUTH_CRED_C that C specifies in the ID_CRED_X field during the EDHOC
+   session is the same authentication credential correlated with the EAD
+   item.  If such a verification fails, RS MUST abort the EDHOC session.
+   Note that:
 
    *  The ID_CRED_X field in question is the ID_CRED_I or ID_CRED_R
       field, when using the EDHOC forward or reverse message flow,
       respectively.
 
-   *  If the processed EAD item is EAD_ACCESS_TOKEN, then the
+   *  If the processed EAD item is ACE-OAuth Access Token, then the
       authentication credential correlated with the EAD item is
       specified in the 'cnf' claim of the access token conveyed in the
       EAD item.
 
-   *  If the processed EAD item is EAD_SESSION_ID, then the
-      authentication credential correlated with the EAD item is
-      specified in the 'cnf' claim of an access token stored at the RS,
-      which is associated with the authentication credential specified
-      by ID_CRED_X and with the SESSION_ID conveyed in the EAD item.
+   *  If the processed EAD item is Session ID, then the authentication
+      credential correlated with the EAD item is specified in the 'cnf'
+      claim of an access token stored at the RS, which is associated
+      with the authentication credential specified by ID_CRED_X and with
+      the SESSION_ID conveyed in the EAD item.
 
    RS MUST have successfully validated the access token before
    completing the EDHOC session.  If completed successfully, then the
    EDHOC session is associated with both the access token and the pair
    (SESSION_ID, AUTH_CRED_C).  If the EAD item used in the EDHOC session
-   is EAD_ACCESS_TOKEN, then SESSION_ID is specified by the "session_id"
-   field, within the EDHOC_Information object specified by the "cnf"
-   claim of the access token.
+   is ACE-OAuth Access Token, then SESSION_ID is specified by the
+   "session_id" field, within the EDHOC_Information object specified by
+   the "cnf" claim of the access token.
 
    Any previous EDHOC session associated with the same access token and
    with the same pair (SESSION_ID, AUTH_CRED_C) MUST be deleted.  The
@@ -1469,14 +1471,14 @@ Table of Contents
    *  The authentication credential CRED_I specified by the message
       field ID_CRED_I is AUTH_CRED_C.
 
-   *  Exactly one of the EAD items EAD_ACCESS_TOKEN or EAD_SESSION_ID
+   *  Exactly one of the EAD items ACE-OAuth Access Token or Session ID
       MUST be included in the EAD_3 field.  If this is not the case, RS
       MUST abort the EDHOC session.
 
-   *  If the EAD_3 field includes the EAD item EAD_ACCESS_TOKEN, then RS
-      MUST ensure that the access token specified in the EAD item is
-      valid.  If the EAD_3 field includes the EAD item EAD_SESSION_ID,
-      then RS MUST ensure that the access token associated with the
+   *  If the EAD_3 field includes the EAD item ACE-OAuth Access Token,
+      then RS MUST ensure that the access token specified in the EAD
+      item is valid.  If the EAD_3 field includes the EAD item Session
+      ID, then RS MUST ensure that the access token associated with the
       session identifier SESSION_ID specified in the EAD item and with
       the AUTH_CRED_C used in the EDHOC session is valid.
 
@@ -1502,10 +1504,10 @@ Table of Contents
    In this profile of ACE, if RS implements the EDHOC reverse message
    flow, then RS MUST implement EDHOC message_4.
 
-   Exactly one of the EAD items EAD_ACCESS_TOKEN or EAD_SESSION_ID MUST
-   be included in either the EAD_2 field of EDHOC message_2 or the EAD_4
-   field of EDHOC message_4.  If this is not the case, RS MUST abort the
-   EDHOC session.
+   Exactly one of the EAD items ACE-OAuth Access Token or Session ID
+   MUST be included in either the EAD_2 field of EDHOC message_2 or the
+   EAD_4 field of EDHOC message_4.  If this is not the case, RS MUST
+   abort the EDHOC session.
 
    Specific instructions for the different messages are provided in the
    following subsections.
@@ -1542,10 +1544,10 @@ Table of Contents
    *  The authentication credential CRED_R specified by the message
       field ID_CRED_R is AUTH_CRED_C.
 
-   *  If the EAD_2 field includes the EAD item EAD_ACCESS_TOKEN, then RS
-      MUST ensure that the access token specified in the EAD item is
-      valid.  If the EAD_2 field includes the EAD item EAD_SESSION_ID,
-      then RS MUST ensure that the access token associated with the
+   *  If the EAD_2 field includes the EAD item ACE-OAuth Access Token,
+      then RS MUST ensure that the access token specified in the EAD
+      item is valid.  If the EAD_2 field includes the EAD item Session
+      ID, then RS MUST ensure that the access token associated with the
       session identifier SESSION_ID specified in the EAD item and with
       the AUTH_CRED_C used in the EDHOC session is valid.
 
@@ -1577,10 +1579,10 @@ Table of Contents
    The processing of EDHOC message_4 is specified in Section 5.5 of
    [RFC9528], with the following additions:
 
-   *  If the EAD_4 field includes the EAD item EAD_ACCESS_TOKEN, then RS
-      MUST ensure that the access token specified in the EAD item is
-      valid.  If the EAD_4 field includes the EAD item EAD_SESSION_ID,
-      then RS MUST ensure that the access token associated with the
+   *  If the EAD_4 field includes the EAD item ACE-OAuth Access Token,
+      then RS MUST ensure that the access token specified in the EAD
+      item is valid.  If the EAD_4 field includes the EAD item Session
+      ID, then RS MUST ensure that the access token associated with the
       session identifier SESSION_ID specified in the EAD item and with
       the AUTH_CRED_C used in the EDHOC session is valid.
 
@@ -1884,8 +1886,8 @@ Table of Contents
    *  The message payload SHOULD NOT include the "scope" parameter,
       unless its value cannot contribute to expose the identity of RS.
 
-   AS Request Creation Hints can also be requested and retrieved through
-   a new EAD item EAD_REQUEST_CREATION_HINTS defined in this section.
+   AS Request Creation Hints can also be requested and retrieved by
+   means of the EAD item Request Creation Hints defined in this section.
 
    The CDDL grammar for the EAD item is shown in Figure 11 and its
    ead_label is registered in Section 14.8.  An example of its usage is
@@ -1897,7 +1899,7 @@ Table of Contents
    )
    AS_request_creation_hints = map
 
-              Figure 11: EAD item EAD_REQUEST_CREATION_HINTS.
+                Figure 11: EAD item Request Creation Hints.
 
    This EAD item is intended to be used in EAD fields of EDHOC messages
    exchanged between C and RS as follows:
@@ -1929,7 +1931,7 @@ Table of Contents
    1, h'a101781c636f61703a2f2f7777772e6578616d706c652e636f6d2f746f6b656e'
 
    Editor's note: Replace the ead_label above with the TBD value
-   registered for EAD_REQUEST_CREATION_HINTS in Section 14.8.
+   registered for Request Creation Hints in Section 14.8.
 
    Since C has not made an actual request targeting a specific
    application resource, the RS may not know what resource C is
@@ -1965,8 +1967,8 @@ Table of Contents
    reliable way to act differently in a following EDHOC session, since
    it never authenticated the Initiator.
 
-   In order to remediate this situation, this section specifies a new
-   EAD item EAD_CRED_BY_VALUE for requesting the peer's authentication
+   In order to remediate this situation, this section specifies the EAD
+   item Credential By Value for requesting the peer's authentication
    credential by value.
 
    The CDDL grammar for the EAD item is shown in Figure 12 and its
@@ -1977,7 +1979,7 @@ Table of Contents
      ead_label : e'ead_credential_by_value_label'
    )
 
-                   Figure 12: EAD item EAD_CRED_BY_VALUE.
+                  Figure 12: EAD item Credential By Value.
 
    This EAD item has no ead_value.  When present in EAD_1, it requests
    the Responder's authentication credential by value in ID_CRED_R of
@@ -1992,7 +1994,7 @@ Table of Contents
    15
 
    Editor's note: Replace the ead_label above with the TBD value
-   registered for EAD_CRED_BY_VALUE in Section 14.8.
+   registered for Credential By Value in Section 14.8.
 
    In the EDHOC reverse message flow, this EAD item can be employed for
    better control of the use of credential by value.  Note that, in the
@@ -3380,8 +3382,8 @@ Appendix A.  Examples
       hence reducing the roundtrips of the interactions between C and
       RS.
 
-   *  Appendix A.3 makes use of the EAD items EAD_REQUEST_CREATION_HINTS
-      (see Section 4.13) and EAD_CRED_BY_VALUE (see Section 4.14),
+   *  Appendix A.3 makes use of the EAD items Request Creation Hints
+      (see Section 4.13) and Credential By Value (see Section 4.14),
       allowing C to receive AS Request Creation Hints from the RS
       transported in an EAD item.  This is useful if C is not able to
       determine in advance the appropriate AS to contact.
@@ -3754,54 +3756,52 @@ A.3.  Non-sequential Workflow
 
    The following describes an example scenario where this functionality
    is used in the EDHOC forward message flow, in particular taking
-   advantage of the new EAD items EAD_REQUEST_CREATION_HINTS (see
-   Section 4.13) and EAD_CRED_BY_VALUE (see Section 4.14).
+   advantage of the EAD items Request Creation Hints (see Section 4.13)
+   and Credential By Value (see Section 4.14).
 
    1.  Without having an access token, C sends EDHOC message_1 to RS,
        including in EAD_1:
 
-       *  A new EAD item EAD_REQUEST_CREATION_HINTS, here specifying no
+       *  The EAD item Request Creation Hints, here specifying no
           ead_value.
 
           By doing so, C is asking RS to include the same EAD item in
           EAD_2, specifying the information that would be included in a
           Request Creation Hints response.
 
-       *  A new EAD item EAD_CRED_BY_VALUE, asking RS to specify its
+       *  The EAD item Credential By Value, asking RS to specify its
           authentication credential AUTH_CRED_RS by value in ID_CRED_R.
 
    2.  RS replies with EDHOC message_2, specifying its authentication
        credential AUTH_CRED_RS by value in ID_CRED_R and including in
        EAD_2:
 
-       *  The new EAD item EAD_REQUEST_CREATION_HINTS, whose CBOR byte
-          string specified as ead_value encodes the information that
-          would have been included in a Request Creation Hints response
-          to an unauthorized request sent to RS.  In particular, this
+       *  The EAD item Request Creation Hints, whose CBOR byte string
+          specified as ead_value encodes the information that would have
+          been included in a Request Creation Hints response to an
+          unauthorized request sent to RS.  In particular, this
           information includes the URI to the /token endpoint at the AS.
 
-          However, note that C has not made an actual request with a
-          specific request method and targeting a specific application
-          resource.  That is, RS does not know yet what resources C is
-          actually interested in accessing later on.  Hence, the
-          information specified in this EAD_REQUEST_CREATION_HINTS item
-          is typically not expected to include "audience" and "scope".
+          Note that C has not made an actual request with a specific
+          request method and targeting a specific application resource.
+          That is, RS does not know yet what resources C is actually
+          interested in accessing later on.
 
    3.  C requests an access token for the right audience and scope from
        the right AS, based on pre-configured parameters on the client
-       and the information from EAD_REQUEST_CREATION_HINTS within EDHOC
-       message_2, like if C had received a Request Creation Hints
-       response.
+       and the information from the EAD item Request Creation Hints
+       within EDHOC message_2, like if C had received a Request Creation
+       Hints response.
 
        C should already know the right audience and scope to specify in
-       the Access Token Request, as that information is not expected to
-       be provided by RS in the EAD_REQUEST_CREATION_HINTS item of EDHOC
-       message_2.  There may also be default audience and scope set at
-       the AS to use, if none is specified by C in its Access Token
-       Request.
+       the Access Token Request, as that information is not provided by
+       RS in the EAD item Request Creation Hints within EDHOC message_2
+       (see Section 4.13).  There may also be default audience and scope
+       set at the AS to use, if none is specified by C in its Access
+       Token Request.
 
-   4.  C sends EDHOC message_3 to RS, specifying the access token in
-       EAD_3 as value of the EAD item "EAD_ACCESS_TOKEN".
+   4.  C sends EDHOC message_3 to RS, specifying the access token by
+       means of the EAD item ACE-OAuth Access Token.
 
    5.  If a protected request from C for accessing a resource at RS is
        not authorized per the issued access token, then RS replies with
@@ -3820,20 +3820,20 @@ A.3.  Non-sequential Workflow
    If, instead, the EDHOC reverse message flow is used, then the
    following differences compared to what is described above apply:
 
-   *  EAD_REQUEST_CREATION_HINTS and EAD_CRED_BY_VALUE are included in
-      EDHOC message_2 by C, in order to ask RS to provide the Request
-      Creation Hints information and to specify AUTH_CRED_RS by value in
-      ID_CRED_I, respectively.
+   *  The EAD items Request Creation Hints and Credential By Value are
+      included in EDHOC message_2 by C, in order to ask RS to provide
+      the Request Creation Hints information and to specify AUTH_CRED_RS
+      by value in ID_CRED_I, respectively.
 
-   *  EAD_REQUEST_CREATION_HINTS is included in EDHOC message_3 by RS,
-      with value the Request Creation Hints information.
+   *  The EAD item Request Creation Hints is included in EDHOC message_3
+      by RS, with value the Request Creation Hints information.
 
    *  After receiving EDHOC message_3, C requests the access token to
-      the AS, based on the information from EAD_REQUEST_CREATION_HINTS
-      in EDHOC message_3.
+      the AS, based on the information from the EAD item Request
+      Creation Hints within EDHOC message_3.
 
    *  Finally, C sends EDHOC message_4 to RS, specifying the access
-      token in EAD_4 as value of the EAD item "EAD_ACCESS_TOKEN".
+      token by means of the EAD item ACE-OAuth Access Token.
 
    The interactions between AS, RS, and C are shown in the following
    example, where the EDHOC forward message flow is used.
@@ -4071,9 +4071,13 @@ D.1.  Version -10 to -11
    *  Clarify instructions on when to include audience when C performs
       update of access rights.
 
-   *  Revised normative language when using AS Request Creation Hints.
+   *  New EAD items:
 
-   *  Revised format/style of definition of EAD items.
+      -  Consistent and simpler naming.
+
+      -  Revised format/style of their definition.
+
+      -  Revised normative language for using AS Request Creation Hints.
 
    *  Added the "Operational Considerations" section.
 

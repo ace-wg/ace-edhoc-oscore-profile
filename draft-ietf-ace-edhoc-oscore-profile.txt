@@ -144,25 +144,26 @@ Table of Contents
      8.10. CCS Containing a COSE_Key
    9.  EDHOC Trust Anchor Purposes
    10. EDHOC Trust Anchor Types
-   11. Security Considerations
-   12. Privacy Considerations
-   13. IANA Considerations
-     13.1.  ACE Profiles Registry
-     13.2.  OAuth Parameters Registry
-     13.3.  OAuth Parameters CBOR Mappings Registry
-     13.4.  JSON Web Token Claims Registry
-     13.5.  CBOR Web Token (CWT) Claims Registry
-     13.6.  JWT Confirmation Methods Registry
-     13.7.  CWT Confirmation Methods Registry
-     13.8.  EDHOC External Authorization Data Registry
-     13.9.  EDHOC Exporter Labels
-     13.10. EDHOC Information Registry
-     13.11. EDHOC Trust Anchor Purposes Registry
-     13.12. EDHOC Trust Anchor Types Registry
-     13.13. Expert Review Instructions
-   14. References
-     14.1.  Normative References
-     14.2.  Informative References
+   11. Operational Considerations
+   12. Security Considerations
+   13. Privacy Considerations
+   14. IANA Considerations
+     14.1.  ACE Profiles Registry
+     14.2.  OAuth Parameters Registry
+     14.3.  OAuth Parameters CBOR Mappings Registry
+     14.4.  JSON Web Token Claims Registry
+     14.5.  CBOR Web Token (CWT) Claims Registry
+     14.6.  JWT Confirmation Methods Registry
+     14.7.  CWT Confirmation Methods Registry
+     14.8.  EDHOC External Authorization Data Registry
+     14.9.  EDHOC Exporter Labels
+     14.10. EDHOC Information Registry
+     14.11. EDHOC Trust Anchor Purposes Registry
+     14.12. EDHOC Trust Anchor Types Registry
+     14.13. Expert Review Instructions
+   15. References
+     15.1.  Normative References
+     15.2.  Informative References
    Appendix A.  Examples
      A.1.  Workflow without Optimizations
      A.2.  Workflow with Optimizations
@@ -473,7 +474,7 @@ Table of Contents
    include EDHOC_Information, which is a CBOR map object containing
    information related to an EDHOC implementation (see Section 3.4).
    This object is transported in the "edhoc_info" parameter registered
-   in Section 13.2 and Section 13.3.
+   in Section 14.2 and Section 14.3.
 
 3.1.  C-to-AS: POST to /token endpoint
 
@@ -774,7 +775,7 @@ Table of Contents
    When issuing any access token of a token series, AS MUST include the
    following claims in the access token:
 
-   *  The "edhoc_info" claim defined in Section 13.5 and conveying an
+   *  The "edhoc_info" claim defined in Section 14.5 and conveying an
       EDHOC_Information object (see Section 3.4).
 
       The EDHOC_Information object MUST include the "session_id" field
@@ -914,7 +915,7 @@ Table of Contents
    The EDHOC_Information can be encoded either as a JSON object or as a
    CBOR map.  The set of common fields that can appear in an
    EDHOC_Information can be found in the IANA "EDHOC Information"
-   registry defined in Section 13.10 for extensibility.
+   registry defined in Section 14.10 for extensibility.
 
    All EDHOC_Information parameters are optional.  The initial set of
    parameters defined in this document is summarized in Table 1 and is
@@ -1114,9 +1115,9 @@ Table of Contents
       pairs, these pairs are specified as elements of an array.
 
       Trust anchor purposes are selected from the "EDHOC Trust Anchor
-      Purposes" registry defined in Section 13.11 of this document.
+      Purposes" registry defined in Section 14.11 of this document.
       Trust anchor types are selected from the "EDHOC Trust Anchor
-      Types" registry defined in Section 13.12 of this document.
+      Types" registry defined in Section 14.12 of this document.
 
       In JSON, the "trust_anchors" value is an object with one or more
       outer entries, each of which is associated with a trust anchor
@@ -1256,7 +1257,7 @@ Table of Contents
 
    *  EAD_ACCESS_TOKEN = (ead_label, ead_value), where:
 
-      -  ead_label is the integer value TBD registered in Section 13.8.
+      -  ead_label is the integer value TBD registered in Section 14.8.
 
       -  ead_value is a CBOR byte string equal to the value of the
          "access_token" field of the access token response from AS (see
@@ -1281,11 +1282,11 @@ Table of Contents
       -24, h'8343a1010aa2044c53...0f6a'
 
       Editor's note: Replace the ead_label above with the TBD value
-      registered for ACE-OAuth Access Token in Section 13.8.
+      registered for ACE-OAuth Access Token in Section 14.8.
 
    *  EAD_SESSION_ID = (ead_label, ead_value), where:
 
-      -  ead_label is the integer value TBD registered in Section 13.8.
+      -  ead_label is the integer value TBD registered in Section 14.8.
 
       -  ead_value is a CBOR byte string equal to the value of the
          "session_id" field within the EDHOC_Information object
@@ -1313,7 +1314,7 @@ Table of Contents
       -2, h'1645'
 
       Editor's note: Replace the ead_label above with the TBD value
-      registered for Session ID in Section 13.8.
+      registered for Session ID in Section 14.8.
 
 4.2.  EDHOC Session
 
@@ -1867,7 +1868,7 @@ Table of Contents
 
    AS Request Creation Hints can also be requested and retrieved through
    a new EAD item EAD_REQUEST_CREATION_HINTS defined here, see Figure 9,
-   Section 13.8, and an example of its usage in Appendix A.3.
+   Section 14.8, and an example of its usage in Appendix A.3.
 
    ead_request_creation_hints = (
      ead_label : e'ead_request_creation_hints_label',
@@ -1888,7 +1889,7 @@ Table of Contents
    1, h'A101781C636F61703A2F2F7777772E6578616D706C652E636F6D2F746F6B656E'
 
    Editor's note: Replace the ead_label above with the TBD value
-   registered for EAD_REQUEST_CREATION_HINTS in Section 13.8.
+   registered for EAD_REQUEST_CREATION_HINTS in Section 14.8.
 
    This EAD item is intended to be used in EAD fields of EDHOC messages
    exchanged between C and RS: in the forward message flow in EAD_1 and
@@ -1936,7 +1937,7 @@ Table of Contents
 
    In order to remediate this situation, this section specifies a new
    EAD item EAD_CRED_BY_VALUE for requesting the peer's authentication
-   credential by value, see Figure 10, Section 13.8, and an example of
+   credential by value, see Figure 10, Section 14.8, and an example of
    its usage in Appendix A.3.
 
    ead_credential_by_value = (
@@ -1959,7 +1960,7 @@ Table of Contents
    15
 
    Editor's note: Replace the ead_label above with the TBD value
-   registered for EAD_CRED_BY_VALUE in Section 13.8.
+   registered for EAD_CRED_BY_VALUE in Section 14.8.
 
    In the EDHOC reverse message flow this EAD item can be applied for
    better control of the use of credential by value.  Note that in the
@@ -2030,7 +2031,7 @@ Table of Contents
       EDHOC_Exporter interface:
 
       -  The 'exporter_label' parameter is the unsigned integer
-         EXPORTER_LABEL_TBD_26, which is registered in Section 13.9 of
+         EXPORTER_LABEL_TBD_26, which is registered in Section 14.9 of
          the present document.
 
       -  The 'context' parameter is h'' (0x40), i.e., the empty CBOR
@@ -2053,7 +2054,7 @@ Table of Contents
       interface:
 
       -  The 'exporter_label' parameter is the unsigned integer
-         EXPORTER_LABEL_TBD_27, which is registered in Section 13.9 of
+         EXPORTER_LABEL_TBD_27, which is registered in Section 14.9 of
          the present document.
 
       -  The 'context' parameter is h'' (0x40), i.e., the empty CBOR
@@ -2065,7 +2066,7 @@ Table of Contents
 7.  CWT Confirmation Methods
 
    This document defines a number of new CWT confirmation methods, which
-   are registered in Section 13.7.  The semantics of each confirmation
+   are registered in Section 14.7.  The semantics of each confirmation
    method is defined below.
 
 7.1.  Ordered Chain of X.509 Certificates
@@ -2140,7 +2141,7 @@ Table of Contents
 8.  JWT Confirmation Methods
 
    This document defines a number of new JWT confirmation methods, which
-   are registered in Section 13.6.  The semantics of each confirmation
+   are registered in Section 14.6.  The semantics of each confirmation
    method is defined below.
 
 8.1.  Ordered Chain of X.509 Certificates
@@ -2298,7 +2299,13 @@ Table of Contents
 
                     Table 3: EDHOC Trust Anchor Types
 
-11.  Security Considerations
+11.  Operational Considerations
+
+   In addition to the considerations already discussed in this document,
+   this section compiles additional operational considerations that hold
+   for this document.
+
+12.  Security Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -2353,7 +2360,7 @@ Table of Contents
    The application needs to define a trust-establishment mechanism and
    identify the relevant trust anchors.
 
-12.  Privacy Considerations
+13.  Privacy Considerations
 
    This document specifies a profile for the Authentication and
    Authorization for Constrained Environments (ACE) framework [RFC9200].
@@ -2394,14 +2401,14 @@ Table of Contents
    e.g., by using the method defined in
    [I-D.ietf-core-oscore-id-update].
 
-13.  IANA Considerations
+14.  IANA Considerations
 
    This document has the following actions for IANA.
 
    Note to RFC Editor: Please replace all occurrences of "[RFC-XXXX]"
    with the RFC number of this specification and delete this paragraph.
 
-13.1.  ACE Profiles Registry
+14.1.  ACE Profiles Registry
 
    IANA is asked to add the following entry to the "ACE Profiles"
    registry, following the procedure specified in [RFC9200].
@@ -2418,7 +2425,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-13.2.  OAuth Parameters Registry
+14.2.  OAuth Parameters Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters"
    registry.
@@ -2431,7 +2438,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-13.3.  OAuth Parameters CBOR Mappings Registry
+14.3.  OAuth Parameters CBOR Mappings Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters
    CBOR Mappings" registry, following the procedure specified in
@@ -2447,7 +2454,7 @@ Table of Contents
 
    *  Original Specification: [RFC-XXXX]
 
-13.4.  JSON Web Token Claims Registry
+14.4.  JSON Web Token Claims Registry
 
    IANA is asked to add the following entries to the "JSON Web Token
    Claims" registry, following the procedure specified in [RFC7519].
@@ -2460,7 +2467,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-13.5.  CBOR Web Token (CWT) Claims Registry
+14.5.  CBOR Web Token (CWT) Claims Registry
 
    IANA is asked to add the following entries to the "CBOR Web Token
    (CWT) Claims" registry, following the procedure specified in
@@ -2480,7 +2487,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX]
 
-13.6.  JWT Confirmation Methods Registry
+14.6.  JWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "JWT Confirmation
    Methods" registry, following the procedure specified in [RFC7800].
@@ -2591,7 +2598,7 @@ Table of Contents
 
    *  Reference: Section 8.10 of [RFC-XXXX]
 
-13.7.  CWT Confirmation Methods Registry
+14.7.  CWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "CWT Confirmation
    Methods" registry, following the procedure specified in [RFC8747].
@@ -2762,7 +2769,7 @@ Table of Contents
 
    *  Reference: Section 7.10 of [RFC-XXXX]
 
-13.8.  EDHOC External Authorization Data Registry
+14.8.  EDHOC External Authorization Data Registry
 
    IANA is asked to add the following entries to the "EDHOC External
    Authorization Data" registry defined in Section 10.5 of [RFC9528].
@@ -2807,7 +2814,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX], Section 4.13
 
-13.9.  EDHOC Exporter Labels
+14.9.  EDHOC Exporter Labels
 
    IANA is asked to register the following entries in the "EDHOC
    Exporter Labels" registry, within the "Ephemeral Diffie-Hellman Over
@@ -2835,7 +2842,7 @@ Table of Contents
 
    *  Reference: [RFC-XXXX, Section 6]
 
-13.10.  EDHOC Information Registry
+14.10.  EDHOC Information Registry
 
    IANA is requested to create a new "EDHOC Information" registry within
    the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group
@@ -2844,7 +2851,7 @@ Table of Contents
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", "Specification Required" per Section 4.6 of
    [RFC8126], or "Expert Review" per Section 4.5 of [RFC8126].  "Expert
-   Review" guidelines are provided in Section 13.13.
+   Review" guidelines are provided in Section 14.13.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2898,7 +2905,7 @@ Table of Contents
    In the "Specification" column, the value for all of these entries
    will be [RFC-XXXX] and [RFC9528].
 
-13.11.  EDHOC Trust Anchor Purposes Registry
+14.11.  EDHOC Trust Anchor Purposes Registry
 
    IANA is requested to create a new "EDHOC Trust Anchor Purposes"
    registry within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)"
@@ -2906,7 +2913,7 @@ Table of Contents
 
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 13.13.
+   [RFC8126].  "Expert Review" guidelines are provided in Section 14.13.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2947,7 +2954,7 @@ Table of Contents
    This registry has been initially populated with the values in
    Section 9.
 
-13.12.  EDHOC Trust Anchor Types Registry
+14.12.  EDHOC Trust Anchor Types Registry
 
    IANA is requested to create a new "EDHOC Trust Anchor Types" registry
    within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry
@@ -2955,7 +2962,7 @@ Table of Contents
 
    The registration policy is either "Private Use", "Standards Action
    with Expert Review", or "Specification Required" per Section 4.6 of
-   [RFC8126].  "Expert Review" guidelines are provided in Section 13.13.
+   [RFC8126].  "Expert Review" guidelines are provided in Section 14.13.
 
    All assignments according to "Standards Action with Expert Review"
    are made on a "Standards Action" basis per Section 4.9 of [RFC8126],
@@ -2999,7 +3006,7 @@ Table of Contents
    This registry has been initially populated with the values in
    Table 3.
 
-13.13.  Expert Review Instructions
+14.13.  Expert Review Instructions
 
    "Standards Action with Expert Review", "Specification Required", and
    "Expert Review" are three of the registration policies defined for
@@ -3041,9 +3048,9 @@ Table of Contents
       it will be used on, and the number of code points left that encode
       to that size.
 
-14.  References
+15.  References
 
-14.1.  Normative References
+15.1.  Normative References
 
    [COSE.Header.Parameters]
               IANA, "COSE Header Parameters",
@@ -3230,7 +3237,7 @@ Table of Contents
               (OSCORE)", RFC 9668, DOI 10.17487/RFC9668, November 2024,
               <https://www.rfc-editor.org/rfc/rfc9668>.
 
-14.2.  Informative References
+15.2.  Informative References
 
    [I-D.ietf-ace-coap-est-oscore]
               Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.

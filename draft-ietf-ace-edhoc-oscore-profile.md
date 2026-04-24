@@ -640,9 +640,11 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   EAD\_ACCESS\_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights (see {{update-access-rights-c-rs}}).
 
-  Example: assuming ead\_label 24 and the value of the "access\_token" field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic notation, elided for brevity), the critical EAD item is as follows:
+  Example: assuming ead\_label 24 and the value of the "access\_token" field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic notation, elided for brevity), the CBOR diagnostic notation of the critical EAD item is as follows:
 
-  * EAD_ACCESS_TOKEN = (-24, h'8343a1010aa2044c53...0f6a')
+  ~~~~~~~~~~~ cbor-diag
+  -24, h'8343a1010aa2044c53...0f6a'
+  ~~~~~~~~~~~
 
   Editor's note: Replace the ead\_label above with the TBD value registered for ACE-OAuth Access Token in {{iana-edhoc-ead}}.
 
@@ -656,9 +658,11 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   EAD\_SESSION\_ID is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.
 
-  Example: assuming ead\_label 2 and the value of the "session\_id" field equal to h'1645' (in CBOR diagnostic notation), the critical EAD item is as follows:
+  Example: assuming ead\_label 2 and the value of the "session\_id" field equal to h'1645' (in CBOR diagnostic notation), the CBOR diagnostic notation of the critical EAD item is as follows:
 
-  * EAD_SESSION_ID = (-2, h'1645')
+  ~~~~~~~~~~~ cbor-diag
+  -2, h'1645'
+  ~~~~~~~~~~~
 
   Editor's note: Replace the ead\_label above with the TBD value registered for Session ID in {{iana-edhoc-ead}}.
 
@@ -924,10 +928,11 @@ AS_request_creation_hints = map
 
 The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry "ACE Authorization Server Request Creation Hints".
 
-Example: assuming ead\_label 1 and an AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS), the non-critical EAD item is as follows::
+Example: assuming ead\_label 1 and an AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS), the CBOR diagnostic notation of the non-critical EAD item is as follows::
 
-* EAD_REQUEST_CREATION_HINTS = (1, h'A101781C636F61703A2F2F7777772E6578616D706C
-                               652E636F6D2F746F6B656E')
+~~~~~~~~~~~ cbor-diag
+1, h'A101781C636F61703A2F2F7777772E6578616D706C652E636F6D2F746F6B656E'
+~~~~~~~~~~~
 
 Editor's note: Replace the ead\_label above with the TBD value registered for EAD_REQUEST_CREATION_HINTS in {{iana-edhoc-ead}}.
 
@@ -941,9 +946,9 @@ EDHOC peers need access to each other's authentication credentials to complete t
 
 However, if one of the parties has deleted the other party's authentication credential from its local storage, then there should be a way to restore it without requesting a new access token.
 
-Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This enables the Initiator to restart the protocol using some other ID_CRED, typically the authentication credential by value thereby resolving the issue. However, in case the ACE Resource Server / EDHOC Responder sends a credential by reference in message_2, then returning a code 3 EDHOC error message does not automatically solve the problem. Having aborted the protocol, the Responder has no reliable way to act differently in a following EDHOC session since it never authenticated the Initiator.
+Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This enables the Initiator to restart the protocol using some other ID_CRED, typically the authentication credential by value thereby resolving the issue. However, in case the ACE Resource Server / EDHOC Responder sends a credential by reference in message_2, then returning a code 3 EDHOC error message does not automatically solve the problem. Having aborted the EDHOC session, the Responder has no reliable way to act differently in a following EDHOC session, since it never authenticated the Initiator.
 
-In order to remediate this situation, this section specifies a new EAD item for requesting the peer's authentication credential by value, see {{fig-ead-req-authcred}}, {{iana-edhoc-ead}}, and an example of its usage in {{example-non-sequential-workflow}}.
+In order to remediate this situation, this section specifies a new EAD item EAD_CRED_BY_VALUE for requesting the peer's authentication credential by value, see {{fig-ead-req-authcred}}, {{iana-edhoc-ead}}, and an example of its usage in {{example-non-sequential-workflow}}.
 
 ~~~~~~~~~~~ cddl
 ead_credential_by_value = (
@@ -954,9 +959,11 @@ ead_credential_by_value = (
 
 This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
 
-Example: assuming ead\_label 15 and considering that this EAD item has no ead_value, the non-critical EAD item is as follows:
+Example: assuming ead\_label 15 and considering that this EAD item has no ead_value, the CBOR diagnostic notation of the non-critical EAD item is as follows:
 
-* EAD_CRED_BY_VALUE = (15, h'')
+~~~~~~~~~~~ cbor-diag
+15
+~~~~~~~~~~~
 
 Editor's note: Replace the ead\_label above with the TBD value registered for EAD_CRED_BY_VALUE in {{iana-edhoc-ead}}.
 
@@ -2058,7 +2065,7 @@ c5c = 26
 c5b = 27
 
 ; EDHOC External Authorization Data
-ead_request_creation_hints_label = 2
+ead_request_creation_hints_label = 1
 ead_credential_by_value_label = 15
 
 ; EDHOC Information

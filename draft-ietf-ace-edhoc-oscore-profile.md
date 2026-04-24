@@ -1220,6 +1220,21 @@ Note to RFC Editor: Please replace all occurrences of "\[RFC-XXXX\]" with the RF
 
 In addition to the considerations already discussed in this document, this section compiles additional operational considerations that hold for this document.
 
+## RS Belonging to Multiple Audiences with Different Credentials
+
+An RS may support multiple EDHOC ciphersuites and methods. In such case it could happen that the RS has an authentication credential for different supported combination of ciphersuite and method.
+
+For example, if an RS supports EDHOC ciphersuites 0 and 2, and methods 0 and 3, the RS can have four authentication credentials:
+
+ - One credential using EdDSA with curve Ed25519 for method 0
+ - One credential using ECDSA with curve P-256 for method 0
+ - One credential using ECDSA with curve P-256 for method 3
+ - One credential using X25519 for method 3
+
+To allow the RS and C to distinguish between which authentication credential to use, the RS should associate one audience with each authentication credential. That is, RS should belong to one audience for each of its authentication credentials.
+
+When C requests an access token from the AS, it specifies an audience corresponding to an RS authentication credential that is compatible with C's authentication credential included in the Access Token Request. This means that prior to requesting an access token, C must determine the which EDHOC ciphersuites and methods the RS supports and the corresponding audience values. Discovery of RS capabilities can be achieved through pre-configuration or mechanisms defined in {{I-D.ietf-lake-app-profiles}}. Determination of audience values can be achieved through pre-configuration.
+
 # Security Considerations
 
 This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}. Thus, the general security considerations from the ACE framework also apply to this profile.
@@ -2228,6 +2243,8 @@ x5u_ta_type = 35
   * Revised normative language for using AS Request Creation Hints.
 
 * Added the "Operational Considerations" section.
+
+  * RS belonging to multiple audiences with different credentials.
 
 * Added figure with message flow for Non-sequential Workflow.
 

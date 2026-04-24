@@ -1164,6 +1164,10 @@ Note to RFC Editor: Please replace all occurrences of "\[RFC-XXXX\]" with the RF
 | x5u  | 35         | uri           | URI pointing to an X.509 certificate                                   | {{&SELF}}{{RFC9360}}                           |
 {: #table-edhoc-ta-types title="EDHOC Trust Anchor Types" align="center"}
 
+# Operational Considerations
+
+In addition to the considerations already discussed in this document, this section compiles additional operational considerations that hold for this document.
+
 # Security Considerations
 
 This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}. Thus, the general security considerations from the ACE framework also apply to this profile.
@@ -2142,7 +2146,11 @@ x5u_ta_type = 35
 
 ## Version -10 to -11 ## {#sec-10-11}
 
-* Added figure with message flow for Non-sequential Workflow
+* Added figure with message flow for Non-sequential Workflow.
+
+* Clarify instructions on when to include audience when C performs update of access rights.
+
+* Added the "Operational Considerations" section.
 
 * Editorial improvements.
 

@@ -308,7 +308,7 @@ The text above has been revisited, also based on the revised safer criterion for
 
 The "audience" parameter MUST be included in the POST request, if it was included in the POST request that C previously sent to AS for requesting the first access token in the token series to which the new requested access token has to be added. If the "audience" parameter is included in the present POST request, its value MUST be the same value of the "audience" parameter in that previous POST request.
 
-AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token belongs, such that the access token is issued for C and for the audience specified by the "audience" parameter of the POST Request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid\_request" as defined in {{Section 5.8.3 of RFC9200}}.
+AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token belongs, such that the access token is issued for C and for the audience specified by the "audience" parameter of the POST request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid\_request" as defined in {{Section 5.8.3 of RFC9200}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
    Header: POST (Code=0.02)
@@ -631,7 +631,7 @@ Detailed examples are given in {{examples}}.
 
 This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transporting an access token or a session identifier in EDHOC.
 
-* EAD\_ACCESS\_TOKEN  = (ead\_label, ead\_value), where:
+* EAD\_ACCESS\_TOKEN = (ead\_label, ead\_value), where:
 
   * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}.
   * ead\_value is a CBOR byte string equal to the value of the "access\_token" field of the access token response from AS (see {{as-c}}).
@@ -640,14 +640,14 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   EAD\_ACCESS\_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights (see {{update-access-rights-c-rs}}).
 
-  Example: Assuming IANA label 26, used as a critical label (negative), and an access\_token = h'8343a1010aa2044c53...0f6a' (partly omitted for brevity):
+  Example: assuming ead\_label 24 and the value of the "access\_token" field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic notation, elided for brevity), the critical EAD item is as follows:
 
-  * EAD_ACCESS_TOKEN = (-26, h'8343a1010aa2044c53...0f6a')
+  * EAD_ACCESS_TOKEN = (-24, h'8343a1010aa2044c53...0f6a')
 
-  Editor's note: Replace IANA label with TBD value registered for ACE-OAuth Access Token in {{iana-edhoc-ead}}.
+  Editor's note: Replace the ead\_label above with the TBD value registered for ACE-OAuth Access Token in {{iana-edhoc-ead}}.
 
 
-* EAD\_SESSION\_ID  = (ead\_label, ead\_value), where:
+* EAD\_SESSION\_ID = (ead\_label, ead\_value), where:
 
   * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}.
   * ead\_value is a CBOR byte string equal to the value of the "session\_id" field within the EDHOC_Information object specified by AS in the "edhoc_info" parameter of the response from the /token endpoint, when issuing the first access token of a token series (see {{as-c}}).
@@ -656,11 +656,11 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   EAD\_SESSION\_ID is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.
 
-  Example: Assuming IANA label 5, used as a critical label (negative), and session\_id =  h'1645'
+  Example: assuming ead\_label 2 and the value of the "session\_id" field equal to h'1645' (in CBOR diagnostic notation), the critical EAD item is as follows:
 
-  * EAD_SESSION_ID = (-5, h'1645')
+  * EAD_SESSION_ID = (-2, h'1645')
 
-  Editor's note: Replace IANA label with TBD value for Session ID registered in {{iana-edhoc-ead}}.
+  Editor's note: Replace the ead\_label above with the TBD value registered for Session ID in {{iana-edhoc-ead}}.
 
 
 ## EDHOC Session {#edhoc-exec}
@@ -911,7 +911,7 @@ Therefore, if RS supports the EDHOC reverse message flow and sends an AS Request
 
 * The message payload SHOULD NOT include the "scope" parameter, unless its value cannot contribute to expose the identity of RS.
 
-AS Request Creation Hints may also be requested and retrieved through a new EAD item defined here, see {{fig-ead-rch}}, {{iana-edhoc-ead}}, and an example of its usage in {{example-non-sequential-workflow}}.
+AS Request Creation Hints can also be requested and retrieved through a new EAD item EAD_REQUEST_CREATION_HINTS defined here, see {{fig-ead-rch}}, {{iana-edhoc-ead}}, and an example of its usage in {{example-non-sequential-workflow}}.
 
 ~~~~~~~~~~~ cddl
 ead_request_creation_hints = (
@@ -924,12 +924,12 @@ AS_request_creation_hints = map
 
 The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry "ACE Authorization Server Request Creation Hints".
 
-Example: Assuming IANA label 2, used as a non-critical label (positive), and a AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS):
+Example: assuming ead\_label 1 and an AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS), the non-critical EAD item is as follows::
 
-* EAD_REQUEST_CREATION_HINTS = (2, h'A101781C636F61703A2F2F7777772E6578616D706C
+* EAD_REQUEST_CREATION_HINTS = (1, h'A101781C636F61703A2F2F7777772E6578616D706C
                                652E636F6D2F746F6B656E')
 
-Editor's note: Replace IANA label with TBD value registered for EAD_REQUEST_CREATION_HINTS in {{iana-edhoc-ead}}.
+Editor's note: Replace the ead\_label above with the TBD value registered for EAD_REQUEST_CREATION_HINTS in {{iana-edhoc-ead}}.
 
 This EAD item is intended to be used in EAD fields of EDHOC messages exchanged between C and RS: in the forward message flow in EAD_1 and EAD_2, and in the reverse message flow in EAD_2 and EAD_3. In the first EDHOC message from C to RS, an EAD item with ead_label = TBD with no ead_value asks the RS to include in the next EDHOC message the same EAD item with ead_value encoding the AS_request_creation_hints map. This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
 
@@ -954,11 +954,11 @@ ead_credential_by_value = (
 
 This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is OPTIONAL to implement.
 
-Example: Assuming IANA label 15, used as a non-critical label (positive), and considering that this EAD item has no ead_value:
+Example: assuming ead\_label 15 and considering that this EAD item has no ead_value, the non-critical EAD item is as follows:
 
 * EAD_CRED_BY_VALUE = (15, h'')
 
-Editor's note: Replace IANA label with TBD value registered for EAD_CRED_BY_VALUE in {{iana-edhoc-ead}}.
+Editor's note: Replace the ead\_label above with the TBD value registered for EAD_CRED_BY_VALUE in {{iana-edhoc-ead}}.
 
 In the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value. Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by using the EAD item.
 

@@ -305,14 +305,14 @@ Table of Contents
 
    In the CBOR diagnostic notation used in this document, constructs of
    the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME
-   in the CDDL model shown in Figure 11 of Appendix C.  For example,
+   in the CDDL model shown in Figure 13 of Appendix C.  For example,
    {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2
    : 3}.
 
    Note to RFC Editor: Please delete the paragraph immediately preceding
    this note.  Also, in the CBOR diagnostic notation used in this
    document, please replace the constructs of the form e'SOME_NAME' with
-   the value assigned to SOME_NAME in the CDDL model shown in Figure 11
+   the value assigned to SOME_NAME in the CDDL model shown in Figure 13
    of Appendix C.  Finally, please delete this note.
 
 2.  Protocol Overview
@@ -1255,7 +1255,17 @@ Table of Contents
    This document defines EAD items (see Section 3.8 of [RFC9528]) for
    transporting an access token or a session identifier in EDHOC.
 
-   *  EAD_ACCESS_TOKEN = (ead_label, ead_value), where:
+   *  EAD_ACCESS_TOKEN, whose CDDL grammar is shown in Figure 9.
+
+      ead_ace-oauth-access-token = (
+        ead_label : e'ead_ace_oauth_access_token_label',
+        ead_value : access_token
+      )
+      access_token = bstr
+
+                     Figure 9: EAD item EAD_ACCESS_TOKEN.
+
+      In particular:
 
       -  ead_label is the integer value TBD registered in Section 14.8.
 
@@ -1276,15 +1286,25 @@ Table of Contents
 
       Example: assuming ead_label 24 and the value of the "access_token"
       field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic
-      notation, elided for brevity), the CBOR diagnostic notation of the
-      critical EAD item is as follows:
+      notation, elided for brevity), the critical EAD item is as
+      follows:
 
       -24, h'8343a1010aa2044c53...0f6a'
 
       Editor's note: Replace the ead_label above with the TBD value
       registered for ACE-OAuth Access Token in Section 14.8.
 
-   *  EAD_SESSION_ID = (ead_label, ead_value), where:
+   *  EAD_SESSION_ID, whose CDDL grammar is shown in Figure 10.
+
+      ead_session_id = (
+        ead_label : e'ead_session_id_label',
+        ead_value : session_id
+      )
+      session_id = bstr
+
+                     Figure 10: EAD item EAD_SESSION_ID.
+
+      In particular:
 
       -  ead_label is the integer value TBD registered in Section 14.8.
 
@@ -1297,8 +1317,8 @@ Table of Contents
       This EAD item is critical, i.e., it is used only with the negative
       value of its ead_label, indicating that the receiving RS must
       progress the protocol using the access token associated with the
-      identifier specified in "ead_value" and with the AUTH_CRED_C used
-      in the EDHOC session, or else abort the EDHOC session (see
+      identifier specified in the ead_value and with the AUTH_CRED_C
+      used in the EDHOC session, or else abort the EDHOC session (see
       Section 3.8 of [RFC9528]).  A client or resource server supporting
       the profile of ACE defined in this document MUST support this EAD
       item.
@@ -1308,8 +1328,8 @@ Table of Contents
       (new) OSCORE Security Context between C and RS through EDHOC.
 
       Example: assuming ead_label 2 and the value of the "session_id"
-      field equal to h'1645' (in CBOR diagnostic notation), the CBOR
-      diagnostic notation of the critical EAD item is as follows:
+      field equal to h'1645' (in CBOR diagnostic notation), the critical
+      EAD item is as follows:
 
       -2, h'1645'
 
@@ -1867,8 +1887,11 @@ Table of Contents
       unless its value cannot contribute to expose the identity of RS.
 
    AS Request Creation Hints can also be requested and retrieved through
-   a new EAD item EAD_REQUEST_CREATION_HINTS defined here, see Figure 9,
-   Section 14.8, and an example of its usage in Appendix A.3.
+   a new EAD item EAD_REQUEST_CREATION_HINTS defined in this section.
+
+   The CDDL grammar for the EAD item is shown in Figure 11 and its
+   ead_label is registered in Section 14.8.  An example of its usage is
+   provided in Appendix A.3.
 
    ead_request_creation_hints = (
      ead_label : e'ead_request_creation_hints_label',
@@ -1876,30 +1899,39 @@ Table of Contents
    )
    AS_request_creation_hints = map
 
-               Figure 9: EAD item EAD_REQUEST_CREATION_HINTS.
+              Figure 11: EAD item EAD_REQUEST_CREATION_HINTS.
 
-   The AS_request_creation_hints is a CBOR map with keys defined in the
-   IANA registry "ACE Authorization Server Request Creation Hints".
+   This EAD item is intended to be used in EAD fields of EDHOC messages
+   exchanged between C and RS as follows:
 
-   Example: assuming ead_label 1 and an AS_request_creation_hints map
-   containing one CBOR text string "coap://www.example.com/token" with
-   key 1 (the absolute URI of the /token endpoint at the AS), the CBOR
-   diagnostic notation of the non-critical EAD item is as follows::
+   *  In EAD_1 and EAD_2, when using the forward message flow.
 
-   1, h'A101781C636F61703A2F2F7777772E6578616D706C652E636F6D2F746F6B656E'
+   *  In EAD_2 and EAD_3, when using the reverse message flow.
+
+   In the first EDHOC message from C to RS, the EAD item has no
+   ead_value and asks the RS to include the same EAD item in the next
+   EDHOC message.
+
+   In the first EDHOC message from RS to C, the EAD item has ead_value.
+   In particular, ead_value is a CBOR byte string whose value encodes
+   the CBOR map that is used as payload in an unprotected AS Request
+   Creation Hints message (see Section 5.3 of [RFC9200]).  The keys of
+   the CBOR map are defined in the IANA registry "ACE Authorization
+   Server Request Creation Hints" [ACE.Request.Creation.Hints].
+
+   This EAD item is non-critical, i.e., it can be ignored by the
+   receiving peer.  The EAD item is OPTIONAL to implement.
+
+   Example: assuming ead_label 1 and the AS Request Creation Hints CBOR
+   map containing one element with key 1 and value the CBOR text string
+   encoding "coap://www.example.com/token" (i.e., the absolute URI of
+   the /token endpoint at the AS), the non-critical EAD item is as
+   follows::
+
+   1, h'a101781c636f61703a2f2f7777772e6578616d706c652e636f6d2f746f6b656e'
 
    Editor's note: Replace the ead_label above with the TBD value
    registered for EAD_REQUEST_CREATION_HINTS in Section 14.8.
-
-   This EAD item is intended to be used in EAD fields of EDHOC messages
-   exchanged between C and RS: in the forward message flow in EAD_1 and
-   EAD_2, and in the reverse message flow in EAD_2 and EAD_3.  In the
-   first EDHOC message from C to RS, an EAD item with ead_label = TBD
-   with no ead_value asks the RS to include in the next EDHOC message
-   the same EAD item with ead_value encoding the
-   AS_request_creation_hints map.  This EAD item is non-critical, i.e.,
-   it can be ignored by the receiving peer.  It is OPTIONAL to
-   implement.
 
    Since C has not made an actual request targeting a specific
    application resource, the RS may not know what resource C is
@@ -1937,46 +1969,52 @@ Table of Contents
 
    In order to remediate this situation, this section specifies a new
    EAD item EAD_CRED_BY_VALUE for requesting the peer's authentication
-   credential by value, see Figure 10, Section 14.8, and an example of
-   its usage in Appendix A.3.
+   credential by value.
+
+   The CDDL grammar for the EAD item is shown in Figure 12 and its
+   ead_label is registered in Section 14.8.  An example of its usage is
+   provided in Appendix A.3.
 
    ead_credential_by_value = (
      ead_label : e'ead_credential_by_value_label'
    )
 
-                   Figure 10: EAD item EAD_CRED_BY_VALUE.
+                   Figure 12: EAD item EAD_CRED_BY_VALUE.
 
    This EAD item has no ead_value.  When present in EAD_1, it requests
    the Responder's authentication credential by value in ID_CRED_R of
    message_2.  When present in EAD_2, it requests the Initiator's
    authentication credential by value in ID_CRED_I of message_3.  The
    EAD item is non-critical, i.e., it can be ignored by the receiving
-   peer.  It is OPTIONAL to implement.
+   peer.  The EAD item is OPTIONAL to implement.
 
-   Example: assuming ead_label 15 and considering that this EAD item has
-   no ead_value, the CBOR diagnostic notation of the non-critical EAD
-   item is as follows:
+   Example: assuming ead_label 15, the non-critical EAD item is as
+   follows:
 
    15
 
    Editor's note: Replace the ead_label above with the TBD value
    registered for EAD_CRED_BY_VALUE in Section 14.8.
 
-   In the EDHOC reverse message flow this EAD item can be applied for
-   better control of the use of credential by value.  Note that in the
-   reverse flow both C and RS may recover from error code 3, but at the
-   cost of more round trips which can be avoided by using the EAD item.
+   In the EDHOC reverse message flow, this EAD item can be employed for
+   better control of the use of credential by value.  Note that, in the
+   reverse message flow, both C and RS are able to recover from error
+   code 3, but at the cost of more round trips that can be avoided by
+   using this EAD item.  That is:
 
-   *  In case the ACE Client / EDHOC Responder sends a credential by
-      reference in message_2 and receives a code 3 error message, then
-      it can trigger a new EDHOC session and send credential by value
-      this time.
+   *  The first case consists in the ACE Client / EDHOC Responder that
+      sends its credential by reference in message_2 and receives an
+      error message with error code 3 as a reply.  After that, the ACE
+      Client / EDHOC Responder can trigger a new EDHOC session and send
+      its credential by value.
 
-   *  In case the ACE Resource Server / EDHOC Initiator sends a
-      credential by reference in message_3 and receives a code 3 error
-      message, then since the RS has authenticated C, it can store the
-      authentication credential of C, and in the next session with C,
-      the RS can send its credential by value.
+   *  The second case consists in the ACE Resource Server / EDHOC
+      Initiator that sends a credential by reference in message_3 and
+      receives an error message with error code 3 as a reply.  After
+      that, since the the ACE Resource Server / EDHOC Initiator has
+      authenticated C, it can store the authentication credential of C
+      and send its own credential by value in the next EDHOC session
+      with C.
 
 5.  Secure Communication with AS
 
@@ -3052,6 +3090,11 @@ Table of Contents
 
 15.1.  Normative References
 
+   [ACE.Request.Creation.Hints]
+              IANA, "ACE Authorization Server Request Creation Hints",
+              <https://www.iana.org/assignments/ace/ace.xhtml#ace-
+              authorization-server-request-creation-hints>.
+
    [COSE.Header.Parameters]
               IANA, "COSE Header Parameters",
               <https://www.iana.org/assignments/cose/cose.xhtml#header-
@@ -3973,7 +4016,9 @@ Appendix C.  CDDL Model
 
    ; EDHOC External Authorization Data
    ead_request_creation_hints_label = 1
+   ead_session_id_label = 2
    ead_credential_by_value_label = 15
+   ead_ace_oauth_access_token_label = 24
 
    ; EDHOC Information
    session_id = 0
@@ -3998,7 +4043,7 @@ Appendix C.  CDDL Model
    x5t_ta_type = 34
    x5u_ta_type = 35
 
-                           Figure 11: CDDL model
+                           Figure 13: CDDL model
 
 Appendix D.  Document Updates
 

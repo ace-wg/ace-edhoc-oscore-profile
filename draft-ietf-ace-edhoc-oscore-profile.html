@@ -1533,8 +1533,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-1.1-8">The authorization information (authz-info) resource refers to the authorization information endpoint as specified in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. The term "claim" is used in this document with the same semantics as in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, i.e., it denotes information carried in the access token or returned from introspection.<a href="#section-1.1-8" class="pilcrow">¶</a></p>
 <p id="section-1.1-9">Concise Binary Object Representation (CBOR) <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span><span>[<a href="#RFC8742" class="cite xref">RFC8742</a>]</span> and Concise Data Definition Language (CDDL) <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> are used in this document. CDDL predefined type names, especially bstr for CBOR byte strings and tstr for CBOR text strings, are used extensively in this document.<a href="#section-1.1-9" class="pilcrow">¶</a></p>
 <p id="section-1.1-10">Examples throughout this document are expressed in CBOR diagnostic notation as defined in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-8" class="relref">Section 8</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8610#appendix-G" class="relref">Appendix G</a> of [<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>. Diagnostic notation comments are often used to provide a textual representation of the numeric parameter names and values.<a href="#section-1.1-10" class="pilcrow">¶</a></p>
-<p id="section-1.1-11">In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 11</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. For example, {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2 : 3}.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
-<p id="section-1.1-12">Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 11</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. Finally, please delete this note.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
+<p id="section-1.1-11">In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 13</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. For example, {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2 : 3}.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
+<p id="section-1.1-12">Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 13</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. Finally, please delete this note.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2294,52 +2294,86 @@ trust_anchors_inner_entry_value = any
 <p id="section-4.1-1">This document defines EAD items (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) for transporting an access token or a session identifier in EDHOC.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-2.1">
-            <p id="section-4.1-2.1.1">EAD_ACCESS_TOKEN = (ead_label, ead_value), where:<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-2.1.1">EAD_ACCESS_TOKEN, whose CDDL grammar is shown in <a href="#fig-ead-ace-oauth-access-token" class="auto internal xref">Figure 9</a>.<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
+<span id="name-ead-item-ead_access_token"></span><div id="fig-ead-ace-oauth-access-token">
+<figure id="figure-9">
+              <div class="lang-cddl sourcecode" id="section-4.1-2.1.2.1">
+<pre>
+ead_ace-oauth-access-token = (
+  ead_label : e'ead_ace_oauth_access_token_label',
+  ead_value : access_token
+)
+access_token = bstr
+</pre>
+</div>
+<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<a href="#name-ead-item-ead_access_token" class="selfRef">EAD item EAD_ACCESS_TOKEN.</a>
+              </figcaption></figure>
+</div>
+<p id="section-4.1-2.1.3">
+In particular:<a href="#section-4.1-2.1.3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.1-2.1.2.1">
-                <p id="section-4.1-2.1.2.1.1">ead_label is the integer value TBD registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.1.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1-2.1.4.1">
+                <p id="section-4.1-2.1.4.1.1">ead_label is the integer value TBD registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.1.4.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-4.1-2.1.2.2">
-                <p id="section-4.1-2.1.2.2.1">ead_value is a CBOR byte string equal to the value of the "access_token" field of the access token response from AS (see <a href="#as-c" class="auto internal xref">Section 3.3</a>).<a href="#section-4.1-2.1.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-4.1-2.1.4.2">
+                <p id="section-4.1-2.1.4.2.1">ead_value is a CBOR byte string equal to the value of the "access_token" field of the access token response from AS (see <a href="#as-c" class="auto internal xref">Section 3.3</a>).<a href="#section-4.1-2.1.4.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-4.1-2.1.3">
-This EAD item is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must progress the protocol using the received access token, or else abort the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). A client or resource server supporting the profile of ACE defined in this document <span class="bcp14">MUST</span> support this EAD item.<a href="#section-4.1-2.1.3" class="pilcrow">¶</a></p>
-<p id="section-4.1-2.1.4">
-EAD_ACCESS_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights (see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.6</a>).<a href="#section-4.1-2.1.4" class="pilcrow">¶</a></p>
 <p id="section-4.1-2.1.5">
-Example: assuming ead_label 24 and the value of the "access_token" field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic notation, elided for brevity), the CBOR diagnostic notation of the critical EAD item is as follows:<a href="#section-4.1-2.1.5" class="pilcrow">¶</a></p>
-<div class="lang-cbor-diag sourcecode" id="section-4.1-2.1.6">
+This EAD item is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must progress the protocol using the received access token, or else abort the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). A client or resource server supporting the profile of ACE defined in this document <span class="bcp14">MUST</span> support this EAD item.<a href="#section-4.1-2.1.5" class="pilcrow">¶</a></p>
+<p id="section-4.1-2.1.6">
+EAD_ACCESS_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights (see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.6</a>).<a href="#section-4.1-2.1.6" class="pilcrow">¶</a></p>
+<p id="section-4.1-2.1.7">
+Example: assuming ead_label 24 and the value of the "access_token" field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic notation, elided for brevity), the critical EAD item is as follows:<a href="#section-4.1-2.1.7" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="section-4.1-2.1.8">
 <pre>
 -24, h'8343a1010aa2044c53...0f6a'
-</pre><a href="#section-4.1-2.1.6" class="pilcrow">¶</a>
+</pre><a href="#section-4.1-2.1.8" class="pilcrow">¶</a>
 </div>
-<p id="section-4.1-2.1.7">
-Editor's note: Replace the ead_label above with the TBD value registered for ACE-OAuth Access Token in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.1.7" class="pilcrow">¶</a></p>
+<p id="section-4.1-2.1.9">
+Editor's note: Replace the ead_label above with the TBD value registered for ACE-OAuth Access Token in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.1.9" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.1-2.2">
-            <p id="section-4.1-2.2.1">EAD_SESSION_ID = (ead_label, ead_value), where:<a href="#section-4.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-2.2.1">EAD_SESSION_ID, whose CDDL grammar is shown in <a href="#fig-ead-session_id" class="auto internal xref">Figure 10</a>.<a href="#section-4.1-2.2.1" class="pilcrow">¶</a></p>
+<span id="name-ead-item-ead_session_id"></span><div id="fig-ead-session_id">
+<figure id="figure-10">
+              <div class="lang-cddl sourcecode" id="section-4.1-2.2.2.1">
+<pre>
+ead_session_id = (
+  ead_label : e'ead_session_id_label',
+  ead_value : session_id
+)
+session_id = bstr
+</pre>
+</div>
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<a href="#name-ead-item-ead_session_id" class="selfRef">EAD item EAD_SESSION_ID.</a>
+              </figcaption></figure>
+</div>
+<p id="section-4.1-2.2.3">
+In particular:<a href="#section-4.1-2.2.3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.1-2.2.2.1">
-                <p id="section-4.1-2.2.2.1.1">ead_label is the integer value TBD registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.2.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1-2.2.4.1">
+                <p id="section-4.1-2.2.4.1.1">ead_label is the integer value TBD registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.2.4.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-4.1-2.2.2.2">
-                <p id="section-4.1-2.2.2.2.1">ead_value is a CBOR byte string equal to the value of the "session_id" field within the EDHOC_Information object specified by AS in the "edhoc_info" parameter of the response from the /token endpoint, when issuing the first access token of a token series (see <a href="#as-c" class="auto internal xref">Section 3.3</a>).<a href="#section-4.1-2.2.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-4.1-2.2.4.2">
+                <p id="section-4.1-2.2.4.2.1">ead_value is a CBOR byte string equal to the value of the "session_id" field within the EDHOC_Information object specified by AS in the "edhoc_info" parameter of the response from the /token endpoint, when issuing the first access token of a token series (see <a href="#as-c" class="auto internal xref">Section 3.3</a>).<a href="#section-4.1-2.2.4.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
-<p id="section-4.1-2.2.3">
-This EAD item is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must progress the protocol using the access token associated with the identifier specified in "ead_value" and with the AUTH_CRED_C used in the EDHOC session, or else abort the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). A client or resource server supporting the profile of ACE defined in this document <span class="bcp14">MUST</span> support this EAD item.<a href="#section-4.1-2.2.3" class="pilcrow">¶</a></p>
-<p id="section-4.1-2.2.4">
-EAD_SESSION_ID is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.<a href="#section-4.1-2.2.4" class="pilcrow">¶</a></p>
 <p id="section-4.1-2.2.5">
-Example: assuming ead_label 2 and the value of the "session_id" field equal to h'1645' (in CBOR diagnostic notation), the CBOR diagnostic notation of the critical EAD item is as follows:<a href="#section-4.1-2.2.5" class="pilcrow">¶</a></p>
-<div class="lang-cbor-diag sourcecode" id="section-4.1-2.2.6">
+This EAD item is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must progress the protocol using the access token associated with the identifier specified in the ead_value and with the AUTH_CRED_C used in the EDHOC session, or else abort the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). A client or resource server supporting the profile of ACE defined in this document <span class="bcp14">MUST</span> support this EAD item.<a href="#section-4.1-2.2.5" class="pilcrow">¶</a></p>
+<p id="section-4.1-2.2.6">
+EAD_SESSION_ID is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.<a href="#section-4.1-2.2.6" class="pilcrow">¶</a></p>
+<p id="section-4.1-2.2.7">
+Example: assuming ead_label 2 and the value of the "session_id" field equal to h'1645' (in CBOR diagnostic notation), the critical EAD item is as follows:<a href="#section-4.1-2.2.7" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="section-4.1-2.2.8">
 <pre>
 -2, h'1645'
-</pre><a href="#section-4.1-2.2.6" class="pilcrow">¶</a>
+</pre><a href="#section-4.1-2.2.8" class="pilcrow">¶</a>
 </div>
-<p id="section-4.1-2.2.7">
-Editor's note: Replace the ead_label above with the TBD value registered for Session ID in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.2.7" class="pilcrow">¶</a></p>
+<p id="section-4.1-2.2.9">
+Editor's note: Replace the ead_label above with the TBD value registered for Session ID in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.2.9" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2688,10 +2722,11 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
             <p id="section-4.13-6.2.1">The message payload <span class="bcp14">SHOULD NOT</span> include the "scope" parameter, unless its value cannot contribute to expose the identity of RS.<a href="#section-4.13-6.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.13-7">AS Request Creation Hints can also be requested and retrieved through a new EAD item EAD_REQUEST_CREATION_HINTS defined here, see <a href="#fig-ead-rch" class="auto internal xref">Figure 9</a>, <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>, and an example of its usage in <a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a>.<a href="#section-4.13-7" class="pilcrow">¶</a></p>
+<p id="section-4.13-7">AS Request Creation Hints can also be requested and retrieved through a new EAD item EAD_REQUEST_CREATION_HINTS defined in this section.<a href="#section-4.13-7" class="pilcrow">¶</a></p>
+<p id="section-4.13-8">The CDDL grammar for the EAD item is shown in <a href="#fig-ead-rch" class="auto internal xref">Figure 11</a> and its ead_label is registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>. An example of its usage is provided in <a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a>.<a href="#section-4.13-8" class="pilcrow">¶</a></p>
 <span id="name-ead-item-ead_request_creati"></span><div id="fig-ead-rch">
-<figure id="figure-9">
-          <div class="lang-cddl sourcecode" id="section-4.13-8.1">
+<figure id="figure-11">
+          <div class="lang-cddl sourcecode" id="section-4.13-9.1">
 <pre>
 ead_request_creation_hints = (
   ead_label : e'ead_request_creation_hints_label',
@@ -2700,20 +2735,30 @@ ead_request_creation_hints = (
 AS_request_creation_hints = map
 </pre>
 </div>
-<figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
 <a href="#name-ead-item-ead_request_creati" class="selfRef">EAD item EAD_REQUEST_CREATION_HINTS.</a>
           </figcaption></figure>
 </div>
-<p id="section-4.13-9">The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry "ACE Authorization Server Request Creation Hints".<a href="#section-4.13-9" class="pilcrow">¶</a></p>
-<p id="section-4.13-10">Example: assuming ead_label 1 and an AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS), the CBOR diagnostic notation of the non-critical EAD item is as follows::<a href="#section-4.13-10" class="pilcrow">¶</a></p>
-<div class="lang-cbor-diag sourcecode" id="section-4.13-11">
+<p id="section-4.13-10">This EAD item is intended to be used in EAD fields of EDHOC messages exchanged between C and RS as follows:<a href="#section-4.13-10" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.13-11.1">
+            <p id="section-4.13-11.1.1">In EAD_1 and EAD_2, when using the forward message flow.<a href="#section-4.13-11.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.13-11.2">
+            <p id="section-4.13-11.2.1">In EAD_2 and EAD_3, when using the reverse message flow.<a href="#section-4.13-11.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-4.13-12">In the first EDHOC message from C to RS, the EAD item has no ead_value and asks the RS to include the same EAD item in the next EDHOC message.<a href="#section-4.13-12" class="pilcrow">¶</a></p>
+<p id="section-4.13-13">In the first EDHOC message from RS to C, the EAD item has ead_value. In particular, ead_value is a CBOR byte string whose value encodes the CBOR map that is used as payload in an unprotected AS Request Creation Hints message (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>). The keys of the CBOR map are defined in the IANA registry "ACE Authorization Server Request Creation Hints" <span>[<a href="#ACE.Request.Creation.Hints" class="cite xref">ACE.Request.Creation.Hints</a>]</span>.<a href="#section-4.13-13" class="pilcrow">¶</a></p>
+<p id="section-4.13-14">This EAD item is non-critical, i.e., it can be ignored by the receiving peer. The EAD item is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.13-14" class="pilcrow">¶</a></p>
+<p id="section-4.13-15">Example: assuming ead_label 1 and the AS Request Creation Hints CBOR map containing one element with key 1 and value the CBOR text string encoding "coap://www.example.com/token" (i.e., the absolute URI of the /token endpoint at the AS), the non-critical EAD item is as follows::<a href="#section-4.13-15" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="section-4.13-16">
 <pre>
-1, h'A101781C636F61703A2F2F7777772E6578616D706C652E636F6D2F746F6B656E'
-</pre><a href="#section-4.13-11" class="pilcrow">¶</a>
+1, h'a101781c636f61703a2f2f7777772e6578616d706c652e636f6d2f746f6b656e'
+</pre><a href="#section-4.13-16" class="pilcrow">¶</a>
 </div>
-<p id="section-4.13-12">Editor's note: Replace the ead_label above with the TBD value registered for EAD_REQUEST_CREATION_HINTS in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.13-12" class="pilcrow">¶</a></p>
-<p id="section-4.13-13">This EAD item is intended to be used in EAD fields of EDHOC messages exchanged between C and RS: in the forward message flow in EAD_1 and EAD_2, and in the reverse message flow in EAD_2 and EAD_3. In the first EDHOC message from C to RS, an EAD item with ead_label = TBD with no ead_value asks the RS to include in the next EDHOC message the same EAD item with ead_value encoding the AS_request_creation_hints map. This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.13-13" class="pilcrow">¶</a></p>
-<p id="section-4.13-14">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS_request_creation_hints map <span class="bcp14">MUST NOT</span> include "audience" and <span class="bcp14">SHOULD NOT</span> include "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-14" class="pilcrow">¶</a></p>
+<p id="section-4.13-17">Editor's note: Replace the ead_label above with the TBD value registered for EAD_REQUEST_CREATION_HINTS in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.13-17" class="pilcrow">¶</a></p>
+<p id="section-4.13-18">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS_request_creation_hints map <span class="bcp14">MUST NOT</span> include "audience" and <span class="bcp14">SHOULD NOT</span> include "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-18" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="auth-cred-by-value">
@@ -2724,35 +2769,36 @@ AS_request_creation_hints = map
 <p id="section-4.14-1">EDHOC peers need access to each other's authentication credentials to complete the protocol. However, to reduce unnecessary overhead, the EDHOC protocol enables credential references to be sent instead of authentication credentials. The ACE protocol includes the initial transport of authentication credentials of C and RS and thus matches the use of credential references in EDHOC.<a href="#section-4.14-1" class="pilcrow">¶</a></p>
 <p id="section-4.14-2">However, if one of the parties has deleted the other party's authentication credential from its local storage, then there should be a way to restore it without requesting a new access token.<a href="#section-4.14-2" class="pilcrow">¶</a></p>
 <p id="section-4.14-3">Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This enables the Initiator to restart the protocol using some other ID_CRED, typically the authentication credential by value thereby resolving the issue. However, in case the ACE Resource Server / EDHOC Responder sends a credential by reference in message_2, then returning a code 3 EDHOC error message does not automatically solve the problem. Having aborted the EDHOC session, the Responder has no reliable way to act differently in a following EDHOC session, since it never authenticated the Initiator.<a href="#section-4.14-3" class="pilcrow">¶</a></p>
-<p id="section-4.14-4">In order to remediate this situation, this section specifies a new EAD item EAD_CRED_BY_VALUE for requesting the peer's authentication credential by value, see <a href="#fig-ead-req-authcred" class="auto internal xref">Figure 10</a>, <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>, and an example of its usage in <a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a>.<a href="#section-4.14-4" class="pilcrow">¶</a></p>
+<p id="section-4.14-4">In order to remediate this situation, this section specifies a new EAD item EAD_CRED_BY_VALUE for requesting the peer's authentication credential by value.<a href="#section-4.14-4" class="pilcrow">¶</a></p>
+<p id="section-4.14-5">The CDDL grammar for the EAD item is shown in <a href="#fig-ead-req-authcred" class="auto internal xref">Figure 12</a> and its ead_label is registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>. An example of its usage is provided in <a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a>.<a href="#section-4.14-5" class="pilcrow">¶</a></p>
 <span id="name-ead-item-ead_cred_by_value"></span><div id="fig-ead-req-authcred">
-<figure id="figure-10">
-          <div class="lang-cddl sourcecode" id="section-4.14-5.1">
+<figure id="figure-12">
+          <div class="lang-cddl sourcecode" id="section-4.14-6.1">
 <pre>
 ead_credential_by_value = (
   ead_label : e'ead_credential_by_value_label'
 )
 </pre>
 </div>
-<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
 <a href="#name-ead-item-ead_cred_by_value" class="selfRef">EAD item EAD_CRED_BY_VALUE.</a>
           </figcaption></figure>
 </div>
-<p id="section-4.14-6">This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.14-6" class="pilcrow">¶</a></p>
-<p id="section-4.14-7">Example: assuming ead_label 15 and considering that this EAD item has no ead_value, the CBOR diagnostic notation of the non-critical EAD item is as follows:<a href="#section-4.14-7" class="pilcrow">¶</a></p>
-<div class="lang-cbor-diag sourcecode" id="section-4.14-8">
+<p id="section-4.14-7">This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. The EAD item is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.14-7" class="pilcrow">¶</a></p>
+<p id="section-4.14-8">Example: assuming ead_label 15, the non-critical EAD item is as follows:<a href="#section-4.14-8" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="section-4.14-9">
 <pre>
 15
-</pre><a href="#section-4.14-8" class="pilcrow">¶</a>
+</pre><a href="#section-4.14-9" class="pilcrow">¶</a>
 </div>
-<p id="section-4.14-9">Editor's note: Replace the ead_label above with the TBD value registered for EAD_CRED_BY_VALUE in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.14-9" class="pilcrow">¶</a></p>
-<p id="section-4.14-10">In the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value. Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by using the EAD item.<a href="#section-4.14-10" class="pilcrow">¶</a></p>
+<p id="section-4.14-10">Editor's note: Replace the ead_label above with the TBD value registered for EAD_CRED_BY_VALUE in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.14-10" class="pilcrow">¶</a></p>
+<p id="section-4.14-11">In the EDHOC reverse message flow, this EAD item can be employed for better control of the use of credential by value. Note that, in the reverse message flow, both C and RS are able to recover from error code 3, but at the cost of more round trips that can be avoided by using this EAD item. That is:<a href="#section-4.14-11" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.14-11.1">
-            <p id="section-4.14-11.1.1">In case the ACE Client / EDHOC Responder sends a credential by reference in message_2 and receives a code 3 error message, then it can trigger a new EDHOC session and send credential by value this time.<a href="#section-4.14-11.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.14-12.1">
+            <p id="section-4.14-12.1.1">The first case consists in the ACE Client / EDHOC Responder that sends its credential by reference in message_2 and receives an error message with error code 3 as a reply. After that, the ACE Client / EDHOC Responder can trigger a new EDHOC session and send its credential by value.<a href="#section-4.14-12.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-4.14-11.2">
-            <p id="section-4.14-11.2.1">In case the ACE Resource Server / EDHOC Initiator sends a credential by reference in message_3 and receives a code 3 error message, then since the RS has authenticated C, it can store the authentication credential of C, and in the next session with C, the RS can send its credential by value.<a href="#section-4.14-11.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.14-12.2">
+            <p id="section-4.14-12.2.1">The second case consists in the ACE Resource Server / EDHOC Initiator that sends a credential by reference in message_3 and receives an error message with error code 3 as a reply. After that, since the the ACE Resource Server / EDHOC Initiator has authenticated C, it can store the authentication credential of C and send its own credential by value in the next EDHOC session with C.<a href="#section-4.14-12.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -3929,6 +3975,10 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
 <a href="#section-15.1" class="section-number selfRef">15.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="ACE.Request.Creation.Hints">[ACE.Request.Creation.Hints]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"ACE Authorization Server Request Creation Hints"</span>, <span>&lt;<a href="https://www.iana.org/assignments/ace/ace.xhtml#ace-authorization-server-request-creation-hints">https://www.iana.org/assignments/ace/ace.xhtml#ace-authorization-server-request-creation-hints</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="COSE.Header.Parameters">[COSE.Header.Parameters]</dt>
         <dd>
 <span class="refAuthor">IANA</span>, <span class="refTitle">"COSE Header Parameters"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cose/cose.xhtml#header-parameters">https://www.iana.org/assignments/cose/cose.xhtml#header-parameters</a>&gt;</span>. </dd>
@@ -5323,7 +5373,7 @@ Note that this applies also if C uses the EDHOC + OSCORE combined request (see <
       </h2>
 <p id="appendix-C-1">This section is to be removed before publishing as an RFC.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <span id="name-cddl-model-2"></span><div id="fig-cddl-model">
-<figure id="figure-11">
+<figure id="figure-13">
         <div class="alignLeft art-cddl art-text artwork" id="appendix-C-2.1">
 <pre>
 ; ACE Profiles
@@ -5349,7 +5399,9 @@ c5b = 27
 
 ; EDHOC External Authorization Data
 ead_request_creation_hints_label = 1
+ead_session_id_label = 2
 ead_credential_by_value_label = 15
+ead_ace_oauth_access_token_label = 24
 
 ; EDHOC Information
 session_id = 0
@@ -5375,7 +5427,7 @@ x5t_ta_type = 34
 x5u_ta_type = 35
 </pre>
 </div>
-<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
 <a href="#name-cddl-model-2" class="selfRef">CDDL model</a>
         </figcaption></figure>
 </div>

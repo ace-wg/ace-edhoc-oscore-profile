@@ -218,12 +218,12 @@ Table of Contents
    Section 3.3), which ACE requires if CoAP is used (see Section 5 of
    [RFC9200]) and recommends otherwise (see Section 3 of [RFC9200]).
 
-   An authentication credential can be a raw public key, e.g., encoded
-   as a CBOR Web Token (CWT) or a CWT Claims Set (CCS) [RFC8392]; or a
-   public key certificate, e.g., an X.509 certificate [RFC5280] or a
-   CBOR-encoded C509 certificate [I-D.ietf-cose-cbor-encoded-cert]); or
-   a different type of data structure containing the public key of the
-   peer in question.
+   An authentication credential can be a CWT; a raw public key, e.g.,
+   encoded as a CWT Claims Set (CCS) [RFC8392]; or a public key
+   certificate, e.g., an X.509 certificate [RFC5280] or a CBOR-encoded
+   C509 certificate [I-D.ietf-cose-cbor-encoded-cert]); or a different
+   type of data structure containing the public key of the peer in
+   question.
 
    The ACE framework establishes what those authentication credentials
    are, and may transport the actual authentication credentials by value

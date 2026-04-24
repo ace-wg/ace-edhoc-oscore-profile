@@ -587,7 +587,7 @@ Table of Contents
    AS MUST verify that the received "session_id" identifies a token
    series to which a still valid access token belongs, such that the
    access token is issued for C and for the audience specified by the
-   "audience" parameter of the POST Request, if present therein, or for
+   "audience" parameter of the POST request, if present therein, or for
    the default audience associated with C otherwise.  If that is not the
    case, the Client-to-AS request MUST be declined with the error code
    "invalid_request" as defined in Section 5.8.3 of [RFC9200].
@@ -1273,14 +1273,15 @@ Table of Contents
       token of a token series, but not for the update of access rights
       (see Section 4.6).
 
-      Example: Assuming IANA label 26, used as a critical label
-      (negative), and an access_token = h'8343a1010aa2044c53...0f6a'
-      (partly omitted for brevity):
+      Example: assuming ead_label 24 and the value of the "access_token"
+      field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic
+      notation, elided for brevity), the critical EAD item is as
+      follows:
 
-      -  EAD_ACCESS_TOKEN = (-26, h'8343a1010aa2044c53...0f6a')
+      -  EAD_ACCESS_TOKEN = (-24, h'8343a1010aa2044c53...0f6a')
 
-      Editor's note: Replace IANA label with TBD value registered for
-      ACE-OAuth Access Token in Section 13.8.
+      Editor's note: Replace the ead_label above with the TBD value
+      registered for ACE-OAuth Access Token in Section 13.8.
 
    *  EAD_SESSION_ID = (ead_label, ead_value), where:
 
@@ -1305,13 +1306,14 @@ Table of Contents
       provisioned to RS and is valid, but there is a need to establish a
       (new) OSCORE Security Context between C and RS through EDHOC.
 
-      Example: Assuming IANA label 5, used as a critical label
-      (negative), and session_id = h'1645'
+      Example: assuming ead_label 2 and the value of the "session_id"
+      field equal to h'1645' (in CBOR diagnostic notation), the critical
+      EAD item is as follows:
 
-      -  EAD_SESSION_ID = (-5, h'1645')
+      -  EAD_SESSION_ID = (-2, h'1645')
 
-      Editor's note: Replace IANA label with TBD value for Session ID
-      registered in Section 13.8.
+      Editor's note: Replace the ead_label above with the TBD value
+      registered for Session ID in Section 13.8.
 
 4.2.  EDHOC Session
 
@@ -1863,9 +1865,9 @@ Table of Contents
    *  The message payload SHOULD NOT include the "scope" parameter,
       unless its value cannot contribute to expose the identity of RS.
 
-   AS Request Creation Hints may also be requested and retrieved through
-   a new EAD item defined here, see Figure 9, Section 13.8, and an
-   example of its usage in Appendix A.3.
+   AS Request Creation Hints can also be requested and retrieved through
+   a new EAD item EAD_REQUEST_CREATION_HINTS defined here, see Figure 9,
+   Section 13.8, and an example of its usage in Appendix A.3.
 
    ead_request_creation_hints = (
      ead_label : e'ead_request_creation_hints_label',
@@ -1878,17 +1880,17 @@ Table of Contents
    The AS_request_creation_hints is a CBOR map with keys defined in the
    IANA registry "ACE Authorization Server Request Creation Hints".
 
-   Example: Assuming IANA label 2, used as a non-critical label
-   (positive), and a AS_request_creation_hints map containing one CBOR
-   text string "coap://www.example.com/token" with key 1 (the absolute
-   URI of the /token endpoint at the AS):
+   Example: assuming ead_label 1 and an AS_request_creation_hints map
+   containing one CBOR text string "coap://www.example.com/token" with
+   key 1 (the absolute URI of the /token endpoint at the AS), the non-
+   critical EAD item is as follows::
 
-   *  EAD_REQUEST_CREATION_HINTS = (2,
+   *  EAD_REQUEST_CREATION_HINTS = (1,
       h'A101781C636F61703A2F2F7777772E6578616D706C
       652E636F6D2F746F6B656E')
 
-   Editor's note: Replace IANA label with TBD value registered for
-   EAD_REQUEST_CREATION_HINTS in Section 13.8.
+   Editor's note: Replace the ead_label above with the TBD value
+   registered for EAD_REQUEST_CREATION_HINTS in Section 13.8.
 
    This EAD item is intended to be used in EAD fields of EDHOC messages
    exchanged between C and RS: in the forward message flow in EAD_1 and
@@ -1952,13 +1954,13 @@ Table of Contents
    EAD item is non-critical, i.e., it can be ignored by the receiving
    peer.  It is OPTIONAL to implement.
 
-   Example: Assuming IANA label 15, used as a non-critical label
-   (positive), and considering that this EAD item has no ead_value:
+   Example: assuming ead_label 15 and considering that this EAD item has
+   no ead_value, the non-critical EAD item is as follows:
 
    *  EAD_CRED_BY_VALUE = (15, h'')
 
-   Editor's note: Replace IANA label with TBD value registered for
-   EAD_CRED_BY_VALUE in Section 13.8.
+   Editor's note: Replace the ead_label above with the TBD value
+   registered for EAD_CRED_BY_VALUE in Section 13.8.
 
    In the EDHOC reverse message flow this EAD item can be applied for
    better control of the use of credential by value.  Note that in the

@@ -1781,7 +1781,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-3.1-14">The identifier "session_id" is assigned by AS as discussed in <a href="#token-series" class="auto internal xref">Section 3.2</a>, and identifies an ongoing token series associated with the pair (AUTH_CRED_C, AUTH_CRED_RS). That is, previous access tokens in that series were issued by AS to C, as bound to AUTH_CRED_C and intended for RS as identified by AUTH_CRED_RS.<a href="#section-3.1-14" class="pilcrow">¶</a></p>
 <p id="section-3.1-15">Note that the same "session_id" value might identify multiple ongoing token series, e.g., if those are associated with the same client but different resource servers. In this case, AS can use the "session_id" value together with other information such as the targeted audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.1" class="relref">Section 5.8.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>) and the authenticated identity of C, in order to determine the exact token series to which the new requested access token has to be added.<a href="#section-3.1-15" class="pilcrow">¶</a></p>
 <p id="section-3.1-16">The "audience" parameter <span class="bcp14">MUST</span> be included in the POST request, if it was included in the POST request that C previously sent to AS for requesting the first access token in the token series to which the new requested access token has to be added. If the "audience" parameter is included in the present POST request, its value <span class="bcp14">MUST</span> be the same value of the "audience" parameter in that previous POST request.<a href="#section-3.1-16" class="pilcrow">¶</a></p>
-<p id="section-3.1-17">AS <span class="bcp14">MUST</span> verify that the received "session_id" identifies a token series to which a still valid access token belongs, such that the access token is issued for C and for the audience specified by the "audience" parameter of the POST Request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request <span class="bcp14">MUST</span> be declined with the error code "invalid_request" as defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-3.1-17" class="pilcrow">¶</a></p>
+<p id="section-3.1-17">AS <span class="bcp14">MUST</span> verify that the received "session_id" identifies a token series to which a still valid access token belongs, such that the access token is issued for C and for the audience specified by the "audience" parameter of the POST request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request <span class="bcp14">MUST</span> be declined with the error code "invalid_request" as defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-3.1-17" class="pilcrow">¶</a></p>
 <span id="name-example-of-c-to-as-post-toke"></span><div id="token-request-update">
 <figure id="figure-4">
           <div class="alignLeft art-text artwork" id="section-3.1-18.1">
@@ -2291,7 +2291,7 @@ trust_anchors_inner_entry_value = any
 <p id="section-4.1-1">This document defines EAD items (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) for transporting an access token or a session identifier in EDHOC.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-2.1">
-            <p id="section-4.1-2.1.1">EAD_ACCESS_TOKEN  = (ead_label, ead_value), where:<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-2.1.1">EAD_ACCESS_TOKEN = (ead_label, ead_value), where:<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-2.1.2.1">
                 <p id="section-4.1-2.1.2.1.1">ead_label is the integer value TBD registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>.<a href="#section-4.1-2.1.2.1.1" class="pilcrow">¶</a></p>
@@ -2305,17 +2305,17 @@ This EAD item is critical, i.e., it is used only with the negative value of its 
 <p id="section-4.1-2.1.4">
 EAD_ACCESS_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights (see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.6</a>).<a href="#section-4.1-2.1.4" class="pilcrow">¶</a></p>
 <p id="section-4.1-2.1.5">
-Example: Assuming IANA label 26, used as a critical label (negative), and an access_token = h'8343a1010aa2044c53...0f6a' (partly omitted for brevity):<a href="#section-4.1-2.1.5" class="pilcrow">¶</a></p>
+Example: assuming ead_label 24 and the value of the "access_token" field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic notation, elided for brevity), the critical EAD item is as follows:<a href="#section-4.1-2.1.5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-2.1.6.1">
-                <p id="section-4.1-2.1.6.1.1">EAD_ACCESS_TOKEN = (-26, h'8343a1010aa2044c53...0f6a')<a href="#section-4.1-2.1.6.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-2.1.6.1.1">EAD_ACCESS_TOKEN = (-24, h'8343a1010aa2044c53...0f6a')<a href="#section-4.1-2.1.6.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-4.1-2.1.7">
-Editor's note: Replace IANA label with TBD value registered for ACE-OAuth Access Token in <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>.<a href="#section-4.1-2.1.7" class="pilcrow">¶</a></p>
+Editor's note: Replace the ead_label above with the TBD value registered for ACE-OAuth Access Token in <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>.<a href="#section-4.1-2.1.7" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.1-2.2">
-            <p id="section-4.1-2.2.1">EAD_SESSION_ID  = (ead_label, ead_value), where:<a href="#section-4.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.1-2.2.1">EAD_SESSION_ID = (ead_label, ead_value), where:<a href="#section-4.1-2.2.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-2.2.2.1">
                 <p id="section-4.1-2.2.2.1.1">ead_label is the integer value TBD registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>.<a href="#section-4.1-2.2.2.1.1" class="pilcrow">¶</a></p>
@@ -2329,14 +2329,14 @@ This EAD item is critical, i.e., it is used only with the negative value of its 
 <p id="section-4.1-2.2.4">
 EAD_SESSION_ID is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.<a href="#section-4.1-2.2.4" class="pilcrow">¶</a></p>
 <p id="section-4.1-2.2.5">
-Example: Assuming IANA label 5, used as a critical label (negative), and session_id =  h'1645'<a href="#section-4.1-2.2.5" class="pilcrow">¶</a></p>
+Example: assuming ead_label 2 and the value of the "session_id" field equal to h'1645' (in CBOR diagnostic notation), the critical EAD item is as follows:<a href="#section-4.1-2.2.5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.1-2.2.6.1">
-                <p id="section-4.1-2.2.6.1.1">EAD_SESSION_ID = (-5, h'1645')<a href="#section-4.1-2.2.6.1.1" class="pilcrow">¶</a></p>
+                <p id="section-4.1-2.2.6.1.1">EAD_SESSION_ID = (-2, h'1645')<a href="#section-4.1-2.2.6.1.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 <p id="section-4.1-2.2.7">
-Editor's note: Replace IANA label with TBD value for Session ID registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>.<a href="#section-4.1-2.2.7" class="pilcrow">¶</a></p>
+Editor's note: Replace the ead_label above with the TBD value registered for Session ID in <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>.<a href="#section-4.1-2.2.7" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2685,7 +2685,7 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
             <p id="section-4.13-6.2.1">The message payload <span class="bcp14">SHOULD NOT</span> include the "scope" parameter, unless its value cannot contribute to expose the identity of RS.<a href="#section-4.13-6.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.13-7">AS Request Creation Hints may also be requested and retrieved through a new EAD item defined here, see <a href="#fig-ead-rch" class="auto internal xref">Figure 9</a>, <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>, and an example of its usage in <a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a>.<a href="#section-4.13-7" class="pilcrow">¶</a></p>
+<p id="section-4.13-7">AS Request Creation Hints can also be requested and retrieved through a new EAD item EAD_REQUEST_CREATION_HINTS defined here, see <a href="#fig-ead-rch" class="auto internal xref">Figure 9</a>, <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>, and an example of its usage in <a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a>.<a href="#section-4.13-7" class="pilcrow">¶</a></p>
 <span id="name-ead-item-ead_request_creati"></span><div id="fig-ead-rch">
 <figure id="figure-9">
           <div class="lang-cddl sourcecode" id="section-4.13-8.1">
@@ -2702,14 +2702,14 @@ AS_request_creation_hints = map
           </figcaption></figure>
 </div>
 <p id="section-4.13-9">The AS_request_creation_hints is a CBOR map with keys defined in the IANA registry "ACE Authorization Server Request Creation Hints".<a href="#section-4.13-9" class="pilcrow">¶</a></p>
-<p id="section-4.13-10">Example: Assuming IANA label 2, used as a non-critical label (positive), and a AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS):<a href="#section-4.13-10" class="pilcrow">¶</a></p>
+<p id="section-4.13-10">Example: assuming ead_label 1 and an AS_request_creation_hints map containing one CBOR text string "coap://www.example.com/token" with key 1 (the absolute URI of the /token endpoint at the AS), the non-critical EAD item is as follows::<a href="#section-4.13-10" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.13-11.1">
-            <p id="section-4.13-11.1.1">EAD_REQUEST_CREATION_HINTS = (2, h'A101781C636F61703A2F2F7777772E6578616D706C
+            <p id="section-4.13-11.1.1">EAD_REQUEST_CREATION_HINTS = (1, h'A101781C636F61703A2F2F7777772E6578616D706C
                              652E636F6D2F746F6B656E')<a href="#section-4.13-11.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.13-12">Editor's note: Replace IANA label with TBD value registered for EAD_REQUEST_CREATION_HINTS in <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>.<a href="#section-4.13-12" class="pilcrow">¶</a></p>
+<p id="section-4.13-12">Editor's note: Replace the ead_label above with the TBD value registered for EAD_REQUEST_CREATION_HINTS in <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>.<a href="#section-4.13-12" class="pilcrow">¶</a></p>
 <p id="section-4.13-13">This EAD item is intended to be used in EAD fields of EDHOC messages exchanged between C and RS: in the forward message flow in EAD_1 and EAD_2, and in the reverse message flow in EAD_2 and EAD_3. In the first EDHOC message from C to RS, an EAD item with ead_label = TBD with no ead_value asks the RS to include in the next EDHOC message the same EAD item with ead_value encoding the AS_request_creation_hints map. This EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.13-13" class="pilcrow">¶</a></p>
 <p id="section-4.13-14">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS_request_creation_hints map <span class="bcp14">MUST NOT</span> include "audience" and <span class="bcp14">SHOULD NOT</span> include "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-14" class="pilcrow">¶</a></p>
 </section>
@@ -2737,13 +2737,13 @@ ead_credential_by_value = (
           </figcaption></figure>
 </div>
 <p id="section-4.14-6">This EAD item has no ead_value. When present in EAD_1, it requests the Responder's authentication credential by value in ID_CRED_R of message_2. When present in EAD_2, it requests the Initiator's authentication credential by value in ID_CRED_I of message_3. The EAD item is non-critical, i.e., it can be ignored by the receiving peer. It is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.14-6" class="pilcrow">¶</a></p>
-<p id="section-4.14-7">Example: Assuming IANA label 15, used as a non-critical label (positive), and considering that this EAD item has no ead_value:<a href="#section-4.14-7" class="pilcrow">¶</a></p>
+<p id="section-4.14-7">Example: assuming ead_label 15 and considering that this EAD item has no ead_value, the non-critical EAD item is as follows:<a href="#section-4.14-7" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.14-8.1">
             <p id="section-4.14-8.1.1">EAD_CRED_BY_VALUE = (15, h'')<a href="#section-4.14-8.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.14-9">Editor's note: Replace IANA label with TBD value registered for EAD_CRED_BY_VALUE in <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>.<a href="#section-4.14-9" class="pilcrow">¶</a></p>
+<p id="section-4.14-9">Editor's note: Replace the ead_label above with the TBD value registered for EAD_CRED_BY_VALUE in <a href="#iana-edhoc-ead" class="auto internal xref">Section 13.8</a>.<a href="#section-4.14-9" class="pilcrow">¶</a></p>
 <p id="section-4.14-10">In the EDHOC reverse message flow this EAD item can be applied for better control of the use of credential by value. Note that in the reverse flow both C and RS may recover from error code 3, but at the cost of more round trips which can be avoided by using the EAD item.<a href="#section-4.14-10" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.14-11.1">

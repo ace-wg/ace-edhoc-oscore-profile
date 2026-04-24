@@ -2449,7 +2449,9 @@ Table of Contents
 14.1.  ACE Profiles Registry
 
    IANA is asked to add the following entry to the "ACE Profiles"
-   registry, following the procedure specified in [RFC9200].
+   registry [ACE.Profiles] within the "Authentication and Authorization
+   for Constrained Environments (ACE)" registry group, following the
+   procedure specified in [RFC9200].
 
    *  Name: coap_edhoc_oscore
 
@@ -2466,7 +2468,8 @@ Table of Contents
 14.2.  OAuth Parameters Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters"
-   registry.
+   registry [OAuth.Parameters] within the "OAuth Parameters" registry
+   group.
 
    *  Name: edhoc_info
 
@@ -2479,8 +2482,9 @@ Table of Contents
 14.3.  OAuth Parameters CBOR Mappings Registry
 
    IANA is asked to add the following entry to the "OAuth Parameters
-   CBOR Mappings" registry, following the procedure specified in
-   [RFC9200].
+   CBOR Mappings" registry [OAuth.Parameters.CBOR.Mappings] within the
+   "Authentication and Authorization for Constrained Environments (ACE)"
+   registry group, following the procedure specified in [RFC9200].
 
    *  Name: edhoc_info
 
@@ -2494,8 +2498,10 @@ Table of Contents
 
 14.4.  JSON Web Token Claims Registry
 
-   IANA is asked to add the following entries to the "JSON Web Token
-   Claims" registry, following the procedure specified in [RFC7519].
+   IANA is asked to add the following entry to the "JSON Web Token
+   Claims" registry [JSON.Web.Token.Claims] within the "JSON Web Token
+   (JWT)" registry group, following the procedure specified in
+   [RFC7519].
 
    *  Claim Name: edhoc_info
 
@@ -2507,8 +2513,9 @@ Table of Contents
 
 14.5.  CBOR Web Token (CWT) Claims Registry
 
-   IANA is asked to add the following entries to the "CBOR Web Token
-   (CWT) Claims" registry, following the procedure specified in
+   IANA is asked to add the following entry to the "CBOR Web Token (CWT)
+   Claims" registry [CWT.Claims] within the "CBOR Web Token (CWT)
+   Claims" registry group, following the procedure specified in
    [RFC8392].
 
    *  Claim Name: edhoc_info
@@ -2528,7 +2535,9 @@ Table of Contents
 14.6.  JWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "JWT Confirmation
-   Methods" registry, following the procedure specified in [RFC7800].
+   Methods" registry [JWT.Confirmation.Methods] within the "JSON Web
+   Token (JWT)" registry group, following the procedure specified in
+   [RFC7800].
 
    *  Confirmation Method Value: x5c
 
@@ -2639,7 +2648,9 @@ Table of Contents
 14.7.  CWT Confirmation Methods Registry
 
    IANA is asked to add the following entries to the "CWT Confirmation
-   Methods" registry, following the procedure specified in [RFC8747].
+   Methods" registry [CWT.Confirmation.Methods] within the "CBOR Web
+   Token (CWT) Claims" registry group, following the procedure specified
+   in [RFC8747].
 
    *  Confirmation Method Name: x5chain
 
@@ -2810,7 +2821,9 @@ Table of Contents
 14.8.  EDHOC External Authorization Data Registry
 
    IANA is asked to add the following entries to the "EDHOC External
-   Authorization Data" registry defined in Section 10.5 of [RFC9528].
+   Authorization Data" registry [EDHOC.External.Authorization.Data]
+   within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry
+   group.
 
    *  Name: ACE-OAuth Access Token
 
@@ -2855,8 +2868,8 @@ Table of Contents
 14.9.  EDHOC Exporter Labels
 
    IANA is asked to register the following entries in the "EDHOC
-   Exporter Labels" registry, within the "Ephemeral Diffie-Hellman Over
-   COSE (EDHOC)" registry group.
+   Exporter Labels" registry [EDHOC.Exporter.Labels] within the
+   "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group.
 
    *  Label: 26 (suggested value)
 
@@ -3090,6 +3103,11 @@ Table of Contents
 
 15.1.  Normative References
 
+   [ACE.Profiles]
+              IANA, "ACE Profiles",
+              <https://www.iana.org/assignments/ace/ace.xhtml#ace-
+              profiles>.
+
    [ACE.Request.Creation.Hints]
               IANA, "ACE Authorization Server Request Creation Hints",
               <https://www.iana.org/assignments/ace/ace.xhtml#ace-
@@ -3099,6 +3117,26 @@ Table of Contents
               IANA, "COSE Header Parameters",
               <https://www.iana.org/assignments/cose/cose.xhtml#header-
               parameters>.
+
+   [CWT.Claims]
+              IANA, "CBOR Web Token (CWT) Claims",
+              <https://www.iana.org/assignments/cwt/cwt.xhtml#claims-
+              registry>.
+
+   [CWT.Confirmation.Methods]
+              IANA, "CWT Confirmation Methods",
+              <https://www.iana.org/assignments/cwt/
+              cwt.xhtml#confirmation-methods>.
+
+   [EDHOC.Exporter.Labels]
+              IANA, "EDHOC Exporter Labels",
+              <https://www.iana.org/assignments/edhoc/edhoc.xhtml#edhoc-
+              exporter-labels>.
+
+   [EDHOC.External.Authorization.Data]
+              IANA, "EDHOC External Authorization Data",
+              <https://www.iana.org/assignments/edhoc/edhoc.xhtml#edhoc-
+              ead>.
 
    [I-D.ietf-ace-coap-pubsub-profile]
               Palombini, F., Sengul, C., and M. Tiloca, "CoAP Publish-
@@ -3131,6 +3169,25 @@ Table of Contents
               draft-ietf-cose-cbor-encoded-cert-18, 22 April 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
               cbor-encoded-cert-18>.
+
+   [JSON.Web.Token.Claims]
+              IANA, "JSON Web Token Claims",
+              <https://www.iana.org/assignments/jwt/jwt.xhtml#claims>.
+
+   [JWT.Confirmation.Methods]
+              IANA, "JWT Confirmation Methods",
+              <https://www.iana.org/assignments/jwt/
+              jwt.xhtml#confirmation-methods>.
+
+   [OAuth.Parameters]
+              IANA, "OAuth Parameters",
+              <https://www.iana.org/assignments/oauth-parameters/oauth-
+              parameters.xhtml#parameters>.
+
+   [OAuth.Parameters.CBOR.Mappings]
+              IANA, "OAuth Parameters CBOR Mappings",
+              <https://www.iana.org/assignments/ace/ace.xhtml#oauth-
+              parameters-cbor-mappings>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -4084,6 +4141,8 @@ D.1.  Version -10 to -11
    *  Added figure with message flow for Non-sequential Workflow.
 
    *  Improved notation and details in examples of message exchanges.
+
+   *  Added references to IANA registries.
 
    *  Editorial improvements.
 

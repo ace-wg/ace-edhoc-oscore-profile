@@ -2146,11 +2146,15 @@ x5u_ta_type = 35
 
 ## Version -10 to -11 ## {#sec-10-11}
 
-* Added figure with message flow for Non-sequential Workflow.
-
 * Clarify instructions on when to include audience when C performs update of access rights.
 
+* Revised normative language when using AS Request Creation Hints.
+
+* Revised format/style of definition of EAD items.
+
 * Added the "Operational Considerations" section.
+
+* Added figure with message flow for Non-sequential Workflow.
 
 * Editorial improvements.
 

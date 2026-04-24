@@ -86,6 +86,60 @@ normative:
     date: false
     title: ACE Authorization Server Request Creation Hints
     target: https://www.iana.org/assignments/ace/ace.xhtml#ace-authorization-server-request-creation-hints
+  ACE.Profiles:
+    author:
+      org: IANA
+    date: false
+    title: ACE Profiles
+    target: https://www.iana.org/assignments/ace/ace.xhtml#ace-profiles
+  OAuth.Parameters:
+    author:
+      org: IANA
+    date: false
+    title: OAuth Parameters
+    target: https://www.iana.org/assignments/oauth-parameters/oauth-parameters.xhtml#parameters
+  OAuth.Parameters.CBOR.Mappings:
+    author:
+      org: IANA
+    date: false
+    title: OAuth Parameters CBOR Mappings
+    target: https://www.iana.org/assignments/ace/ace.xhtml#oauth-parameters-cbor-mappings
+  JSON.Web.Token.Claims:
+    author:
+      org: IANA
+    date: false
+    title: JSON Web Token Claims
+    target: https://www.iana.org/assignments/jwt/jwt.xhtml#claims
+  CWT.Claims:
+    author:
+      org: IANA
+    date: false
+    title: CBOR Web Token (CWT) Claims
+    target: https://www.iana.org/assignments/cwt/cwt.xhtml#claims-registry
+  JWT.Confirmation.Methods:
+    author:
+      org: IANA
+    date: false
+    title: JWT Confirmation Methods
+    target: https://www.iana.org/assignments/jwt/jwt.xhtml#confirmation-methods
+  CWT.Confirmation.Methods:
+    author:
+      org: IANA
+    date: false
+    title: CWT Confirmation Methods
+    target: https://www.iana.org/assignments/cwt/cwt.xhtml#confirmation-methods
+  EDHOC.External.Authorization.Data:
+    author:
+      org: IANA
+    date: false
+    title: EDHOC External Authorization Data
+    target: https://www.iana.org/assignments/edhoc/edhoc.xhtml#edhoc-ead
+  EDHOC.Exporter.Labels:
+    author:
+      org: IANA
+    date: false
+    title: EDHOC Exporter Labels
+    target: https://www.iana.org/assignments/edhoc/edhoc.xhtml#edhoc-exporter-labels
 
 informative:
   RFC4949:
@@ -1208,7 +1262,7 @@ Note to RFC Editor: Please replace all occurrences of "{{&SELF}}" with the RFC n
 
 ## ACE Profiles Registry ## {#iana-ace-oauth-profile}
 
-IANA is asked to add the following entry to the "ACE Profiles" registry, following the procedure specified in {{RFC9200}}.
+IANA is asked to add the following entry to the "ACE Profiles" registry {{ACE.Profiles}} within the "Authentication and Authorization for Constrained Environments (ACE)" registry group, following the procedure specified in {{RFC9200}}.
 
 * Name: coap_edhoc_oscore
 * Description: Profile for delegating client authentication and authorization in a constrained environment by establishing an OSCORE Security Context {{RFC8613}} between resource-constrained nodes, through the execution of the lightweight authenticated key exchange protocol EDHOC {{RFC9528}}.
@@ -1217,7 +1271,7 @@ IANA is asked to add the following entry to the "ACE Profiles" registry, followi
 
 ## OAuth Parameters Registry ## {#iana-oauth-params}
 
-IANA is asked to add the following entry to the "OAuth Parameters" registry.
+IANA is asked to add the following entry to the "OAuth Parameters" registry {{OAuth.Parameters}} within the "OAuth Parameters" registry group.
 
 * Name: edhoc_info
 * Parameter Usage Location: token request and token response
@@ -1226,7 +1280,7 @@ IANA is asked to add the following entry to the "OAuth Parameters" registry.
 
 ## OAuth Parameters CBOR Mappings Registry ## {#iana-oauth-cbor-mappings}
 
-IANA is asked to add the following entry to the "OAuth Parameters CBOR Mappings" registry, following the procedure specified in {{RFC9200}}.
+IANA is asked to add the following entry to the "OAuth Parameters CBOR Mappings" registry {{OAuth.Parameters.CBOR.Mappings}} within the "Authentication and Authorization for Constrained Environments (ACE)" registry group, following the procedure specified in {{RFC9200}}.
 
 * Name: edhoc_info
 * CBOR Key: TBD (value between 1 and 255)
@@ -1236,7 +1290,7 @@ IANA is asked to add the following entry to the "OAuth Parameters CBOR Mappings"
 
 ## JSON Web Token Claims Registry ## {#iana-token-json-claims}
 
-IANA is asked to add the following entries to the "JSON Web Token Claims" registry, following the procedure specified in {{RFC7519}}.
+IANA is asked to add the following entry to the "JSON Web Token Claims" registry {{JSON.Web.Token.Claims}} within the "JSON Web Token (JWT)" registry group, following the procedure specified in {{RFC7519}}.
 
 * Claim Name: edhoc_info
 * Claim Description: Information for EDHOC session
@@ -1245,7 +1299,7 @@ IANA is asked to add the following entries to the "JSON Web Token Claims" regist
 
 ## CBOR Web Token (CWT) Claims Registry ## {#iana-token-cwt-claims}
 
-IANA is asked to add the following entries to the "CBOR Web Token (CWT) Claims" registry, following the procedure specified in {{RFC8392}}.
+IANA is asked to add the following entry to the "CBOR Web Token (CWT) Claims" registry {{CWT.Claims}} within the "CBOR Web Token (CWT) Claims" registry group, following the procedure specified in {{RFC8392}}.
 
 * Claim Name: edhoc_info
 * Claim Description: Information for EDHOC session
@@ -1257,7 +1311,7 @@ IANA is asked to add the following entries to the "CBOR Web Token (CWT) Claims" 
 
 ## JWT Confirmation Methods Registry ## {#iana-jwt-confirmation-methods}
 
-IANA is asked to add the following entries to the "JWT Confirmation Methods" registry, following the procedure specified in {{RFC7800}}.
+IANA is asked to add the following entries to the "JWT Confirmation Methods" registry {{JWT.Confirmation.Methods}} within the "JSON Web Token (JWT)" registry group, following the procedure specified in {{RFC7800}}.
 
 * Confirmation Method Value: x5c
 * Confirmation Method Description: An ordered chain of X.509 certificates
@@ -1329,7 +1383,7 @@ IANA is asked to add the following entries to the "JWT Confirmation Methods" reg
 
 ## CWT Confirmation Methods Registry ## {#iana-cwt-confirmation-methods}
 
-IANA is asked to add the following entries to the "CWT Confirmation Methods" registry, following the procedure specified in {{RFC8747}}.
+IANA is asked to add the following entries to the "CWT Confirmation Methods" registry {{CWT.Confirmation.Methods}} within the "CBOR Web Token (CWT) Claims" registry group, following the procedure specified in {{RFC8747}}.
 
 * Confirmation Method Name: x5chain
 * Confirmation Method Description: An ordered chain of X.509 certificates
@@ -1431,7 +1485,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 
 ## EDHOC External Authorization Data Registry # {#iana-edhoc-ead}
 
-IANA is asked to add the following entries to the "EDHOC External Authorization Data" registry defined in {{Section 10.5 of RFC9528}}.
+IANA is asked to add the following entries to the "EDHOC External Authorization Data" registry {{EDHOC.External.Authorization.Data}} within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group.
 
 * Name: ACE-OAuth Access Token
 * Label: TBD (value between 24 and 255)
@@ -1461,7 +1515,7 @@ IANA is asked to add the following entries to the "EDHOC External Authorization 
 
 ## EDHOC Exporter Labels # {#iana-edhoc-exporter-labels}
 
-IANA is asked to register the following entries in the "EDHOC Exporter Labels" registry, within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group.
+IANA is asked to register the following entries in the "EDHOC Exporter Labels" registry {{EDHOC.Exporter.Labels}} within the "Ephemeral Diffie-Hellman Over COSE (EDHOC)" registry group.
 
 * Label: 26 (suggested value)
 
@@ -2178,6 +2232,8 @@ x5u_ta_type = 35
 * Added figure with message flow for Non-sequential Workflow.
 
 * Improved notation and details in examples of message exchanges.
+
+* Added references to IANA registries.
 
 * Editorial improvements.
 

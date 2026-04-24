@@ -657,7 +657,7 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   EAD\_ACCESS\_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights (see {{update-access-rights-c-rs}}).
 
-  Example: assuming ead\_label 24 and the value of the "access\_token" field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic notation, elided for brevity), the critical EAD item is as follows:
+  Example: assuming ead\_label 24 and the value of the "access\_token" field equal to h'8343a1010aa2044c53...0f6a' (elided for brevity), the critical EAD item is as follows:
 
   ~~~~~~~~~~~ cbor-diag
   -24, h'8343a1010aa2044c53...0f6a'
@@ -686,7 +686,7 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   EAD\_SESSION\_ID is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.
 
-  Example: assuming ead\_label 2 and the value of the "session\_id" field equal to h'1645' (in CBOR diagnostic notation), the critical EAD item is as follows:
+  Example: assuming ead\_label 2 and the value of the "session\_id" field equal to h'1645', the critical EAD item is as follows:
 
   ~~~~~~~~~~~ cbor-diag
   -2, h'1645'

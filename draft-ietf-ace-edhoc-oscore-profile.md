@@ -1235,6 +1235,10 @@ To allow the RS and C to distinguish between which authentication credential to 
 
 When C requests an access token from the AS, it specifies an audience corresponding to an RS authentication credential that is compatible with C's authentication credential included in the Access Token Request. This means that prior to requesting an access token, C must determine the which EDHOC ciphersuites and methods the RS supports and the corresponding audience values. Discovery of RS capabilities can be achieved through pre-configuration or mechanisms defined in {{I-D.ietf-lake-app-profiles}}. Determination of audience values can be achieved through pre-configuration.
 
+## Keeping Knowledge About C and RS up-to-date at the AS
+
+In this profile the EDHOC_Information object is built by the AS as intended to guide two peers towards executing the EDHOC protocol. Note that when the AS builds an EDHOC_Information object intended for a C or an RS, it must specify information in that object which is aligned with the capabilities of that C and RS (to the best of its knowledge). In practice this means that it is important that the information that the AS has about C and RS is kept up-to-date to reflect what C and RS supports as EDHOC peers. Means to achieve this are out of scope.
+
 # Security Considerations
 
 This document specifies a profile for the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}. Thus, the general security considerations from the ACE framework also apply to this profile.
@@ -2245,6 +2249,8 @@ x5u_ta_type = 35
 * Added the "Operational Considerations" section.
 
   * RS belonging to multiple audiences with different credentials.
+
+  * Keeping knowledge about C and RS up-to-date at the AS.
 
 * Added figure with message flow for Non-sequential Workflow.
 

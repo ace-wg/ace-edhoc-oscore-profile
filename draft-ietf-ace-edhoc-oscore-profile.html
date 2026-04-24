@@ -2325,7 +2325,7 @@ This EAD item is critical, i.e., it is used only with the negative value of its 
 <p id="section-4.1-2.1.6">
 EAD_ACCESS_TOKEN is used only when uploading the first access token of a token series, but not for the update of access rights (see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.6</a>).<a href="#section-4.1-2.1.6" class="pilcrow">¶</a></p>
 <p id="section-4.1-2.1.7">
-Example: assuming ead_label 24 and the value of the "access_token" field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic notation, elided for brevity), the critical EAD item is as follows:<a href="#section-4.1-2.1.7" class="pilcrow">¶</a></p>
+Example: assuming ead_label 24 and the value of the "access_token" field equal to h'8343a1010aa2044c53...0f6a' (elided for brevity), the critical EAD item is as follows:<a href="#section-4.1-2.1.7" class="pilcrow">¶</a></p>
 <div class="lang-cbor-diag sourcecode" id="section-4.1-2.1.8">
 <pre>
 -24, h'8343a1010aa2044c53...0f6a'
@@ -2366,7 +2366,7 @@ This EAD item is critical, i.e., it is used only with the negative value of its 
 <p id="section-4.1-2.2.6">
 EAD_SESSION_ID is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.<a href="#section-4.1-2.2.6" class="pilcrow">¶</a></p>
 <p id="section-4.1-2.2.7">
-Example: assuming ead_label 2 and the value of the "session_id" field equal to h'1645' (in CBOR diagnostic notation), the critical EAD item is as follows:<a href="#section-4.1-2.2.7" class="pilcrow">¶</a></p>
+Example: assuming ead_label 2 and the value of the "session_id" field equal to h'1645', the critical EAD item is as follows:<a href="#section-4.1-2.2.7" class="pilcrow">¶</a></p>
 <div class="lang-cbor-diag sourcecode" id="section-4.1-2.2.8">
 <pre>
 -2, h'1645'

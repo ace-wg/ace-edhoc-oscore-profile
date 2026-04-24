@@ -1285,9 +1285,8 @@ Table of Contents
       (see Section 4.6).
 
       Example: assuming ead_label 24 and the value of the "access_token"
-      field equal to h'8343a1010aa2044c53...0f6a' (in CBOR diagnostic
-      notation, elided for brevity), the critical EAD item is as
-      follows:
+      field equal to h'8343a1010aa2044c53...0f6a' (elided for brevity),
+      the critical EAD item is as follows:
 
       -24, h'8343a1010aa2044c53...0f6a'
 
@@ -1328,8 +1327,7 @@ Table of Contents
       (new) OSCORE Security Context between C and RS through EDHOC.
 
       Example: assuming ead_label 2 and the value of the "session_id"
-      field equal to h'1645' (in CBOR diagnostic notation), the critical
-      EAD item is as follows:
+      field equal to h'1645', the critical EAD item is as follows:
 
       -2, h'1645'
 

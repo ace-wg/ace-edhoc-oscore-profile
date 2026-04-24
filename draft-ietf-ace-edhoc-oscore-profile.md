@@ -978,7 +978,7 @@ Editor's note: Replace the ead\_label above with the TBD value registered for EA
 
 
 
-Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS_request_creation_hints map MUST NOT include "audience" and SHOULD NOT include "scope" when present in the EAD item conveyed in the EAD_2 field.
+Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS Request Creation Hints CBOR map MUST NOT include "audience" and SHOULD NOT include "scope" when present in the EAD item conveyed in the EAD_2 field.
 
 ## Requesting Authentication Credential By Value  {#auth-cred-by-value}
 

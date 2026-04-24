@@ -2758,7 +2758,7 @@ AS_request_creation_hints = map
 </pre><a href="#section-4.13-16" class="pilcrow">¶</a>
 </div>
 <p id="section-4.13-17">Editor's note: Replace the ead_label above with the TBD value registered for EAD_REQUEST_CREATION_HINTS in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.13-17" class="pilcrow">¶</a></p>
-<p id="section-4.13-18">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS_request_creation_hints map <span class="bcp14">MUST NOT</span> include "audience" and <span class="bcp14">SHOULD NOT</span> include "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-18" class="pilcrow">¶</a></p>
+<p id="section-4.13-18">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS Request Creation Hints CBOR map <span class="bcp14">MUST NOT</span> include "audience" and <span class="bcp14">SHOULD NOT</span> include "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-18" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="auth-cred-by-value">

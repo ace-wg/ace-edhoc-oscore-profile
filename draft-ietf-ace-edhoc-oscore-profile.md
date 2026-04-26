@@ -328,7 +328,7 @@ When receiving an access token request including the "req_cnf" parameter, AS che
 
 If this is not the case, AS retrieves AUTH_CRED_C, either using the "req_cnf" parameter or some other trusted source. After that, AS validates the actual AUTH_CRED_C.
 
-In either case, the AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for achieving proof of possession similar to that in {{Section 3.2 of I-D.ietf-ace-group-oscore-profile}}.
+In either case, AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for achieving proof of possession similar to that in {{Section 3.2 of I-D.ietf-ace-group-oscore-profile}}.
 
 In case of successful validations, AS stores AUTH_CRED_C as a valid authentication credential. Otherwise, the Client-to-AS request MUST be declined.
 
@@ -363,7 +363,7 @@ MT: Retrieving an access token based on the pair (session id, AUTH_CRED_C) happe
 
 Here on the AS, a series might be ongoing for (C, RS1) and another series might also be ongoing for (C, RS2). If C uses an authentication credential with RS1 and a different one with RS2, then both series can be legitimately identified by the same series id value, which thus might not sufficient to identify precisely one of C's authentication credentials. In practice, this is not an issue, since AS can rely on additional information such as audience.
 
-The text above has been revisited, also based on the revised safer criterion for assigning new sender IDs at the AS in the next subsection.
+The text above has been revisited, also based on the revised safer criterion for assigning new sender IDs at AS in the next subsection.
 -->
 
 The "audience" parameter MUST be included in the POST request, if it was included in the POST request that C previously sent to AS for requesting the first access token in the token series to which the new requested access token has to be added. If the "audience" parameter is included in the present POST request, its value MUST be the same value of the "audience" parameter in that previous POST request.
@@ -417,7 +417,7 @@ If the request from C was invalid or not authorized, AS returns an error respons
 
 AS can signal that the use of EDHOC and OSCORE as per this profile is REQUIRED for a specific access token, by including the "ace_profile" parameter with the value "coap_edhoc_oscore" in the access token response. This means that C MUST use EDHOC with RS and derive an OSCORE Security Context, as specified in {{edhoc-exec}}. After that, C MUST use the established OSCORE Security Context to protect communications with RS, when accessing protected resources at RS according to the authorization information indicated in the access token. Usually, it is assumed that constrained devices will be pre-configured with the necessary profile, so that this kind of profile signaling can be omitted.
 
- According to this document, the AS provides the access token to C, by specifying it in the "access\_token" parameter of the access token response. An alternative workflow where the access token is uploaded by AS directly to RS is described in {{I-D.ietf-ace-workflow-and-params}}.
+ According to this document, AS provides the access token to C, by specifying it in the "access\_token" parameter of the access token response. An alternative workflow where the access token is uploaded by AS directly to RS is described in {{I-D.ietf-ace-workflow-and-params}}.
 
 When issuing the first access token of a token series, AS MUST include the following data in the response to C.
 
@@ -1022,7 +1022,7 @@ In the first EDHOC message from RS to C, the EAD item has ead_value. In particul
 
 This EAD item is non-critical, i.e., it can be ignored by the receiving peer. The EAD item is OPTIONAL to implement.
 
-Example: assuming ead\_label 1 and the AS Request Creation Hints CBOR map containing one element with key 1 and with value the CBOR text string encoding "coap://www.example.com/token" (i.e., the absolute URI of the /token endpoint at the AS), the non-critical EAD item in the first EDHOC message from RS to C is as follows:
+Example: assuming ead\_label 1 and AS Request Creation Hints CBOR map containing one element with key 1 and with value the CBOR text string encoding "coap://www.example.com/token" (i.e., the absolute URI of the /token endpoint at the AS), the non-critical EAD item in the first EDHOC message from RS to C is as follows:
 
 ~~~~~~~~~~~ cbor-diag
 1, h'a101781c636f61703a2f2f7777772e6578616d706c652e636f6d2f746f6b656e'
@@ -1030,7 +1030,7 @@ Example: assuming ead\_label 1 and the AS Request Creation Hints CBOR map contai
 
 Editor's note: Replace the ead\_label above with the TBD value registered for Request Creation Hints in {{iana-edhoc-ead}}.
 
-Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS Request Creation Hints CBOR map MUST NOT include "audience" and SHOULD NOT include "scope" when present in the EAD item conveyed in the EAD_2 field.
+Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, AS Request Creation Hints CBOR map MUST NOT include "audience" and SHOULD NOT include "scope" when present in the EAD item conveyed in the EAD_2 field.
 
 ## Requesting Authentication Credential By Value  {#auth-cred-by-value}
 
@@ -1237,7 +1237,7 @@ When C requests an access token from AS (see {{c-as}}), it specifies an audience
 
 ## Keeping Knowledge About C and RS up-to-date at the AS
 
-In this profile the EDHOC_Information object is built by the AS as intended to guide two peers towards executing the EDHOC protocol. Note that when the AS builds an EDHOC_Information object intended for a C or an RS, it must specify information in that object which is aligned with the capabilities of that C and RS (to the best of its knowledge). In practice this means that it is important that the information that the AS has about C and RS is kept up-to-date to reflect what C and RS supports as EDHOC peers. Means to achieve this are out of scope.
+In this profile, the EDHOC_Information object is built by AS to guide C and RS towards executing the EDHOC protocol. Note that, when AS builds an EDHOC_Information object intended for C (included in the access token response) or RS (included in the access token), the object must specify information that is aligned with the capabilities of C and RS, to the best of AS' knowledge. In practice, this means that it is important that the information that AS has about C and RS is kept up-to-date, to reflect what C and RS supports as EDHOC peers. The means that AS uses to achieve this are out of scope for this document.QQQ
 
 # Security Considerations
 
@@ -2018,7 +2018,7 @@ The following describes an example scenario where this functionality is used in 
 
 3. C requests an access token for the right audience and scope from the right AS, based on pre-configured parameters on the client and the information from the EAD item Request Creation Hints within EDHOC message\_2, like if C had received a Request Creation Hints response.
 
-   C should already know the right audience and scope to specify in the access token request, as that information is not provided by RS in the EAD item Request Creation Hints within EDHOC message\_2 (see {{as-creation-hints}}). There may also be default audience and scope set at the AS to use, if none is specified by C in its access token request.
+   C should already know the right audience and scope to specify in the access token request, as that information is not provided by RS in the EAD item Request Creation Hints within EDHOC message\_2 (see {{as-creation-hints}}). There may also be default audience and scope set at AS to use, if none is specified by C in its access token request.
 
 4. C sends EDHOC message\_3 to RS, specifying the access token by means of the EAD item ACE-OAuth Access Token.
 
@@ -2250,7 +2250,7 @@ x5u_ta_type = 35
 
   * RS belonging to multiple audiences with different credentials.
 
-  * Keeping knowledge about C and RS up-to-date at the AS.
+  * Keeping knowledge about C and RS up-to-date at AS.
 
 * Added figure with message flow for Non-sequential Workflow.
 
@@ -2300,7 +2300,7 @@ x5u_ta_type = 35
 
 * New EAD item for requesting authentication credential by value.
 
-* Means for the AS to achieve proof of possession of C's private key.
+* Means for AS to achieve proof of possession of C's private key.
 
 * Editorial improvements.
 
@@ -2308,7 +2308,7 @@ x5u_ta_type = 35
 
 * Renamed id_ep_types as ep_id_types.
 
-* Revised rules for the AS to assign session ID values.
+* Revised rules for AS to assign session ID values.
 
 * Added explicit validation of AUTH_CRED_C at AS.
 

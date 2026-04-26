@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 26 October 2026                                       M. Tiloca
+Expires: 28 October 2026                                       M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                           24 April 2026
+                                                           26 April 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 October 2026.
+   This Internet-Draft will expire on 28 October 2026.
 
 Copyright Notice
 
@@ -146,7 +146,7 @@ Table of Contents
    10. EDHOC Trust Anchor Types
    11. Operational Considerations
      11.1.  RS Belonging to Multiple Audiences with Different
-            Credentials
+            Authentication Credentials
      11.2.  Keeping Knowledge About C and RS up-to-date at the AS
    12. Security Considerations
    13. Privacy Considerations
@@ -497,7 +497,7 @@ Table of Contents
    AUTH_CRED_C is specified in the "req_cnf" parameter [RFC9201] of the
    POST request, either transported by value or uniquely referred to.
    AS could explicitly ask C to provide its authentication credential
-   AUTH_CRED_C by value in the Access Token Request, e.g., by relying on
+   AUTH_CRED_C by value in the access token request, e.g., by relying on
    the method defined in [I-D.ietf-ace-workflow-and-params].
 
    For AUTH_CRED_C, its authentication credential type MUST be one of
@@ -517,7 +517,7 @@ Table of Contents
    NOT specify the confirmation method "COSE_Key" (CBOR abbreviation:
    1).
 
-   When receiving an Access Token request including the "req_cnf"
+   When receiving an access token request including the "req_cnf"
    parameter, AS checks whether it is already storing the authentication
    credential of C, namely AUTH_CRED_C, specified in "req_cnf" by value
    or reference.
@@ -714,8 +714,8 @@ Table of Contents
       AUTH_CRED_RS.  This is specified in the "rs_cnf" parameter defined
       in [RFC9201].  AUTH_CRED_RS can be transported by value or
       referred to by means of an appropriate identifier.  C could
-      explicitly ask AS to provide AUTH_CRED_RS by value in the Access
-      Token Response, e.g., by relying on the method defined in
+      explicitly ask AS to provide AUTH_CRED_RS by value in the access
+      token response, e.g., by relying on the method defined in
       [I-D.ietf-ace-workflow-and-params].
 
       When issuing the first access token ever to a pair (C, RS) using a
@@ -767,7 +767,7 @@ Table of Contents
            }
          }
 
-     Figure 5: Example of AS-to-C Access Token response with EDHOC and
+     Figure 5: Example of AS-to-C Access Token Response with EDHOC and
                               OSCORE profile.
 
 3.3.1.  Access Token
@@ -2346,37 +2346,39 @@ Table of Contents
    this section compiles additional operational considerations that hold
    for this document.
 
-11.1.  RS Belonging to Multiple Audiences with Different Credentials
+11.1.  RS Belonging to Multiple Audiences with Different Authentication
+       Credentials
 
-   An RS may support multiple EDHOC ciphersuites and methods.  In such
-   case it could happen that the RS has an authentication credential for
-   different supported combination of ciphersuite and method.
+   It is possible that RS supports multiple EDHOC cipher suites and
+   methods.  In such case, it could happen that RS has different
+   authentication credentials, each consistent with one or more
+   supported combinations of cipher suite and method.
 
-   For example, if an RS supports EDHOC ciphersuites 0 and 2, and
-   methods 0 and 3, the RS can have four authentication credentials:
+   For example, if RS supports EDHOC cipher suites 0 and 2 as well as
+   methods 0 and 3, RS can have four authentication credentials:
 
-   *  One credential using EdDSA with curve Ed25519 for method 0
+   *  One credential using EdDSA with curve Ed25519 for method 0.
 
-   *  One credential using ECDSA with curve P-256 for method 0
+   *  One credential using ECDSA with curve P-256 for method 0.
 
-   *  One credential using ECDSA with curve P-256 for method 3
+   *  One credential using ECDSA with curve P-256 for method 3.
 
-   *  One credential using X25519 for method 3
+   *  One credential using X25519 for method 3.
 
-   To allow the RS and C to distinguish between which authentication
-   credential to use, the RS should associate one audience with each
+   To allow RS and C to distinguish between which authentication
+   credential to use, RS should associate one audience with each
    authentication credential.  That is, RS should belong to one audience
    for each of its authentication credentials.
 
-   When C requests an access token from the AS, it specifies an audience
-   corresponding to an RS authentication credential that is compatible
-   with C's authentication credential included in the Access Token
-   Request.  This means that prior to requesting an access token, C must
-   determine the which EDHOC ciphersuites and methods the RS supports
-   and the corresponding audience values.  Discovery of RS capabilities
-   can be achieved through pre-configuration or mechanisms defined in
-   [I-D.ietf-lake-app-profiles].  Determination of audience values can
-   be achieved through pre-configuration.
+   When C requests an access token from AS (see Section 3.1), it
+   specifies an audience corresponding to an authentication credential
+   of RS that is compatible with the authentication credential of C
+   specified in the access token request.  This means that, prior to
+   requesting an access token, C has to determine which EDHOC cipher
+   suites and methods RS supports and the corresponding audience values.
+   The discovery of RS' capabilities can rely on pre-configuration or on
+   mechanisms defined in [I-D.ietf-lake-app-profiles].  The knowledge of
+   audience values can be pre-configured.
 
 11.2.  Keeping Knowledge About C and RS up-to-date at the AS
 
@@ -3898,11 +3900,11 @@ A.3.  Non-sequential Workflow
        Hints response.
 
        C should already know the right audience and scope to specify in
-       the Access Token Request, as that information is not provided by
+       the access token request, as that information is not provided by
        RS in the EAD item Request Creation Hints within EDHOC message_2
        (see Section 4.13).  There may also be default audience and scope
-       set at the AS to use, if none is specified by C in its Access
-       Token Request.
+       set at the AS to use, if none is specified by C in its access
+       token request.
 
    4.  C sends EDHOC message_3 to RS, specifying the access token by
        means of the EAD item ACE-OAuth Access Token.
@@ -4214,7 +4216,7 @@ D.2.  Version -09 to -10
 
 D.3.  Version -08 to -09
 
-   *  Parameter "cnf" explicitly forbidden in the Access Token Response.
+   *  Parameter "cnf" explicitly forbidden in the access token response.
 
    *  Clarification about content of "cnf" claim in the access token.
 
@@ -4268,7 +4270,7 @@ D.5.  Version -06 to -07
 
       -  New parameter "trust_anchors".
 
-   *  Access Token Request/Response messages must be encoded in CBOR.
+   *  Access token request/response messages must be encoded in CBOR.
 
    *  Explicit statement on admitted confirmation methods.
 

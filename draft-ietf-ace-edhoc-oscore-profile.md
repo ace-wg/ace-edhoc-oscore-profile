@@ -1237,7 +1237,7 @@ When C requests an access token from AS (see {{c-as}}), it specifies an audience
 
 ## Keeping Knowledge About C and RS up-to-date at the AS
 
-In this profile, the EDHOC_Information object is built by AS to guide C and RS towards executing the EDHOC protocol. Note that, when AS builds an EDHOC_Information object intended for C (included in the access token response) or RS (included in the access token), the object must specify information that is aligned with the capabilities of C and RS, to the best of AS' knowledge. In practice, this means that it is important that the information that AS has about C and RS is kept up-to-date, to reflect what C and RS supports as EDHOC peers. The means that AS uses to achieve this are out of scope for this document.QQQ
+In this profile, the EDHOC_Information object is built by AS to guide C and RS towards executing the EDHOC protocol. Note that, when AS builds an EDHOC_Information object intended for C (included in the access token response) or RS (included in the access token), the object must specify information that is aligned with the capabilities of C and RS, to the best of AS' knowledge. In practice, this means that it is important that the information that AS has about C and RS is kept up-to-date, to reflect what C and RS supports as EDHOC peers. The means that AS uses to achieve this are out of scope for this document.
 
 # Security Considerations
 

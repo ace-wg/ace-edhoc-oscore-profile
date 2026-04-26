@@ -1763,7 +1763,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-3.1-6">Note that EDHOC does not admit the use of "naked" COSE_Keys as authentication credentials. The closest admitted authentication credential type is a CCS containing a COSE_Key in a "cnf" claim and possibly other claims, which can be transported by value using the confirmation method "kccs". Therefore, the "req_cnf" parameter <span class="bcp14">MUST NOT</span> specify the confirmation method "COSE_Key" (CBOR abbreviation: 1).<a href="#section-3.1-6" class="pilcrow">¶</a></p>
 <p id="section-3.1-7">When receiving an access token request including the "req_cnf" parameter, AS checks whether it is already storing the authentication credential of C, namely AUTH_CRED_C, specified in "req_cnf" by value or reference.<a href="#section-3.1-7" class="pilcrow">¶</a></p>
 <p id="section-3.1-8">If this is not the case, AS retrieves AUTH_CRED_C, either using the "req_cnf" parameter or some other trusted source. After that, AS validates the actual AUTH_CRED_C.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
-<p id="section-3.1-9">In either case, the AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for achieving proof of possession similar to that in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-group-oscore-profile-06#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-ace-group-oscore-profile" class="cite xref">I-D.ietf-ace-group-oscore-profile</a>]</span>.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
+<p id="section-3.1-9">In either case, AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for achieving proof of possession similar to that in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-ace-group-oscore-profile-06#section-3.2" class="relref">Section 3.2</a> of [<a href="#I-D.ietf-ace-group-oscore-profile" class="cite xref">I-D.ietf-ace-group-oscore-profile</a>]</span>.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
 <p id="section-3.1-10">In case of successful validations, AS stores AUTH_CRED_C as a valid authentication credential. Otherwise, the Client-to-AS request <span class="bcp14">MUST</span> be declined.<a href="#section-3.1-10" class="pilcrow">¶</a></p>
 <p id="section-3.1-11">An example of client-to-AS request is shown in <a href="#token-request" class="auto internal xref">Figure 3</a>. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req_cnf" parameter.<a href="#section-3.1-11" class="pilcrow">¶</a></p>
 <span id="name-example-of-c-to-as-post-tok"></span><div id="token-request">
@@ -1858,7 +1858,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-3.3-2">When using this profile, consistent with what is specified in <a href="#c-as" class="auto internal xref">Section 3.1</a>, the payload of the response from AS <span class="bcp14">MUST</span> be encoded in CBOR <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>, i.e., the response has media-type "application/ace+cbor".<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 <p id="section-3.3-3">If the request from C was invalid or not authorized, AS returns an error response as described in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
 <p id="section-3.3-4">AS can signal that the use of EDHOC and OSCORE as per this profile is <span class="bcp14">REQUIRED</span> for a specific access token, by including the "ace_profile" parameter with the value "coap_edhoc_oscore" in the access token response. This means that C <span class="bcp14">MUST</span> use EDHOC with RS and derive an OSCORE Security Context, as specified in <a href="#edhoc-exec" class="auto internal xref">Section 4.2</a>. After that, C <span class="bcp14">MUST</span> use the established OSCORE Security Context to protect communications with RS, when accessing protected resources at RS according to the authorization information indicated in the access token. Usually, it is assumed that constrained devices will be pre-configured with the necessary profile, so that this kind of profile signaling can be omitted.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
-<p id="section-3.3-5">According to this document, the AS provides the access token to C, by specifying it in the "access_token" parameter of the access token response. An alternative workflow where the access token is uploaded by AS directly to RS is described in <span>[<a href="#I-D.ietf-ace-workflow-and-params" class="cite xref">I-D.ietf-ace-workflow-and-params</a>]</span>.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
+<p id="section-3.3-5">According to this document, AS provides the access token to C, by specifying it in the "access_token" parameter of the access token response. An alternative workflow where the access token is uploaded by AS directly to RS is described in <span>[<a href="#I-D.ietf-ace-workflow-and-params" class="cite xref">I-D.ietf-ace-workflow-and-params</a>]</span>.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 <p id="section-3.3-6">When issuing the first access token of a token series, AS <span class="bcp14">MUST</span> include the following data in the response to C.<a href="#section-3.3-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.3-7.1">
@@ -2759,14 +2759,14 @@ AS_request_creation_hints = map
 <p id="section-4.13-12">In the first EDHOC message from C to RS, the EAD item has no ead_value and asks the RS to include the same EAD item in the next EDHOC message.<a href="#section-4.13-12" class="pilcrow">¶</a></p>
 <p id="section-4.13-13">In the first EDHOC message from RS to C, the EAD item has ead_value. In particular, ead_value is a CBOR byte string whose value encodes the CBOR map that is used as payload in an unprotected AS Request Creation Hints message (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>). The keys of the CBOR map are defined in the IANA registry "ACE Authorization Server Request Creation Hints" <span>[<a href="#ACE.Request.Creation.Hints" class="cite xref">ACE.Request.Creation.Hints</a>]</span>.<a href="#section-4.13-13" class="pilcrow">¶</a></p>
 <p id="section-4.13-14">This EAD item is non-critical, i.e., it can be ignored by the receiving peer. The EAD item is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.13-14" class="pilcrow">¶</a></p>
-<p id="section-4.13-15">Example: assuming ead_label 1 and the AS Request Creation Hints CBOR map containing one element with key 1 and with value the CBOR text string encoding "coap://www.example.com/token" (i.e., the absolute URI of the /token endpoint at the AS), the non-critical EAD item in the first EDHOC message from RS to C is as follows:<a href="#section-4.13-15" class="pilcrow">¶</a></p>
+<p id="section-4.13-15">Example: assuming ead_label 1 and AS Request Creation Hints CBOR map containing one element with key 1 and with value the CBOR text string encoding "coap://www.example.com/token" (i.e., the absolute URI of the /token endpoint at the AS), the non-critical EAD item in the first EDHOC message from RS to C is as follows:<a href="#section-4.13-15" class="pilcrow">¶</a></p>
 <div class="lang-cbor-diag sourcecode" id="section-4.13-16">
 <pre>
 1, h'a101781c636f61703a2f2f7777772e6578616d706c652e636f6d2f746f6b656e'
 </pre><a href="#section-4.13-16" class="pilcrow">¶</a>
 </div>
 <p id="section-4.13-17">Editor's note: Replace the ead_label above with the TBD value registered for Request Creation Hints in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.13-17" class="pilcrow">¶</a></p>
-<p id="section-4.13-18">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS Request Creation Hints CBOR map <span class="bcp14">MUST NOT</span> include "audience" and <span class="bcp14">SHOULD NOT</span> include "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-18" class="pilcrow">¶</a></p>
+<p id="section-4.13-18">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, AS Request Creation Hints CBOR map <span class="bcp14">MUST NOT</span> include "audience" and <span class="bcp14">SHOULD NOT</span> include "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-18" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="auth-cred-by-value">
@@ -3187,7 +3187,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
         <h3 id="name-keeping-knowledge-about-c-a">
 <a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-keeping-knowledge-about-c-a" class="section-name selfRef">Keeping Knowledge About C and RS up-to-date at the AS</a>
         </h3>
-<p id="section-11.2-1">In this profile the EDHOC_Information object is built by the AS as intended to guide two peers towards executing the EDHOC protocol. Note that when the AS builds an EDHOC_Information object intended for a C or an RS, it must specify information in that object which is aligned with the capabilities of that C and RS (to the best of its knowledge). In practice this means that it is important that the information that the AS has about C and RS is kept up-to-date to reflect what C and RS supports as EDHOC peers. Means to achieve this are out of scope.<a href="#section-11.2-1" class="pilcrow">¶</a></p>
+<p id="section-11.2-1">In this profile, the EDHOC_Information object is built by AS to guide C and RS towards executing the EDHOC protocol. Note that, when AS builds an EDHOC_Information object intended for C (included in the access token response) or RS (included in the access token), the object must specify information that is aligned with the capabilities of C and RS, to the best of AS' knowledge. In practice, this means that it is important that the information that AS has about C and RS is kept up-to-date, to reflect what C and RS supports as EDHOC peers. The means that AS uses to achieve this are out of scope for this document.QQQ<a href="#section-11.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -5143,7 +5143,7 @@ Note that C has not made an actual request with a specific request method and ta
           <li id="appendix-A.3-4.3">
             <p id="appendix-A.3-4.3.1">C requests an access token for the right audience and scope from the right AS, based on pre-configured parameters on the client and the information from the EAD item Request Creation Hints within EDHOC message_2, like if C had received a Request Creation Hints response.<a href="#appendix-A.3-4.3.1" class="pilcrow">¶</a></p>
 <p id="appendix-A.3-4.3.2">
-C should already know the right audience and scope to specify in the access token request, as that information is not provided by RS in the EAD item Request Creation Hints within EDHOC message_2 (see <a href="#as-creation-hints" class="auto internal xref">Section 4.13</a>). There may also be default audience and scope set at the AS to use, if none is specified by C in its access token request.<a href="#appendix-A.3-4.3.2" class="pilcrow">¶</a></p>
+C should already know the right audience and scope to specify in the access token request, as that information is not provided by RS in the EAD item Request Creation Hints within EDHOC message_2 (see <a href="#as-creation-hints" class="auto internal xref">Section 4.13</a>). There may also be default audience and scope set at AS to use, if none is specified by C in its access token request.<a href="#appendix-A.3-4.3.2" class="pilcrow">¶</a></p>
 </li>
           <li id="appendix-A.3-4.4">
             <p id="appendix-A.3-4.4.1">C sends EDHOC message_3 to RS, specifying the access token by means of the EAD item ACE-OAuth Access Token.<a href="#appendix-A.3-4.4.1" class="pilcrow">¶</a></p>
@@ -5620,7 +5620,7 @@ x5u_ta_type = 35
                 <p id="appendix-D.1-1.3.2.1.1">RS belonging to multiple audiences with different credentials.<a href="#appendix-D.1-1.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
               <li class="normal" id="appendix-D.1-1.3.2.2">
-                <p id="appendix-D.1-1.3.2.2.1">Keeping knowledge about C and RS up-to-date at the AS.<a href="#appendix-D.1-1.3.2.2.1" class="pilcrow">¶</a></p>
+                <p id="appendix-D.1-1.3.2.2.1">Keeping knowledge about C and RS up-to-date at AS.<a href="#appendix-D.1-1.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -5715,7 +5715,7 @@ x5u_ta_type = 35
             <p id="appendix-D.4-1.7.1">New EAD item for requesting authentication credential by value.<a href="#appendix-D.4-1.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.4-1.8">
-            <p id="appendix-D.4-1.8.1">Means for the AS to achieve proof of possession of C's private key.<a href="#appendix-D.4-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.4-1.8.1">Means for AS to achieve proof of possession of C's private key.<a href="#appendix-D.4-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.4-1.9">
             <p id="appendix-D.4-1.9.1">Editorial improvements.<a href="#appendix-D.4-1.9.1" class="pilcrow">¶</a></p>
@@ -5733,7 +5733,7 @@ x5u_ta_type = 35
             <p id="appendix-D.5-1.1.1">Renamed id_ep_types as ep_id_types.<a href="#appendix-D.5-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.5-1.2">
-            <p id="appendix-D.5-1.2.1">Revised rules for the AS to assign session ID values.<a href="#appendix-D.5-1.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.5-1.2.1">Revised rules for AS to assign session ID values.<a href="#appendix-D.5-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.5-1.3">
             <p id="appendix-D.5-1.3.1">Added explicit validation of AUTH_CRED_C at AS.<a href="#appendix-D.5-1.3.1" class="pilcrow">¶</a></p>

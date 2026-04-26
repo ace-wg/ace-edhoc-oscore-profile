@@ -526,8 +526,8 @@ Table of Contents
    "req_cnf" parameter or some other trusted source.  After that, AS
    validates the actual AUTH_CRED_C.
 
-   In either case, the AS also needs to verify that C is in possession
-   of the private key corresponding to the public key associated with
+   In either case, AS also needs to verify that C is in possession of
+   the private key corresponding to the public key associated with
    AUTH_CRED_C.  This may already have been accomplished, for example,
    by C authenticating to AS using AUTH_CRED_C as authentication
    credential, or by some other trusted party vouching for C to the AS.
@@ -683,7 +683,7 @@ Table of Contents
    configured with the necessary profile, so that this kind of profile
    signaling can be omitted.
 
-   According to this document, the AS provides the access token to C, by
+   According to this document, AS provides the access token to C, by
    specifying it in the "access_token" parameter of the access token
    response.  An alternative workflow where the access token is uploaded
    by AS directly to RS is described in
@@ -1925,11 +1925,11 @@ Table of Contents
    This EAD item is non-critical, i.e., it can be ignored by the
    receiving peer.  The EAD item is OPTIONAL to implement.
 
-   Example: assuming ead_label 1 and the AS Request Creation Hints CBOR
-   map containing one element with key 1 and with value the CBOR text
-   string encoding "coap://www.example.com/token" (i.e., the absolute
-   URI of the /token endpoint at the AS), the non-critical EAD item in
-   the first EDHOC message from RS to C is as follows:
+   Example: assuming ead_label 1 and AS Request Creation Hints CBOR map
+   containing one element with key 1 and with value the CBOR text string
+   encoding "coap://www.example.com/token" (i.e., the absolute URI of
+   the /token endpoint at the AS), the non-critical EAD item in the
+   first EDHOC message from RS to C is as follows:
 
    1, h'a101781c636f61703a2f2f7777772e6578616d706c652e636f6d2f746f6b656e'
 
@@ -1940,7 +1940,7 @@ Table of Contents
    application resource, the RS may not know what resource C is
    interested in accessing.  Moreover, such information needs to be
    matched against the privacy policy of the application.  Since EDHOC
-   message_2 is only protected against passive attackers, the AS Request
+   message_2 is only protected against passive attackers, AS Request
    Creation Hints CBOR map MUST NOT include "audience" and SHOULD NOT
    include "scope" when present in the EAD item conveyed in the EAD_2
    field.
@@ -2382,15 +2382,16 @@ Table of Contents
 
 11.2.  Keeping Knowledge About C and RS up-to-date at the AS
 
-   In this profile the EDHOC_Information object is built by the AS as
-   intended to guide two peers towards executing the EDHOC protocol.
-   Note that when the AS builds an EDHOC_Information object intended for
-   a C or an RS, it must specify information in that object which is
-   aligned with the capabilities of that C and RS (to the best of its
-   knowledge).  In practice this means that it is important that the
-   information that the AS has about C and RS is kept up-to-date to
-   reflect what C and RS supports as EDHOC peers.  Means to achieve this
-   are out of scope.
+   In this profile, the EDHOC_Information object is built by AS to guide
+   C and RS towards executing the EDHOC protocol.  Note that, when AS
+   builds an EDHOC_Information object intended for C (included in the
+   access token response) or RS (included in the access token), the
+   object must specify information that is aligned with the capabilities
+   of C and RS, to the best of AS' knowledge.  In practice, this means
+   that it is important that the information that AS has about C and RS
+   is kept up-to-date, to reflect what C and RS supports as EDHOC peers.
+   The means that AS uses to achieve this are out of scope for this
+   document.QQQ
 
 12.  Security Considerations
 
@@ -3903,8 +3904,8 @@ A.3.  Non-sequential Workflow
        the access token request, as that information is not provided by
        RS in the EAD item Request Creation Hints within EDHOC message_2
        (see Section 4.13).  There may also be default audience and scope
-       set at the AS to use, if none is specified by C in its access
-       token request.
+       set at AS to use, if none is specified by C in its access token
+       request.
 
    4.  C sends EDHOC message_3 to RS, specifying the access token by
        means of the EAD item ACE-OAuth Access Token.
@@ -4189,7 +4190,7 @@ D.1.  Version -10 to -11
 
       -  RS belonging to multiple audiences with different credentials.
 
-      -  Keeping knowledge about C and RS up-to-date at the AS.
+      -  Keeping knowledge about C and RS up-to-date at AS.
 
    *  Added figure with message flow for Non-sequential Workflow.
 
@@ -4247,8 +4248,7 @@ D.4.  Version -07 to -08
 
    *  New EAD item for requesting authentication credential by value.
 
-   *  Means for the AS to achieve proof of possession of C's private
-      key.
+   *  Means for AS to achieve proof of possession of C's private key.
 
    *  Editorial improvements.
 
@@ -4256,7 +4256,7 @@ D.5.  Version -06 to -07
 
    *  Renamed id_ep_types as ep_id_types.
 
-   *  Revised rules for the AS to assign session ID values.
+   *  Revised rules for AS to assign session ID values.
 
    *  Added explicit validation of AUTH_CRED_C at AS.
 

@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 28 October 2026                                       M. Tiloca
+Expires: 29 October 2026                                       M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                           26 April 2026
+                                                           27 April 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 October 2026.
+   This Internet-Draft will expire on 29 October 2026.
 
 Copyright Notice
 
@@ -198,13 +198,13 @@ Table of Contents
 
    Like in the "coap_oscore" profile [RFC9203], also in this profile a
    client (C) and a resource server (RS) use the Constrained Application
-   Protocol (CoAP) [RFC7252] to communicate, and Object Security for
+   Protocol (CoAP) [RFC7252] to communicate and Object Security for
    Constrained RESTful Environments (OSCORE) [RFC8613] to protect their
-   communications.  However, this profile uses the Ephemeral Diffie-
-   Hellman Over COSE (EDHOC) protocol [RFC9528] to establish the OSCORE
-   Security Context.  The processing of requests for specific protected
-   resources is identical to what is defined in the "coap_oscore"
-   profile.
+   communications.  However, this profile uses the key exchange protocol
+   Ephemeral Diffie-Hellman Over COSE (EDHOC) [RFC9528] to establish the
+   OSCORE Security Context.  The processing of requests for specific
+   protected resources is identical to what is defined in the
+   "coap_oscore" profile.
 
    When using this profile, C accesses protected resources hosted at RS
    according to the authorization information specified in an access
@@ -230,23 +230,24 @@ Table of Contents
    question.
 
    The ACE framework establishes what those authentication credentials
-   are, and may transport the actual authentication credentials by value
-   or uniquely refer to them.  If an authentication credential is pre-
-   provisioned or can be obtained over less constrained links, then it
-   suffices that ACE provides a unique reference such as a certificate
-   hash (e.g., by using the COSE header parameter "x5t" [RFC9360]).
-   This is in the same spirit as EDHOC, where the authentication
-   credentials specified in the ID_CRED_x message fields can be
-   transported by value or referred to (see Section 3.5.3 of [RFC9528]).
+   are, and it may transport the actual authentication credentials by
+   value or uniquely refer to them.  If an authentication credential is
+   pre-provisioned or can be obtained over less constrained links, then
+   it suffices that ACE provides a unique reference such as a
+   certificate hash (e.g., by using the COSE header parameter "x5t"
+   [RFC9360]).  This is in the same spirit as EDHOC, where the
+   authentication credentials specified in the ID_CRED_x message fields
+   can be transported by value or referred to (see Section 3.5.3 of
+   [RFC9528]).
 
    In general, AS and RS are likely to have trusted access to each
    other's authentication credentials, since AS acts on behalf of RS as
    per the trust model of ACE.  Also, AS needs to have some information
    about C, including the relevant authentication credential, in order
-   to identify C when it requests an access token and to determine what
-   access rights it can be granted.  However, the authentication
-   credential of C may potentially be conveyed (or uniquely referred to)
-   within the request for an access token that C makes to AS.
+   to identify C when C requests an access token and to determine what
+   access rights can be granted.  However, the authentication credential
+   of C may potentially be conveyed (or uniquely referred to) within the
+   request for an access token that C makes to AS.
 
    The establishment of an association between RS and AS in an ACE
    ecosystem is out of scope, but one solution is to build on the same
@@ -286,8 +287,8 @@ Table of Contents
    Note that the term "endpoint" is used here, as in [RFC9200],
    following its OAuth definition, which is to denote resources such as
    /token and /introspect at AS, and /authz-info at RS.  The CoAP
-   [RFC7252] definition, which is "An entity participating in the CoAP
-   protocol", is not used in this document.
+   definition, which is "[a]n entity participating in the CoAP protocol"
+   [RFC7252], is not used in this document.
 
    The authorization information (authz-info) resource refers to the
    authorization information endpoint as specified in [RFC9200].  The
@@ -309,8 +310,8 @@ Table of Contents
    In the CBOR diagnostic notation used in this document, constructs of
    the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME
    in the CDDL model shown in Figure 13 of Appendix C.  For example,
-   {e'session_id' : h'01', e'cipher_suites': 3} stands for {0 : h'01', 2
-   : 3}.
+   {e'session_id' : h'01', e'cipher_suites' : 3} stands for {0 : h'01',
+   2 : 3}.
 
    Note to RFC Editor: Please delete the paragraph immediately preceding
    this note.  Also, in the CBOR diagnostic notation used in this
@@ -324,7 +325,7 @@ Table of Contents
    [RFC9200] together with the lightweight authenticated key exchange
    protocol EDHOC [RFC9528].  By doing so, the client (C) and the
    resource server (RS) generate an OSCORE Security Context [RFC8613]
-   associated with authorization information, and use that Security
+   associated with authorization information, and they use that Security
    Context to protect their communications.  The parameters needed by C
    to negotiate the use of this profile with the authorization server
    (AS), as well as the OSCORE setup process, are described in detail in
@@ -363,7 +364,7 @@ Table of Contents
    Appendix A.1 of [RFC9528].
 
    Figure 1 outlines an example of the message flow.  A more detailed
-   description of the message flow is shown in Appendix A.1.
+   message flow is shown in Appendix A.1.
 
    From then on and as long as there is a valid access token, C
    effectively gains authorized and secure access to protected resources
@@ -449,7 +450,7 @@ Table of Contents
       |                            |                         |
       |               / Updated access rights /              |
       |                            |                         |
-      |<------ 2.04 Changed -------+                         |
+      |<------ 2.01 Created -------+                         |
       |                            |                         |
       |                            |                         |
       +----- OSCORE Request ------>|                         |

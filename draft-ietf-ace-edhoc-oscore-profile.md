@@ -140,6 +140,12 @@ normative:
     date: false
     title: EDHOC Exporter Labels
     target: https://www.iana.org/assignments/edhoc/edhoc.xhtml#edhoc-exporter-labels
+  EDHOC.Authentication.Credential.Types:
+    author:
+      org: IANA
+    date: false
+    title: EDHOC Authentication Credential Types
+    target: https://www.iana.org/assignments/edhoc/edhoc.xhtml#edhoc-authentication-credential-types
 
 informative:
   RFC4949:
@@ -328,7 +334,7 @@ When receiving an access token request including the "req_cnf" parameter, AS che
 
 If this is not the case, AS retrieves AUTH_CRED_C, either using the "req_cnf" parameter or some other trusted source. After that, AS validates the actual AUTH_CRED_C.
 
-In either case, AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to the AS. Alternatively, it is possible to use an approach for achieving proof of possession similar to that in {{Section 3.2 of I-D.ietf-ace-group-oscore-profile}}.
+In either case, AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to AS. Alternatively, it is possible to use an approach for achieving proof of possession similar to that in {{Section 3.2 of I-D.ietf-ace-group-oscore-profile}}.
 
 In case of successful validations, AS stores AUTH_CRED_C as a valid authentication credential. Otherwise, the Client-to-AS request MUST be declined.
 
@@ -348,11 +354,11 @@ An example of client-to-AS request is shown in {{token-request}}. In this exampl
      }
    }
 ~~~~~~~~~~~~~~~~~~~~~~~
-{: #token-request title="Example of C-to-AS POST /token request for an access token."}
+{: #token-request title="Example C-to-AS POST /token Request for an Access Token."}
 
 If C wants to update its access rights without changing an existing OSCORE Security Context, it MUST specify an EDHOC\_Information object in the "edhoc\_info" parameter of its POST request to the /token endpoint. The EDHOC\_Information object MUST include the "session\_id" field. This POST request MUST NOT include the "req_cnf" parameter. An example of such a request is shown in {{token-request-update}}.
 
-The identifier "session\_id" is assigned by AS as discussed in {{token-series}}, and identifies an ongoing token series associated with the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS). That is, previous access tokens in that series were issued by AS to C, as bound to AUTH_CRED_C and intended for RS as identified by AUTH_CRED_RS.
+The identifier "session\_id" is assigned by AS as discussed in {{token-series}} and identifies an ongoing token series associated with the pair (AUTH\_CRED\_C, AUTH\_CRED\_RS). That is, previous access tokens in that series were issued by AS to C, as bound to AUTH_CRED_C and intended for RS as identified by AUTH_CRED_RS.
 
 Note that the same "session\_id" value might identify multiple ongoing token series, e.g., if those are associated with the same client but different resource servers. In this case, AS can use the "session\_id" value together with other information such as the targeted audience (see {{Section 5.8.1 of RFC9200}}) and the authenticated identity of C, in order to determine the exact token series to which the new requested access token has to be added.
 
@@ -368,7 +374,7 @@ The text above has been revisited, also based on the revised safer criterion for
 
 The "audience" parameter MUST be included in the POST request, if it was included in the POST request that C previously sent to AS for requesting the first access token in the token series to which the new requested access token has to be added. If the "audience" parameter is included in the present POST request, its value MUST be the same value of the "audience" parameter in that previous POST request.
 
-AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token belongs, such that the access token is issued for C and for the audience specified by the "audience" parameter of the POST request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid\_request" as defined in {{Section 5.8.3 of RFC9200}}.
+AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token belongs, such that the access token is issued to C and intended for the audience specified by the "audience" parameter of the POST request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid\_request" as defined in {{Section 5.8.3 of RFC9200}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
    Header: POST (Code=0.02)
@@ -384,7 +390,7 @@ AS MUST verify that the received "session\_id" identifies a token series to whic
      }
    }
 ~~~~~~~~~~~~~~~~~~~~~~~
-{: #token-request-update title="Example of C-to-AS POST /token request for updating access rights to an access token."}
+{: #token-request-update title="Example C-to-AS POST /token Request for Updating Access Rights to an Access Token."}
 
 ## Token Series {#token-series}
 
@@ -461,7 +467,7 @@ When issuing an access token for dynamically updating access rights (i.e., the a
         }
       }
 ~~~~~~~~~~~~~~~~~~~~~~~
-{: #fig-token-response title="Example of AS-to-C Access Token Response with EDHOC and OSCORE profile."}
+{: #fig-token-response title="Example of AS-to-C Access Token Response with EDHOC and OSCORE Profile."}
 
 ### Access Token {#access-token}
 
@@ -469,11 +475,11 @@ To avoid the complexity of different encodings, an access token of this profile 
 
 When issuing any access token of a token series, AS MUST include the following claims in the access token:
 
-* The "edhoc\_info" claim defined in {{iana-token-cwt-claims}} and conveying an EDHOC\_Information object (see {{edhoc-parameters-object}}).
+* The "edhoc\_info" claim registered in {{iana-token-cwt-claims}} and conveying an EDHOC\_Information object (see {{edhoc-parameters-object}}).
 
-  The EDHOC\_Information object MUST include the "session\_id" field specifying the identifier of the token series which the issued access token belongs to. The "session\_id" value is the same one included in the EDHOC\_Information object of the response to C from the /token endpoint (see {{as-c}}), when providing C with the first access token in the series.
+  The EDHOC\_Information object MUST include the "session\_id" field specifying the identifier of the token series that the issued access token belongs to. The "session\_id" value is the same one included in the EDHOC\_Information object of the response to C from the /token endpoint (see {{as-c}}), when providing C with the first access token in the series.
 
-* The "cnf" claim, specifying the authentication credential AUTH\_CRED\_C that C specified in its POST request to the /token endpoint, when requesting the first access token in the series which the issued access token belongs to (see {{c-as}}).
+* The "cnf" claim, specifying the authentication credential AUTH\_CRED\_C that C specified in its POST request to the /token endpoint, when requesting the first access token in the series that the issued access token belongs to (see {{c-as}}).
 
    In the access token, AUTH\_CRED\_C can be transported by value or uniquely referred to by means of an appropriate identifier. Yet, consistent with the considerations about AUTH\_CRED\_C and the "req_cnf" parameter made in {{c-as}}, the "cnf" claim of the access token MUST specify a confirmation method suitable for the type of AUTH\_CRED\_C.
 
@@ -483,13 +489,13 @@ When issuing any access token of a token series, AS MUST include the following c
 
    When later issuing further access tokens to the same pair (C, RS) using the same AUTH\_CRED\_C, it is expected that AUTH\_CRED\_C is identified by reference in the "cnf" claim of the access token.
 
-   Either transported by value or identified by reference, the authentication credential specified in the "cnf" claim MUST be exactly the one that was specified in the "req_cnf" parameter of the POST request to the /token endpoint, when C requested the first access token in the series which the issued access token belongs to. That is, AS MUST NOT bind to the access token an authentication credential other than the one specified by C.
+   Either transported by value or identified by reference, the authentication credential specified in the "cnf" claim MUST be exactly the one that was specified in the "req_cnf" parameter of the POST request to the /token endpoint, when C requested the first access token in the series that the issued access token belongs to. That is, AS MUST NOT bind to the access token an authentication credential other than the one specified by C.
 
 When issuing the first access token of a token series, AS MAY include additional fields in the EDHOC\_Information object (see {{edhoc-parameters-object}}) specified in the "edhoc\_info" claim of the access token.
 
 The access token needs to be protected for various reasons. To prevent manipulation of the content, it needs to be integrity protected. Also, RS has to be able to verify that the access token is issued by a trusted AS, by achieving source authentication. Depending on the use case and deployment, the access token may need to be confidentiality protected, for example due to privacy reasons.
 
-AS protects the access token using a COSE method {{RFC9052}} as specified in {{RFC8392}}. Depending on the audience, there can be different ways to most appropriately ensure the confidentiality of an access token. For an audience comprising a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0. Instead, if the access token needs to be read by multiple RSs, then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection is applied during transport, by including the access token in the EAD\_3 field of EDHOC message_3 sent by C to RS, when using the EDHOC forward message flow (see {{edhoc-exec}}).
+AS protects the access token using a COSE method {{RFC9052}} as specified in {{RFC8392}}. Depending on the audience, there can be different ways to most appropriately ensure the confidentiality of an access token. For an audience comprising a single RS, the CWT Claims Set may be wrapped in COSE_Encrypt / COSE_Encrypt0. Instead, if the access token needs to be read by multiple RSs, then the CWT Claims Set may be wrapped in COSE_Sign / COSE_Sign1 and confidentiality protection is applied during transport, e.g., by including the access token in the EAD\_3 field of EDHOC message_3 sent by C to RS, when using the EDHOC forward message flow (see {{edhoc-exec}}).
 
 {{fig-token}} shows an example of CWT Claims Set, including the relevant EDHOC parameters in the "edhoc\_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.
 
@@ -510,7 +516,7 @@ AS protects the access token using a COSE method {{RFC9052}} as specified in {{R
     }
   }
 ~~~~~~~~~~~~~~~~~~~~~~~
-{: #fig-token title="Example of CWT Claims Set with EDHOC parameters."}
+{: #fig-token title="Example of CWT Claims Set with EDHOC Parameters."}
 
 ### Processing at C
 
@@ -520,7 +526,7 @@ If this is not the case, C retrieves AUTH\_CRED\_RS, either using the "rs_cnf" p
 
 ### Update of Access Rights {#update-access-rights-c-as}
 
-If C has a valid OSCORE Security Context associated with a valid access token, then C can send a request to AS for updating its access rights while preserving the same OSCORE Security Context.
+If C has a valid OSCORE Security Context shared with RS and associated with a valid access token, then C can send a request to AS for updating its access rights while preserving the same OSCORE Security Context.
 
 If the request is granted, then AS generates a new access token, where the EDHOC\_Information object specified in the "edhoc\_info" claim MUST include only the "session\_id" field. The access token is provisioned to RS either via C as specified in this document, or directly as described in {{I-D.ietf-ace-workflow-and-params}}. In either case, the access token response from AS to C MUST NOT include the "edhoc\_info" and "rs\_cnf" parameters.
 
@@ -528,9 +534,9 @@ As defined in {{access-token}}, the "session\_id" field is included in the EDHOC
 
 ## EDHOC_Information # {#edhoc-parameters-object}
 
-EDHOC\_Information is an object including information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC\_Information is defined to be serialized and transported between nodes, as specified by this document, but it can also be used by other specifications.
+EDHOC\_Information is an object including information that guides two peers towards executing the EDHOC protocol. In particular, the EDHOC\_Information is defined to be serialized and transported between nodes as specified by this document, but it can also be used by other specifications.
 
-In the "coap_edhoc_oscore" profile of the ACE-OAuth framework, which is specified in this document, the EDHOC\_Information object MUST be encoded as CBOR. However, for easy applicability to other contexts, we define also the JSON encoding.
+In the "coap_edhoc_oscore" profile of the ACE-OAuth framework, which is specified in this document, the EDHOC\_Information object MUST be encoded as CBOR. However, for easy applicability to other contexts, the JSON encoding is also defined.
 
 The EDHOC\_Information can be encoded either as a JSON object or as a CBOR map. The set of common fields that can appear in an EDHOC\_Information can be found in the IANA "EDHOC Information" registry defined in {{iana-edhoc-parameters}} for extensibility.
 
@@ -559,27 +565,27 @@ This categorization helps coordinate the use of EDHOC application profiles {{Sec
 | trust_anchors | 11         | map                  | EDHOC Trust Anchor Purposes registry and EDHOC Trust Anchor Types registry | Set of supported trust anchors                                                                                                                                             | NP   |
 {: #table-cbor-key-edhoc-params title="EDHOC_Information Parameters. Types: P (Prescriptive), NP (Non-Prescriptive)" align="center"}
 
-* session\_id: This parameter identifies a 'session' which the EDHOC information is associated with, but does not necessarily identify a specific EDHOC session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and has label 0.
+* session\_id: This parameter identifies a 'session' that the EDHOC information is associated with, but it does not necessarily identify a specific EDHOC session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and it has label 0.
 
-* methods: This parameter specifies a set of supported EDHOC methods (see {{Section 3.2 of RFC9528}}). If the set is composed of a single EDHOC method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and has label 1.
+* methods: This parameter specifies a set of supported EDHOC methods (see {{Section 3.2 of RFC9528}}). If the set is composed of a single EDHOC method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and it has label 1.
 
-* cipher\_suites: This parameter specifies a set of supported EDHOC cipher suites (see {{Section 3.6 of RFC9528}}). If the set is composed of a single EDHOC cipher suite, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC cipher suite. In JSON, the "cipher\_suites" value is an integer or an array of integers. In CBOR, the "cipher\_suites" is an integer or an array of integers, and has label 2.
+* cipher\_suites: This parameter specifies a set of supported EDHOC cipher suites (see {{Section 3.6 of RFC9528}}). If the set is composed of a single EDHOC cipher suite, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one EDHOC cipher suite. In JSON, the "cipher\_suites" value is an integer or an array of integers. In CBOR, the "cipher\_suites" is an integer or an array of integers, and it has label 2.
 
-* message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of RFC9528}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value `true` (0xf5) or `false` (0xf4), and has label 3.
+* message\_4: This parameter indicates whether the EDHOC message\_4 (see {{Section 5.5 of RFC9528}}) is supported. In JSON, the "message\_4" value is a boolean. In CBOR, "message\_4" is the simple value `true` (0xf5) or `false` (0xf4), and it has label 3.
 
-* comb\_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in {{RFC9668}}) is supported. In JSON, the "comb\_req" value is a boolean. In CBOR, "comb\_req" is the simple value `true` (0xf5) or `false` (0xf4), and has label 4.
+* comb\_req: This parameter indicates whether the combined EDHOC + OSCORE request defined in {{RFC9668}}) is supported. In JSON, the "comb\_req" value is a boolean. In CBOR, "comb\_req" is the simple value `true` (0xf5) or `false` (0xf4), and it has label 4.
 
-* uri\_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri\_path" value is a string. In CBOR, "uri\_path" is a text string, and has label 5.
+* uri\_path: This parameter specifies the path component of the URI of the EDHOC resource where EDHOC messages have to be sent as requests. In JSON, the "uri\_path" value is a string. In CBOR, "uri\_path" is a text string, and it has label 5.
 
-* cred\_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see {{Section 3.5.2 of RFC9528}}). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred\_types" value is an integer or an array of integers. In CBOR, "cred\_types" is an integer or an array of integers, and has label 6. The integer values are taken from the "EDHOC Authentication Credential Types" registry defined in {{RFC9668}}.
+* cred\_types: This parameter specifies a set of supported types of authentication credentials for EDHOC (see {{Section 3.5.2 of RFC9528}}). If the set is composed of a single type of authentication credential, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one type of authentication credential. In JSON, the "cred\_types" value is an integer or an array of integers. In CBOR, "cred\_types" is an integer or an array of integers, and it has label 6. The integer values are taken from the 'Value' column of the "EDHOC Authentication Credential Types" registry {{EDHOC.Authentication.Credential.Types}}.
 
-* id\_cred\_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see {{Section 3.5.3 of RFC9528}}). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id\_cred\_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id\_cred\_types" is an integer or a text string, or an array of integers and text strings, and has label 7. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}}.
+* id\_cred\_types: This parameter specifies a set of supported types of authentication credential identifiers for EDHOC (see {{Section 3.5.3 of RFC9528}}). If the set is composed of a single type of authentication credential identifier, this is encoded as an integer or a text string. Otherwise, the set is encoded as an array, where each array element encodes one type of authentication credential identifier, as an integer or a text string. In JSON, the "id\_cred\_types" value is an integer, or a text string, or an array of integers and text strings. In CBOR, "id\_cred\_types" is an integer or a text string, or an array of integers and text strings, and it has label 7. The integer or text string values are taken from the 'Label' column of the "COSE Header Parameters" registry {{COSE.Header.Parameters}}.
 
-* eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead\_label (see {{Section 3.8 of RFC9528}}). If the set is composed of a single ead\_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead\_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and has label 8. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry defined in {{RFC9528}}.
+* eads: This parameter specifies a set of supported EDHOC External Authorization Data (EAD) items, identified by their ead\_label (see {{Section 3.8 of RFC9528}}). If the set is composed of a single ead\_label, this is encoded as an unsigned integer. Otherwise, the set is encoded as an array of unsigned integers, where each array element encodes one ead\_label. In JSON, the "eads" value is an unsigned integer or an array of unsigned integers. In CBOR, "eads" is an unsigned integer or an array of unsigned integers, and it has label 8. The unsigned integer values are taken from the 'Label' column of the "EDHOC External Authorization Data" registry {{EDHOC.External.Authorization.Data}}.
 
-* initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value `true` (0xf5) or `false` (0xf4), and has label 9.
+* initiator: This parameter specifies whether the EDHOC Initiator role is supported. In JSON, the "initiator" value is a boolean. In CBOR, "initiator" is the simple value `true` (0xf5) or `false` (0xf4), and it has label 9.
 
-* responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value `true` (0xf5) or `false` (0xf4), and has label 10.
+* responder: This parameter specifies whether the EDHOC Responder role is supported. In JSON, the "responder" value is a boolean. In CBOR, "responder" is the simple value `true` (0xf5) or `false` (0xf4), and it has label 10.
 
 * trust_anchors: This parameter specifies a collection of supported trust anchors for performing authentication. According to what is specified within the collection, these trust anchors are used for different purposes, e.g., for verifying authentication credentials of other EDHOC peers in EDHOC sessions.
 
@@ -591,7 +597,7 @@ This categorization helps coordinate the use of EDHOC application profiles {{Sec
 
   In JSON, the "trust_anchors" value is an object with one or more outer entries, each of which is associated with a trust anchor purpose. The following applies for each outer entry:
 
-  * The outer entry's key specifies the associated trust anchor purpose taken from the 'Name' column' of the "EDHOC Trust Anchor Purposes" registry.
+  * The outer entry's key specifies the associated trust anchor purpose taken from the 'Name' column of the "EDHOC Trust Anchor Purposes" registry.
 
   * The outer entry's value is an object or an array of at least two objects. Each object includes one inner entry, specifying the pair for a trust anchor TA of type TYPE. The inner entry is formatted as follows:
 

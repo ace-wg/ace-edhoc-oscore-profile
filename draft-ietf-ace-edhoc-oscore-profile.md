@@ -336,7 +336,7 @@ If this is not the case, AS retrieves AUTH_CRED_C, either using the "req_cnf" pa
 
 In either case, AS also needs to verify that C is in possession of the private key corresponding to the public key associated with AUTH_CRED_C. This may already have been accomplished, for example, by C authenticating to AS using AUTH_CRED_C as authentication credential, or by some other trusted party vouching for C to AS. Alternatively, it is possible to use an approach for achieving proof of possession similar to that in {{Section 3.2 of I-D.ietf-ace-group-oscore-profile}}.
 
-In case of successful validations, AS stores AUTH_CRED_C as a valid authentication credential. Otherwise, the Client-to-AS request MUST be declined.
+If the validations are successful, AS stores AUTH_CRED_C as a valid authentication credential. Otherwise, the Client-to-AS request MUST be declined.
 
 An example of client-to-AS request is shown in {{token-request}}. In this example, C specifies its own authentication credential by reference, as the hash of an X.509 certificate carried in the "x5t" field of the "req\_cnf" parameter.
 
@@ -411,7 +411,7 @@ When assigning the "session\_id" value, AS MUST ensure that it was not used in a
 * issued to the same client C; and
 * issued for the same RS.
 
-In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), what is defined above applies, with the difference that the token series is associated with all the RSs in the group-audience, as indicated by their respective AUTH_CRED_RS.
+If the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), what is defined above applies, with the difference that the token series is associated with all the RSs in the group-audience, as indicated by their respective AUTH_CRED_RS.
 
 ## AS-to-C: Response # {#as-c}
 
@@ -431,7 +431,7 @@ When issuing the first access token of a token series, AS MUST include the follo
 
   The EDHOC\_Information object MAY include additional fields (see {{edhoc-parameters-object}}) to convey information about RS. This information is based on knowledge that AS has about RS, e.g., from a previous onboarding process, with particular reference to what RS supports as EDHOC peer.
 
-  In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), the information specified in the EDHOC\_Information object refers to the group-audience as a whole. Therefore, it is appropriate for AS to define group-audiences comprising RSs that are all aligned in terms of supported EDHOC features and configurations.
+  If the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), the information specified in the EDHOC\_Information object refers to the group-audience as a whole. Therefore, it is appropriate for AS to define group-audiences comprising RSs that are all aligned in terms of supported EDHOC features and configurations.
 
 * A unique identification of the authentication credential of RS, AUTH\_CRED\_RS. This is specified in the "rs\_cnf" parameter defined in {{RFC9201}}. AUTH\_CRED\_RS can be transported by value or referred to by means of an appropriate identifier. C could explicitly ask AS to provide AUTH_CRED_RS by value in the access token response, e.g., by relying on the method defined in {{I-D.ietf-ace-workflow-and-params}}.
 
@@ -522,7 +522,7 @@ AS protects the access token using a COSE method {{RFC9052}} as specified in {{R
 
 When receiving an access token response including the "rs\_cnf" parameter, C checks whether it is already storing the authentication credential of RS, namely AUTH\_CRED\_RS, specified in "rs\_cnf" by value or reference.
 
-If this is not the case, C retrieves AUTH\_CRED\_RS, either using the "rs_cnf" parameter or some other trusted source. After that, C validates the actual AUTH\_CRED\_RS. In case of successful validation, C stores AUTH\_CRED\_RS as a valid authentication credential. Otherwise, C MUST delete the access token.
+If this is not the case, C retrieves AUTH\_CRED\_RS, either using the "rs_cnf" parameter or some other trusted source. After that, C validates the actual AUTH\_CRED\_RS. If the validation is successful, C stores AUTH\_CRED\_RS as a valid authentication credential. Otherwise, C MUST delete the access token.
 
 ### Update of Access Rights {#update-access-rights-c-as}
 
@@ -687,11 +687,11 @@ trust_anchors_inner_entry_value = any
 
 # Client-RS Communication # {#c-rs-comm}
 
-This section describes the exchange between C and RS, including the execution of the EDHOC protocol and the uploading of the access token from C to RS. The alternative workflow, where AS uploads the access token directly to RS, is described in {{I-D.ietf-ace-workflow-and-params}}.
+This section describes the exchange between C and RS, including the execution of the EDHOC protocol and the uploading of the access token from C to RS. An alternative workflow, where AS uploads the access token directly to RS, is defined in {{I-D.ietf-ace-workflow-and-params}}.
 
-C and RS run the EDHOC protocol (see {{edhoc-exec}}), and C uploads the access token in an EAD field (see {{AT-in-EAD}}) of an EDHOC message. Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context (see {{oscore-security-context}}). After that, OSCORE is used for protecting communications when C accesses resources at RS, as per the access rights specified in the access token (see {{access-rights-verif}}).
+C and RS run the EDHOC protocol (see {{edhoc-exec}}), and C uploads the access token in an EAD field (see {{AT-in-EAD}}) of an EDHOC message. Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context (see {{oscore-security-context}}). After that, OSCORE is used for protecting communications when C accesses resources at RS, as per the authorization information indicated in the access token (see {{access-rights-verif}}).
 
-Detailed examples are given in {{examples}}.
+Detailed examples are shown in {{examples}}.
 
 ## EAD items for Access Token and Session Identifier {#AT-in-EAD}
 
@@ -706,7 +706,7 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
   )
   access_token = bstr
   ~~~~~~~~~~~
-  {: #fig-ead-ace-oauth-access-token title="EAD item ACE-OAuth Access Token."}
+  {: #fig-ead-ace-oauth-access-token title="EAD Item ACE-OAuth Access Token."}
 
   In particular:
 
@@ -715,7 +715,7 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
   This EAD item is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must progress the protocol using the received access token, or else abort the EDHOC session (see {{Section 3.8 of RFC9528}}). A client or resource server supporting the profile of ACE defined in this document MUST support this EAD item.
 
-  This EAD item is used only when uploading the first access token of a token series, but not for the update of access rights (see {{update-access-rights-c-rs}}).
+  This EAD item is used only when uploading the first access token of a token series, but not for the dynamic update of access rights (see {{update-access-rights-c-rs}}).
 
   Example: assuming ead\_label 24 and the value of the "access\_token" field equal to h'8343a1010aa2044c53...0f6a' (elided for brevity), the critical EAD item is as follows:
 
@@ -735,7 +735,7 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
   )
   session_id = bstr
   ~~~~~~~~~~~
-  {: #fig-ead-session_id title="EAD item EAD item Session ID."}
+  {: #fig-ead-session_id title="EAD Item Session ID."}
 
   In particular:
 
@@ -759,9 +759,9 @@ This document defines EAD items (see {{Section 3.8 of RFC9528}}) for transportin
 
 In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol augmented with an access token. During the EDHOC session, C specifies the access token to RS by value as conveyed in the EAD item ACE-OAuth Access Token, or by reference through a session identifier SESSION\_ID conveyed in the EAD item Session ID (see {{AT-in-EAD}}).
 
-As per {{Section A.2 of RFC9528}}, EDHOC can be transferred over CoAP using either the forward or the reverse message flow, thus manifesting the two possible mappings between the ACE roles (client and resource server) and the EDHOC roles (Initiator and Responder), whereas the CoAP roles (client and server) remain the same. The choice of message flow and corresponding mapping depends on the deployment setting and in particular on which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers.
+As per {{Section A.2 of RFC9528}}, EDHOC can be transferred over CoAP using either the forward or the reverse message flow, thus manifesting the two possible mappings between the ACE roles (client and resource server) and the EDHOC roles (Initiator and Responder), whereas the CoAP roles (client and server) remain the same. The choice of message flow and corresponding mapping depends on the deployment setting and in particular on which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers and the identity of the Responder against passive attackers.
 
-In case the EDHOC forward message flow is used (see {{forward}}), C acts as EDHOC Initiator, and the access token MUST be specified by value or by reference in the EAD\_3 field of EDHOC message\_3. In case the EDHOC reverse message flow is used (see {{reverse}}), C acts as EDHOC Responder, and the access token MUST be specified by value or by reference either in the EAD\_2 field of EDHOC message\_2 or in the EAD\_4 field of EDHOC message\_4. By doing so, the access token or the associated session identifier gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see {{Section 9.1 of RFC9528}}).
+If the EDHOC forward message flow is used (see {{forward}}), C acts as EDHOC Initiator and the access token MUST be specified by value or by reference in the EAD\_3 field of EDHOC message\_3. If the EDHOC reverse message flow is used (see {{reverse}}), C acts as EDHOC Responder and the access token MUST be specified by value or by reference either in the EAD\_2 field of EDHOC message\_2 or in the EAD\_4 field of EDHOC message\_4. By doing so, the access token or the associated session identifier gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see {{Section 9.1 of RFC9528}}).
 
 When RS processes the EAD item ACE-OAuth Access Token or the EAD item Session ID, RS MUST verify that the authentication credential AUTH\_CRED\_C that C specifies in the ID\_CRED\_X field during the EDHOC session is the same authentication credential correlated with the EAD item. If such a verification fails, RS MUST abort the EDHOC session. Note that:
 
@@ -769,13 +769,13 @@ When RS processes the EAD item ACE-OAuth Access Token or the EAD item Session ID
 * If the processed EAD item is ACE-OAuth Access Token, then the authentication credential correlated with the EAD item is specified in the 'cnf' claim of the access token conveyed in the EAD item.
 * If the processed EAD item is Session ID, then the authentication credential correlated with the EAD item is specified in the 'cnf' claim of an access token stored at the RS, which is associated with the authentication credential specified by ID\_CRED\_X and with the SESSION\_ID conveyed in the EAD item.
 
-RS MUST have successfully validated the access token before completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (SESSION_ID, AUTH_CRED_C). If the EAD item used in the EDHOC session is ACE-OAuth Access Token, then SESSION_ID is specified by the "session_id" field, within the EDHOC\_Information object specified by the "cnf" claim of the access token.
+RS MUST have successfully validated the access token before successfully completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (SESSION_ID, AUTH_CRED_C). If the EAD item used in the EDHOC session is ACE-OAuth Access Token, then SESSION_ID is specified by the "session_id" field, within the EDHOC\_Information object specified by the "cnf" claim of the access token.
 
 Any previous EDHOC session associated with the same access token and with the same pair (SESSION_ID, AUTH_CRED_C) MUST be deleted. The OSCORE Security Context derived from that EDHOC session MUST also be deleted.
 
 Depending on the message flow used, the EDHOC messages will be carried either in CoAP POST requests or in CoAP 2.04 (Changed) responses, as detailed in {{Section A.2 of RFC9528}}.
 
-C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field (if present) of the EDHOC\_Information object within the access token response received from AS, through which C obtained the first access token of the token series (see {{c-as}}). If the "uri_path" field is not present in that EDHOC\_Information object, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.
+C MUST target the EDHOC resource at RS with the URI path specified in the "uri_path" field (if present) of the EDHOC\_Information object within the access token response received from AS, which AS sent to C when issuing the first access token of the token series (see {{c-as}}). If the "uri_path" field is not present in that EDHOC\_Information object, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.
 
 In this profile of ACE, RS MUST implement the CoAP Uri-Path-Abbrev Option specified in {{I-D.ietf-core-uri-path-abbrev}} and MUST understand the corresponding Uri-Path-Abbrev value 2 that abbreviates the path /.well-known/edhoc. While there is no equivalent requirement for C, the above ensures that the CoAP Uri-Path-Abbrev Option and its value are going to be understood by RS, if C includes the Option in a CoAP request that carries an EDHOC message and targets the well-known EDHOC resource at the path /.well-known/edhoc.
 
@@ -785,15 +785,15 @@ RS has to ensure that no requests can be performed on an EDHOC resource other th
 
 This section details the case where the EDHOC forward message flow is used (see {{Section A.2.1 of RFC9528}}), i.e., where C acts as the Initiator I and RS acts as the Responder R.
 
-Consistently with the EDHOC forward message flow, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as CoAP 2.04 (Changed) responses.
+Consistent with the EDHOC forward message flow, C sends EDHOC message\_1 and EDHOC message\_3 to an EDHOC resource at RS, as CoAP POST requests. RS sends EDHOC message\_2 and (optionally) EDHOC message\_4 as CoAP 2.04 (Changed) responses.
 
 ### EDHOC message\_1
 
 The processing of EDHOC message\_1 is specified in {{Section 5.2 of RFC9528}}, with the following additions:
 
-* The EDHOC method MUST be one of the EDHOC methods specified in the "methods" field (if present) of the EDHOC\_Information object within the access token response received from AS, through which C obtained the first access token of the token series (see {{c-as}})
+* The EDHOC method MUST be one of the EDHOC methods specified in the "methods" field (if present) of the EDHOC\_Information object within the access token response received from AS, which AS sent to C when issuing the first access token of the token series (see {{c-as}}).
 
-* The selected cipher suite MUST be an EDHOC cipher suite specified in the "cipher\_suites" field (if present) of the EDHOC\_Information object within the access token response received from AS, through which C obtained the first access token of the token series (see {{c-as}})
+* The selected cipher suite MUST be an EDHOC cipher suite specified in the "cipher\_suites" field (if present) of the EDHOC\_Information object within the access token response received from AS, which AS sent to C when issuing the first access token of the token series (see {{c-as}}).
 
 ### EDHOC message\_2
 
@@ -819,7 +819,7 @@ The processing of EDHOC message\_3 is specified in {{Section 5.4 of RFC9528}}, w
 
 This section details the case where the EDHOC reverse message flow is used (see {{Section A.2.2 of RFC9528}}), i.e., where C acts as the Responder R and RS acts as the Initiator I.
 
-Consistently with the EDHOC reverse message flow, C sends a trigger message, EDHOC message\_2, and (optionally) EDHOC message\_4 to RS as CoAP POST requests. RS sends EDHOC message\_1 and EDHOC message\_3 as CoAP 2.04 (Changed) responses.
+Consistent with the EDHOC reverse message flow, C sends a trigger message, EDHOC message\_2, and (optionally) EDHOC message\_4 to RS as CoAP POST requests. RS sends EDHOC message\_1 and EDHOC message\_3 as CoAP 2.04 (Changed) responses.
 
 In this profile of ACE, if RS implements the EDHOC reverse message flow, then RS MUST implement EDHOC message_4.
 
@@ -831,7 +831,7 @@ Specific instructions for the different messages are provided in the following s
 
 As specified in {{Section A.2.2 of RFC9528}}, the trigger message is an empty POST request that C sends to the EDHOC resource at RS, as intended to trigger a response conveying EDHOC message\_1.
 
-In case the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), then C can perform an EDHOC "roll call", by sending the trigger message as a group request over IP multicast {{I-D.ietf-core-groupcomm-bis}}. For the sake of efficiency, it is expected that the group-audience is appropriately associated with a CoAP group and/or application group (see {{Section 2 of I-D.ietf-core-groupcomm-bis}}), so that only the RSs belonging to the group-audience receive the trigger message. After that, C can receive a different EDHOC message_1 from each of the targeted RSs and separately progresses the corresponding EDHOC sessions, by sending a different EDHOC message_2 to each RS that has replied with an EDHOC message_1.
+If the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), then C can perform an EDHOC "roll call", by sending the trigger message as a group request over IP multicast {{I-D.ietf-core-groupcomm-bis}}. For the sake of efficiency, it is expected that the group-audience is appropriately associated with a CoAP group and/or application group (see {{Section 2 of I-D.ietf-core-groupcomm-bis}}), so that only the RSs belonging to the group-audience receive the trigger message. After that, C can receive a different EDHOC message_1 from each of the targeted RSs and separately progresses the corresponding EDHOC sessions, by sending a different EDHOC message_2 to each RS that has replied with an EDHOC message_1.
 
 ### EDHOC message\_1
 
@@ -845,7 +845,7 @@ The processing of EDHOC message\_2 is specified in {{Section 5.3 of RFC9528}}, w
 
 * If the EAD\_2 field includes the EAD item ACE-OAuth Access Token, then RS MUST ensure that the access token specified in the EAD item is valid. If the EAD\_2 field includes the EAD item Session ID, then RS MUST ensure that the access token associated with the session identifier SESSION\_ID specified in the EAD item and with the AUTH\_CRED\_C used in the EDHOC session is valid.
 
-Note that in this case C uploads the Access Token or session ID before RS is authenticated, since C will not learn about the identity of RS until having verified message_3. In particular, in the case of a group-audience, when there may be multiple legitimate RS, C does not yet know which member of the group-audience it communicates with (if any).
+Note that, in this case, C uploads the Access Token or session ID before RS is authenticated, since C will not gain knowledge of the identity of RS until having verified EDHOC message_3. In particular, in the case of a group-audience, when there may be multiple legitimate resourc servers, C does not yet know which member of the group-audience it communicates with (if any).
 
   The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the EDHOC session.
 
@@ -906,7 +906,7 @@ RS MUST check the following conditions:
 
 * RS checks whether the OSCORE Security Context CTX used to protect the request matches the OSCORE Security Context associated with the stored access token T_OLD.
 
-If both the conditions above hold, RS MUST supersede the old access token T_OLD by replacing the corresponding authorization information with the one specified in the new access token T_NEW, and MUST associate T_NEW with the OSCORE Security Context CTX.
+If both the conditions above hold, RS MUST supersede the old access token T_OLD by replacing the corresponding authorization information with the one specified in the new access token T_NEW, and it MUST associate T_NEW with the OSCORE Security Context CTX.
 
 Note that C and RS do not execute the EDHOC protocol, they do not establish a new OSCORE Security Context, and AUTH_CRED_C remains the same.
 
@@ -1044,7 +1044,7 @@ EDHOC peers need access to each other's authentication credentials to complete t
 
 However, if one of the parties has deleted the other party's authentication credential from its local storage, then there should be a way to restore it without requesting a new access token.
 
-Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This enables the Initiator to restart the protocol using some other ID_CRED, typically the authentication credential by value thereby resolving the issue. However, in case the ACE Resource Server / EDHOC Responder sends a credential by reference in message_2, then returning a code 3 EDHOC error message does not automatically solve the problem. Having aborted the EDHOC session, the Responder has no reliable way to act differently in a following EDHOC session, since it never authenticated the Initiator.
+Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator sends a credential by reference in message_3, then Responder may return error code 3, Unknown credential referenced. This enables the Initiator to restart the protocol using some other ID_CRED, typically the authentication credential by value thereby resolving the issue. However, if the ACE Resource Server / EDHOC Responder sends a credential by reference in message_2, then returning a code 3 EDHOC error message does not automatically solve the problem. Having aborted the EDHOC session, the Responder has no reliable way to act differently in a following EDHOC session, since it never authenticated the Initiator.
 
 In order to remediate this situation, this section specifies the EAD item Credential By Value for requesting the peer's authentication credential by value.
 
@@ -1680,7 +1680,7 @@ All these examples build on the following assumptions, as relying on expected ea
 
 * RS knows the authentication credential AUTH_CRED_AS of AS.
 
-  This is relevant in case AS and RS actually require a secure association (e.g., for RS to perform token introspection at AS, or for AS to upload an access token to RS on behalf of C as described in {{I-D.ietf-ace-workflow-and-params}}).
+  This is relevant in the case that AS and RS actually require a secure association (e.g., for RS to perform token introspection at AS, or for AS to upload an access token to RS on behalf of C as described in {{I-D.ietf-ace-workflow-and-params}}).
 
 As a result of the assumptions above, it is possible to limit the transport of AUTH_CRED_C and AUTH_CRED_RS by value only to the following two cases, and only when C requests an access token for RS for the first time when considering the pair (AUTH_CRED_C, AUTH_CRED_RS).
 

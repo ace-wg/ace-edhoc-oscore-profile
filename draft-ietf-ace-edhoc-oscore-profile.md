@@ -922,9 +922,9 @@ As specified in {{Section 5.10.1 of RFC9200}}, when receiving a valid access tok
 
 ## Discarding the OSCORE Security Context # {#discard-context}
 
-There are a number of cases where C or RS have to discard the OSCORE Security Context that they share, and may establish a new one (see {{establish-new-context}}).
+There are a number of cases where C or RS have to discard the OSCORE Security Context that they share, after which they can establish a new one (see {{establish-new-context}}).
 
-C MUST discard the current OSCORE Security Context shared with RS when any of the following occurs.
+C MUST discard the current OSCORE Security Context shared with RS when any of the following occurs:
 
 * The OSCORE Sender Sequence Number space of C is exhausted.
 
@@ -949,9 +949,9 @@ Furthermore, implementations may want to cancel CoAP observations at RS, if regi
 
 ## Establishing a New OSCORE Security Context {#establish-new-context}
 
-The procedure for provisioning a new access token to RS specified in this section applies to various cases when an OSCORE Security Context shared between C and RS has been deleted, for example as described in {{discard-context}}.
+The procedure for provisioning a new access token to RS specified in this section applies to various cases where an OSCORE Security Context shared between C and RS has been deleted, for example as described in {{discard-context}}.
 
-Another exceptional case is when there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS MAY alternatively attempt to run a key update protocol that they both support. One lightweight example is KUDOS {{I-D.ietf-core-oscore-key-update}}, which is independent of ACE and EDHOC and does not require the uploading of an access token. If C and RS does not support a common key update protocol to use for updating their still valid OSCORE Security Context, then C and RS fall back to EDHOC as outlined above.
+Another exceptional case is that where there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS MAY alternatively attempt to run a key update protocol that they both support. One lightweight example is KUDOS {{I-D.ietf-core-oscore-key-update}}, which is independent of ACE and EDHOC and does not require the uploading of an access token. If C and RS do not support a common key update protocol to use for updating their still valid OSCORE Security Context, then C and RS fall back to EDHOC as outlined above.
 
 In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS MUST associate the new OSCORE Security Context with the current (potentially re-uploaded) access token. Furthermore, the SESSION\_ID identifying the token series to which the access token belongs remains unchanged, even if C and RS have established a new EDHOC session. Unless C and RS re-run the EDHOC protocol, they preserve their OSCORE identifiers, i.e., their OSCORE Sender/Recipient IDs.
 
@@ -963,7 +963,7 @@ If OSCORE verification succeeds and the target resource requires authorization, 
 
 ## Access Token Invalidity
 
-When an access token becomes invalid (e.g., due to its expiration or revocation), RS MUST delete the access token and the associated OSCORE Security Context, and MUST notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in {{Section 5.8.3 of RFC9200}}.
+When an access token becomes invalid (e.g., due to its expiration or revocation), RS MUST delete the access token and the associated OSCORE Security Context, and it notifies C with an error response with code 4.01 (Unauthorized) for any long-running request, as specified in {{Section 5.8.3 of RFC9200}}.
 
 ## Authentication Credential Invalidity # {#auth-cred-validity}
 
@@ -971,21 +971,21 @@ If an authentication credential AUTH\_CRED\_C of C is invalidated (e.g., it expi
 
 * RS MUST delete all the stored access tokens that specify AUTH\_CRED\_C in the "cnf" claim.
 
-* C MUST delete every stored access token such that C obtained the first access token of the same series through the response to an access token request specifying AUTH\_CRED\_C, e.g., in the "req_cnf" parameter (see {{c-as}}).
+* C MUST delete every stored access token such that, when C requested the first access token of the same series, the access token request to AS specified AUTH\_CRED\_C (see {{c-as}}).
 
-* RS and C MUST abort and purge all the EDHOC sessions that used AUTH\_CRED\_C and successfully completed, as well as the OSCORE Security Context derived from those sessions (see {{discard-context}}).
+* RS and C MUST abort and purge all the EDHOC sessions that used AUTH\_CRED\_C and successfully completed. Also, RS and C MUST delete the OSCORE Security Contexts derived from those sessions (see {{discard-context}}).
 
 If an authentication credential AUTH\_CRED\_RS of RS is invalidated (e.g., it expires), then the following applies:
 
-* C MUST delete every stored access token such that C obtained the first access token of the same series through an access token response specifying AUTH\_CRED\_RS, e.g., in the 'rs_cnf' parameter (see {{as-c}}).
+* C MUST delete every stored access token such that, when C requested the first access token of the same series, the access token response from AS specified AUTH\_CRED\_RS (see {{as-c}}).
 
-* C MUST delete every stored access token that C specified (by value or by reference) during an EDHOC session that used AUTH\_CRED\_RS and successfully completed.
+* C MUST delete every stored access token that C specified during an EDHOC session that used AUTH\_CRED\_RS and successfully completed.
 
-* RS and C MUST abort and purge all the EDHOC sessions that used AUTH\_CRED\_RS and successfully completed, as well as the OSCORE Security Context derived from those sessions (see {{discard-context}}).
+* RS and C MUST abort and purge all the EDHOC sessions that used AUTH\_CRED\_RS and successfully completed. Also, RS and C MUST delete the OSCORE Security Contexts derived from those sessions (see {{discard-context}}).
 
 ## EDHOC Session Invalidity # {#session-validity}
 
-If an EDHOC session is aborted and purged for other reasons than those in {{auth-cred-validity}}, then RS and C that established the session MUST delete the OSCORE Security Context derived from that session (see {{discard-context}}).
+If an EDHOC session is aborted and purged for other reasons than those compiled in {{auth-cred-validity}}, then RS and C that established the session MUST delete the OSCORE Security Context derived from that session (see {{discard-context}}).
 
 ## Using AS Request Creation Hints # {#as-creation-hints}
 
@@ -2262,6 +2262,8 @@ x5u_ta_type = 35
 * Improved notation and details in examples of message exchanges.
 
 * Added references to IANA registries.
+
+* Avoid normative language with inherited normative behavior.
 
 * Editorial improvements.
 

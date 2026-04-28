@@ -2614,8 +2614,8 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
         <h3 id="name-discarding-the-oscore-secur">
 <a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-discarding-the-oscore-secur" class="section-name selfRef">Discarding the OSCORE Security Context</a>
         </h3>
-<p id="section-4.7-1">There are a number of cases where C or RS have to discard the OSCORE Security Context that they share, and may establish a new one (see <a href="#establish-new-context" class="auto internal xref">Section 4.8</a>).<a href="#section-4.7-1" class="pilcrow">¶</a></p>
-<p id="section-4.7-2">C <span class="bcp14">MUST</span> discard the current OSCORE Security Context shared with RS when any of the following occurs.<a href="#section-4.7-2" class="pilcrow">¶</a></p>
+<p id="section-4.7-1">There are a number of cases where C or RS have to discard the OSCORE Security Context that they share, after which they can establish a new one (see <a href="#establish-new-context" class="auto internal xref">Section 4.8</a>).<a href="#section-4.7-1" class="pilcrow">¶</a></p>
+<p id="section-4.7-2">C <span class="bcp14">MUST</span> discard the current OSCORE Security Context shared with RS when any of the following occurs:<a href="#section-4.7-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.7-3.1">
             <p id="section-4.7-3.1.1">The OSCORE Sender Sequence Number space of C is exhausted.<a href="#section-4.7-3.1.1" class="pilcrow">¶</a></p>
@@ -2651,8 +2651,8 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
         <h3 id="name-establishing-a-new-oscore-s">
 <a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-establishing-a-new-oscore-s" class="section-name selfRef">Establishing a New OSCORE Security Context</a>
         </h3>
-<p id="section-4.8-1">The procedure for provisioning a new access token to RS specified in this section applies to various cases when an OSCORE Security Context shared between C and RS has been deleted, for example as described in <a href="#discard-context" class="auto internal xref">Section 4.7</a>.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
-<p id="section-4.8-2">Another exceptional case is when there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS <span class="bcp14">MAY</span> alternatively attempt to run a key update protocol that they both support. One lightweight example is KUDOS <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>, which is independent of ACE and EDHOC and does not require the uploading of an access token. If C and RS does not support a common key update protocol to use for updating their still valid OSCORE Security Context, then C and RS fall back to EDHOC as outlined above.<a href="#section-4.8-2" class="pilcrow">¶</a></p>
+<p id="section-4.8-1">The procedure for provisioning a new access token to RS specified in this section applies to various cases where an OSCORE Security Context shared between C and RS has been deleted, for example as described in <a href="#discard-context" class="auto internal xref">Section 4.7</a>.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
+<p id="section-4.8-2">Another exceptional case is that where there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS <span class="bcp14">MAY</span> alternatively attempt to run a key update protocol that they both support. One lightweight example is KUDOS <span>[<a href="#I-D.ietf-core-oscore-key-update" class="cite xref">I-D.ietf-core-oscore-key-update</a>]</span>, which is independent of ACE and EDHOC and does not require the uploading of an access token. If C and RS do not support a common key update protocol to use for updating their still valid OSCORE Security Context, then C and RS fall back to EDHOC as outlined above.<a href="#section-4.8-2" class="pilcrow">¶</a></p>
 <p id="section-4.8-3">In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS <span class="bcp14">MUST</span> associate the new OSCORE Security Context with the current (potentially re-uploaded) access token. Furthermore, the SESSION_ID identifying the token series to which the access token belongs remains unchanged, even if C and RS have established a new EDHOC session. Unless C and RS re-run the EDHOC protocol, they preserve their OSCORE identifiers, i.e., their OSCORE Sender/Recipient IDs.<a href="#section-4.8-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2670,7 +2670,7 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
         <h3 id="name-access-token-invalidity">
 <a href="#section-4.10" class="section-number selfRef">4.10. </a><a href="#name-access-token-invalidity" class="section-name selfRef">Access Token Invalidity</a>
         </h3>
-<p id="section-4.10-1">When an access token becomes invalid (e.g., due to its expiration or revocation), RS <span class="bcp14">MUST</span> delete the access token and the associated OSCORE Security Context, and <span class="bcp14">MUST</span> notify C with an error response with code 4.01 (Unauthorized) for any long running request, as specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-4.10-1" class="pilcrow">¶</a></p>
+<p id="section-4.10-1">When an access token becomes invalid (e.g., due to its expiration or revocation), RS <span class="bcp14">MUST</span> delete the access token and the associated OSCORE Security Context, and it notifies C with an error response with code 4.01 (Unauthorized) for any long-running request, as specified in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-4.10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="auth-cred-validity">
@@ -2684,22 +2684,22 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
             <p id="section-4.11-2.1.1">RS <span class="bcp14">MUST</span> delete all the stored access tokens that specify AUTH_CRED_C in the "cnf" claim.<a href="#section-4.11-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.11-2.2">
-            <p id="section-4.11-2.2.1">C <span class="bcp14">MUST</span> delete every stored access token such that C obtained the first access token of the same series through the response to an access token request specifying AUTH_CRED_C, e.g., in the "req_cnf" parameter (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#section-4.11-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.11-2.2.1">C <span class="bcp14">MUST</span> delete every stored access token such that, when C requested the first access token of the same series, the access token request to AS specified AUTH_CRED_C (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#section-4.11-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.11-2.3">
-            <p id="section-4.11-2.3.1">RS and C <span class="bcp14">MUST</span> abort and purge all the EDHOC sessions that used AUTH_CRED_C and successfully completed, as well as the OSCORE Security Context derived from those sessions (see <a href="#discard-context" class="auto internal xref">Section 4.7</a>).<a href="#section-4.11-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-4.11-2.3.1">RS and C <span class="bcp14">MUST</span> abort and purge all the EDHOC sessions that used AUTH_CRED_C and successfully completed. Also, RS and C <span class="bcp14">MUST</span> delete the OSCORE Security Contexts derived from those sessions (see <a href="#discard-context" class="auto internal xref">Section 4.7</a>).<a href="#section-4.11-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-4.11-3">If an authentication credential AUTH_CRED_RS of RS is invalidated (e.g., it expires), then the following applies:<a href="#section-4.11-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.11-4.1">
-            <p id="section-4.11-4.1.1">C <span class="bcp14">MUST</span> delete every stored access token such that C obtained the first access token of the same series through an access token response specifying AUTH_CRED_RS, e.g., in the 'rs_cnf' parameter (see <a href="#as-c" class="auto internal xref">Section 3.3</a>).<a href="#section-4.11-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.11-4.1.1">C <span class="bcp14">MUST</span> delete every stored access token such that, when C requested the first access token of the same series, the access token response from AS specified AUTH_CRED_RS (see <a href="#as-c" class="auto internal xref">Section 3.3</a>).<a href="#section-4.11-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.11-4.2">
-            <p id="section-4.11-4.2.1">C <span class="bcp14">MUST</span> delete every stored access token that C specified (by value or by reference) during an EDHOC session that used AUTH_CRED_RS and successfully completed.<a href="#section-4.11-4.2.1" class="pilcrow">¶</a></p>
+            <p id="section-4.11-4.2.1">C <span class="bcp14">MUST</span> delete every stored access token that C specified during an EDHOC session that used AUTH_CRED_RS and successfully completed.<a href="#section-4.11-4.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.11-4.3">
-            <p id="section-4.11-4.3.1">RS and C <span class="bcp14">MUST</span> abort and purge all the EDHOC sessions that used AUTH_CRED_RS and successfully completed, as well as the OSCORE Security Context derived from those sessions (see <a href="#discard-context" class="auto internal xref">Section 4.7</a>).<a href="#section-4.11-4.3.1" class="pilcrow">¶</a></p>
+            <p id="section-4.11-4.3.1">RS and C <span class="bcp14">MUST</span> abort and purge all the EDHOC sessions that used AUTH_CRED_RS and successfully completed. Also, RS and C <span class="bcp14">MUST</span> delete the OSCORE Security Contexts derived from those sessions (see <a href="#discard-context" class="auto internal xref">Section 4.7</a>).<a href="#section-4.11-4.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2709,7 +2709,7 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
         <h3 id="name-edhoc-session-invalidity">
 <a href="#section-4.12" class="section-number selfRef">4.12. </a><a href="#name-edhoc-session-invalidity" class="section-name selfRef">EDHOC Session Invalidity</a>
         </h3>
-<p id="section-4.12-1">If an EDHOC session is aborted and purged for other reasons than those in <a href="#auth-cred-validity" class="auto internal xref">Section 4.11</a>, then RS and C that established the session <span class="bcp14">MUST</span> delete the OSCORE Security Context derived from that session (see <a href="#discard-context" class="auto internal xref">Section 4.7</a>).<a href="#section-4.12-1" class="pilcrow">¶</a></p>
+<p id="section-4.12-1">If an EDHOC session is aborted and purged for other reasons than those compiled in <a href="#auth-cred-validity" class="auto internal xref">Section 4.11</a>, then RS and C that established the session <span class="bcp14">MUST</span> delete the OSCORE Security Context derived from that session (see <a href="#discard-context" class="auto internal xref">Section 4.7</a>).<a href="#section-4.12-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="as-creation-hints">
@@ -5643,7 +5643,10 @@ x5u_ta_type = 35
             <p id="appendix-D.1-1.6.1">Added references to IANA registries.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.7">
-            <p id="appendix-D.1-1.7.1">Editorial improvements.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.7.1">Avoid normative language with inherited normative behavior.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.8">
+            <p id="appendix-D.1-1.8.1">Editorial improvements.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

@@ -138,7 +138,7 @@ Table of Contents
      8.4.  URI Pointing to an Ordered Chain of X.509 Certificates
      8.5.  Ordered Chain of C509 Certificates
      8.6.  Unordered Bag of C509 Certificates
-     8.7.  Hash of a C09 Certificate
+     8.7.  Hash of a C509 Certificate
      8.8.  URI Pointing to an Ordered Chain of C509 Certificates
      8.9.  CWT Containing a COSE_Key
      8.10. CCS Containing a COSE_Key
@@ -1926,12 +1926,12 @@ Table of Contents
    Server Request Creation Hints" [ACE.Request.Creation.Hints].
 
    This EAD item is non-critical, i.e., it can be ignored by the
-   receiving peer.  The EAD item is OPTIONAL to implement.
+   recipient peer.  The EAD item is OPTIONAL to implement.
 
-   Example: assuming ead_label 1 and AS Request Creation Hints CBOR map
-   containing one element with key 1 and with value the CBOR text string
-   encoding "coap://www.example.com/token" (i.e., the absolute URI of
-   the /token endpoint at the AS), the non-critical EAD item in the
+   Example: assuming ead_label 1 and the AS Request Creation Hints CBOR
+   map containing one element with key 1 and with value the CBOR text
+   string encoding "coap://www.example.com/token" (i.e., the absolute
+   URI of the /token endpoint at AS), the non-critical EAD item in the
    first EDHOC message from RS to C is as follows:
 
    1, h'a101781c636f61703a2f2f7777772e6578616d706c652e636f6d2f746f6b656e'
@@ -1943,7 +1943,7 @@ Table of Contents
    application resource, the RS may not know what resource C is
    interested in accessing.  Moreover, such information needs to be
    matched against the privacy policy of the application.  Since EDHOC
-   message_2 is only protected against passive attackers, AS Request
+   message_2 is only protected against passive attackers, the AS Request
    Creation Hints CBOR map MUST NOT include "audience" and SHOULD NOT
    include "scope" when present in the EAD item conveyed in the EAD_2
    field.
@@ -1951,27 +1951,31 @@ Table of Contents
 4.14.  Requesting Authentication Credential By Value
 
    EDHOC peers need access to each other's authentication credentials to
-   complete the protocol.  However, to reduce unnecessary overhead, the
-   EDHOC protocol enables credential references to be sent instead of
-   authentication credentials.  The ACE protocol includes the initial
-   transport of authentication credentials of C and RS and thus matches
-   the use of credential references in EDHOC.
+   complete the protocol.  To reduce unnecessary overhead, EDHOC allows
+   to identifying credentials by reference alternatively to transporting
+   them by value.  The ACE protocol includes the initial transport of
+   authentication credentials of C and RS by value, and thus it matches
+   the identification of credentials by reference in EDHOC.
 
-   However, if one of the parties has deleted the other party's
+   However, if one of the peers has deleted the other peer's
    authentication credential from its local storage, then there should
    be a way to restore it without requesting a new access token.
 
    Consider first the EDHOC forward message flow.  If the ACE Client /
-   EDHOC Initiator sends a credential by reference in message_3, then
-   Responder may return error code 3, Unknown credential referenced.
-   This enables the Initiator to restart the protocol using some other
-   ID_CRED, typically the authentication credential by value thereby
-   resolving the issue.  However, if the ACE Resource Server / EDHOC
-   Responder sends a credential by reference in message_2, then
-   returning a code 3 EDHOC error message does not automatically solve
-   the problem.  Having aborted the EDHOC session, the Responder has no
-   reliable way to act differently in a following EDHOC session, since
-   it never authenticated the Initiator.
+   EDHOC Initiator identifies its credential AUTH_CRED_C by reference
+   ID_CRED_I of message_3, then the ACE Resource Server / EDHOC
+   Responder can return an EDHOC error message with error code 3
+   (Unknown credential referenced).  This enables the Initiator to
+   restart the protocol using some other ID_CRED_I (typically, the
+   authentication credential AUTH_CRED_C specified by value), thereby
+   resolving the issue.  Instead, if the ACE Resource Server / EDHOC
+   Responder identifies its credential AUTH_CRED_RS by reference in
+   ID_CRED_R of message_2, then an EDHOC error message with error code 3
+   returned by the ACE Client / EDHOC Initiator does not automatically
+   solve the problem: since the Responder has aborted the EDHOC session
+   without authenticating the Initiator, the Responder has no reliable
+   way to act differently in a following EDHOC session with that other
+   peer.
 
    In order to remediate this situation, this section specifies the EAD
    item Credential By Value for requesting the peer's authentication
@@ -1987,12 +1991,16 @@ Table of Contents
 
                   Figure 12: EAD item Credential By Value.
 
-   This EAD item has no ead_value.  When present in EAD_1, it requests
-   the Responder's authentication credential by value in ID_CRED_R of
-   message_2.  When present in EAD_2, it requests the Initiator's
-   authentication credential by value in ID_CRED_I of message_3.  The
-   EAD item is non-critical, i.e., it can be ignored by the receiving
-   peer.  The EAD item is OPTIONAL to implement.
+   This EAD item has no ead_value, and it can be used in the EAD_1 field
+   of EDHOC message_1 and in the EAD_2 field of EDHOC message_2.  When
+   present in EAD_1, the EAD item requests the Responder to specify its
+   authentication credential by value in ID_CRED_R of EDHOC message_2.
+   When present in EAD_2, the EAD item requests the Initiator to specify
+   its authentication credential by value in ID_CRED_I of EDHOC
+   message_3.
+
+   This EAD item is non-critical, i.e., it can be ignored by the
+   recipient peer.  The EAD item is OPTIONAL to implement.
 
    Example: assuming ead_label 15, the non-critical EAD item is as
    follows:
@@ -2003,24 +2011,29 @@ Table of Contents
    registered for Credential By Value in Section 14.8.
 
    In the EDHOC reverse message flow, this EAD item can be employed for
-   better control of the use of credential by value.  Note that, in the
-   reverse message flow, both C and RS are able to recover from error
-   code 3, but at the cost of more round trips that can be avoided by
-   using this EAD item.  That is:
+   better control of the transport of authentication credentials by
+   value.  Note that, in the reverse message flow, both C and RS are
+   able to recover from an EDHOC error message with error code 3, but at
+   the cost of more round trips that can be avoided by using this EAD
+   item.  That is:
 
    *  The first case consists in the ACE Client / EDHOC Responder that
-      sends its credential by reference in message_2 and receives an
-      error message with error code 3 as a reply.  After that, the ACE
-      Client / EDHOC Responder can trigger a new EDHOC session and send
-      its credential by value.
+      specifies its authentication credential AUTH_CRED_C by reference
+      in ID_CRED_R of message_2 and receives an EDHOC error message with
+      error code 3 as a reply from the ACE Resource Server / EDHOC
+      Initiator.  After that, the ACE Client / EDHOC Responder can
+      trigger a new EDHOC session and specify its authentication
+      credential by value in ID_CRED_R of message_2.
 
    *  The second case consists in the ACE Resource Server / EDHOC
-      Initiator that sends a credential by reference in message_3 and
-      receives an error message with error code 3 as a reply.  After
-      that, since the the ACE Resource Server / EDHOC Initiator has
-      authenticated C, it can store the authentication credential of C
-      and send its own credential by value in the next EDHOC session
-      with C.
+      Initiator that specifies its authentication credential
+      AUTH_CRED_RS by reference in ID_CRED_I of message_3 and receives
+      an EDHOC error message with error code 3 as a reply from the ACE
+      Client / EDHOC Responder.  After that, since the ACE Resource
+      Server / EDHOC Initiator authenticated C, it can store C's
+      authentication credential AUTH_CRED_C and specify its own
+      authentication credential AUTH_CRED_RS by value in ID_CRED_I of
+      message_3, during the next EDHOC session with C.
 
 5.  Secure Communication with AS
 
@@ -2028,17 +2041,18 @@ Table of Contents
    [RFC9200]), the requesting entity (RS and/or C) and AS communicate
    via the /token or /introspect endpoint.  When using this profile, the
    use of CoAP [RFC7252] and OSCORE [RFC8613] for this communication is
-   RECOMMENDED.  Other protocols fulfilling the security requirements
-   defined in Section 5 of [RFC9200] (such as HTTP and DTLS [RFC9147] or
-   TLS [RFC8446]) MAY be used instead.
+   RECOMMENDED, in order to reduce the number of libraries that C and RS
+   have to support.  Other protocols fulfilling the security
+   requirements defined in Section 5 of [RFC9200] (such as HTTP and DTLS
+   [RFC9147] or TLS [RFC8446]) MAY be used instead.
 
    If OSCORE is used, the requesting entity and AS need to have an
    OSCORE Security Context in place.  While this can be pre-installed,
    the requesting entity and AS can establish such an OSCORE Security
    Context, for example, by running the EDHOC protocol, as shown between
-   C and AS by the examples in Appendix A.1 and Appendix A.2.  This also
-   applies for communication between RS and AS, for example to protect
-   the upload of access tokens from AS directly to RS as described in
+   C and AS by the examples in Appendix A.  This also applies to the
+   communication between RS and AS, for example to protect the upload of
+   access tokens from AS directly to RS as described in
    [I-D.ietf-ace-workflow-and-params].
 
 6.  Use with Application Profiles of ACE for Group Key Provisioning
@@ -2050,15 +2064,17 @@ Table of Contents
    [I-D.ietf-ace-coap-pubsub-profile].
 
    When doing so, the EDHOC and OSCORE profile is used by a client and
-   an RS that acts as Key Distribution Center (KDC) responsible for a
-   security group.  According to what is defined in the present
+   an RS that acts as the Key Distribution Center (KDC) responsible for
+   a security group.  According to what is defined in the present
    document, the client does not upload the first access token of a
    token series to the /authz-info endpoint at RS over an unprotected
    channel.  Consequently, the client does not obtain the N_S challenge
    from RS (see Section 3.3 of [RFC9594]).
 
-   Therefore, the following holds for computing the N_S challenge used
-   in the two application profiles of [RFC9594] mentioned above.
+   Therefore, when using the EDHOC and OSCORE profile in combination
+   with one of the application profiles of [RFC9594] mentioned above,
+   the following holds for computing the N_S challenge used in such
+   application profiles.
 
    *  In the ACE application profile specified in
       [I-D.ietf-ace-key-groupcomm-oscore], when the provisioning of the
@@ -2200,7 +2216,7 @@ Table of Contents
 8.2.  Unordered Bag of X.509 Certificates
 
    The confirmation method "x5b" specifies a bag of X.509 certificates
-   [RFC5280].  The semantics of the "x5b" is like that of the "x5c" JWT
+   [RFC5280].  The semantics of "x5b" is like that of the "x5c" JWT
    confirmation method defined in Section 8.1, with the following
    differences.  First, the set of certificates is unordered and may
    contain self-signed certificates.  Second, the composition and
@@ -2242,7 +2258,7 @@ Table of Contents
    composition and processing of "c5b" is like for the "c5b" COSE Header
    Parameter defined in [I-D.ietf-cose-cbor-encoded-cert].
 
-8.7.  Hash of a C09 Certificate
+8.7.  Hash of a C509 Certificate
 
    The confirmation method "c5t" specifies the hash value of the end-
    entity C509 certificate [I-D.ietf-cose-cbor-encoded-cert].  The
@@ -2255,7 +2271,7 @@ Table of Contents
 
 8.8.  URI Pointing to an Ordered Chain of C509 Certificates
 
-   The confirmation method "c5u" specifies the URI [RFC3986] of
+   The confirmation method "c5u" specifies the URI [RFC3986] of a
    COSE_C509 containing an ordered chain of C509 certificates
    [I-D.ietf-cose-cbor-encoded-cert].  COSE_C509 is defined in
    [I-D.ietf-cose-cbor-encoded-cert].  The semantics of "c5u" is like
@@ -2276,8 +2292,8 @@ Table of Contents
 
    The confirmation method "kccs" specifies a CWT Claims Set (CCS)
    [RFC8392] containing a COSE_Key [RFC9053] in a 'cnf' claim and
-   possibly other claims.  The format of "kcwt" is the base64url-encoded
-   serialization of the CWT.
+   possibly other claims.  The format of "kccs" is the base64url-encoded
+   serialization of the CCS.
 
 9.  EDHOC Trust Anchor Purposes
 

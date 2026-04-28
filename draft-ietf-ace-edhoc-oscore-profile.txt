@@ -1562,7 +1562,7 @@ Table of Contents
    before RS is authenticated, since C will not gain knowledge of the
    identity of RS until having verified EDHOC message_3.  In particular,
    in the case of a group-audience, when there may be multiple
-   legitimate resourc servers, C does not yet know which member of the
+   legitimate resource servers, C does not yet know which member of the
    group-audience it communicates with (if any).
 
    The validation follows the procedure specified in Section 4.6.2.  If

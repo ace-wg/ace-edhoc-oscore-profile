@@ -845,7 +845,7 @@ The processing of EDHOC message\_2 is specified in {{Section 5.3 of RFC9528}}, w
 
 * If the EAD\_2 field includes the EAD item ACE-OAuth Access Token, then RS MUST ensure that the access token specified in the EAD item is valid. If the EAD\_2 field includes the EAD item Session ID, then RS MUST ensure that the access token associated with the session identifier SESSION\_ID specified in the EAD item and with the AUTH\_CRED\_C used in the EDHOC session is valid.
 
-Note that, in this case, C uploads the Access Token or session ID before RS is authenticated, since C will not gain knowledge of the identity of RS until having verified EDHOC message_3. In particular, in the case of a group-audience, when there may be multiple legitimate resourc servers, C does not yet know which member of the group-audience it communicates with (if any).
+Note that, in this case, C uploads the Access Token or session ID before RS is authenticated, since C will not gain knowledge of the identity of RS until having verified EDHOC message_3. In particular, in the case of a group-audience, when there may be multiple legitimate resource servers, C does not yet know which member of the group-audience it communicates with (if any).
 
   The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the EDHOC session.
 

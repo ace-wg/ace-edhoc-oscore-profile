@@ -2403,8 +2403,8 @@ Table of Contents
 
    In this profile, the EDHOC_Information object is built by AS to guide
    C and RS towards executing the EDHOC protocol.  Note that, when AS
-   builds an EDHOC_Information object intended for C (included in the
-   access token response) or RS (included in the access token), the
+   builds an EDHOC_Information object intended for C (included in an
+   access token response) or RS (included in an access token), the
    object must specify information that is aligned with the capabilities
    of C and RS, to the best of AS' knowledge.  In practice, this means
    that it is important that the information that AS has about C and RS
@@ -2449,9 +2449,9 @@ Table of Contents
    access token per client.  The use of multiple access tokens for a
    single client increases the strain on RS, since it must consider
    every access token associated with the client and calculate the
-   actual permissions that client has.  Also, access tokens indicating
-   different or disjoint permissions from each other may lead RS to
-   enforce wrong permissions.  If one of the access tokens expires
+   actual permissions that the client has.  Also, access tokens
+   indicating different or disjoint permissions from each other may lead
+   RS to enforce wrong permissions.  If one of the access tokens expires
    earlier than others, the resulting permissions may offer insufficient
    protection.  Developers SHOULD avoid using multiple access tokens for
    the same client.  Furthermore, RS MUST NOT store more than one access
@@ -2460,12 +2460,14 @@ Table of Contents
 
    This profile defines the confirmation methods "kcwt" and "kccs"
    corresponding to the use of CBOR Web Tokens (CWTs) and CWT Claims Set
-   (CCSs), respectively.  Security considerations of CWTs and CCSs, and
-   of COSE header parameters "kcwt" and "kccs" are given in Section 9.8
-   of [RFC9528], and apply also to confirmation methods.  In particular,
-   the contents of the CWT or CCS must be processed as untrusted input.
-   The application needs to define a trust-establishment mechanism and
-   identify the relevant trust anchors.
+   (CCSs), respectively.  Security considerations for CWTs and CCSs and
+   for the COSE header parameters "kcwt" and "kccs" are given in
+   Section 9.8 of [RFC9528], and they also apply to the corresponding
+   confirmation methods defined in Section 7 and Section 8 of this
+   document.  In particular, the contents of the CWT or CCS must be
+   processed as untrusted input.  The application needs to define a
+   trust-establishment mechanism and identify the relevant trust
+   anchors.
 
 13.  Privacy Considerations
 
@@ -2481,9 +2483,9 @@ Table of Contents
    An unprotected response to an unauthorized request may disclose
    information about RS and/or its existing relationship with C.  It is
    advisable to include as little information as possible in an
-   unencrypted response (see also Section 4.13).  When an OSCORE
+   unencrypted response from RS (see also Section 4.13).  When an OSCORE
    Security Context already exists between C and RS, more detailed
-   information may be included.
+   information may be included in a protected response from RS.
 
    The (encrypted) access token is never sent in an unprotected POST
    request to the /authz-info endpoint at RS.  Thus, even if C uses the
@@ -2501,7 +2503,7 @@ Table of Contents
       OSCORE Recipient ID of RS, i.e., the OSCORE Sender ID of C.
 
    These OSCORE identifiers are privacy sensitive (see Section 12.8 of
-   [RFC8613]).  In particular, they could reveal information about C, or
+   [RFC8613]).  In particular, they could reveal information about C or
    may be used for correlating different requests from C, e.g., across
    different networks that C has joined and left over time.  This can be
    mitigated if C and RS dynamically update their OSCORE identifiers,
@@ -2986,7 +2988,9 @@ Table of Contents
    The columns of the registry are:
 
    *  Name: A descriptive name that enables easier reference to this
-      item.  Because a core goal of this document is for the resulting
+      item.  These names MUST be unique.
+
+      Because a core goal of this document is for the resulting
       representations to be compact, it is RECOMMENDED that the name be
       short.
 
@@ -2998,14 +3002,14 @@ Table of Contents
    *  CBOR label: The value to be used as CBOR abbreviation of the item.
 
       The value MUST be unique.  The value can be a positive integer, a
-      negative integer, or a string.  Integer values between -256 and
-      255 and strings of length 1 are designated as "Standards Action
-      with Expert Review".  Integer values from -65536 to -257 and from
-      256 to 65535 and strings of maximum length 2 are designated as
-      "Specification Required".  Integer values greater than 65535 and
-      strings of length greater than 2 are designated as "Expert
-      Review".  Integer values less than -65536 are marked as "Private
-      Use".
+      negative integer, or a text string.  Integer values between -256
+      and 255 and strings of length 1 are designated as "Standards
+      Action with Expert Review".  Integer values from -65536 to -257
+      and from 256 to 65535 and strings of maximum length 2 are
+      designated as "Specification Required".  Integer values greater
+      than 65535 and strings of length greater than 2 are designated as
+      "Expert Review".  Integer values less than -65536 are marked as
+      "Private Use".
 
    *  CBOR type: The CBOR type of the item, or a pointer to the registry
       that defines its type, when that depends on another item.
@@ -3016,14 +3020,14 @@ Table of Contents
    *  Description: A brief description of the item.
 
    *  Type: The category of the item, i.e., P if prescriptive or NP if
-      Non-Prescriptive.
+      non-prescriptive.
 
    *  Specification: A pointer to the public specification for the item,
       if one exists.
 
-   This registry will be initially populated by the values in Table 1.
-   In the "Specification" column, the value for all of these entries
-   will be [RFC-XXXX] and [RFC9528].
+   This registry has been initially populated with the entries in
+   Table 1.  In the "Specification" column, the value for all those
+   entries is [RFC-XXXX] and [RFC9528].
 
 14.11.  EDHOC Trust Anchor Purposes Registry
 
@@ -3071,8 +3075,8 @@ Table of Contents
    *  Reference: This field contains a pointer to the public
       specification for the trust anchor purpose.
 
-   This registry has been initially populated with the values in
-   Section 9.
+   This registry has been initially populated with the entries in
+   Table 2.
 
 14.12.  EDHOC Trust Anchor Types Registry
 
@@ -3123,7 +3127,7 @@ Table of Contents
    *  Reference: This field contains a pointer to the public
       specification for the type of trust anchor.
 
-   This registry has been initially populated with the values in
+   This registry has been initially populated with the entries in
    Table 3.
 
 14.13.  Expert Review Instructions
@@ -3515,8 +3519,8 @@ Appendix A.  Examples
 
    *  Appendix A.3 makes use of the EAD items Request Creation Hints
       (see Section 4.13) and Credential By Value (see Section 4.14),
-      allowing C to receive AS Request Creation Hints from the RS
-      transported in an EAD item.  This is useful if C is not able to
+      with the former allowing C to receive AS Request Creation Hints
+      during an EDHOC session.  This is useful if C is not able to
       determine in advance the appropriate AS to contact.
 
    All these examples build on the following assumptions, as relying on
@@ -3536,7 +3540,7 @@ Appendix A.  Examples
       This is relevant in the case that AS and RS actually require a
       secure association (e.g., for RS to perform token introspection at
       AS, or for AS to upload an access token to RS on behalf of C as
-      described in [I-D.ietf-ace-workflow-and-params]).
+      defined in [I-D.ietf-ace-workflow-and-params]).
 
    As a result of the assumptions above, it is possible to limit the
    transport of AUTH_CRED_C and AUTH_CRED_RS by value only to the
@@ -3554,8 +3558,8 @@ Appendix A.  Examples
    might rather be identified by reference.  This is possible if RS can
    effectively use such a reference from the access token to retrieve
    AUTH_CRED_C (e.g., from a trusted repository of authentication
-   credentials reachable through a non-constrained link), and if AS is
-   in turn aware of that.
+   credentials reachable through a non-constrained link) and if AS is in
+   turn aware of that.
 
    In any other case, it is otherwise possible to identify both
    AUTH_CRED_C and AUTH_CRED_RS by reference, when performing the ACE
@@ -3564,7 +3568,7 @@ Appendix A.  Examples
 A.1.  Workflow without Optimizations
 
    The example below shows a simple interaction between C and RS: C and
-   RS run EDHOC wherein C uploads the access token to RS, and then
+   RS run EDHOC wherein C uploads the access token to RS, after which C
    accesses a protected resource at RS.
 
      C                                        AS                      RS
@@ -3576,14 +3580,13 @@ A.1.  Workflow without Optimizations
      |  EDHOC message_2                        |                       |
  M02 |<----------------------------------------+                       |
      |  ID_CRED_R identifies                   |                       |
-     |     CRED_R = AUTH_CRED_AS               |                       |
+     |     CRED_R = AUTH_CRED_AS by reference  |                       |
      |                                         |                       |
      |                                         |                       |
      |  EDHOC message_3 to /.well-known/edhoc  |                       |
  M03 +---------------------------------------->|                       |
      |  ID_CRED_I identifies                   |                       |
-     |     CRED_I = AUTH_CRED_C                |                       |
-     |     by reference                        |                       |
+     |     CRED_I = AUTH_CRED_C by reference   |                       |
      |                                         |                       |
      |                                         |                       |
      |  Access token request to /token         |                       |
@@ -3620,7 +3623,7 @@ A.1.  Workflow without Optimizations
 
       Possibly after chain verification, C adds AUTH_CRED_RS
       to the set of its trusted peer authentication credentials,
-      relying on AS as trusted provider
+      relying on AS as trusted provider.
 
      |                                         |                       |
      |                                         |                       |
@@ -3632,8 +3635,7 @@ A.1.  Workflow without Optimizations
      |  EDHOC message_2                        |                       |
  M07 |<----------------------------------------------------------------+
      |  ID_CRED_R identifies                   |                       |
-     |     CRED_R = AUTH_CRED_RS               |                       |
-     |     by reference                        |                       |
+     |     CRED_R = AUTH_CRED_RS by reference  |                       |
      |                                         |                       |
      |                                         |                       |
      |  EDHOC message_3 to /edhoc              |                       |
@@ -3644,13 +3646,12 @@ A.1.  Workflow without Optimizations
      |      (access token)                     |                       |
      |                                         |                       |
      |  ID_CRED_I identifies                   |                       |
-     |     CRED_I = AUTH_CRED_C                |                       |
-     |     by reference                        |                       |
+     |     CRED_I = AUTH_CRED_C by reference   |                       |
      |                                         |                       |
 
       Possibly after chain verification, RS adds AUTH_CRED_C
       to the set of its trusted peer authentication credentials,
-      relying on AS as trusted provider
+      relying on AS as trusted provider.
 
      |                                         |                       |
      |                                         |                       |
@@ -3666,13 +3667,11 @@ A.1.  Workflow without Optimizations
 
       Later on, the access token expires ...
 
-       - C and RS delete their OSCORE Security Context and purge
-         the EDHOC session used to derive it (unless the same
-         session is also used for other reasons).
-       - RS retains AUTH_CRED_C as still valid,
-         and AS knows about it.
-       - The Client retains AUTH_CRED_RS as still valid,
-         and AS knows about it.
+       - C and RS delete their OSCORE Security Context and purge the
+         EDHOC session used to derive it (unless the same session is
+         also used for other reasons).
+       - RS retains AUTH_CRED_C as still valid, and AS knows about it.
+       - C retains AUTH_CRED_RS as still valid, and AS knows about it.
 
      |                                         |                       |
      |                                         |                       |
@@ -3682,12 +3681,12 @@ A.1.  Workflow without Optimizations
      |                                         |                       |
      |                                         |                       |
 
-      C asks for a new access token; now all the
-      authentication credentials can be identified by reference
+      C asks for a new access token; now all the authentication
+      credentials can be identified by reference.
 
       The price to pay is on AS, about remembering that at least
-      one access token has been issued for the pair (Client, RS)
-      and considering the pair (AUTH_CRED_C, AUTH_CRED_RS)
+      one access token has been issued for the pair (C, RS)
+      and considering the pair (AUTH_CRED_C, AUTH_CRED_RS).
 
      |                                         |                       |
      |                                         |                       |
@@ -3695,8 +3694,7 @@ A.1.  Workflow without Optimizations
      |  (OSCORE-protected message)             |                       |
  M11 +---------------------------------------->|                       |
      |  "req_cnf" identifies                   |                       |
-     |     CRED_I = AUTH_CRED_C                |                       |
-     |     by reference                        |                       |
+     |     CRED_I = AUTH_CRED_C by reference   |                       |
      |                                         |                       |
      |                                         |                       |
      |  Access token response                  |                       |
@@ -3734,8 +3732,7 @@ A.1.  Workflow without Optimizations
      |  (no access control is enforced)        |                       |
  M14 |<----------------------------------------------------------------+
      |  ID_CRED_R identifies                   |                       |
-     |     CRED_R = AUTH_CRED_RS               |                       |
-     |     by reference                        |                       |
+     |     CRED_R = AUTH_CRED_RS by reference  |                       |
      |                                         |                       |
      |                                         |                       |
      |  EDHOC message_3 to /edhoc              |                       |
@@ -3746,8 +3743,7 @@ A.1.  Workflow without Optimizations
      |      (access token)                     |                       |
      |                                         |                       |
      |  ID_CRED_I identifies                   |                       |
-     |     CRED_I = AUTH_CRED_C                |                       |
-     |     by reference                        |                       |
+     |     CRED_I = AUTH_CRED_C by reference   |                       |
      |                                         |                       |
      |                                         |                       |
      |  Access to protected resource /r        |                       |
@@ -3763,113 +3759,108 @@ A.1.  Workflow without Optimizations
 
 A.2.  Workflow with Optimizations
 
-   The example below builds on the example in Appendix A.1, while
-   additionally using the EDHOC + OSCORE request defined in [RFC9668]
-   when running EDHOC both with AS and with RS.
+   The example below builds on the example in Appendix A.1, additionally
+   using the EDHOC + OSCORE request defined in [RFC9668] when running
+   EDHOC both with AS and with RS.
 
-   This interaction between C and RS consists of only two roundtrips to
-   upload the access token, run EDHOC, and access the protected resource
-   at RS.
+   Consequently, the interaction between C and RS consists of only two
+   roundtrips to run EDHOC, upload the access token, and access the
+   protected resource at RS.
 
-     C                                        AS                      RS
-     |                                         |                       |
-     |  EDHOC message_1 to /.well-known/edhoc  |                       |
- M01 +---------------------------------------->|                       |
-     |                                         |                       |
-     |                                         |                       |
-     |  EDHOC message_2                        |                       |
- M02 |<----------------------------------------+                       |
-     |  ID_CRED_R identifies                   |                       |
-     |     CRED_R = AUTH_CRED_AS               |                       |
-     |     by reference                        |                       |
-     |                                         |                       |
-     |                                         |                       |
-     |  EDHOC + OSCORE request to /token       |                       |
- M03 +---------------------------------------->|                       |
-     |  - EDHOC message_3                      |                       |
-     |      ID_CRED_I identifies               |                       |
-     |         CRED_I = AUTH_CRED_C            |                       |
-     |         by reference                    |                       |
-     |  --- --- ---                            |                       |
-     |  - OSCORE-protected part                |                       |
-     |      Access token request               |                       |
-     |         "req_cnf" identifies            |                       |
-     |         AUTH_CRED_C by reference        |                       |
-     |                                         |                       |
-     |                                         |                       |
-     |  Access token response                  |                       |
-     |  (OSCORE-protected message)             |                       |
- M04 |<----------------------------------------+                       |
-     |  "rs_cnf" specifies                     |                       |
-     |     AUTH_CRED_RS by value               |                       |
-     |                                         |                       |
-     |  "ace_profile" specifies the            |                       |
-     |  ACE profile "coap_edhoc_oscore"        |                       |
-     |                                         |                       |
-     |  "edhoc_info" specifies:                |                       |
-     |     {                                   |                       |
-     |       e'session_id' : h'01',            |                       |
-     |       e'cipher_suites' : 2,             |                       |
-     |       e'methods' : 3,                   |                       |
-     |       e'uri_path' : "/edhoc"            |                       |
-     |     }                                   |                       |
-     |                                         |                       |
-     |  In the access token:                   |                       |
-     |  - the "cnf" claim specifies            |                       |
-     |    AUTH_CRED_C by value                 |                       |
-     |  - the "edhoc_info" claim               |                       |
-     |    specifies the same as                |                       |
-     |    "edhoc_info" above                   |                       |
-     |                                         |                       |
+     C                                          AS                    RS
+     |                                           |                     |
+     |  EDHOC message_1 to /.well-known/edhoc    |                     |
+ M01 +------------------------------------------>|                     |
+     |                                           |                     |
+     |                                           |                     |
+     |  EDHOC message_2                          |                     |
+ M02 |<------------------------------------------+                     |
+     |  ID_CRED_R identifies                     |                     |
+     |     CRED_R = AUTH_CRED_AS by reference    |                     |
+     |                                           |                     |
+     |                                           |                     |
+     |  EDHOC + OSCORE request to /token         |                     |
+ M03 +------------------------------------------>|                     |
+     |  - EDHOC message_3                        |                     |
+     |      ID_CRED_I identifies                 |                     |
+     |         CRED_I = AUTH_CRED_C by reference |                     |
+     |  --- --- ---                              |                     |
+     |  - OSCORE-protected part                  |                     |
+     |      Access token request                 |                     |
+     |         "req_cnf" identifies              |                     |
+     |            AUTH_CRED_C by reference       |                     |
+     |                                           |                     |
+     |                                           |                     |
+     |  Access token response                    |                     |
+     |  (OSCORE-protected message)               |                     |
+ M04 |<------------------------------------------+                     |
+     |  "rs_cnf" specifies                       |                     |
+     |     AUTH_CRED_RS by value                 |                     |
+     |                                           |                     |
+     |  "ace_profile" specifies the              |                     |
+     |  ACE profile "coap_edhoc_oscore"          |                     |
+     |                                           |                     |
+     |  "edhoc_info" specifies:                  |                     |
+     |     {                                     |                     |
+     |       e'session_id' : h'01',              |                     |
+     |       e'cipher_suites' : 2,               |                     |
+     |       e'methods' : 3,                     |                     |
+     |       e'uri_path' : "/edhoc"              |                     |
+     |     }                                     |                     |
+     |                                           |                     |
+     |  In the access token:                     |                     |
+     |  - the "cnf" claim specifies              |                     |
+     |    AUTH_CRED_C by value                   |                     |
+     |  - the "edhoc_info" claim                 |                     |
+     |    specifies the same as                  |                     |
+     |    "edhoc_info" above                     |                     |
+     |                                           |                     |
 
       Possibly after chain verification, C adds AUTH_CRED_RS
       to the set of its trusted peer authentication credentials,
-      relying on AS as trusted provider
+      relying on AS as trusted provider.
 
-     |                                         |                       |
-     |  EDHOC message_1 to /edhoc              |                       |
-     |  (no access control is enforced)        |                       |
+     |                                           |                     |
+     |  EDHOC message_1 to /edhoc                |                     |
+     |  (no access control is enforced)          |                     |
  M05 +---------------------------------------------------------------->|
-     |                                         |                       |
+     |                                           |                     |
+     |                                           |                     |
+     |                                           |                     |
+     |  EDHOC message_2                          |                     |
+ M06 |<----------------------------------------------------------------+
+     |  ID_CRED_R identifies                     |                     |
+     |     CRED_R = AUTH_CRED_RS by reference    |                     |
+     |                                           |                     |
+     |                                           |                     |
+     |  EDHOC + OSCORE request to /r             |                     |
+ M07 +---------------------------------------------------------------->|
+     |  - EDHOC message_3                        |                     |
+     |      EAD_3 contains:                      |                     |
+     |      - EAD item ACE-OAuth Access Token    |                     |
+     |          (access token)                   |                     |
+     |                                           |                     |
+     |      ID_CRED_I identifies                 |                     |
+     |         CRED_I = AUTH_CRED_C by reference |                     |
+     |  --- --- ---                              |                     |
+     |  - OSCORE-protected part                  |                     |
+     |      Application request to /r            |                     |
+     |                                           |                     |
 
       Possibly after chain verification, RS adds AUTH_CRED_C
       to the set of its trusted peer authentication credentials,
       relying on AS as trusted provider
 
-     |                                         |                       |
-     |                                         |                       |
-     |  EDHOC message_2                        |                       |
- M06 |<----------------------------------------------------------------+
-     |  ID_CRED_R identifies                   |                       |
-     |     CRED_R = AUTH_CRED_RS               |                       |
-     |     by reference                        |                       |
-     |                                         |                       |
-     |                                         |                       |
-     |  EDHOC + OSCORE request to /r           |                       |
- M07 +---------------------------------------------------------------->|
-     |  - EDHOC message_3                      |                       |
-     |      EAD_3 contains:                    |                       |
-     |      - EAD item ACE-OAuth Access Token  |                       |
-     |          (access token)                 |                       |
-     |                                         |                       |
-     |      ID_CRED_I identifies               |                       |
-     |         CRED_I = AUTH_CRED_C            |                       |
-     |         by reference                    |                       |
-     |  --- --- ---                            |                       |
-     |  - OSCORE-protected part                |                       |
-     |      Application request to /r          |                       |
-     |                                         |                       |
-
       After the EDHOC processing is completed, access control
       is enforced on the rebuilt OSCORE-protected request,
-      like if it had been sent stand-alone
+      like if the request had been sent stand-alone
 
-     |                                         |                       |
-     |                                         |                       |
-     |  Response                               |                       |
-     |  (OSCORE-protected message)             |                       |
+     |                                           |                     |
+     |                                           |                     |
+     |  Response                                 |                     |
+     |  (OSCORE-protected message)               |                     |
  M08 |<----------------------------------------------------------------+
-     |                                         |                       |
+     |                                           |                     |
 
 A.3.  Non-sequential Workflow
 
@@ -3878,12 +3869,12 @@ A.3.  Non-sequential Workflow
    EDHOC with RS prior to obtaining an access token and rely on RS to
    provide this information.
 
-   One approach, as detailed in this section, is for RS to convey this
-   information by including an External Authorization Data (EAD) item in
-   EDHOC message_2.  The content of this EAD item is the information
-   conveyed in a Request Creation Hints response, thereby helping C to
-   identify the correct AS, and possibly other relevant parameters
-   needed to request an access token.
+   As detailed in this section, one approach is for RS to convey this
+   information within an EAD item included in EDHOC message_2.  The
+   content of the EAD item is the information conveyed in an AS Request
+   Creation Hints response, thereby helping C identify the correct AS,
+   and possibly other relevant parameters needed to request an access
+   token from AS.
 
    The following describes an example scenario where this functionality
    is used in the EDHOC forward message flow, in particular taking
@@ -3893,43 +3884,42 @@ A.3.  Non-sequential Workflow
    1.  Without having an access token, C sends EDHOC message_1 to RS,
        including in EAD_1:
 
-       *  The EAD item Request Creation Hints, here specifying no
-          ead_value.
+       *  The EAD item Request Creation Hints, with no ead_value.  By
+          doing so, C asks RS to include the same EAD item in EAD_2,
+          specifying as ead_value the information that would be included
+          in an AS Request Creation Hints response.
 
-          By doing so, C is asking RS to include the same EAD item in
-          EAD_2, specifying the information that would be included in a
-          Request Creation Hints response.
-
-       *  The EAD item Credential By Value, asking RS to specify its
-          authentication credential AUTH_CRED_RS by value in ID_CRED_R.
+       *  The EAD item Credential By Value.  By doing so, C asks RS to
+          specify its authentication credential AUTH_CRED_RS by value in
+          ID_CRED_R of EDHOC message_2.
 
    2.  RS replies with EDHOC message_2, specifying its authentication
-       credential AUTH_CRED_RS by value in ID_CRED_R and including in
-       EAD_2:
+       credential AUTH_CRED_RS by value in ID_CRED_R
 
-       *  The EAD item Request Creation Hints, whose CBOR byte string
-          specified as ead_value encodes the information that would have
-          been included in a Request Creation Hints response to an
-          unauthorized request sent to RS.  In particular, this
-          information includes the URI to the /token endpoint at the AS.
+       In the same EDHOC message_2, the EAD_2 field includes the EAD
+       item Request Creation Hints, whose CBOR byte string specified as
+       ead_value encodes the information that would have been included
+       in an AS Request Creation Hints response to an unauthorized
+       request sent to RS.  In particular, this information includes the
+       URI to the /token endpoint at the AS.
 
-          Note that C has not made an actual request with a specific
-          request method and targeting a specific application resource.
-          That is, RS does not know yet what resources C is actually
-          interested in accessing later on.
+       Note that C has not made an actual request with a specific
+       request method and targeting a specific application resource.
+       That is, RS does not know yet what resources C is actually
+       interested in accessing later on.
 
    3.  C requests an access token for the right audience and scope from
-       the right AS, based on pre-configured parameters on the client
-       and the information from the EAD item Request Creation Hints
-       within EDHOC message_2, like if C had received a Request Creation
-       Hints response.
+       the right AS, based on pre-configured parameters on C and on the
+       information from the EAD item Request Creation Hints within EDHOC
+       message_2, like if C had received an AS Request Creation Hints
+       response from RS.
 
        C should already know the right audience and scope to specify in
-       the access token request, as that information is not provided by
-       RS in the EAD item Request Creation Hints within EDHOC message_2
-       (see Section 4.13).  There may also be default audience and scope
-       set at AS to use, if none is specified by C in its access token
-       request.
+       the access token request to AS, since that information is not
+       provided by RS in the EAD item Request Creation Hints within
+       EDHOC message_2 (see Section 4.13).  There may also be default
+       audience and scope set at AS to use, if none is specified by C in
+       its access token request.
 
    4.  C sends EDHOC message_3 to RS, specifying the access token by
        means of the EAD item ACE-OAuth Access Token.
@@ -3937,31 +3927,33 @@ A.3.  Non-sequential Workflow
    5.  If a protected request from C for accessing a resource at RS is
        not authorized per the issued access token, then RS replies with
        a protected error response.  Within that error response, RS can
-       provide C with information that would have been specified in a
-       Request Creation Hints response.  This time, that information
-       also includes "audience" and "scope".  After this, C can follow-
-       up requesting a new access token that dynamically updates access
-       rights accordingly (see Section 3.1).
+       provide C with information that would have been specified in an
+       AS Request Creation Hints response.  This time, that information
+       also includes "audience" and "scope".  After this, C can request
+       from AS a new access token that dynamically updates access rights
+       accordingly (see Section 3.1).
 
        Note that this applies also if C uses the EDHOC + OSCORE combined
        request (see [RFC9668]), hence combining EDHOC message_3 with the
        first OSCORE-protected request to access a protected resource at
        RS (see Appendix A.2).
 
-   If, instead, the EDHOC reverse message flow is used, then the
-   following differences compared to what is described above apply:
+   Instead, if the EDHOC reverse message flow is used, then the
+   following differences apply compared to what is described above:
 
-   *  The EAD items Request Creation Hints and Credential By Value are
-      included in EDHOC message_2 by C, in order to ask RS to provide
-      the Request Creation Hints information and to specify AUTH_CRED_RS
-      by value in ID_CRED_I, respectively.
+   *  C includes the EAD items Request Creation Hints and Credential By
+      Value in EDHOC message_2.  By doing so, C asks RS to provide the
+      AS Request Creation Hints information and to specify its
+      authentication credential AUTH_CRED_RS by value in ID_CRED_I when
+      sending EDHOC message_3.
 
-   *  The EAD item Request Creation Hints is included in EDHOC message_3
-      by RS, with value the Request Creation Hints information.
+   *  RS includes the EAD item Request Creation Hints in EDHOC
+      message_3, specifying as ead_value the AS Request Creation Hints
+      information.
 
-   *  After receiving EDHOC message_3, C requests the access token to
-      the AS, based on the information from the EAD item Request
-      Creation Hints within EDHOC message_3.
+   *  After receiving EDHOC message_3, C requests the access token from
+      AS, based on the information from the EAD item Request Creation
+      Hints within EDHOC message_3.
 
    *  Finally, C sends EDHOC message_4 to RS, specifying the access
       token by means of the EAD item ACE-OAuth Access Token.
@@ -3988,8 +3980,7 @@ A.3.  Non-sequential Workflow
      |      (AS Request Creation Hints)        |                       |
      |                                         |                       |
      |  ID_CRED_R identifies                   |                       |
-     |     CRED_R = AUTH_CRED_RS               |                       |
-     |     by value                            |                       |
+     |     CRED_R = AUTH_CRED_RS by value      |                       |
      |                                         |                       |
      |                                         |                       |
      |  EDHOC message_1 to /.well-known/edhoc  |                       |
@@ -3999,15 +3990,13 @@ A.3.  Non-sequential Workflow
      |  EDHOC message_2                        |                       |
  M04 |<----------------------------------------+                       |
      |  ID_CRED_R identifies                   |                       |
-     |     CRED_R = AUTH_CRED_AS               |                       |
-     |     by reference                        |                       |
+     |     CRED_R = AUTH_CRED_AS by reference  |                       |
      |                                         |                       |
      |                                         |                       |
      |  EDHOC message_3 to /.well-known/edhoc  |                       |
  M05 +---------------------------------------->|                       |
      |  ID_CRED_I identifies                   |                       |
-     |     CRED_I = AUTH_CRED_C                |                       |
-     |     by reference                        |                       |
+     |     CRED_I = AUTH_CRED_C by reference   |                       |
      |                                         |                       |
      |                                         |                       |
      |  Access token request to /token         |                       |
@@ -4043,10 +4032,10 @@ A.3.  Non-sequential Workflow
 
       Possibly after chain verification, C adds AUTH_CRED_RS
       to the set of its trusted peer authentication credentials,
-      relying on AS as trusted provider
+      relying on AS as trusted provider.
 
       Regardless, when continuing the EDHOC session, C uses as
-      authentication credential of RS the one identified by ID_CRED_R
+      authentication credential of RS the one identified by ID_CRED_R.
 
      |                                         |                       |
      |  EDHOC message_3 to /.well-known/edhoc  |                       |
@@ -4057,8 +4046,7 @@ A.3.  Non-sequential Workflow
      |      (access token)                     |                       |
      |                                         |                       |
      |  ID_CRED_I identifies                   |                       |
-     |     CRED_I = AUTH_CRED_C                |                       |
-     |     by reference                        |                       |
+     |     CRED_I = AUTH_CRED_C by reference   |                       |
      |                                         |                       |
      |                                         |                       |
      |  Access to protected resource           |                       |
@@ -4083,20 +4071,21 @@ Appendix B.  Profile Requirements
 
    *  Optionally, define new methods for the client to discover the
       necessary permissions and AS for accessing a resource, different
-      from the one proposed in [RFC9200]: Not specified
+      from the one proposed in [RFC9200]: Not specified.
 
-   *  Optionally, specify new grant types: Not specified
+   *  Optionally, specify new grant types: Not specified.
 
    *  Optionally, define the use of client certificates as client
       credential type: C can use authentication credentials of any type
       admitted by the EDHOC protocol, including public key certificates
-      such as X.509 and C509 certificates.
+      such as X.509 [RFC5280] and C509 certificates
+      [I-D.ietf-cose-cbor-encoded-cert].
 
    *  Specify the communication protocol the client and RS must use:
-      CoAP
+      CoAP.
 
    *  Specify the security protocol the client and RS must use to
-      protect their communication: OSCORE
+      protect their communication: OSCORE.
 
    *  Specify how the client and RS mutually authenticate: Explicitly,
       by successfully executing the EDHOC protocol, after which a common
@@ -4109,32 +4098,49 @@ Appendix B.  Profile Requirements
    *  Specify the proof-of-possession protocol(s) and how to select one,
       if several are available.  Also specify which key types (e.g.,
       symmetric/asymmetric) are supported by a specific proof-of-
-      possession protocol: proof of possession is first achieved by RS
-      when successfully processing EDHOC message_3 during the EDHOC
-      session with C, through EDHOC algorithms and symmetric EDHOC
-      session keys.  Also, proof of possession is later achieved by C
-      when receiving from RS: i) the optional EDHOC message_4 during the
-      EDHOC session with RS, through EDHOC algorithms and symmetric
-      EDHOC session keys; or ii) the first response protected with the
-      OSCORE Security Context established after the EDHOC session with
-      RS, through OSCORE algorithms and OSCORE symmetric keys derived
-      from the completed EDHOC session.
+      possession protocol:
 
-   *  Specify a unique ace_profile identifier: coap_edhoc_oscore
+      -  When using EDHOC in its forward message flow, proof of
+         possession is first achieved by RS when successfully processing
+         the incoming EDHOC message_3 during the EDHOC session with C,
+         through EDHOC algorithms and symmetric EDHOC session keys.
+         Proof of possession is later achieved by C when receiving from
+         RS and successfully processing: i) the optional EDHOC message_4
+         during the EDHOC session with RS, through EDHOC algorithms and
+         symmetric EDHOC session keys; or ii) the first response
+         protected with the OSCORE Security Context established after
+         the EDHOC session with RS, through OSCORE algorithms and OSCORE
+         symmetric keys derived from the completed EDHOC session.
+
+      -  Instead, when using EDHOC in its reverse message flow, proof of
+         possession is first achieved by C when successfully processing
+         the incoming EDHOC message_3 during the EDHOC session with RS,
+         through EDHOC algorithms and symmetric EDHOC session keys.
+         Proof of possession is later achieved by RS when receiving from
+         C and successfully processing: i) the optional EDHOC message_4
+         during the EDHOC session with C, through EDHOC algorithms and
+         symmetric EDHOC session keys; or ii) the first request
+         protected with the OSCORE Security Context established after
+         the EDHOC session with C, through OSCORE algorithms and OSCORE
+         symmetric keys derived from the completed EDHOC session.
+
+   *  Specify a unique ace_profile identifier: coap_edhoc_oscore.
 
    *  If introspection is supported, specify the communication and
-      security protocol for introspection: HTTP/CoAP (+ TLS/DTLS/OSCORE)
+      security protocol for introspection: HTTP/CoAP (+ TLS/DTLS/
+      OSCORE).
 
    *  Specify the communication and security protocol for interactions
-      between client and AS: HTTP/CoAP (+ TLS/DTLS/OSCORE)
+      between client and AS: HTTP/CoAP (+ TLS/DTLS/OSCORE).
 
    *  Specify if/how the authz-info endpoint is protected, including how
-      error responses are protected: Not protected
+      error responses are protected: Not protected.
 
    *  Optionally, define methods of token transport other than the
       authz-info endpoint: C can upload the access token when executing
-      EDHOC with RS, by including the access token in the EAD_3 field of
-      EDHOC message_3 (see Section 4.2).
+      EDHOC with RS, by specifying the access token in the EAD item ACE-
+      OAuth Access Token (see Section 4.1).  The EDHOC message where the
+      EAD item is included depends on the EDHOC message flow used.
 
 Appendix C.  CDDL Model
 
@@ -4222,6 +4228,8 @@ D.1.  Version -10 to -11
    *  Added references to IANA registries.
 
    *  Avoid normative language with inherited normative behavior.
+
+   *  Updated compliance with profile requirements.
 
    *  Editorial improvements.
 

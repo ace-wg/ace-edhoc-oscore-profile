@@ -763,6 +763,8 @@ As per {{Section A.2 of RFC9528}}, EDHOC can be transferred over CoAP using eith
 
 If the EDHOC forward message flow is used (see {{forward}}), C acts as EDHOC Initiator and the access token MUST be specified by value or by reference in the EAD\_3 field of EDHOC message\_3. If the EDHOC reverse message flow is used (see {{reverse}}), C acts as EDHOC Responder and the access token MUST be specified by value or by reference either in the EAD\_2 field of EDHOC message\_2 or in the EAD\_4 field of EDHOC message\_4. By doing so, the access token or the associated session identifier gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see {{Section 9.1 of RFC9528}}).
 
+The authentication credential AUTH\_CRED\_C that C specifies in the ID_CRED_X field during the EDHOC session MUST be the same one that C specifies in the access token request to AS (see {{c-as}}) and that is bound to the access token specified to RS during the EDHOC session.
+
 When RS processes the EAD item ACE-OAuth Access Token or the EAD item Session ID, RS MUST verify that the authentication credential AUTH\_CRED\_C that C specifies in the ID\_CRED\_X field during the EDHOC session is the same authentication credential correlated with the EAD item. If such a verification fails, RS MUST abort the EDHOC session. Note that:
 
 * The ID\_CRED\_X field in question is the ID\_CRED\_I or ID\_CRED\_R field, when using the EDHOC forward or reverse message flow, respectively.

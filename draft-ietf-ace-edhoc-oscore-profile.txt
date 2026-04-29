@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 30 October 2026                                       M. Tiloca
+Expires: 31 October 2026                                       M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                           28 April 2026
+                                                           29 April 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 October 2026.
+   This Internet-Draft will expire on 31 October 2026.
 
 Copyright Notice
 
@@ -1372,6 +1372,12 @@ Table of Contents
    associated session identifier gets at least the same confidentiality
    protection by EDHOC as provided to the authentication credential used
    by C in the EDHOC session (see Section 9.1 of [RFC9528]).
+
+   The authentication credential AUTH_CRED_C that C specifies in the
+   ID_CRED_X field during the EDHOC session MUST be the same one that C
+   specifies in the access token request to AS (see Section 3.1) and
+   that is bound to the access token specified to RS during the EDHOC
+   session.
 
    When RS processes the EAD item ACE-OAuth Access Token or the EAD item
    Session ID, RS MUST verify that the authentication credential

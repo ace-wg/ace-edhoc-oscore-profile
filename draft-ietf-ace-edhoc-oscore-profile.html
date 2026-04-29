@@ -1209,7 +1209,7 @@ This profile can be used to delegate management of authorization information fro
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-client-rs-communication" class="internal xref">Client-RS Communication</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-ead-items-for-access-token-" class="internal xref">EAD items for Access Token and Session Identifier</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-ead-item-for-transporting-a" class="internal xref">EAD Item for Transporting Access Token</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-edhoc-session" class="internal xref">EDHOC Session</a></p>
@@ -1541,8 +1541,8 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-1.1-8">The authorization information (authz-info) resource refers to the authorization information endpoint as specified in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>. The term "claim" is used in this document with the same semantics as in <span>[<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>, i.e., it denotes information carried in the access token or returned from introspection.<a href="#section-1.1-8" class="pilcrow">¶</a></p>
 <p id="section-1.1-9">Concise Binary Object Representation (CBOR) <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span><span>[<a href="#RFC8742" class="cite xref">RFC8742</a>]</span> and Concise Data Definition Language (CDDL) <span>[<a href="#RFC8610" class="cite xref">RFC8610</a>]</span> are used in this document. CDDL predefined type names, especially bstr for CBOR byte strings and tstr for CBOR text strings, are used extensively in this document.<a href="#section-1.1-9" class="pilcrow">¶</a></p>
 <p id="section-1.1-10">Examples throughout this document are expressed in CBOR diagnostic notation as defined in <span><a href="https://rfc-editor.org/rfc/rfc8949#section-8" class="relref">Section 8</a> of [<a href="#RFC8949" class="cite xref">RFC8949</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc8610#appendix-G" class="relref">Appendix G</a> of [<a href="#RFC8610" class="cite xref">RFC8610</a>]</span>. Diagnostic notation comments are often used to provide a textual representation of the numeric parameter names and values.<a href="#section-1.1-10" class="pilcrow">¶</a></p>
-<p id="section-1.1-11">In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 13</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. For example, {e'session_id' : h'01', e'cipher_suites' : 3} stands for {0 : h'01', 2 : 3}.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
-<p id="section-1.1-12">Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 13</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. Finally, please delete this note.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
+<p id="section-1.1-11">In the CBOR diagnostic notation used in this document, constructs of the form e'SOME_NAME' are replaced by the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 12</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. For example, {e'session_id' : h'01', e'cipher_suites' : 3} stands for {0 : h'01', 2 : 3}.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
+<p id="section-1.1-12">Note to RFC Editor: Please delete the paragraph immediately preceding this note. Also, in the CBOR diagnostic notation used in this document, please replace the constructs of the form e'SOME_NAME' with the value assigned to SOME_NAME in the CDDL model shown in <a href="#fig-cddl-model" class="auto internal xref">Figure 12</a> of <a href="#sec-cddl-model" class="auto internal xref">Appendix C</a>. Finally, please delete this note.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1846,7 +1846,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
             <p id="section-3.2-7.2.1">issued for the same RS.<a href="#section-3.2-7.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.2-8">If the access token is issued for a group-audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-6.9" class="relref">Section 6.9</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), what is defined above applies, with the difference that the token series is associated with all the RSs in the group-audience, as indicated by their respective AUTH_CRED_RS.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
+<p id="section-3.2-8">If the access token is issued for a group-audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-6.9" class="relref">Section 6.9</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), what is defined above applies, with the difference that the token series is associated with all the resource servers in the group-audience, as indicated by their respective AUTH_CRED_RS.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="as-c">
@@ -2292,20 +2292,18 @@ trust_anchors_inner_entry_value = any
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-client-rs-communication" class="section-name selfRef">Client-RS Communication</a>
       </h2>
 <p id="section-4-1">This section describes the exchange between C and RS, including the execution of the EDHOC protocol and the uploading of the access token from C to RS. An alternative workflow, where AS uploads the access token directly to RS, is defined in <span>[<a href="#I-D.ietf-ace-workflow-and-params" class="cite xref">I-D.ietf-ace-workflow-and-params</a>]</span>.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">C and RS run the EDHOC protocol (see <a href="#edhoc-exec" class="auto internal xref">Section 4.2</a>), and C uploads the access token in an EAD field (see <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a>) of an EDHOC message. Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context (see <a href="#oscore-security-context" class="auto internal xref">Section 4.5</a>). After that, OSCORE is used for protecting communications when C accesses resources at RS, as per the authorization information indicated in the access token (see <a href="#access-rights-verif" class="auto internal xref">Section 4.9</a>).<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-2">C and RS run the EDHOC protocol (see <a href="#edhoc-exec" class="auto internal xref">Section 4.2</a>) and C uploads the access token through the EAD field of an EDHOC message (see <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a>). Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context (see <a href="#oscore-security-context" class="auto internal xref">Section 4.5</a>). After that, OSCORE is used for protecting communications when C accesses resources at RS, as per the authorization information indicated in the access token (see <a href="#access-rights-verif" class="auto internal xref">Section 4.9</a>).<a href="#section-4-2" class="pilcrow">¶</a></p>
 <p id="section-4-3">Detailed examples are shown in <a href="#examples" class="auto internal xref">Appendix A</a>.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <div id="AT-in-EAD">
 <section id="section-4.1">
-        <h3 id="name-ead-items-for-access-token-">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-ead-items-for-access-token-" class="section-name selfRef">EAD items for Access Token and Session Identifier</a>
+        <h3 id="name-ead-item-for-transporting-a">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-ead-item-for-transporting-a" class="section-name selfRef">EAD Item for Transporting Access Token</a>
         </h3>
-<p id="section-4.1-1">This document defines EAD items (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) for transporting an access token or a session identifier in EDHOC.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.1-2.1">
-            <p id="section-4.1-2.1.1">The EAD item ACE-OAuth Access Token, whose CDDL grammar is shown in <a href="#fig-ead-ace-oauth-access-token" class="auto internal xref">Figure 9</a>.<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">This section defines an EAD item (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) for specifying an access token by value in the EAD field of an EDHOC message.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">The name of the EAD item is ACE-OAuth Access Token, for which the CDDL grammar is shown in <a href="#fig-ead-ace-oauth-access-token" class="auto internal xref">Figure 9</a>.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 <span id="name-ead-item-ace-oauth-access-t"></span><div id="fig-ead-ace-oauth-access-token">
 <figure id="figure-9">
-              <div class="lang-cddl sourcecode" id="section-4.1-2.1.2.1">
+          <div class="lang-cddl sourcecode" id="section-4.1-3.1">
 <pre>
 ead_ace_oauth_access_token = (
   ead_label : e'ead_ace_oauth_access_token_label',
@@ -2316,74 +2314,26 @@ access_token = bstr
 </div>
 <figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
 <a href="#name-ead-item-ace-oauth-access-t" class="selfRef">EAD Item ACE-OAuth Access Token.</a>
-              </figcaption></figure>
+          </figcaption></figure>
 </div>
-<p id="section-4.1-2.1.3">
-In particular:<a href="#section-4.1-2.1.3" class="pilcrow">¶</a></p>
+<p id="section-4.1-4">In particular:<a href="#section-4.1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.1-2.1.4.1">
-                <p id="section-4.1-2.1.4.1.1">ead_label is the integer value TBD registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.1.4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1-5.1">
+            <p id="section-4.1-5.1.1">ead_label is the integer value TBD registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-5.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-4.1-2.1.4.2">
-                <p id="section-4.1-2.1.4.2.1">ead_value is a CBOR byte string equal to the value of the "access_token" field of the access token response from AS (see <a href="#as-c" class="auto internal xref">Section 3.3</a>).<a href="#section-4.1-2.1.4.2.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-<p id="section-4.1-2.1.5">
-This EAD item is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must progress the protocol using the received access token, or else abort the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). A client or resource server supporting the profile of ACE defined in this document <span class="bcp14">MUST</span> support this EAD item.<a href="#section-4.1-2.1.5" class="pilcrow">¶</a></p>
-<p id="section-4.1-2.1.6">
-This EAD item is used only when uploading the first access token of a token series, but not for the dynamic update of access rights (see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.6</a>).<a href="#section-4.1-2.1.6" class="pilcrow">¶</a></p>
-<p id="section-4.1-2.1.7">
-Example: assuming ead_label 24 and the value of the "access_token" field equal to h'8343a1010aa2044c53...0f6a' (elided for brevity), the critical EAD item is as follows:<a href="#section-4.1-2.1.7" class="pilcrow">¶</a></p>
-<div class="lang-cbor-diag sourcecode" id="section-4.1-2.1.8">
-<pre>
--24, h'8343a1010aa2044c53...0f6a'
-</pre><a href="#section-4.1-2.1.8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.1-2.1.9">
-Editor's note: Replace the ead_label above with the TBD value registered for ACE-OAuth Access Token in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.1.9" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-4.1-2.2">
-            <p id="section-4.1-2.2.1">The EAD item Session ID, whose CDDL grammar is shown in <a href="#fig-ead-session_id" class="auto internal xref">Figure 10</a>.<a href="#section-4.1-2.2.1" class="pilcrow">¶</a></p>
-<span id="name-ead-item-session-id"></span><div id="fig-ead-session_id">
-<figure id="figure-10">
-              <div class="lang-cddl sourcecode" id="section-4.1-2.2.2.1">
-<pre>
-ead_session_id = (
-  ead_label : e'ead_session_id_label',
-  ead_value : session_id
-)
-session_id = bstr
-</pre>
-</div>
-<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
-<a href="#name-ead-item-session-id" class="selfRef">EAD Item Session ID.</a>
-              </figcaption></figure>
-</div>
-<p id="section-4.1-2.2.3">
-In particular:<a href="#section-4.1-2.2.3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.1-2.2.4.1">
-                <p id="section-4.1-2.2.4.1.1">ead_label is the integer value TBD registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.2.4.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="section-4.1-2.2.4.2">
-                <p id="section-4.1-2.2.4.2.1">ead_value is a CBOR byte string equal to the value of the "session_id" field within the EDHOC_Information object specified by AS in the "edhoc_info" parameter of the response from the /token endpoint, when issuing the first access token of a token series (see <a href="#as-c" class="auto internal xref">Section 3.3</a>).<a href="#section-4.1-2.2.4.2.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-<p id="section-4.1-2.2.5">
-This EAD item is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must progress the protocol using the access token associated with the identifier specified in the ead_value and with the AUTH_CRED_C used in the EDHOC session, or else abort the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). A client or resource server supporting the profile of ACE defined in this document <span class="bcp14">MUST</span> support this EAD item.<a href="#section-4.1-2.2.5" class="pilcrow">¶</a></p>
-<p id="section-4.1-2.2.6">
-This EAD item is used only if the access token has been provisioned to RS and is valid, but there is a need to establish a (new) OSCORE Security Context between C and RS through EDHOC.<a href="#section-4.1-2.2.6" class="pilcrow">¶</a></p>
-<p id="section-4.1-2.2.7">
-Example: assuming ead_label 2 and the value of the "session_id" field equal to h'1645', the critical EAD item is as follows:<a href="#section-4.1-2.2.7" class="pilcrow">¶</a></p>
-<div class="lang-cbor-diag sourcecode" id="section-4.1-2.2.8">
-<pre>
--2, h'1645'
-</pre><a href="#section-4.1-2.2.8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.1-2.2.9">
-Editor's note: Replace the ead_label above with the TBD value registered for Session ID in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-2.2.9" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-5.2">
+            <p id="section-4.1-5.2.1">ead_value is a CBOR byte string equal to the value of the "access_token" field of the access token response from AS (see <a href="#as-c" class="auto internal xref">Section 3.3</a>).<a href="#section-4.1-5.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
+<p id="section-4.1-6">This EAD item is critical, i.e., it is used only with the negative value of its ead_label, indicating that the receiving RS must progress the protocol using the received access token, or else abort the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-3.8" class="relref">Section 3.8</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>). A client or resource server supporting the profile of ACE defined in this document <span class="bcp14">MUST</span> support this EAD item.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-7">This EAD item is used only when uploading the first access token of a token series, but not for the dynamic update of access rights (see <a href="#update-access-rights-c-rs" class="auto internal xref">Section 4.6</a>).<a href="#section-4.1-7" class="pilcrow">¶</a></p>
+<p id="section-4.1-8">Example: assuming ead_label 24 and the value of the "access_token" field equal to h'8343a1010aa2044c53...0f6a' (elided for brevity), the critical EAD item is as follows:<a href="#section-4.1-8" class="pilcrow">¶</a></p>
+<div class="lang-cbor-diag sourcecode" id="section-4.1-9">
+<pre>
+-24, h'8343a1010aa2044c53...0f6a'
+</pre><a href="#section-4.1-9" class="pilcrow">¶</a>
+</div>
+<p id="section-4.1-10">Editor's note: Replace the ead_label above with the TBD value registered for ACE-OAuth Access Token in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.1-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="edhoc-exec">
@@ -2391,23 +2341,20 @@ Editor's note: Replace the ead_label above with the TBD value registered for Ses
         <h3 id="name-edhoc-session">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-edhoc-session" class="section-name selfRef">EDHOC Session</a>
         </h3>
-<p id="section-4.2-1">In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol augmented with an access token. During the EDHOC session, C specifies the access token to RS by value as conveyed in the EAD item ACE-OAuth Access Token, or by reference through a session identifier SESSION_ID conveyed in the EAD item Session ID (see <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a>).<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol augmented with an access token. During the EDHOC session, C specifies the access token to RS, in the EAD field of an EDHOC message. According to this document, C uses the EAD item ACE-OAuth Access Token defined in <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a> and specifying the access token by value. Future documents can define alternative EAD items for specifying the access token by reference.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">As per <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2" class="relref">Appendix A.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, EDHOC can be transferred over CoAP using either the forward or the reverse message flow, thus manifesting the two possible mappings between the ACE roles (client and resource server) and the EDHOC roles (Initiator and Responder), whereas the CoAP roles (client and server) remain the same. The choice of message flow and corresponding mapping depends on the deployment setting and in particular on which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers and the identity of the Responder against passive attackers.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.2-3">If the EDHOC forward message flow is used (see <a href="#forward" class="auto internal xref">Section 4.3</a>), C acts as EDHOC Initiator and the access token <span class="bcp14">MUST</span> be specified by value or by reference in the EAD_3 field of EDHOC message_3. If the EDHOC reverse message flow is used (see <a href="#reverse" class="auto internal xref">Section 4.4</a>), C acts as EDHOC Responder and the access token <span class="bcp14">MUST</span> be specified by value or by reference either in the EAD_2 field of EDHOC message_2 or in the EAD_4 field of EDHOC message_4. By doing so, the access token or the associated session identifier gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-9.1" class="relref">Section 9.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>).<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">If the EDHOC forward message flow is used (see <a href="#forward" class="auto internal xref">Section 4.3</a>), C acts as EDHOC Initiator and the access token <span class="bcp14">MUST</span> be specified in the EAD_3 field of EDHOC message_3. If the EDHOC reverse message flow is used (see <a href="#reverse" class="auto internal xref">Section 4.4</a>), C acts as EDHOC Responder and the access token <span class="bcp14">MUST</span> be specified either in the EAD_2 field of EDHOC message_2 or in the EAD_4 field of EDHOC message_4. By doing so, the access token specified in the EAD field gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-9.1" class="relref">Section 9.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>).<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.2-4">The authentication credential AUTH_CRED_C that C specifies in the ID_CRED_X field during the EDHOC session <span class="bcp14">MUST</span> be the same one that C specifies in the access token request to AS (see <a href="#c-as" class="auto internal xref">Section 3.1</a>) and that is bound to the access token specified to RS during the EDHOC session.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.2-5">When RS processes the EAD item ACE-OAuth Access Token or the EAD item Session ID, RS <span class="bcp14">MUST</span> verify that the authentication credential AUTH_CRED_C that C specifies in the ID_CRED_X field during the EDHOC session is the same authentication credential correlated with the EAD item. If such a verification fails, RS <span class="bcp14">MUST</span> abort the EDHOC session. Note that:<a href="#section-4.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.2-5">When RS processes the EAD item ACE-OAuth Access Token, RS <span class="bcp14">MUST</span> verify that the authentication credential AUTH_CRED_C that C specifies in the ID_CRED_X field during the EDHOC session is the same one that is bound to the access token specified by the EAD item. If such a verification fails, RS <span class="bcp14">MUST</span> abort the EDHOC session. Note that:<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.2-6.1">
-            <p id="section-4.2-6.1.1">The ID_CRED_X field in question is the ID_CRED_I or ID_CRED_R field, when using the EDHOC forward or reverse message flow, respectively.<a href="#section-4.2-6.1.1" class="pilcrow">¶</a></p>
+            <p id="section-4.2-6.1.1">The ID_CRED_X field in question is the ID_CRED_I or ID_CRED_R field, when using the EDHOC forward message flow or reverse message flow, respectively.<a href="#section-4.2-6.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-4.2-6.2">
-            <p id="section-4.2-6.2.1">If the processed EAD item is ACE-OAuth Access Token, then the authentication credential correlated with the EAD item is specified in the 'cnf' claim of the access token conveyed in the EAD item.<a href="#section-4.2-6.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-4.2-6.3">
-            <p id="section-4.2-6.3.1">If the processed EAD item is Session ID, then the authentication credential correlated with the EAD item is specified in the 'cnf' claim of an access token stored at the RS, which is associated with the authentication credential specified by ID_CRED_X and with the SESSION_ID conveyed in the EAD item.<a href="#section-4.2-6.3.1" class="pilcrow">¶</a></p>
+            <p id="section-4.2-6.2.1">The authentication credential bound to the access token is specified by the "cnf" claim of the access token specified by the EAD item.<a href="#section-4.2-6.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.2-7">RS <span class="bcp14">MUST</span> have successfully validated the access token before successfully completing the EDHOC session. If completed successfully, then the EDHOC session is associated with both the access token and the pair (SESSION_ID, AUTH_CRED_C). If the EAD item used in the EDHOC session is ACE-OAuth Access Token, then SESSION_ID is specified by the "session_id" field, within the EDHOC_Information object specified by the "cnf" claim of the access token.<a href="#section-4.2-7" class="pilcrow">¶</a></p>
+<p id="section-4.2-7">RS <span class="bcp14">MUST</span> have successfully validated the access token before successfully completing the EDHOC session. If completed successfully, the EDHOC session is associated with both the access token and the pair (SESSION_ID, AUTH_CRED_C). In particular, SESSION_ID is specified by the "session_id" field, within the EDHOC_Information object specified by the "edhoc_info" claim of the access token.<a href="#section-4.2-7" class="pilcrow">¶</a></p>
 <p id="section-4.2-8">Any previous EDHOC session associated with the same access token and with the same pair (SESSION_ID, AUTH_CRED_C) <span class="bcp14">MUST</span> be deleted. The OSCORE Security Context derived from that EDHOC session <span class="bcp14">MUST</span> also be deleted.<a href="#section-4.2-8" class="pilcrow">¶</a></p>
 <p id="section-4.2-9">Depending on the message flow used, the EDHOC messages will be carried either in CoAP POST requests or in CoAP 2.04 (Changed) responses, as detailed in <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2" class="relref">Appendix A.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-4.2-9" class="pilcrow">¶</a></p>
 <p id="section-4.2-10">C <span class="bcp14">MUST</span> target the EDHOC resource at RS with the URI path specified in the "uri_path" field (if present) of the EDHOC_Information object within the access token response received from AS, which AS sent to C when issuing the first access token of the token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>). If the "uri_path" field is not present in that EDHOC_Information object, C assumes the target resource at RS to be the well-known EDHOC resource at the path /.well-known/edhoc.<a href="#section-4.2-10" class="pilcrow">¶</a></p>
@@ -2427,7 +2374,7 @@ Editor's note: Replace the ead_label above with the TBD value registered for Ses
           <h4 id="name-edhoc-message_1">
 <a href="#section-4.3.1" class="section-number selfRef">4.3.1. </a><a href="#name-edhoc-message_1" class="section-name selfRef">EDHOC message_1</a>
           </h4>
-<p id="section-4.3.1-1">The processing of EDHOC message_1 is specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.2" class="relref">Section 5.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.3.1-1">The processing of EDHOC message_1 is as specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.2" class="relref">Section 5.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.3.1-2.1">
               <p id="section-4.3.1-2.1.1">The EDHOC method <span class="bcp14">MUST</span> be one of the EDHOC methods specified in the "methods" field (if present) of the EDHOC_Information object within the access token response received from AS, which AS sent to C when issuing the first access token of the token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#section-4.3.1-2.1.1" class="pilcrow">¶</a></p>
@@ -2443,7 +2390,7 @@ Editor's note: Replace the ead_label above with the TBD value registered for Ses
           <h4 id="name-edhoc-message_2">
 <a href="#section-4.3.2" class="section-number selfRef">4.3.2. </a><a href="#name-edhoc-message_2" class="section-name selfRef">EDHOC message_2</a>
           </h4>
-<p id="section-4.3.2-1">The processing of EDHOC message_2 is specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.3.2-1">The processing of EDHOC message_2 is as specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.3.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.3.2-2.1">
               <p id="section-4.3.2-2.1.1">The authentication credential CRED_R specified by the message field ID_CRED_R is AUTH_CRED_RS.<a href="#section-4.3.2-2.1.1" class="pilcrow">¶</a></p>
@@ -2456,20 +2403,19 @@ Editor's note: Replace the ead_label above with the TBD value registered for Ses
           <h4 id="name-edhoc-message_3">
 <a href="#section-4.3.3" class="section-number selfRef">4.3.3. </a><a href="#name-edhoc-message_3" class="section-name selfRef">EDHOC message_3</a>
           </h4>
-<p id="section-4.3.3-1">The processing of EDHOC message_3 is specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.4" class="relref">Section 5.4</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3.3-1">The processing of EDHOC message_3 is as specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.4" class="relref">Section 5.4</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.3.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.3.3-2.1">
               <p id="section-4.3.3-2.1.1">The authentication credential CRED_I specified by the message field ID_CRED_I is AUTH_CRED_C.<a href="#section-4.3.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.3.3-2.2">
-              <p id="section-4.3.3-2.2.1">Exactly one of the EAD items ACE-OAuth Access Token or Session ID <span class="bcp14">MUST</span> be included in the EAD_3 field. If this is not the case, RS <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.3.3-2.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-4.3.3-2.3">
-              <p id="section-4.3.3-2.3.1">If the EAD_3 field includes the EAD item ACE-OAuth Access Token, then RS <span class="bcp14">MUST</span> ensure that the access token specified in the EAD item is valid. If the EAD_3 field includes the EAD item Session ID, then RS <span class="bcp14">MUST</span> ensure that the access token associated with the session identifier SESSION_ID specified in the EAD item and with the AUTH_CRED_C used in the EDHOC session is valid.<a href="#section-4.3.3-2.3.1" class="pilcrow">¶</a></p>
-<p id="section-4.3.3-2.3.2">
-The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.3.3-2.3.2" class="pilcrow">¶</a></p>
-<p id="section-4.3.3-2.3.3">
-Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Denied" defined in draft-ietf-lake-authz<a href="#section-4.3.3-2.3.3" class="pilcrow">¶</a></p>
+              <p id="section-4.3.3-2.2.1">The EAD_3 field <span class="bcp14">MUST</span> include an EAD item that specifies the access token issued to C and bound to AUTH_CRED_C. According to this document, such EAD item is ACE-OAuth Access Token (see <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a>), which specifies the access token by value.<a href="#section-4.3.3-2.2.1" class="pilcrow">¶</a></p>
+<p id="section-4.3.3-2.2.2">
+The EAD_3 field <span class="bcp14">MUST NOT</span> include multiple EAD items specifying the access token. If zero or more than one EAD items specifying the access token are included in the EAD_3 field, then RS <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.3.3-2.2.2" class="pilcrow">¶</a></p>
+<p id="section-4.3.3-2.2.3">
+RS <span class="bcp14">MUST</span> verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.3.3-2.2.3" class="pilcrow">¶</a></p>
+<p id="section-4.3.3-2.2.4">
+Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Denied" defined in draft-ietf-lake-authz<a href="#section-4.3.3-2.2.4" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -2484,15 +2430,16 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
 <p id="section-4.4-1">This section details the case where the EDHOC reverse message flow is used (see <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2.2" class="relref">Appendix A.2.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>), i.e., where C acts as the Responder R and RS acts as the Initiator I.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.4-2">Consistent with the EDHOC reverse message flow, C sends a trigger message, EDHOC message_2, and (optionally) EDHOC message_4 to RS as CoAP POST requests. RS sends EDHOC message_1 and EDHOC message_3 as CoAP 2.04 (Changed) responses.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 <p id="section-4.4-3">In this profile of ACE, if RS implements the EDHOC reverse message flow, then RS <span class="bcp14">MUST</span> implement EDHOC message_4.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
-<p id="section-4.4-4">Exactly one of the EAD items ACE-OAuth Access Token or Session ID <span class="bcp14">MUST</span> be included in either the EAD_2 field of EDHOC message_2 or the EAD_4 field of EDHOC message_4. If this is not the case, RS <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
-<p id="section-4.4-5">Specific instructions for the different messages are provided in the following subsections.<a href="#section-4.4-5" class="pilcrow">¶</a></p>
+<p id="section-4.4-4">Either the EAD_2 field of EDHOC message_2 or the EAD_4 field of EDHOC message_4 <span class="bcp14">MUST</span> include an EAD item that specifies the access token issued to C and bound to AUTH_CRED_C. According to this document, such EAD item is ACE-OAuth Access Token (see <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a>), which specifies the access token by value.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-5">The EAD field <span class="bcp14">MUST NOT</span> include multiple EAD items specifying the access token. If zero or more than one EAD items specifying the access token are included in the EAD field, then RS <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4-5" class="pilcrow">¶</a></p>
+<p id="section-4.4-6">Specific instructions for the different messages are provided in the following subsections.<a href="#section-4.4-6" class="pilcrow">¶</a></p>
 <div id="trigger-message">
 <section id="section-4.4.1">
           <h4 id="name-trigger-message">
 <a href="#section-4.4.1" class="section-number selfRef">4.4.1. </a><a href="#name-trigger-message" class="section-name selfRef">Trigger Message</a>
           </h4>
 <p id="section-4.4.1-1">As specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2.2" class="relref">Appendix A.2.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, the trigger message is an empty POST request that C sends to the EDHOC resource at RS, as intended to trigger a response conveying EDHOC message_1.<a href="#section-4.4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.4.1-2">If the access token is issued for a group-audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-6.9" class="relref">Section 6.9</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), then C can perform an EDHOC "roll call", by sending the trigger message as a group request over IP multicast <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>. For the sake of efficiency, it is expected that the group-audience is appropriately associated with a CoAP group and/or application group (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-18#section-2" class="relref">Section 2</a> of [<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>), so that only the RSs belonging to the group-audience receive the trigger message. After that, C can receive a different EDHOC message_1 from each of the targeted RSs and separately progresses the corresponding EDHOC sessions, by sending a different EDHOC message_2 to each RS that has replied with an EDHOC message_1.<a href="#section-4.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.4.1-2">If the access token is issued for a group-audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-6.9" class="relref">Section 6.9</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>), then C can perform an EDHOC "roll call", by sending the trigger message as a group request over IP multicast <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>. For the sake of efficiency, it is expected that the group-audience is appropriately associated with a CoAP group and/or application group (see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-18#section-2" class="relref">Section 2</a> of [<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>), so that only the resource servers belonging to the group-audience receive the trigger message. After that, C can receive a different EDHOC message_1 from each of the targeted RSs and separately progresses the corresponding EDHOC sessions, by sending a different EDHOC message_2 to each RS that has replied with an EDHOC message_1.<a href="#section-4.4.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="edhoc-message1-1">
@@ -2500,7 +2447,7 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
           <h4 id="name-edhoc-message_1-2">
 <a href="#section-4.4.2" class="section-number selfRef">4.4.2. </a><a href="#name-edhoc-message_1-2" class="section-name selfRef">EDHOC message_1</a>
           </h4>
-<p id="section-4.4.2-1">The processing of EDHOC message_1 is specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.2" class="relref">Section 5.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-4.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.4.2-1">The processing of EDHOC message_1 is as specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.2" class="relref">Section 5.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-4.4.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="edhoc-message2-1">
@@ -2508,18 +2455,21 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
           <h4 id="name-edhoc-message_2-2">
 <a href="#section-4.4.3" class="section-number selfRef">4.4.3. </a><a href="#name-edhoc-message_2-2" class="section-name selfRef">EDHOC message_2</a>
           </h4>
-<p id="section-4.4.3-1">The processing of EDHOC message_2 is specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.4.3-1">The processing of EDHOC message_2 is as specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.4.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4.3-2.1">
               <p id="section-4.4.3-2.1.1">The authentication credential CRED_R specified by the message field ID_CRED_R is AUTH_CRED_C.<a href="#section-4.4.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-4.4.3-2.2">
-              <p id="section-4.4.3-2.2.1">If the EAD_2 field includes the EAD item ACE-OAuth Access Token, then RS <span class="bcp14">MUST</span> ensure that the access token specified in the EAD item is valid. If the EAD_2 field includes the EAD item Session ID, then RS <span class="bcp14">MUST</span> ensure that the access token associated with the session identifier SESSION_ID specified in the EAD item and with the AUTH_CRED_C used in the EDHOC session is valid.<a href="#section-4.4.3-2.2.1" class="pilcrow">¶</a></p>
+              <p id="section-4.4.3-2.2.1">The EAD_2 field <span class="bcp14">MUST</span> include an EAD item that specifies the access token issued to C and bound to AUTH_CRED_C, if and only if C does not specify the access token in an EAD item within the EAD_4 field of the later EDHOC message_4 in the same EDHOC session.<a href="#section-4.4.3-2.2.1" class="pilcrow">¶</a></p>
+<p id="section-4.4.3-2.2.2">
+Note that, in this case, C specifies the access token before RS is authenticated, since C will not gain knowledge of the identity of RS until having verified EDHOC message_3. In particular, in the case of a group-audience, when there may be multiple legitimate resource servers, C does not yet know which member of the group-audience it communicates with (if any).<a href="#section-4.4.3-2.2.2" class="pilcrow">¶</a></p>
+<p id="section-4.4.3-2.2.3">
+RS <span class="bcp14">MUST</span> verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.3-2.2.3" class="pilcrow">¶</a></p>
+<p id="section-4.4.3-2.2.4">
+Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.3-2.2.4" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-4.4.3-3">Note that, in this case, C uploads the Access Token or session ID before RS is authenticated, since C will not gain knowledge of the identity of RS until having verified EDHOC message_3. In particular, in the case of a group-audience, when there may be multiple legitimate resource servers, C does not yet know which member of the group-audience it communicates with (if any).<a href="#section-4.4.3-3" class="pilcrow">¶</a></p>
-<p id="section-4.4.3-4">The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.4.3-5">Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="edhoc-message3-1">
@@ -2527,7 +2477,7 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
           <h4 id="name-edhoc-message_3-2">
 <a href="#section-4.4.4" class="section-number selfRef">4.4.4. </a><a href="#name-edhoc-message_3-2" class="section-name selfRef">EDHOC message_3</a>
           </h4>
-<p id="section-4.4.4-1">The processing of EDHOC message_3 is specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.4" class="relref">Section 5.4</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4.4-1">The processing of EDHOC message_3 is as specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.4" class="relref">Section 5.4</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.4.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4.4-2.1">
               <p id="section-4.4.4-2.1.1">The authentication credential CRED_I specified by the message field ID_CRED_I is AUTH_CRED_RS.<a href="#section-4.4.4-2.1.1" class="pilcrow">¶</a></p>
@@ -2540,12 +2490,12 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
           <h4 id="name-edhoc-message_4">
 <a href="#section-4.4.5" class="section-number selfRef">4.4.5. </a><a href="#name-edhoc-message_4" class="section-name selfRef">EDHOC message_4</a>
           </h4>
-<p id="section-4.4.5-1">The processing of EDHOC message_4 is specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.5" class="relref">Section 5.5</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.4.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.4.5-1">The processing of EDHOC message_4 is as specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.5" class="relref">Section 5.5</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.4.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4.5-2.1">
-              <p id="section-4.4.5-2.1.1">If the EAD_4 field includes the EAD item ACE-OAuth Access Token, then RS <span class="bcp14">MUST</span> ensure that the access token specified in the EAD item is valid. If the EAD_4 field includes the EAD item Session ID, then RS <span class="bcp14">MUST</span> ensure that the access token associated with the session identifier SESSION_ID specified in the EAD item and with the AUTH_CRED_C used in the EDHOC session is valid.<a href="#section-4.4.5-2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-4.4.5-2.1.1">The EAD_4 field <span class="bcp14">MUST</span> include an EAD item that specifies the access token issued to C and bound to AUTH_CRED_C, if and only if C did not specify the access token in an EAD item within the EAD_2 field of the previous EDHOC message_2 in the same EDHOC session.<a href="#section-4.4.5-2.1.1" class="pilcrow">¶</a></p>
 <p id="section-4.4.5-2.1.2">
-The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.5-2.1.2" class="pilcrow">¶</a></p>
+RS <span class="bcp14">MUST</span> verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.5-2.1.2" class="pilcrow">¶</a></p>
 <p id="section-4.4.5-2.1.3">
 Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.5-2.1.3" class="pilcrow">¶</a></p>
 </li>
@@ -2732,9 +2682,9 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
 </li>
         </ul>
 <p id="section-4.13-7">AS Request Creation Hints can also be requested and retrieved by means of the EAD item Request Creation Hints defined in this section.<a href="#section-4.13-7" class="pilcrow">¶</a></p>
-<p id="section-4.13-8">The CDDL grammar for the EAD item is shown in <a href="#fig-ead-rch" class="auto internal xref">Figure 11</a> and its ead_label is registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>. An example of its usage is provided in <a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a>.<a href="#section-4.13-8" class="pilcrow">¶</a></p>
+<p id="section-4.13-8">The CDDL grammar for the EAD item is shown in <a href="#fig-ead-rch" class="auto internal xref">Figure 10</a> and its ead_label is registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>. An example of its usage is provided in <a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a>.<a href="#section-4.13-8" class="pilcrow">¶</a></p>
 <span id="name-ead-item-request-creation-h"></span><div id="fig-ead-rch">
-<figure id="figure-11">
+<figure id="figure-10">
           <div class="lang-cddl sourcecode" id="section-4.13-9.1">
 <pre>
 ead_request_creation_hints = (
@@ -2744,7 +2694,7 @@ ead_request_creation_hints = (
 AS_request_creation_hints = map
 </pre>
 </div>
-<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
+<figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
 <a href="#name-ead-item-request-creation-h" class="selfRef">EAD item Request Creation Hints.</a>
           </figcaption></figure>
 </div>
@@ -2757,7 +2707,7 @@ AS_request_creation_hints = map
             <p id="section-4.13-11.2.1">In EAD_2 and EAD_3, when using the reverse message flow.<a href="#section-4.13-11.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.13-12">In the first EDHOC message from C to RS, the EAD item has no ead_value and asks the RS to include the same EAD item in the next EDHOC message.<a href="#section-4.13-12" class="pilcrow">¶</a></p>
+<p id="section-4.13-12">In the first EDHOC message from C to RS, the EAD item has no ead_value and asks RS to include the same EAD item in the next EDHOC message.<a href="#section-4.13-12" class="pilcrow">¶</a></p>
 <p id="section-4.13-13">In the first EDHOC message from RS to C, the EAD item has ead_value. In particular, ead_value is a CBOR byte string whose value encodes the CBOR map that is used as payload in an unprotected AS Request Creation Hints message (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>). The keys of the CBOR map are defined in the IANA registry "ACE Authorization Server Request Creation Hints" <span>[<a href="#ACE.Request.Creation.Hints" class="cite xref">ACE.Request.Creation.Hints</a>]</span>.<a href="#section-4.13-13" class="pilcrow">¶</a></p>
 <p id="section-4.13-14">This EAD item is non-critical, i.e., it can be ignored by the recipient peer. The EAD item is <span class="bcp14">OPTIONAL</span> to implement.<a href="#section-4.13-14" class="pilcrow">¶</a></p>
 <p id="section-4.13-15">Example: assuming ead_label 1 and the AS Request Creation Hints CBOR map containing one element with key 1 and with value the CBOR text string encoding "coap://www.example.com/token" (i.e., the absolute URI of the /token endpoint at AS), the non-critical EAD item in the first EDHOC message from RS to C is as follows:<a href="#section-4.13-15" class="pilcrow">¶</a></p>
@@ -2767,7 +2717,7 @@ AS_request_creation_hints = map
 </pre><a href="#section-4.13-16" class="pilcrow">¶</a>
 </div>
 <p id="section-4.13-17">Editor's note: Replace the ead_label above with the TBD value registered for Request Creation Hints in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>.<a href="#section-4.13-17" class="pilcrow">¶</a></p>
-<p id="section-4.13-18">Since C has not made an actual request targeting a specific application resource, the RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS Request Creation Hints CBOR map <span class="bcp14">MUST NOT</span> include "audience" and <span class="bcp14">SHOULD NOT</span> include "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-18" class="pilcrow">¶</a></p>
+<p id="section-4.13-18">Since C has not made an actual request targeting a specific application resource, RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS Request Creation Hints CBOR map <span class="bcp14">MUST NOT</span> include "audience" and <span class="bcp14">SHOULD NOT</span> include "scope" when present in the EAD item conveyed in the EAD_2 field.<a href="#section-4.13-18" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="auth-cred-by-value">
@@ -2779,9 +2729,9 @@ AS_request_creation_hints = map
 <p id="section-4.14-2">However, if one of the peers has deleted the other peer's authentication credential from its local storage, then there should be a way to restore it without requesting a new access token.<a href="#section-4.14-2" class="pilcrow">¶</a></p>
 <p id="section-4.14-3">Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator identifies its credential AUTH_CRED_C by reference ID_CRED_I of message_3, then the ACE Resource Server / EDHOC Responder can return an EDHOC error message with error code 3 (Unknown credential referenced). This enables the Initiator to restart the protocol using some other ID_CRED_I (typically, the authentication credential AUTH_CRED_C specified by value), thereby resolving the issue. Instead, if the ACE Resource Server / EDHOC Responder identifies its credential AUTH_CRED_RS by reference in ID_CRED_R of message_2, then an EDHOC error message with error code 3 returned by the ACE Client / EDHOC Initiator does not automatically solve the problem: since the Responder has aborted the EDHOC session without authenticating the Initiator, the Responder has no reliable way to act differently in a following EDHOC session with that other peer.<a href="#section-4.14-3" class="pilcrow">¶</a></p>
 <p id="section-4.14-4">In order to remediate this situation, this section specifies the EAD item Credential By Value for requesting the peer's authentication credential by value.<a href="#section-4.14-4" class="pilcrow">¶</a></p>
-<p id="section-4.14-5">The CDDL grammar for the EAD item is shown in <a href="#fig-ead-req-authcred" class="auto internal xref">Figure 12</a> and its ead_label is registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>. An example of its usage is provided in <a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a>.<a href="#section-4.14-5" class="pilcrow">¶</a></p>
+<p id="section-4.14-5">The CDDL grammar for the EAD item is shown in <a href="#fig-ead-req-authcred" class="auto internal xref">Figure 11</a> and its ead_label is registered in <a href="#iana-edhoc-ead" class="auto internal xref">Section 14.8</a>. An example of its usage is provided in <a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a>.<a href="#section-4.14-5" class="pilcrow">¶</a></p>
 <span id="name-ead-item-credential-by-valu"></span><div id="fig-ead-req-authcred">
-<figure id="figure-12">
+<figure id="figure-11">
           <div class="lang-cddl sourcecode" id="section-4.14-6.1">
 <pre>
 ead_credential_by_value = (
@@ -2789,7 +2739,7 @@ ead_credential_by_value = (
 )
 </pre>
 </div>
-<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
+<figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
 <a href="#name-ead-item-credential-by-valu" class="selfRef">EAD item Credential By Value.</a>
           </figcaption></figure>
 </div>
@@ -2943,7 +2893,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
         <h3 id="name-cwt-containing-a-cose_key">
 <a href="#section-7.9" class="section-number selfRef">7.9. </a><a href="#name-cwt-containing-a-cose_key" class="section-name selfRef">CWT Containing a COSE_Key</a>
         </h3>
-<p id="section-7.9-1">The confirmation method "kcwt" specifies a CBOR Web Token (CWT) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a 'cnf' claim and possibly other claims. The semantics of "kcwt" is like that of the "kcwt" COSE Header Parameter specified in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-7.9-1" class="pilcrow">¶</a></p>
+<p id="section-7.9-1">The confirmation method "kcwt" specifies a CBOR Web Token (CWT) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a "cnf" claim and possibly other claims. The semantics of "kcwt" is like that of the "kcwt" COSE Header Parameter specified in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-7.9-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ssec-cwt-conf-kccs">
@@ -2951,7 +2901,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
         <h3 id="name-ccs-containing-a-cose_key">
 <a href="#section-7.10" class="section-number selfRef">7.10. </a><a href="#name-ccs-containing-a-cose_key" class="section-name selfRef">CCS Containing a COSE_Key</a>
         </h3>
-<p id="section-7.10-1">The confirmation method "kccs" specifies a CWT Claims Set (CCS) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a 'cnf' claim and possibly other claims. The semantics of "kccs" is like that of the "kccs" COSE Header Parameter specified in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-7.10-1" class="pilcrow">¶</a></p>
+<p id="section-7.10-1">The confirmation method "kccs" specifies a CWT Claims Set (CCS) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a "cnf" claim and possibly other claims. The semantics of "kccs" is like that of the "kccs" COSE Header Parameter specified in <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-7.10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3031,7 +2981,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
         <h3 id="name-cwt-containing-a-cose_key-2">
 <a href="#section-8.9" class="section-number selfRef">8.9. </a><a href="#name-cwt-containing-a-cose_key-2" class="section-name selfRef">CWT Containing a COSE_Key</a>
         </h3>
-<p id="section-8.9-1">The confirmation method "kcwt" specifies a CBOR Web Token (CWT) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a 'cnf' claim and possibly other claims. The format of "kcwt" is the base64url-encoded serialization of the CWT.<a href="#section-8.9-1" class="pilcrow">¶</a></p>
+<p id="section-8.9-1">The confirmation method "kcwt" specifies a CBOR Web Token (CWT) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a "cnf" claim and possibly other claims. The format of "kcwt" is the base64url-encoded serialization of the CWT.<a href="#section-8.9-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ssec-jwt-conf-kccs">
@@ -3039,7 +2989,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
         <h3 id="name-ccs-containing-a-cose_key-2">
 <a href="#section-8.10" class="section-number selfRef">8.10. </a><a href="#name-ccs-containing-a-cose_key-2" class="section-name selfRef">CCS Containing a COSE_Key</a>
         </h3>
-<p id="section-8.10-1">The confirmation method "kccs" specifies a CWT Claims Set (CCS) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a 'cnf' claim and possibly other claims. The format of "kccs" is the base64url-encoded serialization of the CCS.<a href="#section-8.10-1" class="pilcrow">¶</a></p>
+<p id="section-8.10-1">The confirmation method "kccs" specifies a CWT Claims Set (CCS) <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a "cnf" claim and possibly other claims. The format of "kccs" is the base64url-encoded serialization of the CCS.<a href="#section-8.10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3489,7 +3439,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
             <p id="section-14.6-18.1.1">Confirmation Method Value: kcwt<a href="#section-14.6-18.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.6-18.2">
-            <p id="section-14.6-18.2.1">Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims<a href="#section-14.6-18.2.1" class="pilcrow">¶</a></p>
+            <p id="section-14.6-18.2.1">Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a "cnf" claim and possibly other claims<a href="#section-14.6-18.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.6-18.3">
             <p id="section-14.6-18.3.1">Change Controller: IETF<a href="#section-14.6-18.3.1" class="pilcrow">¶</a></p>
@@ -3504,7 +3454,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
             <p id="section-14.6-20.1.1">Confirmation Method Value: kccs<a href="#section-14.6-20.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.6-20.2">
-            <p id="section-14.6-20.2.1">Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims<a href="#section-14.6-20.2.1" class="pilcrow">¶</a></p>
+            <p id="section-14.6-20.2.1">Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a "cnf" claim and possibly other claims<a href="#section-14.6-20.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.6-20.3">
             <p id="section-14.6-20.3.1">Change Controller: IETF<a href="#section-14.6-20.3.1" class="pilcrow">¶</a></p>
@@ -3718,7 +3668,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
             <p id="section-14.7-18.1.1">Confirmation Method Name: kcwt<a href="#section-14.7-18.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.7-18.2">
-            <p id="section-14.7-18.2.1">Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a 'cnf' claim and possibly other claims<a href="#section-14.7-18.2.1" class="pilcrow">¶</a></p>
+            <p id="section-14.7-18.2.1">Confirmation Method Description: A CBOR Web Token (CWT) containing a COSE_Key in a "cnf" claim and possibly other claims<a href="#section-14.7-18.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.7-18.3">
             <p id="section-14.7-18.3.1">JWT Confirmation Method Name: kcwt<a href="#section-14.7-18.3.1" class="pilcrow">¶</a></p>
@@ -3742,7 +3692,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
             <p id="section-14.7-20.1.1">Confirmation Method Name: kccs<a href="#section-14.7-20.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.7-20.2">
-            <p id="section-14.7-20.2.1">Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a 'cnf' claim and possibly other claims<a href="#section-14.7-20.2.1" class="pilcrow">¶</a></p>
+            <p id="section-14.7-20.2.1">Confirmation Method Description: A CWT Claims Set (CCS) containing a COSE_Key in a "cnf" claim and possibly other claims<a href="#section-14.7-20.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.7-20.3">
             <p id="section-14.7-20.3.1">JWT Confirmation Method Name: kccs<a href="#section-14.7-20.3.1" class="pilcrow">¶</a></p>
@@ -3785,46 +3735,31 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
 <p id="section-14.8-3"><br></p>
 <ul class="normal">
 <li class="normal" id="section-14.8-4.1">
-            <p id="section-14.8-4.1.1">Name: Session ID<a href="#section-14.8-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-14.8-4.1.1">Name: Credential By Value<a href="#section-14.8-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.8-4.2">
             <p id="section-14.8-4.2.1">Label: TBD (value between 1 and 23)<a href="#section-14.8-4.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.8-4.3">
-            <p id="section-14.8-4.3.1">Description: The identifier of an EDHOC session<a href="#section-14.8-4.3.1" class="pilcrow">¶</a></p>
+            <p id="section-14.8-4.3.1">Description: The sender peer wishes to receive the other peer's credential transported by value (and not identified by reference)<a href="#section-14.8-4.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.8-4.4">
-            <p id="section-14.8-4.4.1">Reference: [RFC-XXXX], <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a><a href="#section-14.8-4.4.1" class="pilcrow">¶</a></p>
+            <p id="section-14.8-4.4.1">Reference: [RFC-XXXX], <a href="#auth-cred-by-value" class="auto internal xref">Section 4.14</a><a href="#section-14.8-4.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-14.8-5"><br></p>
 <ul class="normal">
 <li class="normal" id="section-14.8-6.1">
-            <p id="section-14.8-6.1.1">Name: Credential By Value<a href="#section-14.8-6.1.1" class="pilcrow">¶</a></p>
+            <p id="section-14.8-6.1.1">Name: Request Creation Hints<a href="#section-14.8-6.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.8-6.2">
             <p id="section-14.8-6.2.1">Label: TBD (value between 1 and 23)<a href="#section-14.8-6.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.8-6.3">
-            <p id="section-14.8-6.3.1">Description: The sender peer wishes to receive the other peer's credential transported by value (and not identified by reference)<a href="#section-14.8-6.3.1" class="pilcrow">¶</a></p>
+            <p id="section-14.8-6.3.1">Description: Request or convey AS Request Creation Hints<a href="#section-14.8-6.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.8-6.4">
-            <p id="section-14.8-6.4.1">Reference: [RFC-XXXX], <a href="#auth-cred-by-value" class="auto internal xref">Section 4.14</a><a href="#section-14.8-6.4.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="section-14.8-7"><br></p>
-<ul class="normal">
-<li class="normal" id="section-14.8-8.1">
-            <p id="section-14.8-8.1.1">Name: Request Creation Hints<a href="#section-14.8-8.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-14.8-8.2">
-            <p id="section-14.8-8.2.1">Label: TBD (value between 1 and 23)<a href="#section-14.8-8.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-14.8-8.3">
-            <p id="section-14.8-8.3.1">Description: Request or convey AS Request Creation Hints<a href="#section-14.8-8.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-14.8-8.4">
-            <p id="section-14.8-8.4.1">Reference: [RFC-XXXX], <a href="#as-creation-hints" class="auto internal xref">Section 4.13</a><a href="#section-14.8-8.4.1" class="pilcrow">¶</a></p>
+            <p id="section-14.8-6.4.1">Reference: [RFC-XXXX], <a href="#as-creation-hints" class="auto internal xref">Section 4.13</a><a href="#section-14.8-6.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -5539,7 +5474,7 @@ Note that this applies also if C uses the EDHOC + OSCORE combined request (see <
       </h2>
 <p id="appendix-C-1">This section is to be removed before publishing as an RFC.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <span id="name-cddl-model-2"></span><div id="fig-cddl-model">
-<figure id="figure-13">
+<figure id="figure-12">
         <div class="alignLeft art-cddl art-text artwork" id="appendix-C-2.1">
 <pre>
 ; ACE Profiles
@@ -5593,7 +5528,7 @@ x5t_ta_type = 34
 x5u_ta_type = 35
 </pre>
 </div>
-<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
 <a href="#name-cddl-model-2" class="selfRef">CDDL model</a>
         </figcaption></figure>
 </div>
@@ -5629,33 +5564,36 @@ x5u_ta_type = 35
             </ul>
 </li>
           <li class="normal" id="appendix-D.1-1.3">
-            <p id="appendix-D.1-1.3.1">Added the "Operational Considerations" section.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-D.1-1.3.2.1">
-                <p id="appendix-D.1-1.3.2.1.1">RS belonging to multiple audiences with different credentials.<a href="#appendix-D.1-1.3.2.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.3.1">Removed definition of the EAD item Session ID.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-D.1-1.3.2.2">
-                <p id="appendix-D.1-1.3.2.2.1">Keeping knowledge about C and RS up-to-date at AS.<a href="#appendix-D.1-1.3.2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="appendix-D.1-1.4">
+            <p id="appendix-D.1-1.4.1">Added the "Operational Considerations" section.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-D.1-1.4.2.1">
+                <p id="appendix-D.1-1.4.2.1.1">RS belonging to multiple audiences with different credentials.<a href="#appendix-D.1-1.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-D.1-1.4.2.2">
+                <p id="appendix-D.1-1.4.2.2.1">Keeping knowledge about C and RS up-to-date at AS.<a href="#appendix-D.1-1.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="appendix-D.1-1.4">
-            <p id="appendix-D.1-1.4.1">Added figure with message flow for Non-sequential Workflow.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
-</li>
           <li class="normal" id="appendix-D.1-1.5">
-            <p id="appendix-D.1-1.5.1">Improved notation and details in examples of message exchanges.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.5.1">Added figure with message flow for Non-sequential Workflow.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.6">
-            <p id="appendix-D.1-1.6.1">Added references to IANA registries.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.6.1">Improved notation and details in examples of message exchanges.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.7">
-            <p id="appendix-D.1-1.7.1">Avoid normative language with inherited normative behavior.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.7.1">Added references to IANA registries.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.8">
-            <p id="appendix-D.1-1.8.1">Updated compliance with profile requirements.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.8.1">Avoid normative language with inherited normative behavior.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.9">
-            <p id="appendix-D.1-1.9.1">Editorial improvements.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.9.1">Updated compliance with profile requirements.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.10">
+            <p id="appendix-D.1-1.10.1">Editorial improvements.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

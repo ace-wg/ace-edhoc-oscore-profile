@@ -1055,7 +1055,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 31 October 2026</td>
+<td class="center">Expires 1 November 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-04-29" class="published">29 April 2026</time>
+<time datetime="2026-04-30" class="published">30 April 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-10-31">31 October 2026</time></dd>
+<dd class="expires"><time datetime="2026-11-01">1 November 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1137,7 +1137,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 31 October 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 November 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2343,7 +2343,7 @@ access_token = bstr
         </h3>
 <p id="section-4.2-1">In order to mutually authenticate and establish secure communication for authorized access according to the profile described in this document, C and RS run the EDHOC protocol augmented with an access token. During the EDHOC session, C specifies the access token to RS, in the EAD field of an EDHOC message. According to this document, C uses the EAD item ACE-OAuth Access Token defined in <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a> and specifying the access token by value. Future documents can define alternative EAD items for specifying the access token by reference.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">As per <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2" class="relref">Appendix A.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, EDHOC can be transferred over CoAP using either the forward or the reverse message flow, thus manifesting the two possible mappings between the ACE roles (client and resource server) and the EDHOC roles (Initiator and Responder), whereas the CoAP roles (client and server) remain the same. The choice of message flow and corresponding mapping depends on the deployment setting and in particular on which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers and the identity of the Responder against passive attackers.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
-<p id="section-4.2-3">If the EDHOC forward message flow is used (see <a href="#forward" class="auto internal xref">Section 4.3</a>), C acts as EDHOC Initiator and the access token <span class="bcp14">MUST</span> be specified in the EAD_3 field of EDHOC message_3. If the EDHOC reverse message flow is used (see <a href="#reverse" class="auto internal xref">Section 4.4</a>), C acts as EDHOC Responder and the access token <span class="bcp14">MUST</span> be specified either in the EAD_2 field of EDHOC message_2 or in the EAD_4 field of EDHOC message_4. By doing so, the access token specified in the EAD field gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-9.1" class="relref">Section 9.1</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>).<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">If the EDHOC forward message flow is used (see <a href="#forward" class="auto internal xref">Section 4.3</a>), C acts as EDHOC Initiator and the access token <span class="bcp14">MUST</span> be specified in the EAD_3 field of EDHOC message_3. If the EDHOC reverse message flow is used (see <a href="#reverse" class="auto internal xref">Section 4.4</a>), C acts as EDHOC Responder and the access token <span class="bcp14">MUST</span> be specified in the EAD_4 field of EDHOC message_4. By doing so, the access token specified in the EAD field is always protected by EDHOC, using authenticated encryption and achieving confidentiality against active attackers (see Sections <a href="https://rfc-editor.org/rfc/rfc9528#section-9.1" class="relref">9.1</a> and <a href="https://rfc-editor.org/rfc/rfc9528#section-9.2" class="relref">9.2</a> of <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>).<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.2-4">The authentication credential AUTH_CRED_C that C specifies in the ID_CRED_X field during the EDHOC session <span class="bcp14">MUST</span> be the same one that C specifies in the access token request to AS (see <a href="#c-as" class="auto internal xref">Section 3.1</a>) and that is bound to the access token specified to RS during the EDHOC session.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
 <p id="section-4.2-5">When RS processes the EAD item ACE-OAuth Access Token, RS <span class="bcp14">MUST</span> verify that the authentication credential AUTH_CRED_C that C specifies in the ID_CRED_X field during the EDHOC session is the same one that is bound to the access token specified by the EAD item. If such a verification fails, RS <span class="bcp14">MUST</span> abort the EDHOC session. Note that:<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -2428,11 +2428,8 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-reverse-message-flow" class="section-name selfRef">Reverse Message Flow</a>
         </h3>
 <p id="section-4.4-1">This section details the case where the EDHOC reverse message flow is used (see <span><a href="https://rfc-editor.org/rfc/rfc9528#appendix-A.2.2" class="relref">Appendix A.2.2</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>), i.e., where C acts as the Responder R and RS acts as the Initiator I.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.4-2">Consistent with the EDHOC reverse message flow, C sends a trigger message, EDHOC message_2, and (optionally) EDHOC message_4 to RS as CoAP POST requests. RS sends EDHOC message_1 and EDHOC message_3 as CoAP 2.04 (Changed) responses.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
-<p id="section-4.4-3">In this profile of ACE, if RS implements the EDHOC reverse message flow, then RS <span class="bcp14">MUST</span> implement EDHOC message_4.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
-<p id="section-4.4-4">Either the EAD_2 field of EDHOC message_2 or the EAD_4 field of EDHOC message_4 <span class="bcp14">MUST</span> include an EAD item that specifies the access token issued to C and bound to AUTH_CRED_C. According to this document, such EAD item is ACE-OAuth Access Token (see <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a>), which specifies the access token by value.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
-<p id="section-4.4-5">The EAD field <span class="bcp14">MUST NOT</span> include multiple EAD items specifying the access token. If zero or more than one EAD items specifying the access token are included in the EAD field, then RS <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4-5" class="pilcrow">¶</a></p>
-<p id="section-4.4-6">Specific instructions for the different messages are provided in the following subsections.<a href="#section-4.4-6" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">Consistent with the EDHOC reverse message flow, C sends a trigger message, EDHOC message_2, and EDHOC message_4 to RS as CoAP POST requests. RS sends EDHOC message_1 and EDHOC message_3 as CoAP 2.04 (Changed) responses.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">In this profile of ACE, if C/RS implements the EDHOC reverse message flow, then C/RS <span class="bcp14">MUST</span> implement EDHOC message_4. In particular, when using the EDHOC reverse message flow, C <span class="bcp14">MUST</span> send EDHOC message_4 after successfully completing the processing of the incoming EDHOC message_3.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
 <div id="trigger-message">
 <section id="section-4.4.1">
           <h4 id="name-trigger-message">
@@ -2460,15 +2457,6 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
 <li class="normal" id="section-4.4.3-2.1">
               <p id="section-4.4.3-2.1.1">The authentication credential CRED_R specified by the message field ID_CRED_R is AUTH_CRED_C.<a href="#section-4.4.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
-            <li class="normal" id="section-4.4.3-2.2">
-              <p id="section-4.4.3-2.2.1">The EAD_2 field <span class="bcp14">MUST</span> include an EAD item that specifies the access token issued to C and bound to AUTH_CRED_C, if and only if C does not specify the access token in an EAD item within the EAD_4 field of the later EDHOC message_4 in the same EDHOC session.<a href="#section-4.4.3-2.2.1" class="pilcrow">¶</a></p>
-<p id="section-4.4.3-2.2.2">
-Note that, in this case, C specifies the access token before RS is authenticated, since C will not gain knowledge of the identity of RS until having verified EDHOC message_3. In particular, in the case of a group-audience, when there may be multiple legitimate resource servers, C does not yet know which member of the group-audience it communicates with (if any).<a href="#section-4.4.3-2.2.2" class="pilcrow">¶</a></p>
-<p id="section-4.4.3-2.2.3">
-RS <span class="bcp14">MUST</span> verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.3-2.2.3" class="pilcrow">¶</a></p>
-<p id="section-4.4.3-2.2.4">
-Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.3-2.2.4" class="pilcrow">¶</a></p>
-</li>
           </ul>
 </section>
 </div>
@@ -2493,11 +2481,13 @@ Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Deni
 <p id="section-4.4.5-1">The processing of EDHOC message_4 is as specified in <span><a href="https://rfc-editor.org/rfc/rfc9528#section-5.5" class="relref">Section 5.5</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>, with the following additions:<a href="#section-4.4.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4.5-2.1">
-              <p id="section-4.4.5-2.1.1">The EAD_4 field <span class="bcp14">MUST</span> include an EAD item that specifies the access token issued to C and bound to AUTH_CRED_C, if and only if C did not specify the access token in an EAD item within the EAD_2 field of the previous EDHOC message_2 in the same EDHOC session.<a href="#section-4.4.5-2.1.1" class="pilcrow">¶</a></p>
+              <p id="section-4.4.5-2.1.1">The EAD_4 field <span class="bcp14">MUST</span> include an EAD item that specifies the access token issued to C and bound to AUTH_CRED_C. According to this document, such EAD item is ACE-OAuth Access Token (see <a href="#AT-in-EAD" class="auto internal xref">Section 4.1</a>), which specifies the access token by value.<a href="#section-4.4.5-2.1.1" class="pilcrow">¶</a></p>
 <p id="section-4.4.5-2.1.2">
-RS <span class="bcp14">MUST</span> verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.5-2.1.2" class="pilcrow">¶</a></p>
+The EAD_4 field <span class="bcp14">MUST NOT</span> include multiple EAD items specifying the access token. If zero or more than one EAD items specifying the access token are included in the EAD_4 field, then RS <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.5-2.1.2" class="pilcrow">¶</a></p>
 <p id="section-4.4.5-2.1.3">
-Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.5-2.1.3" class="pilcrow">¶</a></p>
+RS <span class="bcp14">MUST</span> verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.5-2.1.3" class="pilcrow">¶</a></p>
+<p id="section-4.4.5-2.1.4">
+Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.5-2.1.4" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -5445,7 +5435,7 @@ Note that this applies also if C uses the EDHOC + OSCORE combined request (see <
               <p id="appendix-B-2.7.2.1.1">When using EDHOC in its forward message flow, proof of possession is first achieved by RS when successfully processing the incoming EDHOC message_3 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys. Proof of possession is later achieved by C when receiving from RS and successfully processing: i) the optional EDHOC message_4 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC session with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.<a href="#appendix-B-2.7.2.1.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="appendix-B-2.7.2.2">
-              <p id="appendix-B-2.7.2.2.1">Instead, when using EDHOC in its reverse message flow, proof of possession is first achieved by C when successfully processing the incoming EDHOC message_3 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys. Proof of possession is later achieved by RS when receiving from C and successfully processing: i) the optional EDHOC message_4 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first request protected with the OSCORE Security Context established after the EDHOC session with C, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.<a href="#appendix-B-2.7.2.2.1" class="pilcrow">¶</a></p>
+              <p id="appendix-B-2.7.2.2.1">Instead, when using EDHOC in its reverse message flow, proof of possession is first achieved by C when successfully processing the incoming EDHOC message_3 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys. Proof of possession is later achieved by RS when receiving from C and successfully processing EDHOC message_4 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys.<a href="#appendix-B-2.7.2.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </li>
@@ -5550,50 +5540,53 @@ x5u_ta_type = 35
             <p id="appendix-D.1-1.1.1">Clarify instructions on when to include audience when C performs update of access rights.<a href="#appendix-D.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.2">
-            <p id="appendix-D.1-1.2.1">New EAD items:<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-D.1-1.2.2.1">
-                <p id="appendix-D.1-1.2.2.1.1">Consistent and simpler naming.<a href="#appendix-D.1-1.2.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="appendix-D.1-1.2.2.2">
-                <p id="appendix-D.1-1.2.2.2.1">Revised format/style of their definition.<a href="#appendix-D.1-1.2.2.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="appendix-D.1-1.2.2.3">
-                <p id="appendix-D.1-1.2.2.3.1">Revised normative language for using AS Request Creation Hints.<a href="#appendix-D.1-1.2.2.3.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
+            <p id="appendix-D.1-1.2.1">In the reverse message flow, C can upload the access token to RS only in message_4.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.3">
-            <p id="appendix-D.1-1.3.1">Removed definition of the EAD item Session ID.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-D.1-1.4">
-            <p id="appendix-D.1-1.4.1">Added the "Operational Considerations" section.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.3.1">New EAD items:<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-D.1-1.4.2.1">
-                <p id="appendix-D.1-1.4.2.1.1">RS belonging to multiple audiences with different credentials.<a href="#appendix-D.1-1.4.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-D.1-1.3.2.1">
+                <p id="appendix-D.1-1.3.2.1.1">Consistent and simpler naming.<a href="#appendix-D.1-1.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-D.1-1.4.2.2">
-                <p id="appendix-D.1-1.4.2.2.1">Keeping knowledge about C and RS up-to-date at AS.<a href="#appendix-D.1-1.4.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-D.1-1.3.2.2">
+                <p id="appendix-D.1-1.3.2.2.1">Revised format/style of their definition.<a href="#appendix-D.1-1.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-D.1-1.3.2.3">
+                <p id="appendix-D.1-1.3.2.3.1">Revised normative language for using AS Request Creation Hints.<a href="#appendix-D.1-1.3.2.3.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
+          <li class="normal" id="appendix-D.1-1.4">
+            <p id="appendix-D.1-1.4.1">Removed definition of the EAD item Session ID.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
           <li class="normal" id="appendix-D.1-1.5">
-            <p id="appendix-D.1-1.5.1">Added figure with message flow for Non-sequential Workflow.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.5.1">Added the "Operational Considerations" section.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-D.1-1.5.2.1">
+                <p id="appendix-D.1-1.5.2.1.1">RS belonging to multiple audiences with different credentials.<a href="#appendix-D.1-1.5.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-D.1-1.5.2.2">
+                <p id="appendix-D.1-1.5.2.2.1">Keeping knowledge about C and RS up-to-date at AS.<a href="#appendix-D.1-1.5.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
 </li>
           <li class="normal" id="appendix-D.1-1.6">
-            <p id="appendix-D.1-1.6.1">Improved notation and details in examples of message exchanges.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.6.1">Added figure with message flow for Non-sequential Workflow.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.7">
-            <p id="appendix-D.1-1.7.1">Added references to IANA registries.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.7.1">Improved notation and details in examples of message exchanges.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.8">
-            <p id="appendix-D.1-1.8.1">Avoid normative language with inherited normative behavior.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.8.1">Added references to IANA registries.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.9">
-            <p id="appendix-D.1-1.9.1">Updated compliance with profile requirements.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.9.1">Avoid normative language with inherited normative behavior.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.10">
-            <p id="appendix-D.1-1.10.1">Editorial improvements.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.10.1">Updated compliance with profile requirements.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.11">
+            <p id="appendix-D.1-1.11.1">Editorial improvements.<a href="#appendix-D.1-1.11.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

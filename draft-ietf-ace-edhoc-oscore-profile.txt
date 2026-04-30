@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 31 October 2026                                       M. Tiloca
+Expires: 1 November 2026                                       M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                           29 April 2026
+                                                           30 April 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 October 2026.
+   This Internet-Draft will expire on 1 November 2026.
 
 Copyright Notice
 
@@ -1327,11 +1327,10 @@ Table of Contents
    as EDHOC Initiator and the access token MUST be specified in the
    EAD_3 field of EDHOC message_3.  If the EDHOC reverse message flow is
    used (see Section 4.4), C acts as EDHOC Responder and the access
-   token MUST be specified either in the EAD_2 field of EDHOC message_2
-   or in the EAD_4 field of EDHOC message_4.  By doing so, the access
-   token specified in the EAD field gets at least the same
-   confidentiality protection by EDHOC as provided to the authentication
-   credential used by C in the EDHOC session (see Section 9.1 of
+   token MUST be specified in the EAD_4 field of EDHOC message_4.  By
+   doing so, the access token specified in the EAD field is always
+   protected by EDHOC, using authenticated encryption and achieving
+   confidentiality against active attackers (see Sections 9.1 and 9.2 of
    [RFC9528]).
 
    The authentication credential AUTH_CRED_C that C specifies in the
@@ -1463,26 +1462,15 @@ Table of Contents
    Responder R and RS acts as the Initiator I.
 
    Consistent with the EDHOC reverse message flow, C sends a trigger
-   message, EDHOC message_2, and (optionally) EDHOC message_4 to RS as
-   CoAP POST requests.  RS sends EDHOC message_1 and EDHOC message_3 as
-   CoAP 2.04 (Changed) responses.
+   message, EDHOC message_2, and EDHOC message_4 to RS as CoAP POST
+   requests.  RS sends EDHOC message_1 and EDHOC message_3 as CoAP 2.04
+   (Changed) responses.
 
-   In this profile of ACE, if RS implements the EDHOC reverse message
-   flow, then RS MUST implement EDHOC message_4.
-
-   Either the EAD_2 field of EDHOC message_2 or the EAD_4 field of EDHOC
-   message_4 MUST include an EAD item that specifies the access token
-   issued to C and bound to AUTH_CRED_C.  According to this document,
-   such EAD item is ACE-OAuth Access Token (see Section 4.1), which
-   specifies the access token by value.
-
-   The EAD field MUST NOT include multiple EAD items specifying the
-   access token.  If zero or more than one EAD items specifying the
-   access token are included in the EAD field, then RS MUST abort the
-   EDHOC session.
-
-   Specific instructions for the different messages are provided in the
-   following subsections.
+   In this profile of ACE, if C/RS implements the EDHOC reverse message
+   flow, then C/RS MUST implement EDHOC message_4.  In particular, when
+   using the EDHOC reverse message flow, C MUST send EDHOC message_4
+   after successfully completing the processing of the incoming EDHOC
+   message_3.
 
 4.4.1.  Trigger Message
 
@@ -1516,27 +1504,6 @@ Table of Contents
    *  The authentication credential CRED_R specified by the message
       field ID_CRED_R is AUTH_CRED_C.
 
-   *  The EAD_2 field MUST include an EAD item that specifies the access
-      token issued to C and bound to AUTH_CRED_C, if and only if C does
-      not specify the access token in an EAD item within the EAD_4 field
-      of the later EDHOC message_4 in the same EDHOC session.
-
-      Note that, in this case, C specifies the access token before RS is
-      authenticated, since C will not gain knowledge of the identity of
-      RS until having verified EDHOC message_3.  In particular, in the
-      case of a group-audience, when there may be multiple legitimate
-      resource servers, C does not yet know which member of the group-
-      audience it communicates with (if any).
-
-      RS MUST verify that the access token specified in the EAD item is
-      valid.  The validation follows the procedure specified in
-      Section 4.6.2.  If such validation fails, RS MUST reply to C with
-      an EDHOC error message with ERR_CODE = 1 (see Section 6 of
-      [RFC9528]) and it MUST abort the EDHOC session.
-
-      Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE =
-      3 "Access Denied" defined in draft-ietf-lake-authz
-
 4.4.4.  EDHOC message_3
 
    The processing of EDHOC message_3 is as specified in Section 5.4 of
@@ -1551,9 +1518,14 @@ Table of Contents
    [RFC9528], with the following additions:
 
    *  The EAD_4 field MUST include an EAD item that specifies the access
-      token issued to C and bound to AUTH_CRED_C, if and only if C did
-      not specify the access token in an EAD item within the EAD_2 field
-      of the previous EDHOC message_2 in the same EDHOC session.
+      token issued to C and bound to AUTH_CRED_C.  According to this
+      document, such EAD item is ACE-OAuth Access Token (see
+      Section 4.1), which specifies the access token by value.
+
+      The EAD_4 field MUST NOT include multiple EAD items specifying the
+      access token.  If zero or more than one EAD items specifying the
+      access token are included in the EAD_4 field, then RS MUST abort
+      the EDHOC session.
 
       RS MUST verify that the access token specified in the EAD item is
       valid.  The validation follows the procedure specified in
@@ -4069,12 +4041,9 @@ Appendix B.  Profile Requirements
          the incoming EDHOC message_3 during the EDHOC session with RS,
          through EDHOC algorithms and symmetric EDHOC session keys.
          Proof of possession is later achieved by RS when receiving from
-         C and successfully processing: i) the optional EDHOC message_4
-         during the EDHOC session with C, through EDHOC algorithms and
-         symmetric EDHOC session keys; or ii) the first request
-         protected with the OSCORE Security Context established after
-         the EDHOC session with C, through OSCORE algorithms and OSCORE
-         symmetric keys derived from the completed EDHOC session.
+         C and successfully processing EDHOC message_4 during the EDHOC
+         session with C, through EDHOC algorithms and symmetric EDHOC
+         session keys.
 
    *  Specify a unique ace_profile identifier: coap_edhoc_oscore.
 
@@ -4158,6 +4127,9 @@ D.1.  Version -10 to -11
 
    *  Clarify instructions on when to include audience when C performs
       update of access rights.
+
+   *  In the reverse message flow, C can upload the access token to RS
+      only in message_4.
 
    *  New EAD items:
 

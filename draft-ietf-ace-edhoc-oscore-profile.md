@@ -731,7 +731,7 @@ In order to mutually authenticate and establish secure communication for authori
 
 As per {{Section A.2 of RFC9528}}, EDHOC can be transferred over CoAP using either the forward or the reverse message flow, thus manifesting the two possible mappings between the ACE roles (client and resource server) and the EDHOC roles (Initiator and Responder), whereas the CoAP roles (client and server) remain the same. The choice of message flow and corresponding mapping depends on the deployment setting and in particular on which identity to protect the most, since EDHOC protects the identity of the Initiator against active attackers and the identity of the Responder against passive attackers.
 
-If the EDHOC forward message flow is used (see {{forward}}), C acts as EDHOC Initiator and the access token MUST be specified in the EAD\_3 field of EDHOC message\_3. If the EDHOC reverse message flow is used (see {{reverse}}), C acts as EDHOC Responder and the access token MUST be specified either in the EAD\_2 field of EDHOC message\_2 or in the EAD\_4 field of EDHOC message\_4. By doing so, the access token specified in the EAD field gets at least the same confidentiality protection by EDHOC as provided to the authentication credential used by C in the EDHOC session (see {{Section 9.1 of RFC9528}}).
+If the EDHOC forward message flow is used (see {{forward}}), C acts as EDHOC Initiator and the access token MUST be specified in the EAD\_3 field of EDHOC message\_3. If the EDHOC reverse message flow is used (see {{reverse}}), C acts as EDHOC Responder and the access token MUST be specified in the EAD\_4 field of EDHOC message\_4. By doing so, the access token specified in the EAD field is always protected by EDHOC, using authenticated encryption and achieving confidentiality against active attackers (see {{Sections 9.1 and 9.2 of RFC9528}}).
 
 The authentication credential AUTH\_CRED\_C that C specifies in the ID_CRED_X field during the EDHOC session MUST be the same one that C specifies in the access token request to AS (see {{c-as}}) and that is bound to the access token specified to RS during the EDHOC session.
 
@@ -791,15 +791,9 @@ The processing of EDHOC message\_3 is as specified in {{Section 5.4 of RFC9528}}
 
 This section details the case where the EDHOC reverse message flow is used (see {{Section A.2.2 of RFC9528}}), i.e., where C acts as the Responder R and RS acts as the Initiator I.
 
-Consistent with the EDHOC reverse message flow, C sends a trigger message, EDHOC message\_2, and (optionally) EDHOC message\_4 to RS as CoAP POST requests. RS sends EDHOC message\_1 and EDHOC message\_3 as CoAP 2.04 (Changed) responses.
+Consistent with the EDHOC reverse message flow, C sends a trigger message, EDHOC message\_2, and EDHOC message\_4 to RS as CoAP POST requests. RS sends EDHOC message\_1 and EDHOC message\_3 as CoAP 2.04 (Changed) responses.
 
-In this profile of ACE, if RS implements the EDHOC reverse message flow, then RS MUST implement EDHOC message_4.
-
-Either the EAD\_2 field of EDHOC message\_2 or the EAD\_4 field of EDHOC message\_4 MUST include an EAD item that specifies the access token issued to C and bound to AUTH\_CRED\_C. According to this document, such EAD item is ACE-OAuth Access Token (see {{AT-in-EAD}}), which specifies the access token by value.
-
-The EAD field MUST NOT include multiple EAD items specifying the access token. If zero or more than one EAD items specifying the access token are included in the EAD field, then RS MUST abort the EDHOC session.
-
-Specific instructions for the different messages are provided in the following subsections.
+In this profile of ACE, if C/RS implements the EDHOC reverse message flow, then C/RS MUST implement EDHOC message_4. In particular, when using the EDHOC reverse message flow, C MUST send EDHOC message_4 after successfully completing the processing of the incoming EDHOC message_3.
 
 ### Trigger Message
 
@@ -817,14 +811,6 @@ The processing of EDHOC message\_2 is as specified in {{Section 5.3 of RFC9528}}
 
 * The authentication credential CRED\_R specified by the message field ID\_CRED\_R is AUTH\_CRED\_C.
 
-* The EAD\_2 field MUST include an EAD item that specifies the access token issued to C and bound to AUTH\_CRED\_C, if and only if C does not specify the access token in an EAD item within the EAD\_4 field of the later EDHOC message\_4 in the same EDHOC session.
-
-  Note that, in this case, C specifies the access token before RS is authenticated, since C will not gain knowledge of the identity of RS until having verified EDHOC message_3. In particular, in the case of a group-audience, when there may be multiple legitimate resource servers, C does not yet know which member of the group-audience it communicates with (if any).
-
-  RS MUST verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the EDHOC session.
-
-  Editor's note: Instead of ERR\_CODE = 1, consider using ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz
-
 ### EDHOC message\_3
 
 The processing of EDHOC message\_3 is as specified in {{Section 5.4 of RFC9528}}, with the following additions:
@@ -835,7 +821,9 @@ The processing of EDHOC message\_3 is as specified in {{Section 5.4 of RFC9528}}
 
 The processing of EDHOC message\_4 is as specified in {{Section 5.5 of RFC9528}}, with the following additions:
 
-* The EAD_4 field MUST include an EAD item that specifies the access token issued to C and bound to AUTH_CRED_C, if and only if C did not specify the access token in an EAD item within the EAD\_2 field of the previous EDHOC message\_2 in the same EDHOC session.
+* The EAD_4 field MUST include an EAD item that specifies the access token issued to C and bound to AUTH_CRED_C. According to this document, such EAD item is ACE-OAuth Access Token (see {{AT-in-EAD}}), which specifies the access token by value.
+
+  The EAD_4 field MUST NOT include multiple EAD items specifying the access token. If zero or more than one EAD items specifying the access token are included in the EAD_4 field, then RS MUST abort the EDHOC session.
 
   RS MUST verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with an EDHOC error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the EDHOC session.
 
@@ -2124,7 +2112,7 @@ This section lists the specifications of this profile based on the requirements 
 
   * When using EDHOC in its forward message flow, proof of possession is first achieved by RS when successfully processing the incoming EDHOC message\_3 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys. Proof of possession is later achieved by C when receiving from RS and successfully processing: i) the optional EDHOC message\_4 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC session with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
 
-  * Instead, when using EDHOC in its reverse message flow, proof of possession is first achieved by C when successfully processing the incoming EDHOC message\_3 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys. Proof of possession is later achieved by RS when receiving from C and successfully processing: i) the optional EDHOC message\_4 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first request protected with the OSCORE Security Context established after the EDHOC session with C, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
+  * Instead, when using EDHOC in its reverse message flow, proof of possession is first achieved by C when successfully processing the incoming EDHOC message\_3 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys. Proof of possession is later achieved by RS when receiving from C and successfully processing EDHOC message_4 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys.
 
 * Specify a unique ace_profile identifier: coap_edhoc_oscore.
 
@@ -2198,6 +2186,8 @@ x5u_ta_type = 35
 ## Version -10 to -11 ## {#sec-10-11}
 
 * Clarify instructions on when to include audience when C performs update of access rights.
+
+* In the reverse message flow, C can upload the access token to RS only in message_4.
 
 * New EAD items:
 

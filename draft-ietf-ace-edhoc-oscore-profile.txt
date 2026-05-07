@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 1 November 2026                                       M. Tiloca
+Expires: 8 November 2026                                       M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                           30 April 2026
+                                                              7 May 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 November 2026.
+   This Internet-Draft will expire on 8 November 2026.
 
 Copyright Notice
 
@@ -3995,7 +3995,9 @@ Appendix B.  Profile Requirements
 
    *  Optionally, define new methods for the client to discover the
       necessary permissions and AS for accessing a resource, different
-      from the one proposed in [RFC9200]: Not specified.
+      from the one proposed in [RFC9200]: AS discovery is supported by
+      using the EAD item Request Creation Hints as described in
+      Section 4.13.
 
    *  Optionally, specify new grant types: Not specified.
 

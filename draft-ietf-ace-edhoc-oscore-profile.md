@@ -2096,7 +2096,7 @@ M10 |<----------------------------------------------------------------+
 
 This section lists the specifications of this profile based on the requirements of the framework, as requested in {{Section C of RFC9200}}.
 
-* Optionally, define new methods for the client to discover the necessary permissions and AS for accessing a resource, different from the one proposed in {{RFC9200}}: Not specified.
+* Optionally, define new methods for the client to discover the necessary permissions and AS for accessing a resource, different from the one proposed in {{RFC9200}}: AS discovery is supported by using the EAD item Request Creation Hints as described in {{as-creation-hints}}.
 
 * Optionally, specify new grant types: Not specified.
 

@@ -546,7 +546,9 @@ EDHOC_Information parameters are also categorized, i.e., each has one of two pos
 
 * A prescriptive parameter is used to provide an authoritative statement about how an execution of EDHOC has to be performed. An example is the "message_4" parameter indicating whether the use of EDHOC message_4 in an EDHOC session is mandatory or not.
 
-* A non-prescriptive parameter is used to provide convenient information to consider when executing EDHOC, e.g., in terms of features supported by other peers. Such information is not necessarily exhaustive. An example is the "methods" parameter indicating a set of supported EDHOC methods.
+  If a prescriptive parameter applies to an EDHOC session, a peer participating in the session complies with what is indicated by the parameter, and it aborts the session if it determines that the other peer has violated such indication.
+
+* A non-prescriptive parameter is used to provide convenient information to consider when executing EDHOC, e.g., in terms of features supported by peers. Such information is not necessarily exhaustive. An example is the "methods" parameter indicating a set of supported EDHOC methods.
 
 This categorization helps coordinate the use of EDHOC application profiles (see {{Section 3.9 of RFC9528}}) in a robust way, e.g., by using the means defined in {{I-D.ietf-lake-app-profiles}}.
 
@@ -2186,6 +2188,8 @@ x5u_ta_type = 35
 ## Version -10 to -11 ## {#sec-10-11}
 
 * Clarify instructions on when to include audience when C performs update of access rights.
+
+* Clarified definition of "prescriptive" / "non-prescriptive" parameters.
 
 * In the reverse message flow, C can upload the access token to RS only in message_4.
 

@@ -548,7 +548,7 @@ EDHOC_Information parameters are also categorized, i.e., each has one of two pos
 
 * A non-prescriptive parameter is used to provide convenient information to consider when executing EDHOC, e.g., in terms of features supported by other peers. Such information is not necessarily exhaustive. An example is the "methods" parameter indicating a set of supported EDHOC methods.
 
-This categorization helps coordinate the use of EDHOC application profiles {{Section 3.9 of RFC9528}} in a robust way, e.g., by using the means defined in {{I-D.ietf-lake-app-profiles}}.
+This categorization helps coordinate the use of EDHOC application profiles (see {{Section 3.9 of RFC9528}}) in a robust way, e.g., by using the means defined in {{I-D.ietf-lake-app-profiles}}.
 
 | Name          | CBOR label | CBOR type            | Registry                                                                   | Description                                                                                                                                                                | Type |
 | session_id    | 0          | bstr                 |                                                                            | Identifier of a session                                                                                                                                                    | P    |

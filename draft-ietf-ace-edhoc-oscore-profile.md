@@ -2180,7 +2180,7 @@ c5u_ta_type = 23
 x5t_ta_type = 34
 x5u_ta_type = 35
 ~~~~~~~~~~~~~~~~~~~~
-{: #fig-cddl-model title="CDDL model" artwork-align="left"}
+{: #fig-cddl-model title="CDDL model"}
 
 # Document Updates # {#sec-document-updates}
 {:removeinrfc}

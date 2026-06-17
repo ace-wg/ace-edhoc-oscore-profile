@@ -200,11 +200,11 @@ Table of Contents
    client (C) and a resource server (RS) use the Constrained Application
    Protocol (CoAP) [RFC7252] to communicate and Object Security for
    Constrained RESTful Environments (OSCORE) [RFC8613] to protect their
-   communications.  However, this profile uses the key exchange protocol
-   Ephemeral Diffie-Hellman Over COSE (EDHOC) [RFC9528] to establish the
-   OSCORE Security Context.  The processing of requests for specific
-   protected resources is identical to what is defined in the
-   "coap_oscore" profile.
+   communications.  However, this profile uses the authenticated key
+   exchange protocol Ephemeral Diffie-Hellman Over COSE (EDHOC)
+   [RFC9528] to establish the OSCORE Security Context.  The processing
+   of requests for specific protected resources is identical to what is
+   defined in the "coap_oscore" profile.
 
    When using this profile, C accesses protected resources hosted at RS
    according to the authorization information specified in an access
@@ -331,11 +331,11 @@ Table of Contents
    (AS), as well as the OSCORE setup process, are described in detail in
    the following sections.
 
-   RS maintains a collection of authentication credentials.  These are
-   associated with OSCORE Security Contexts and with authorization
-   information for all clients that RS is communicating with.  The
-   authorization information is used to enforce policies for processing
-   requests from those clients.
+   RS maintains a collection of clients' authentication credentials.
+   These are associated with OSCORE Security Contexts and with
+   authorization information for all clients that RS is communicating
+   with.  The authorization information is used to enforce policies for
+   processing requests from those clients.
 
    The ACE framework describes how integrity protected authorization
    information propagates from AS to RS.  This profile describes how C
@@ -363,20 +363,21 @@ Table of Contents
    mutually authenticated and derive the OSCORE Security Context as per
    Appendix A.1 of [RFC9528].
 
-   Figure 1 outlines an example of the message flow.  A more detailed
-   message flow is shown in Appendix A.1.
-
    From then on and as long as there is a valid access token, C
    effectively gains authorized and secure access to protected resources
    at RS using the established OSCORE Security Context.  When RS
    receives a request from C protected with an OSCORE Security Context
    derived from an EDHOC session implementing this profile, then that
    OSCORE Security Context is used to retrieve the uniquely associated
-   access token determining the access rights of C.
+   access token indicating the access rights of C.
 
    The OSCORE Security Context is discarded when an access token
-   (whether the same or a different one) is used to successfully derive
-   a new OSCORE Security Context for C.
+   (whether the same or a different one) specifying the same
+   authentication credential of C is used to successfully derive a new
+   OSCORE Security Context for C.
+
+   Figure 1 outlines an example of the message flow.  A more detailed
+   message flow is shown in Appendix A.1.
 
     C                                        RS                       AS
     |                                        |                         |
@@ -419,9 +420,9 @@ Table of Contents
    C.  The session identifier is assigned by AS and used to identify a
    series of access tokens, called a "token series" (see Section 3.2).
 
-   If C has obtained an access token from AS for updating its access
-   rights belonging to the same token series, then C transfers the
-   access token to RS using the /authz-info endpoint as specified in
+   If C has obtained from AS an access token belonging to the same token
+   series for updating its access rights, then C transfers the access
+   token to RS using the /authz-info endpoint as specified in
    Section 5.10 of [RFC9200], where the exchanged CoAP messages are
    protected by the previously established OSCORE Security Context (see
    Section 4.6).  If the access token is valid, RS replies to the
@@ -530,8 +531,8 @@ Table of Contents
    In either case, AS also needs to verify that C is in possession of
    the private key corresponding to the public key associated with
    AUTH_CRED_C.  This may already have been accomplished, for example,
-   by C authenticating to AS using AUTH_CRED_C as authentication
-   credential, or by some other trusted party vouching for C to AS.
+   through C authenticating to AS using AUTH_CRED_C as authentication
+   credential, or through some other trusted party vouching for C to AS.
    Alternatively, it is possible to use an approach for achieving proof
    of possession similar to that in Section 3.2 of
    [I-D.ietf-ace-group-oscore-profile].
@@ -548,7 +549,7 @@ Table of Contents
       Header: POST (Code=0.02)
       Uri-Host: "as.example.com"
       Uri-Path: "token"
-      Content-Format: application/ace+cbor
+      Content-Format: 19 (application/ace+cbor)
       Payload:
       {
         / audience / 5 : "tempSensor4711",
@@ -601,7 +602,7 @@ Table of Contents
       Header: POST (Code=0.02)
       Uri-Host: "as.example.com"
       Uri-Path: "token"
-      Content-Format: application/ace+cbor
+      Content-Format: 19 (application/ace+cbor)
       Payload:
       {
         / audience /      5 : "tempSensor4711",
@@ -622,7 +623,7 @@ Table of Contents
 
    *  Issued by the same AS.
 
-   *  Issued to the same C, and associated with the same authentication
+   *  Issued to the same C and associated with the same authentication
       credential of C.
 
    *  Issued for the same RS as identified by the same authentication
@@ -638,25 +639,30 @@ Table of Contents
    between a given pair (C, RS), are bound to the same authentication
    credential AUTH_CRED_C of C, and specify the same value in the
    "session_id" field of the EDHOC_Information object (see Section 3.4)
-   in their "edhoc_info" claim.
+   in their "edhoc_info" claim (see Section 3.3.1).
 
    AS assigns the value of "session_id" when issuing the first access
    token of a new series.  That "session_id" value remains fixed
    throughout the series lifetime.
 
-   When assigning the "session_id" value, AS MUST ensure that it was not
-   used in a previous series whose access tokens share both the
-   following properties with the access tokens of the new series,
-   irrespective of the used ACE profile:
+   When assigning the "session_id" value, AS MUST ensure that,
+   irrespective of the profile of ACE used, such value was not used in a
+   previous series whose access tokens share both the following
+   properties with the access tokens of the new series:
 
-   *  issued to the same client C; and
+   *  Issued to the same client C, irrespective of the specific
+      AUTH_CRED_C bound to the access token; and
 
-   *  issued for the same RS.
+   *  Issued for the same RS as identified by the targeted audience,
+      irrespective of the specific AUTH_CRED_RS indicated to C.
 
    If the access token is issued for a group-audience (see Section 6.9
-   of [RFC9200]), what is defined above applies, with the difference
-   that the token series is associated with all the resource servers in
-   the group-audience, as indicated by their respective AUTH_CRED_RS.
+   of [RFC9200]), the token series is associated with all the resource
+   servers in the group-audience.  In such case, what is defined above
+   applies, with the difference that the resource servers as identified
+   by the targeted group-audience are collectively considered,
+   irrespective of their specific authentication credentials indicated
+   to C.
 
 3.3.  AS-to-C: Response
 
@@ -751,7 +757,7 @@ Table of Contents
    readability.
 
       Header: Created (Code=2.01)
-         Content-Format: application/ace+cbor
+         Content-Format: 19 (application/ace+cbor)
          Payload:
          {
            / access_token / 1 : h'8343a1010aa2044c53...0f6a'

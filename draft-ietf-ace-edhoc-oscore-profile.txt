@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 8 November 2026                                       M. Tiloca
+Expires: 19 December 2026                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                              7 May 2026
+                                                            17 June 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 November 2026.
+   This Internet-Draft will expire on 19 December 2026.
 
 Copyright Notice
 
@@ -942,8 +942,8 @@ Table of Contents
       indicating a set of supported EDHOC methods.
 
    This categorization helps coordinate the use of EDHOC application
-   profiles Section 3.9 of [RFC9528] in a robust way, e.g., by using the
-   means defined in [I-D.ietf-lake-app-profiles].
+   profiles (see Section 3.9 of [RFC9528]) in a robust way, e.g., by
+   using the means defined in [I-D.ietf-lake-app-profiles].
 
    +===============+=====+=====+================+================+====+
    | Name          |CBOR |CBOR | Registry       | Description    |Type|
@@ -3168,9 +3168,9 @@ Table of Contents
               Mattsson, J. P., Selander, G., Raza, S., Höglund, J.,
               Furuhed, M., and L. Liao, "CBOR Encoded X.509 Certificates
               (C509 Certificates)", Work in Progress, Internet-Draft,
-              draft-ietf-cose-cbor-encoded-cert-18, 22 April 2026,
+              draft-ietf-cose-cbor-encoded-cert-19, 11 May 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
-              cbor-encoded-cert-18>.
+              cbor-encoded-cert-19>.
 
    [JSON.Web.Token.Claims]
               IANA, "JSON Web Token Claims",

@@ -2681,7 +2681,8 @@ ead_request_creation_hints = (
   ead_label : e'ead_request_creation_hints_label',
   ? ead_value : bstr .cbor AS_request_creation_hints
 )
-AS_request_creation_hints = map
+AS_request_creation_hints = { * $$AS_request_creation_hints_item }
+                            .within { * int =&gt; any }
 </pre>
 </div>
 <figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
@@ -5556,6 +5557,9 @@ x5u_ta_type = 35
 </li>
               <li class="normal" id="appendix-D.1-1.4.2.3">
                 <p id="appendix-D.1-1.4.2.3.1">Revised normative language for using AS Request Creation Hints.<a href="#appendix-D.1-1.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-D.1-1.4.2.4">
+                <p id="appendix-D.1-1.4.2.4.1">Fixed CDDL definition of ead_request_creation_hints.<a href="#appendix-D.1-1.4.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>

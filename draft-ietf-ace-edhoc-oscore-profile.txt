@@ -1843,7 +1843,8 @@ Table of Contents
      ead_label : e'ead_request_creation_hints_label',
      ? ead_value : bstr .cbor AS_request_creation_hints
    )
-   AS_request_creation_hints = map
+   AS_request_creation_hints = { * $$AS_request_creation_hints_item }
+                               .within { * int => any }
 
                 Figure 10: EAD item Request Creation Hints.
 
@@ -4148,6 +4149,8 @@ D.1.  Version -10 to -11
       -  Revised format/style of their definition.
 
       -  Revised normative language for using AS Request Creation Hints.
+
+      -  Fixed CDDL definition of ead_request_creation_hints.
 
    *  Removed definition of the EAD item Session ID.
 

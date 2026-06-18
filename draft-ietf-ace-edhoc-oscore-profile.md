@@ -716,17 +716,19 @@ In particular:
 * ead\_label is the integer value TBD registered in {{iana-edhoc-ead}}.
 * ead\_value is a CBOR byte string equal to the value of the "access\_token" field of the access token response from AS (see {{as-c}}).
 
+Note to RFC Editor: Please replace TBD with the value registered for ACE-OAuth Access Token in {{iana-edhoc-ead}}, then delete this note.
+
 This EAD item is critical, i.e., it is used only with the negative value of its ead\_label, indicating that the receiving RS must progress the protocol using the received access token, or else abort the EDHOC session (see {{Section 3.8 of RFC9528}}). A client or resource server supporting the profile of ACE defined in this document MUST support this EAD item.
 
 This EAD item is used only when uploading the first access token of a token series, but not for the dynamic update of access rights (see {{update-access-rights-c-rs}}).
 
-Example: assuming ead\_label 24 and the value of the "access\_token" field equal to h'8343a1010aa2044c53...0f6a' (elided for brevity), the critical EAD item is as follows:
+Example: assuming that ead\_label is 24 and that the value of the "access\_token" field of the access token response from AS is equal to h'8343a1010aa2044c53...0f6a' (elided for brevity), the critical EAD item is as follows:
 
 ~~~~~~~~~~~ cbor-diag
 -24, h'8343a1010aa2044c53...0f6a'
 ~~~~~~~~~~~
 
-Editor's note: Replace the ead\_label above with the TBD value registered for ACE-OAuth Access Token in {{iana-edhoc-ead}}.
+Note to RFC Editor: Please replace the value of the ead\_label with the value registered for ACE-OAuth Access Token in {{iana-edhoc-ead}}, then delete this note.
 
 ## EDHOC Session {#edhoc-exec}
 
@@ -800,9 +802,9 @@ In this profile of ACE, if C/RS implements the EDHOC reverse message flow, then 
 
 ### Trigger Message
 
-As specified in {{Section A.2.2 of RFC9528}}, the trigger message is an empty POST request that C sends to the EDHOC resource at RS, as intended to trigger a response conveying EDHOC message\_1.
+As specified in {{Section A.2.2 of RFC9528}}, the trigger message is a POST request with no payload that C sends to the EDHOC resource at RS, as intended to trigger a response conveying EDHOC message\_1.
 
-If the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), then C can perform an EDHOC "roll call", by sending the trigger message as a group request over IP multicast {{I-D.ietf-core-groupcomm-bis}}. For the sake of efficiency, it is expected that the group-audience is appropriately associated with a CoAP group and/or application group (see {{Section 2 of I-D.ietf-core-groupcomm-bis}}), so that only the resource servers belonging to the group-audience receive the trigger message. After that, C can receive a different EDHOC message_1 from each of the targeted RSs and separately progresses the corresponding EDHOC sessions, by sending a different EDHOC message_2 to each RS that has replied with an EDHOC message_1.
+If the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), then C can perform an EDHOC "roll call", by sending the trigger message as a group request, e.g., over IP multicast {{I-D.ietf-core-groupcomm-bis}}. For the sake of efficiency, it is expected that the group-audience is appropriately associated with a CoAP group and/or application group (see {{Section 2 of I-D.ietf-core-groupcomm-bis}}), so that only the resource servers belonging to the group-audience receive the trigger message. After that, C can receive a different EDHOC message_1 from each of the targeted RSs and separately progresses the corresponding EDHOC sessions, by sending a different EDHOC message_2 to each RS that has replied with an EDHOC message_1.
 
 ### EDHOC message\_1
 
@@ -849,7 +851,7 @@ If C has a valid OSCORE Security Context associated with a valid access token at
 
 If the request is granted, then AS generates a new access token containing updated access rights for C (see {{update-access-rights-c-as}}), in the same token series of the current access token (see {{token-series}}).
 
-According to this document, AS provides the new access token to C (see {{as-c}}) for further uploading to RS. Alternatively, the new access token can be uploaded by AS directly to RS, as described in {{I-D.ietf-ace-workflow-and-params}}.
+According to this document, AS provides the new access token to C (see {{as-c}}) for further uploading to RS (see {{c-rs}}). Alternatively, the new access token can be uploaded by AS directly to RS, as described in {{I-D.ietf-ace-workflow-and-params}}.
 
 If all validations are successful, C can access protected resources at RS according to the updated access rights, using the previously established OSCORE Security Context.
 
@@ -867,7 +869,11 @@ Upon receiving an access token from C, RS MUST follow the procedures defined in 
 
 RS MUST check the following conditions:
 
-* RS checks whether it stores an access token T_OLD, such that the "session\_id" field of the EDHOC\_Information object specified by the "cnf" claim matches the "session\_id" field of the EDHOC\_Information object specified by the "cnf" claim of the new access token T_NEW.
+* RS checks whether it stores an access token T_OLD, such that:
+
+  * The "session\_id" field of the EDHOC\_Information object specified by the "edhoc_info" claim matches the "session\_id" field of the EDHOC\_Information object specified by the "edhoc_info" claim of the new access token T_NEW.
+
+  * The authentication credential specified by the "cnf" claim matches the authentication credential specified by the "cnf" claim of the new access token T_NEW. Note that, in T_OLD and T_NEW, the same authentication credential can be transported by value or uniquely referred to by means of an appropriate identifier.
 
 * RS checks whether the OSCORE Security Context CTX used to protect the request matches the OSCORE Security Context associated with the stored access token T_OLD.
 
@@ -877,7 +883,7 @@ Note that C and RS do not execute the EDHOC protocol, they do not establish a ne
 
 ###  RS-to-C: 2.01 (Created) {#rs-c}
 
-If all validations are successful, RS stores the new access token in such a way that it is possible to retrieve it based on the pair (SESSION\_ID, AUTH\_CRED\_C), where SESSION\_ID is the identifier of the token series to which the access token belongs. Note that SESSION\_ID is specified in the "session\_id" field of the EDHOC\_Information object, within the "cnf" claim of the access token.
+If all validations are successful, RS stores the new access token in such a way that it is possible to retrieve it based on the pair (SESSION\_ID, AUTH\_CRED\_C), where SESSION\_ID is the identifier of the token series to which the access token belongs. Note that SESSION\_ID is specified in the "session\_id" field of the EDHOC\_Information object, within the "edhoc\_info" claim of the access token.
 
 Then, RS MUST reply to the POST request by sending a 2.01 (Created) response with no payload. The response is protected with the same OSCORE Security Context used to protect the corresponding request. After that, C can access protected resources at RS according to the updated access rights, using the previously established OSCORE Security Context.
 
@@ -928,7 +934,13 @@ If OSCORE verification succeeds and the target resource requires authorization, 
 
 ## Access Token Invalidity
 
-When an access token becomes invalid (e.g., due to its expiration or revocation), RS MUST delete the access token and the associated OSCORE Security Context, and it notifies C with an error response with code 4.01 (Unauthorized) for any long-running request, as specified in {{Section 5.8.3 of RFC9200}}.
+When an access token becomes invalid (e.g., due to its expiration or revocation), the following applies:
+
+* RS MUST delete the access token and the associated OSCORE Security Context.
+
+* RS MUST abort and purge the EDHOC session from which the deleted OSCORE Security Context was derived.
+
+* RS notifies C with a 4.01 (Unauthorized) error response for any long-running request, as specified in {{Section 5.8.3 of RFC9200}}.
 
 ## Authentication Credential Invalidity # {#auth-cred-validity}
 
@@ -958,7 +970,7 @@ When replying to an unauthorized resource request message from a client, RS can 
 
 The message payload can specify a number of parameters that help the sender client acquire a valid access token from AS. These parameters include "audience" and "scope".
 
-When using this profile and running EDHOC per its reverse message flow (see {{reverse}}), RS acts as EDHOC Initiator. A compelling reason to do so is the wish to protect the identity of RS against active attackers, consistently with the EDHOC security properties.
+When using this profile and running EDHOC per its reverse message flow (see {{reverse}}), RS acts as EDHOC Initiator. A compelling reason to do so is the wish to protect the identity of RS against active attackers, consistent with the EDHOC security properties.
 
 However, the identity protection achieved through EDHOC can be defeated if RS exposes information such as audience and scope, when specifying the corresponding parameters in an unprotected AS Request Creation Hints message.
 
@@ -1000,7 +1012,7 @@ Example: assuming ead\_label 1 and the AS Request Creation Hints CBOR map contai
 1, h'a101781c636f61703a2f2f7777772e6578616d706c652e636f6d2f746f6b656e'
 ~~~~~~~~~~~
 
-Editor's note: Replace the ead\_label above with the TBD value registered for Request Creation Hints in {{iana-edhoc-ead}}.
+Note to RFC Editor: Please replace the value of the ead\_label with the value registered for Request Creation Hints in {{iana-edhoc-ead}}, then delete this note.
 
 Since C has not made an actual request targeting a specific application resource, RS may not know what resource C is interested in accessing. Moreover, such information needs to be matched against the privacy policy of the application. Since EDHOC message_2 is only protected against passive attackers, the AS Request Creation Hints CBOR map MUST NOT include "audience" and SHOULD NOT include "scope" when present in the EAD item conveyed in the EAD_2 field.
 
@@ -1010,7 +1022,9 @@ EDHOC peers need access to each other's authentication credentials to complete t
 
 However, if one of the peers has deleted the other peer's authentication credential from its local storage, then there should be a way to restore it without requesting a new access token.
 
-Consider first the EDHOC forward message flow. If the ACE Client / EDHOC Initiator identifies its credential AUTH_CRED_C by reference ID_CRED_I of message_3, then the ACE Resource Server / EDHOC Responder can return an EDHOC error message with error code 3 (Unknown credential referenced). This enables the Initiator to restart the protocol using some other ID_CRED_I (typically, the authentication credential AUTH_CRED_C specified by value), thereby resolving the issue. Instead, if the ACE Resource Server / EDHOC Responder identifies its credential AUTH_CRED_RS by reference in ID_CRED_R of message_2, then an EDHOC error message with error code 3 returned by the ACE Client / EDHOC Initiator does not automatically solve the problem: since the Responder has aborted the EDHOC session without authenticating the Initiator, the Responder has no reliable way to act differently in a following EDHOC session with that other peer.
+Consider first the EDHOC forward message flow. If the ACE client / EDHOC Initiator identifies its credential AUTH_CRED_C by reference in ID_CRED_I of message_3, then the ACE resource server / EDHOC Responder can return an EDHOC error message with error code (ERR_CODE) 3 "Unknown credential referenced". This enables the Initiator to restart the protocol using some other ID_CRED_I (typically, the authentication credential AUTH_CRED_C specified by value), thereby resolving the issue.
+
+Instead, if the ACE resource server / EDHOC Responder identifies its credential AUTH_CRED_RS by reference in ID_CRED_R of message_2, then an EDHOC error message with error code (ERR_CODE) 3 "Unknown credential referenced" returned by the ACE client / EDHOC Initiator does not automatically solve the problem: since the Responder has aborted the EDHOC session without authenticating the Initiator, the Responder has no reliable way to act differently in a following EDHOC session with that other peer.
 
 In order to remediate this situation, this section specifies the EAD item Credential By Value for requesting the peer's authentication credential by value.
 
@@ -1033,13 +1047,13 @@ Example: assuming ead\_label 15, the non-critical EAD item is as follows:
 15
 ~~~~~~~~~~~
 
-Editor's note: Replace the ead\_label above with the TBD value registered for Credential By Value in {{iana-edhoc-ead}}.
+Note to RFC Editor: Please replace the value of the ead\_label with the value registered for Credential By Value in {{iana-edhoc-ead}}, then delete this note.
 
-In the EDHOC reverse message flow, this EAD item can be employed for better control of the transport of authentication credentials by value. Note that, in the reverse message flow, both C and RS are able to recover from an EDHOC error message with error code 3, but at the cost of more round trips that can be avoided by using this EAD item. That is:
+In the EDHOC reverse message flow, this EAD item can be employed for better control of the transport of authentication credentials by value. Note that, in the reverse message flow, both C and RS are able to recover from an EDHOC error message with error code (ERR_CODE) 3 "Unknown credential referenced", but at the cost of more round trips that can be avoided by using this EAD item. That is:
 
-* The first case consists in the ACE Client / EDHOC Responder that specifies its authentication credential AUTH_CRED_C by reference in ID_CRED_R of message_2 and receives an EDHOC error message with error code 3 as a reply from the ACE Resource Server / EDHOC Initiator. After that, the ACE Client / EDHOC Responder can trigger a new EDHOC session and specify its authentication credential by value in ID_CRED_R of message_2.
+* The first case consists in the ACE client / EDHOC Responder that specifies its authentication credential AUTH_CRED_C by reference in ID_CRED_R of message_2 and receives an EDHOC error message with error code (ERR_CODE) 3 "Unknown credential referenced" as a reply from the ACE resource server / EDHOC Initiator. After that, the ACE client / EDHOC Responder can trigger a new EDHOC session and specify its authentication credential by value in ID_CRED_R of message_2.
 
-* The second case consists in the ACE Resource Server / EDHOC Initiator that specifies its authentication credential AUTH_CRED_RS by reference in ID_CRED_I of message_3 and receives an EDHOC error message with error code 3 as a reply from the ACE Client / EDHOC Responder. After that, since the ACE Resource Server / EDHOC Initiator authenticated C, it can store C's authentication credential AUTH_CRED_C and specify its own authentication credential AUTH_CRED_RS by value in ID_CRED_I of message_3, during the next EDHOC session with C.
+* The second case consists in the ACE resource server / EDHOC Initiator that specifies its authentication credential AUTH_CRED_RS by reference in ID_CRED_I of message_3 and receives an EDHOC error message with error code (ERR_CODE) 3 "Unknown credential referenced" as a reply from the ACE client / EDHOC Responder. After that, since the ACE resource server / EDHOC Initiator authenticated C, it can store C's authentication credential AUTH_CRED_C and specify its own authentication credential AUTH_CRED_RS by value in ID_CRED_I of message_3, during the next EDHOC session with C.
 
 # Secure Communication with AS # {#secure-comm-as}
 
@@ -1051,7 +1065,7 @@ If OSCORE is used, the requesting entity and AS need to have an OSCORE Security 
 
 The EDHOC and OSCORE profile specified in the present document can be used in combination with application profiles of ACE for key provisioning for group communication {{RFC9594}}, such as {{I-D.ietf-ace-key-groupcomm-oscore}} and {{I-D.ietf-ace-coap-pubsub-profile}}.
 
-When doing so, the EDHOC and OSCORE profile is used by a client and an RS that acts as the Key Distribution Center (KDC) responsible for a security group. According to what is defined in the present document, the client does not upload the first access token of a token series  to the /authz-info endpoint at RS over an unprotected channel. Consequently, the client does not obtain the N_S challenge from RS (see {{Section 3.3 of RFC9594}}).
+When doing so, the EDHOC and OSCORE profile is used by a client that wants to join a security group and by an RS that acts as the Key Distribution Center (KDC) responsible for that group. According to what is defined in the present document, the client does not upload the first access token of a token series  to the /authz-info endpoint at RS over an unprotected channel. Consequently, the client does not obtain the N_S challenge from RS acting as KDC (see {{Section 3.3 of RFC9594}}).
 
 Therefore, when using the EDHOC and OSCORE profile in combination with one of the application profiles of {{RFC9594}} mentioned above, the following holds for computing the N_S challenge used in such application profiles.
 
@@ -1205,7 +1219,7 @@ For example, if RS supports EDHOC cipher suites 0 and 2 as well as methods 0 and
 - One credential using ECDSA with curve P-256 for method 3.
 - One credential using X25519 for method 3.
 
-To allow RS and C to distinguish between which authentication credential to use, RS should associate one audience with each authentication credential. That is, RS should belong to one audience for each of its authentication credentials.
+To allow RS and C to distinguish between which authentication credential to use, a different audience pertaining to RS should be associated with each authentication credential. That is, RS should belong to a different audience for each of its authentication credentials.
 
 When C requests an access token from AS (see {{c-as}}), it specifies an audience corresponding to an authentication credential of RS that is compatible with the authentication credential of C specified in the access token request. This means that, prior to requesting an access token, C has to determine which EDHOC cipher suites and methods RS supports and the corresponding audience values. The discovery of RS' capabilities can rely on pre-configuration or on mechanisms defined in {{I-D.ietf-lake-app-profiles}}. The knowledge of audience values can be pre-configured.
 

@@ -2396,6 +2396,19 @@ Table of Contents
    from EDHOC [RFC9528] also apply to this specific use of the OSCORE
    and EDHOC protocols.
 
+   Proof of possession is achieved by RS during the EDHOC session, as
+   soon as both the following conditions hold.  The EDHOC message flow
+   used by C and RS determines when the two conditions are met during
+   the EDHOC session at the earliest.
+
+   *  RS has received from C the EDHOC message that specifies the access
+      token, which in turn is bound to and specifies C's authentication
+      credential AUTH_CRED_C; and
+
+   *  RS has authenticated C as per AUTH_CRED_C, thereby proving that C
+      owns the private key corresponding to the public key associated
+      with AUTH_CRED_C.
+
    As previously stated, once completed the EDHOC session, C and RS are
    mutually authenticated through their respective authentication
    credentials, whose retrieval has been facilitated by AS.  Also, once
@@ -4070,28 +4083,10 @@ Appendix B.  Profile Requirements
    *  Specify the proof-of-possession protocol(s) and how to select one,
       if several are available.  Also specify which key types (e.g.,
       symmetric/asymmetric) are supported by a specific proof-of-
-      possession protocol:
-
-      -  When using EDHOC in its forward message flow, proof of
-         possession is first achieved by RS when successfully processing
-         the incoming EDHOC message_3 during the EDHOC session with C,
-         through EDHOC algorithms and symmetric EDHOC session keys.
-         Proof of possession is later achieved by C when receiving from
-         RS and successfully processing: i) the optional EDHOC message_4
-         during the EDHOC session with RS, through EDHOC algorithms and
-         symmetric EDHOC session keys; or ii) the first response
-         protected with the OSCORE Security Context established after
-         the EDHOC session with RS, through OSCORE algorithms and OSCORE
-         symmetric keys derived from the completed EDHOC session.
-
-      -  Instead, when using EDHOC in its reverse message flow, proof of
-         possession is first achieved by C when successfully processing
-         the incoming EDHOC message_3 during the EDHOC session with RS,
-         through EDHOC algorithms and symmetric EDHOC session keys.
-         Proof of possession is later achieved by RS when receiving from
-         C and successfully processing EDHOC message_4 during the EDHOC
-         session with C, through EDHOC algorithms and symmetric EDHOC
-         session keys.
+      possession protocol: EDHOC authentication methods and EDHOC
+      algorithms for RS to authenticate C during the EDHOC session, per
+      C's public authentication credential used in the session and bound
+      to the access token specified to RS in the session.
 
    *  Specify a unique ace_profile identifier: coap_edhoc_oscore.
 
@@ -4181,6 +4176,8 @@ D.1.  Version -10 to -11
 
    *  In the reverse message flow, C can upload the access token to RS
       only in message_4.
+
+   *  Fixed mix-up between proof of possession and key confirmation.
 
    *  New EAD items:
 

@@ -1563,11 +1563,11 @@ The columns of the registry are:
 
 * Description: A brief description of the item.
 
-* Type: The category of the item, i.e., P if prescriptive or NP if non-prescriptive.
+* Type: The category of the item, i.e., P if prescriptive or NP if non-prescriptive (see {{edhoc-parameters-object}}).
 
 * Specification: A pointer to the public specification for the item, if one exists.
 
-This registry has been initially populated with the entries in {{table-cbor-key-edhoc-params}}. In the "Specification" column, the value for all those entries is {{&SELF}} and {{RFC9528}}.
+This registry has been initially populated with the entries in {{table-cbor-key-edhoc-params}}. In the "Specification" column, the value for all those entries includes {{&SELF}} and {{RFC9528}}.
 
 ## EDHOC Trust Anchor Purposes Registry  ## {#iana-edhoc-ta-purposes}
 
@@ -1645,11 +1645,11 @@ This appendix provides examples where this profile of ACE is used. In particular
 
 * {{example-without-optimization}} does not make use of any optimization.
 
-* {{example-with-optimization}} makes use of the optimizations defined in {{RFC9668}}, hence reducing the roundtrips of the interactions between C and RS.
+* {{example-with-optimization}} makes use of the optimizations defined in {{RFC9668}}, hence reducing the roundtrips of the interactions between C and AS as well as between C and RS.
 
 * {{example-non-sequential-workflow}} makes use of the EAD items Request Creation Hints (see {{as-creation-hints}}) and Credential By Value (see {{auth-cred-by-value}}), with the former allowing C to receive AS Request Creation Hints during an EDHOC session. This is useful if C is not able to determine in advance the appropriate AS to contact.
 
-All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of resource servers by the respective resource owners as well as the registrations of clients authorized to request access tokens for those resource servers.
+All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of resource servers by the respective resource owners, as well as the registrations of clients authorized to request access tokens for accessing protected resources at those resource servers.
 
 * AS knows the authentication credential AUTH_CRED_C of C.
 
@@ -1773,8 +1773,7 @@ M10 |<----------------------------------------------------------------+
      Later on, the access token expires ...
 
       - C and RS delete their OSCORE Security Context and purge the
-        EDHOC session used to derive it (unless the same session is
-        also used for other reasons).
+        EDHOC session used to derive it.
       - RS retains AUTH_CRED_C as still valid, and AS knows about it.
       - C retains AUTH_CRED_RS as still valid, and AS knows about it.
 
@@ -1834,7 +1833,6 @@ M13 +---------------------------------------------------------------->|
     |                                         |                       |
     |                                         |                       |
     |  EDHOC message_2                        |                       |
-    |  (no access control is enforced)        |                       |
 M14 |<----------------------------------------------------------------+
     |  ID_CRED_R identifies                   |                       |
     |     CRED_R = AUTH_CRED_RS by reference  |                       |
@@ -1883,6 +1881,7 @@ M02 |<------------------------------------------+                     |
     |                                           |                     |
     |                                           |                     |
     |  EDHOC + OSCORE request to /token         |                     |
+    |  (OSCORE-protected message)               |                     |
 M03 +------------------------------------------>|                     |
     |  - EDHOC message_3                        |                     |
     |      ID_CRED_I identifies                 |                     |
@@ -1937,6 +1936,7 @@ M06 |<----------------------------------------------------------------+
     |                                           |                     |
     |                                           |                     |
     |  EDHOC + OSCORE request to /r             |                     |
+    |  (OSCORE-protected message)               |                     |
 M07 +---------------------------------------------------------------->|
     |  - EDHOC message_3                        |                     |
     |      EAD_3 contains:                      |                     |
@@ -1980,7 +1980,7 @@ The following describes an example scenario where this functionality is used in 
 
     * The EAD item Credential By Value. By doing so, C asks RS to specify its authentication credential AUTH\_CRED\_RS by value in ID\_CRED\_R of EDHOC message_2.
 
-2. RS replies with EDHOC message\_2, specifying its authentication credential AUTH\_CRED\_RS by value in ID\_CRED\_R
+2. RS replies with EDHOC message\_2, specifying its authentication credential AUTH\_CRED\_RS by value in ID\_CRED\_R.
 
    In the same EDHOC message_2, the EAD\_2 field includes the EAD item Request Creation Hints, whose CBOR byte string specified as ead\_value encodes the information that would have been included in an AS Request Creation Hints response to an unauthorized request sent to RS. In particular, this information includes the URI to the /token endpoint at the AS.
 
@@ -1994,7 +1994,7 @@ The following describes an example scenario where this functionality is used in 
 
 5. If a protected request from C for accessing a resource at RS is not authorized per the issued access token, then RS replies with a protected error response. Within that error response, RS can provide C with information that would have been specified in an AS Request Creation Hints response. This time, that information also includes "audience" and "scope". After this, C can request from AS a new access token that dynamically updates access rights accordingly (see {{c-as}}).
 
-   Note that this applies also if C uses the EDHOC + OSCORE combined request (see {{RFC9668}}), hence combining EDHOC message\_3 with the first OSCORE-protected request to access a protected resource at RS (see {{example-with-optimization}}).
+   Note that this applies also if C uses the EDHOC + OSCORE combined request {{RFC9668}}, hence combining EDHOC message\_3 with the first OSCORE-protected request to access a protected resource at RS (see {{example-with-optimization}}).
 
 Instead, if the EDHOC reverse message flow is used, then the following differences apply compared to what is described above:
 
@@ -2120,7 +2120,7 @@ This section lists the specifications of this profile based on the requirements 
 
 * Optionally, specify new grant types: Not specified.
 
-* Optionally, define the use of client certificates as client credential type: C can use authentication credentials of any type admitted by the EDHOC protocol, including public key certificates such as X.509 {{RFC5280}} and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}.
+* Optionally, define the use of client certificates as client credential type: C can use authentication credentials of any type admitted by the EDHOC protocol, including public key certificates such as X.509 certificates {{RFC5280}} and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}.
 
 * Specify the communication protocol the client and RS must use: CoAP.
 

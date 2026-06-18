@@ -2990,14 +2990,14 @@ Table of Contents
    *  Description: A brief description of the item.
 
    *  Type: The category of the item, i.e., P if prescriptive or NP if
-      non-prescriptive.
+      non-prescriptive (see Section 3.4).
 
    *  Specification: A pointer to the public specification for the item,
       if one exists.
 
    This registry has been initially populated with the entries in
    Table 1.  In the "Specification" column, the value for all those
-   entries is [RFC-XXXX] and [RFC9528].
+   entries includes [RFC-XXXX] and [RFC9528].
 
 14.11.  EDHOC Trust Anchor Purposes Registry
 
@@ -3484,8 +3484,8 @@ Appendix A.  Examples
    *  Appendix A.1 does not make use of any optimization.
 
    *  Appendix A.2 makes use of the optimizations defined in [RFC9668],
-      hence reducing the roundtrips of the interactions between C and
-      RS.
+      hence reducing the roundtrips of the interactions between C and AS
+      as well as between C and RS.
 
    *  Appendix A.3 makes use of the EAD items Request Creation Hints
       (see Section 4.13) and Credential By Value (see Section 4.14),
@@ -3495,9 +3495,9 @@ Appendix A.  Examples
 
    All these examples build on the following assumptions, as relying on
    expected early procedures performed at AS.  These include the
-   registration of resource servers by the respective resource owners as
-   well as the registrations of clients authorized to request access
-   tokens for those resource servers.
+   registration of resource servers by the respective resource owners,
+   as well as the registrations of clients authorized to request access
+   tokens for accessing protected resources at those resource servers.
 
    *  AS knows the authentication credential AUTH_CRED_C of C.
 
@@ -3638,8 +3638,7 @@ A.1.  Workflow without Optimizations
       Later on, the access token expires ...
 
        - C and RS delete their OSCORE Security Context and purge the
-         EDHOC session used to derive it (unless the same session is
-         also used for other reasons).
+         EDHOC session used to derive it.
        - RS retains AUTH_CRED_C as still valid, and AS knows about it.
        - C retains AUTH_CRED_RS as still valid, and AS knows about it.
 
@@ -3699,7 +3698,6 @@ A.1.  Workflow without Optimizations
      |                                         |                       |
      |                                         |                       |
      |  EDHOC message_2                        |                       |
-     |  (no access control is enforced)        |                       |
  M14 |<----------------------------------------------------------------+
      |  ID_CRED_R identifies                   |                       |
      |     CRED_R = AUTH_CRED_RS by reference  |                       |
@@ -3750,6 +3748,7 @@ A.2.  Workflow with Optimizations
      |                                           |                     |
      |                                           |                     |
      |  EDHOC + OSCORE request to /token         |                     |
+     |  (OSCORE-protected message)               |                     |
  M03 +------------------------------------------>|                     |
      |  - EDHOC message_3                        |                     |
      |      ID_CRED_I identifies                 |                     |
@@ -3804,6 +3803,7 @@ A.2.  Workflow with Optimizations
      |                                           |                     |
      |                                           |                     |
      |  EDHOC + OSCORE request to /r             |                     |
+     |  (OSCORE-protected message)               |                     |
  M07 +---------------------------------------------------------------->|
      |  - EDHOC message_3                        |                     |
      |      EAD_3 contains:                      |                     |
@@ -3864,7 +3864,7 @@ A.3.  Non-sequential Workflow
           ID_CRED_R of EDHOC message_2.
 
    2.  RS replies with EDHOC message_2, specifying its authentication
-       credential AUTH_CRED_RS by value in ID_CRED_R
+       credential AUTH_CRED_RS by value in ID_CRED_R.
 
        In the same EDHOC message_2, the EAD_2 field includes the EAD
        item Request Creation Hints, whose CBOR byte string specified as
@@ -3904,9 +3904,9 @@ A.3.  Non-sequential Workflow
        accordingly (see Section 3.1).
 
        Note that this applies also if C uses the EDHOC + OSCORE combined
-       request (see [RFC9668]), hence combining EDHOC message_3 with the
-       first OSCORE-protected request to access a protected resource at
-       RS (see Appendix A.2).
+       request [RFC9668], hence combining EDHOC message_3 with the first
+       OSCORE-protected request to access a protected resource at RS
+       (see Appendix A.2).
 
    Instead, if the EDHOC reverse message flow is used, then the
    following differences apply compared to what is described above:
@@ -4050,7 +4050,7 @@ Appendix B.  Profile Requirements
    *  Optionally, define the use of client certificates as client
       credential type: C can use authentication credentials of any type
       admitted by the EDHOC protocol, including public key certificates
-      such as X.509 [RFC5280] and C509 certificates
+      such as X.509 certificates [RFC5280] and C509 certificates
       [I-D.ietf-cose-cbor-encoded-cert].
 
    *  Specify the communication protocol the client and RS must use:

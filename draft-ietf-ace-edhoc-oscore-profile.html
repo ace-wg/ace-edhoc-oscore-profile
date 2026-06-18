@@ -3847,13 +3847,13 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
             <p id="section-14.10-5.5.1">Description: A brief description of the item.<a href="#section-14.10-5.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.10-5.6">
-            <p id="section-14.10-5.6.1">Type: The category of the item, i.e., P if prescriptive or NP if non-prescriptive.<a href="#section-14.10-5.6.1" class="pilcrow">¶</a></p>
+            <p id="section-14.10-5.6.1">Type: The category of the item, i.e., P if prescriptive or NP if non-prescriptive (see <a href="#edhoc-parameters-object" class="auto internal xref">Section 3.4</a>).<a href="#section-14.10-5.6.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-14.10-5.7">
             <p id="section-14.10-5.7.1">Specification: A pointer to the public specification for the item, if one exists.<a href="#section-14.10-5.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-14.10-6">This registry has been initially populated with the entries in <a href="#_table-cbor-key-edhoc-params" class="auto internal xref">Table 1</a>. In the "Specification" column, the value for all those entries is [RFC-XXXX] and <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-14.10-6" class="pilcrow">¶</a></p>
+<p id="section-14.10-6">This registry has been initially populated with the entries in <a href="#_table-cbor-key-edhoc-params" class="auto internal xref">Table 1</a>. In the "Specification" column, the value for all those entries includes [RFC-XXXX] and <span>[<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>.<a href="#section-14.10-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-edhoc-ta-purposes">
@@ -4230,13 +4230,13 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
           <p id="appendix-A-2.1.1"><a href="#example-without-optimization" class="auto internal xref">Appendix A.1</a> does not make use of any optimization.<a href="#appendix-A-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.2">
-          <p id="appendix-A-2.2.1"><a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a> makes use of the optimizations defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span>, hence reducing the roundtrips of the interactions between C and RS.<a href="#appendix-A-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-A-2.2.1"><a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a> makes use of the optimizations defined in <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span>, hence reducing the roundtrips of the interactions between C and AS as well as between C and RS.<a href="#appendix-A-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-A-2.3">
           <p id="appendix-A-2.3.1"><a href="#example-non-sequential-workflow" class="auto internal xref">Appendix A.3</a> makes use of the EAD items Request Creation Hints (see <a href="#as-creation-hints" class="auto internal xref">Section 4.13</a>) and Credential By Value (see <a href="#auth-cred-by-value" class="auto internal xref">Section 4.14</a>), with the former allowing C to receive AS Request Creation Hints during an EDHOC session. This is useful if C is not able to determine in advance the appropriate AS to contact.<a href="#appendix-A-2.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="appendix-A-3">All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of resource servers by the respective resource owners as well as the registrations of clients authorized to request access tokens for those resource servers.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
+<p id="appendix-A-3">All these examples build on the following assumptions, as relying on expected early procedures performed at AS. These include the registration of resource servers by the respective resource owners, as well as the registrations of clients authorized to request access tokens for accessing protected resources at those resource servers.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A-4.1">
           <p id="appendix-A-4.1.1">AS knows the authentication credential AUTH_CRED_C of C.<a href="#appendix-A-4.1.1" class="pilcrow">¶</a></p>
@@ -4272,13 +4272,13 @@ This is relevant in the case that AS and RS actually require a secure associatio
 <p id="appendix-A.1-1">The example below shows a simple interaction between C and RS: C and RS run EDHOC wherein C uploads the access token to RS, after which C accesses a protected resource at RS.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <div id="appendix-A.1-2">
           <div class="alignLeft art-svg artwork" id="appendix-A.1-2.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="2992" width="576" viewBox="0 0 576 2992" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="2960" width="576" viewBox="0 0 576 2960" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
               <path d="M 40,48 L 40,800" fill="none" stroke="black"></path>
               <path d="M 40,896 L 40,1248" fill="none" stroke="black"></path>
               <path d="M 40,1344 L 40,1504" fill="none" stroke="black"></path>
-              <path d="M 40,1664 L 40,1680" fill="none" stroke="black"></path>
-              <path d="M 40,1744 L 40,1760" fill="none" stroke="black"></path>
-              <path d="M 40,1904 L 40,2976" fill="none" stroke="black"></path>
+              <path d="M 40,1648 L 40,1664" fill="none" stroke="black"></path>
+              <path d="M 40,1728 L 40,1744" fill="none" stroke="black"></path>
+              <path d="M 40,1888 L 40,2944" fill="none" stroke="black"></path>
               <path d="M 376,48 L 376,800" fill="none" stroke="black"></path>
               <path d="M 376,896 L 376,952" fill="none" stroke="black"></path>
               <path d="M 376,968 L 376,1016" fill="none" stroke="black"></path>
@@ -4286,19 +4286,19 @@ This is relevant in the case that AS and RS actually require a secure associatio
               <path d="M 376,1144 L 376,1248" fill="none" stroke="black"></path>
               <path d="M 376,1344 L 376,1416" fill="none" stroke="black"></path>
               <path d="M 376,1432 L 376,1480" fill="none" stroke="black"></path>
-              <path d="M 376,1664 L 376,1680" fill="none" stroke="black"></path>
-              <path d="M 376,1744 L 376,1760" fill="none" stroke="black"></path>
-              <path d="M 376,1904 L 376,2488" fill="none" stroke="black"></path>
-              <path d="M 376,2504 L 376,2568" fill="none" stroke="black"></path>
-              <path d="M 376,2584 L 376,2680" fill="none" stroke="black"></path>
-              <path d="M 376,2696 L 376,2872" fill="none" stroke="black"></path>
-              <path d="M 376,2888 L 376,2952" fill="none" stroke="black"></path>
+              <path d="M 376,1648 L 376,1664" fill="none" stroke="black"></path>
+              <path d="M 376,1728 L 376,1744" fill="none" stroke="black"></path>
+              <path d="M 376,1888 L 376,2472" fill="none" stroke="black"></path>
+              <path d="M 376,2488 L 376,2536" fill="none" stroke="black"></path>
+              <path d="M 376,2552 L 376,2648" fill="none" stroke="black"></path>
+              <path d="M 376,2664 L 376,2840" fill="none" stroke="black"></path>
+              <path d="M 376,2856 L 376,2920" fill="none" stroke="black"></path>
               <path d="M 568,48 L 568,800" fill="none" stroke="black"></path>
               <path d="M 568,896 L 568,1248" fill="none" stroke="black"></path>
               <path d="M 568,1344 L 568,1504" fill="none" stroke="black"></path>
-              <path d="M 568,1664 L 568,1680" fill="none" stroke="black"></path>
-              <path d="M 568,1744 L 568,1760" fill="none" stroke="black"></path>
-              <path d="M 568,1904 L 568,2976" fill="none" stroke="black"></path>
+              <path d="M 568,1648 L 568,1664" fill="none" stroke="black"></path>
+              <path d="M 568,1728 L 568,1744" fill="none" stroke="black"></path>
+              <path d="M 568,1888 L 568,2944" fill="none" stroke="black"></path>
               <path d="M 40,80 L 368,80" fill="none" stroke="black"></path>
               <path d="M 48,144 L 376,144" fill="none" stroke="black"></path>
               <path d="M 40,240 L 368,240" fill="none" stroke="black"></path>
@@ -4309,26 +4309,26 @@ This is relevant in the case that AS and RS actually require a secure associatio
               <path d="M 40,1136 L 560,1136" fill="none" stroke="black"></path>
               <path d="M 40,1424 L 560,1424" fill="none" stroke="black"></path>
               <path d="M 48,1488 L 568,1488" fill="none" stroke="black"></path>
-              <path d="M 40,1968 L 368,1968" fill="none" stroke="black"></path>
-              <path d="M 48,2080 L 376,2080" fill="none" stroke="black"></path>
-              <path d="M 40,2496 L 560,2496" fill="none" stroke="black"></path>
-              <path d="M 48,2576 L 568,2576" fill="none" stroke="black"></path>
-              <path d="M 40,2688 L 560,2688" fill="none" stroke="black"></path>
-              <path d="M 40,2880 L 560,2880" fill="none" stroke="black"></path>
-              <path d="M 48,2960 L 568,2960" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="568,2880 556,2874.4 556,2885.6" fill="black" transform="rotate(0,560,2880)"></polygon>
-              <polygon class="arrowhead" points="568,2688 556,2682.4 556,2693.6" fill="black" transform="rotate(0,560,2688)"></polygon>
-              <polygon class="arrowhead" points="568,2496 556,2490.4 556,2501.6" fill="black" transform="rotate(0,560,2496)"></polygon>
+              <path d="M 40,1952 L 368,1952" fill="none" stroke="black"></path>
+              <path d="M 48,2064 L 376,2064" fill="none" stroke="black"></path>
+              <path d="M 40,2480 L 560,2480" fill="none" stroke="black"></path>
+              <path d="M 48,2544 L 568,2544" fill="none" stroke="black"></path>
+              <path d="M 40,2656 L 560,2656" fill="none" stroke="black"></path>
+              <path d="M 40,2848 L 560,2848" fill="none" stroke="black"></path>
+              <path d="M 48,2928 L 568,2928" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="568,2848 556,2842.4 556,2853.6" fill="black" transform="rotate(0,560,2848)"></polygon>
+              <polygon class="arrowhead" points="568,2656 556,2650.4 556,2661.6" fill="black" transform="rotate(0,560,2656)"></polygon>
+              <polygon class="arrowhead" points="568,2480 556,2474.4 556,2485.6" fill="black" transform="rotate(0,560,2480)"></polygon>
               <polygon class="arrowhead" points="568,1424 556,1418.4 556,1429.6" fill="black" transform="rotate(0,560,1424)"></polygon>
               <polygon class="arrowhead" points="568,1136 556,1130.4 556,1141.6" fill="black" transform="rotate(0,560,1136)"></polygon>
               <polygon class="arrowhead" points="568,960 556,954.4 556,965.6" fill="black" transform="rotate(0,560,960)"></polygon>
-              <polygon class="arrowhead" points="376,1968 364,1962.4 364,1973.6" fill="black" transform="rotate(0,368,1968)"></polygon>
+              <polygon class="arrowhead" points="376,1952 364,1946.4 364,1957.6" fill="black" transform="rotate(0,368,1952)"></polygon>
               <polygon class="arrowhead" points="376,352 364,346.4 364,357.6" fill="black" transform="rotate(0,368,352)"></polygon>
               <polygon class="arrowhead" points="376,240 364,234.4 364,245.6" fill="black" transform="rotate(0,368,240)"></polygon>
               <polygon class="arrowhead" points="376,80 364,74.4 364,85.6" fill="black" transform="rotate(0,368,80)"></polygon>
-              <polygon class="arrowhead" points="56,2960 44,2954.4 44,2965.6" fill="black" transform="rotate(180,48,2960)"></polygon>
-              <polygon class="arrowhead" points="56,2576 44,2570.4 44,2581.6" fill="black" transform="rotate(180,48,2576)"></polygon>
-              <polygon class="arrowhead" points="56,2080 44,2074.4 44,2085.6" fill="black" transform="rotate(180,48,2080)"></polygon>
+              <polygon class="arrowhead" points="56,2928 44,2922.4 44,2933.6" fill="black" transform="rotate(180,48,2928)"></polygon>
+              <polygon class="arrowhead" points="56,2544 44,2538.4 44,2549.6" fill="black" transform="rotate(180,48,2544)"></polygon>
+              <polygon class="arrowhead" points="56,2064 44,2058.4 44,2069.6" fill="black" transform="rotate(180,48,2064)"></polygon>
               <polygon class="arrowhead" points="56,1488 44,1482.4 44,1493.6" fill="black" transform="rotate(180,48,1488)"></polygon>
               <polygon class="arrowhead" points="56,1024 44,1018.4 44,1029.6" fill="black" transform="rotate(180,48,1024)"></polygon>
               <polygon class="arrowhead" points="56,464 44,458.4 44,469.6" fill="black" transform="rotate(180,48,464)"></polygon>
@@ -4563,21 +4563,23 @@ This is relevant in the case that AS and RS actually require a secure associatio
                 <text x="196" y="1588">used</text>
                 <text x="228" y="1588">to</text>
                 <text x="268" y="1588">derive</text>
-                <text x="308" y="1588">it</text>
-                <text x="352" y="1588">(unless</text>
-                <text x="400" y="1588">the</text>
-                <text x="436" y="1588">same</text>
-                <text x="488" y="1588">session</text>
-                <text x="532" y="1588">is</text>
-                <text x="84" y="1604">also</text>
-                <text x="124" y="1604">used</text>
-                <text x="160" y="1604">for</text>
-                <text x="200" y="1604">other</text>
-                <text x="264" y="1604">reasons).</text>
+                <text x="312" y="1588">it.</text>
+                <text x="56" y="1604">-</text>
+                <text x="76" y="1604">RS</text>
+                <text x="120" y="1604">retains</text>
+                <text x="200" y="1604">AUTH_CRED_C</text>
+                <text x="260" y="1604">as</text>
+                <text x="296" y="1604">still</text>
+                <text x="348" y="1604">valid,</text>
+                <text x="392" y="1604">and</text>
+                <text x="420" y="1604">AS</text>
+                <text x="456" y="1604">knows</text>
+                <text x="504" y="1604">about</text>
+                <text x="544" y="1604">it.</text>
                 <text x="56" y="1620">-</text>
-                <text x="76" y="1620">RS</text>
-                <text x="120" y="1620">retains</text>
-                <text x="200" y="1620">AUTH_CRED_C</text>
+                <text x="72" y="1620">C</text>
+                <text x="112" y="1620">retains</text>
+                <text x="196" y="1620">AUTH_CRED_RS</text>
                 <text x="260" y="1620">as</text>
                 <text x="296" y="1620">still</text>
                 <text x="348" y="1620">valid,</text>
@@ -4586,206 +4588,189 @@ This is relevant in the case that AS and RS actually require a secure associatio
                 <text x="456" y="1620">knows</text>
                 <text x="504" y="1620">about</text>
                 <text x="544" y="1620">it.</text>
-                <text x="56" y="1636">-</text>
-                <text x="72" y="1636">C</text>
-                <text x="112" y="1636">retains</text>
-                <text x="196" y="1636">AUTH_CRED_RS</text>
-                <text x="260" y="1636">as</text>
-                <text x="296" y="1636">still</text>
-                <text x="348" y="1636">valid,</text>
-                <text x="392" y="1636">and</text>
-                <text x="420" y="1636">AS</text>
-                <text x="456" y="1636">knows</text>
-                <text x="504" y="1636">about</text>
-                <text x="544" y="1636">it.</text>
-                <text x="60" y="1716">Time</text>
-                <text x="108" y="1716">passes</text>
-                <text x="152" y="1716">...</text>
-                <text x="48" y="1796">C</text>
-                <text x="76" y="1796">asks</text>
-                <text x="112" y="1796">for</text>
-                <text x="136" y="1796">a</text>
-                <text x="160" y="1796">new</text>
-                <text x="204" y="1796">access</text>
-                <text x="260" y="1796">token;</text>
-                <text x="304" y="1796">now</text>
-                <text x="336" y="1796">all</text>
-                <text x="368" y="1796">the</text>
-                <text x="444" y="1796">authentication</text>
-                <text x="88" y="1812">credentials</text>
-                <text x="152" y="1812">can</text>
-                <text x="180" y="1812">be</text>
-                <text x="236" y="1812">identified</text>
-                <text x="292" y="1812">by</text>
-                <text x="348" y="1812">reference.</text>
-                <text x="56" y="1844">The</text>
-                <text x="96" y="1844">price</text>
-                <text x="132" y="1844">to</text>
-                <text x="160" y="1844">pay</text>
-                <text x="188" y="1844">is</text>
-                <text x="212" y="1844">on</text>
-                <text x="240" y="1844">AS,</text>
-                <text x="280" y="1844">about</text>
-                <text x="352" y="1844">remembering</text>
-                <text x="420" y="1844">that</text>
-                <text x="452" y="1844">at</text>
-                <text x="488" y="1844">least</text>
-                <text x="56" y="1860">one</text>
-                <text x="100" y="1860">access</text>
-                <text x="152" y="1860">token</text>
-                <text x="192" y="1860">has</text>
-                <text x="228" y="1860">been</text>
-                <text x="276" y="1860">issued</text>
-                <text x="320" y="1860">for</text>
-                <text x="352" y="1860">the</text>
-                <text x="388" y="1860">pair</text>
-                <text x="424" y="1860">(C,</text>
-                <text x="456" y="1860">RS)</text>
-                <text x="56" y="1876">and</text>
-                <text x="120" y="1876">considering</text>
-                <text x="184" y="1876">the</text>
-                <text x="220" y="1876">pair</text>
-                <text x="296" y="1876">(AUTH_CRED_C,</text>
-                <text x="412" y="1876">AUTH_CRED_RS).</text>
-                <text x="84" y="1940">Access</text>
-                <text x="136" y="1940">token</text>
-                <text x="192" y="1940">request</text>
-                <text x="236" y="1940">to</text>
-                <text x="276" y="1940">/token</text>
-                <text x="128" y="1956">(OSCORE-protected</text>
-                <text x="236" y="1956">message)</text>
-                <text x="16" y="1972">M11</text>
-                <text x="96" y="1988">"req_cnf"</text>
-                <text x="180" y="1988">identifies</text>
-                <text x="108" y="2004">CRED_I</text>
-                <text x="144" y="2004">=</text>
-                <text x="200" y="2004">AUTH_CRED_C</text>
-                <text x="260" y="2004">by</text>
-                <text x="312" y="2004">reference</text>
-                <text x="84" y="2052">Access</text>
-                <text x="136" y="2052">token</text>
-                <text x="196" y="2052">response</text>
-                <text x="128" y="2068">(OSCORE-protected</text>
-                <text x="236" y="2068">message)</text>
-                <text x="16" y="2084">M12</text>
-                <text x="92" y="2100">"rs_cnf"</text>
-                <text x="172" y="2100">identifies</text>
-                <text x="132" y="2116">AUTH_CRED_RS</text>
-                <text x="196" y="2116">by</text>
-                <text x="248" y="2116">reference</text>
-                <text x="112" y="2148">"ace_profile"</text>
-                <text x="208" y="2148">specifies</text>
-                <text x="264" y="2148">the</text>
-                <text x="72" y="2164">ACE</text>
-                <text x="120" y="2164">profile</text>
-                <text x="232" y="2164">"coap_edhoc_oscore"</text>
-                <text x="108" y="2196">"edhoc_info"</text>
-                <text x="204" y="2196">specifies:</text>
-                <text x="88" y="2212">{</text>
-                <text x="152" y="2228">e'session_id'</text>
-                <text x="216" y="2228">:</text>
-                <text x="252" y="2228">h'05',</text>
-                <text x="164" y="2244">e'cipher_suites'</text>
-                <text x="240" y="2244">:</text>
-                <text x="260" y="2244">2,</text>
-                <text x="140" y="2260">e'methods'</text>
-                <text x="192" y="2260">:</text>
-                <text x="212" y="2260">3,</text>
-                <text x="144" y="2276">e'uri_path'</text>
-                <text x="200" y="2276">:</text>
-                <text x="244" y="2276">"/edhoc"</text>
-                <text x="88" y="2292">}</text>
-                <text x="68" y="2324">In</text>
-                <text x="96" y="2324">the</text>
-                <text x="140" y="2324">access</text>
-                <text x="196" y="2324">token:</text>
-                <text x="64" y="2340">-</text>
-                <text x="88" y="2340">the</text>
-                <text x="128" y="2340">"cnf"</text>
-                <text x="176" y="2340">claim</text>
-                <text x="244" y="2340">identifies</text>
-                <text x="120" y="2356">AUTH_CRED_C</text>
-                <text x="180" y="2356">by</text>
-                <text x="232" y="2356">reference</text>
-                <text x="64" y="2372">-</text>
-                <text x="88" y="2372">the</text>
-                <text x="156" y="2372">"edhoc_info"</text>
-                <text x="232" y="2372">claim</text>
-                <text x="112" y="2388">specifies</text>
-                <text x="168" y="2388">the</text>
-                <text x="204" y="2388">same</text>
-                <text x="236" y="2388">as</text>
-                <text x="124" y="2404">"edhoc_info"</text>
-                <text x="200" y="2404">above</text>
-                <text x="80" y="2468">EDHOC</text>
-                <text x="144" y="2468">message_1</text>
-                <text x="196" y="2468">to</text>
-                <text x="236" y="2468">/edhoc</text>
-                <text x="72" y="2484">(no</text>
-                <text x="116" y="2484">access</text>
-                <text x="176" y="2484">control</text>
-                <text x="220" y="2484">is</text>
-                <text x="272" y="2484">enforced)</text>
-                <text x="16" y="2500">M13</text>
-                <text x="80" y="2548">EDHOC</text>
-                <text x="144" y="2548">message_2</text>
-                <text x="72" y="2564">(no</text>
-                <text x="116" y="2564">access</text>
-                <text x="176" y="2564">control</text>
-                <text x="220" y="2564">is</text>
-                <text x="272" y="2564">enforced)</text>
-                <text x="16" y="2580">M14</text>
-                <text x="96" y="2596">ID_CRED_R</text>
-                <text x="180" y="2596">identifies</text>
-                <text x="108" y="2612">CRED_R</text>
-                <text x="144" y="2612">=</text>
-                <text x="204" y="2612">AUTH_CRED_RS</text>
-                <text x="268" y="2612">by</text>
-                <text x="320" y="2612">reference</text>
-                <text x="80" y="2660">EDHOC</text>
-                <text x="144" y="2660">message_3</text>
-                <text x="196" y="2660">to</text>
-                <text x="236" y="2660">/edhoc</text>
-                <text x="72" y="2676">(no</text>
-                <text x="116" y="2676">access</text>
-                <text x="176" y="2676">control</text>
-                <text x="220" y="2676">is</text>
-                <text x="272" y="2676">enforced)</text>
-                <text x="16" y="2692">M15</text>
-                <text x="80" y="2708">EAD_3</text>
-                <text x="144" y="2708">contains:</text>
-                <text x="64" y="2724">-</text>
-                <text x="88" y="2724">EAD</text>
-                <text x="124" y="2724">item</text>
-                <text x="184" y="2724">ACE-OAuth</text>
-                <text x="252" y="2724">Access</text>
-                <text x="304" y="2724">Token</text>
-                <text x="120" y="2740">(access</text>
-                <text x="180" y="2740">token)</text>
-                <text x="96" y="2772">ID_CRED_I</text>
-                <text x="180" y="2772">identifies</text>
-                <text x="108" y="2788">CRED_I</text>
-                <text x="144" y="2788">=</text>
-                <text x="200" y="2788">AUTH_CRED_C</text>
-                <text x="260" y="2788">by</text>
-                <text x="312" y="2788">reference</text>
-                <text x="84" y="2836">Access</text>
-                <text x="124" y="2836">to</text>
-                <text x="176" y="2836">protected</text>
-                <text x="252" y="2836">resource</text>
-                <text x="300" y="2836">/r</text>
-                <text x="128" y="2852">(OSCORE-protected</text>
-                <text x="236" y="2852">message)</text>
-                <text x="88" y="2868">(access</text>
-                <text x="152" y="2868">control</text>
-                <text x="196" y="2868">is</text>
-                <text x="248" y="2868">enforced)</text>
-                <text x="16" y="2884">M16</text>
-                <text x="92" y="2932">Response</text>
-                <text x="128" y="2948">(OSCORE-protected</text>
-                <text x="236" y="2948">message)</text>
-                <text x="16" y="2964">M17</text>
-                <text x="376" y="2980">|</text>
+                <text x="60" y="1700">Time</text>
+                <text x="108" y="1700">passes</text>
+                <text x="152" y="1700">...</text>
+                <text x="48" y="1780">C</text>
+                <text x="76" y="1780">asks</text>
+                <text x="112" y="1780">for</text>
+                <text x="136" y="1780">a</text>
+                <text x="160" y="1780">new</text>
+                <text x="204" y="1780">access</text>
+                <text x="260" y="1780">token;</text>
+                <text x="304" y="1780">now</text>
+                <text x="336" y="1780">all</text>
+                <text x="368" y="1780">the</text>
+                <text x="444" y="1780">authentication</text>
+                <text x="88" y="1796">credentials</text>
+                <text x="152" y="1796">can</text>
+                <text x="180" y="1796">be</text>
+                <text x="236" y="1796">identified</text>
+                <text x="292" y="1796">by</text>
+                <text x="348" y="1796">reference.</text>
+                <text x="56" y="1828">The</text>
+                <text x="96" y="1828">price</text>
+                <text x="132" y="1828">to</text>
+                <text x="160" y="1828">pay</text>
+                <text x="188" y="1828">is</text>
+                <text x="212" y="1828">on</text>
+                <text x="240" y="1828">AS,</text>
+                <text x="280" y="1828">about</text>
+                <text x="352" y="1828">remembering</text>
+                <text x="420" y="1828">that</text>
+                <text x="452" y="1828">at</text>
+                <text x="488" y="1828">least</text>
+                <text x="56" y="1844">one</text>
+                <text x="100" y="1844">access</text>
+                <text x="152" y="1844">token</text>
+                <text x="192" y="1844">has</text>
+                <text x="228" y="1844">been</text>
+                <text x="276" y="1844">issued</text>
+                <text x="320" y="1844">for</text>
+                <text x="352" y="1844">the</text>
+                <text x="388" y="1844">pair</text>
+                <text x="424" y="1844">(C,</text>
+                <text x="456" y="1844">RS)</text>
+                <text x="56" y="1860">and</text>
+                <text x="120" y="1860">considering</text>
+                <text x="184" y="1860">the</text>
+                <text x="220" y="1860">pair</text>
+                <text x="296" y="1860">(AUTH_CRED_C,</text>
+                <text x="412" y="1860">AUTH_CRED_RS).</text>
+                <text x="84" y="1924">Access</text>
+                <text x="136" y="1924">token</text>
+                <text x="192" y="1924">request</text>
+                <text x="236" y="1924">to</text>
+                <text x="276" y="1924">/token</text>
+                <text x="128" y="1940">(OSCORE-protected</text>
+                <text x="236" y="1940">message)</text>
+                <text x="16" y="1956">M11</text>
+                <text x="96" y="1972">"req_cnf"</text>
+                <text x="180" y="1972">identifies</text>
+                <text x="108" y="1988">CRED_I</text>
+                <text x="144" y="1988">=</text>
+                <text x="200" y="1988">AUTH_CRED_C</text>
+                <text x="260" y="1988">by</text>
+                <text x="312" y="1988">reference</text>
+                <text x="84" y="2036">Access</text>
+                <text x="136" y="2036">token</text>
+                <text x="196" y="2036">response</text>
+                <text x="128" y="2052">(OSCORE-protected</text>
+                <text x="236" y="2052">message)</text>
+                <text x="16" y="2068">M12</text>
+                <text x="92" y="2084">"rs_cnf"</text>
+                <text x="172" y="2084">identifies</text>
+                <text x="132" y="2100">AUTH_CRED_RS</text>
+                <text x="196" y="2100">by</text>
+                <text x="248" y="2100">reference</text>
+                <text x="112" y="2132">"ace_profile"</text>
+                <text x="208" y="2132">specifies</text>
+                <text x="264" y="2132">the</text>
+                <text x="72" y="2148">ACE</text>
+                <text x="120" y="2148">profile</text>
+                <text x="232" y="2148">"coap_edhoc_oscore"</text>
+                <text x="108" y="2180">"edhoc_info"</text>
+                <text x="204" y="2180">specifies:</text>
+                <text x="88" y="2196">{</text>
+                <text x="152" y="2212">e'session_id'</text>
+                <text x="216" y="2212">:</text>
+                <text x="252" y="2212">h'05',</text>
+                <text x="164" y="2228">e'cipher_suites'</text>
+                <text x="240" y="2228">:</text>
+                <text x="260" y="2228">2,</text>
+                <text x="140" y="2244">e'methods'</text>
+                <text x="192" y="2244">:</text>
+                <text x="212" y="2244">3,</text>
+                <text x="144" y="2260">e'uri_path'</text>
+                <text x="200" y="2260">:</text>
+                <text x="244" y="2260">"/edhoc"</text>
+                <text x="88" y="2276">}</text>
+                <text x="68" y="2308">In</text>
+                <text x="96" y="2308">the</text>
+                <text x="140" y="2308">access</text>
+                <text x="196" y="2308">token:</text>
+                <text x="64" y="2324">-</text>
+                <text x="88" y="2324">the</text>
+                <text x="128" y="2324">"cnf"</text>
+                <text x="176" y="2324">claim</text>
+                <text x="244" y="2324">identifies</text>
+                <text x="120" y="2340">AUTH_CRED_C</text>
+                <text x="180" y="2340">by</text>
+                <text x="232" y="2340">reference</text>
+                <text x="64" y="2356">-</text>
+                <text x="88" y="2356">the</text>
+                <text x="156" y="2356">"edhoc_info"</text>
+                <text x="232" y="2356">claim</text>
+                <text x="112" y="2372">specifies</text>
+                <text x="168" y="2372">the</text>
+                <text x="204" y="2372">same</text>
+                <text x="236" y="2372">as</text>
+                <text x="124" y="2388">"edhoc_info"</text>
+                <text x="200" y="2388">above</text>
+                <text x="80" y="2452">EDHOC</text>
+                <text x="144" y="2452">message_1</text>
+                <text x="196" y="2452">to</text>
+                <text x="236" y="2452">/edhoc</text>
+                <text x="72" y="2468">(no</text>
+                <text x="116" y="2468">access</text>
+                <text x="176" y="2468">control</text>
+                <text x="220" y="2468">is</text>
+                <text x="272" y="2468">enforced)</text>
+                <text x="16" y="2484">M13</text>
+                <text x="80" y="2532">EDHOC</text>
+                <text x="144" y="2532">message_2</text>
+                <text x="16" y="2548">M14</text>
+                <text x="96" y="2564">ID_CRED_R</text>
+                <text x="180" y="2564">identifies</text>
+                <text x="108" y="2580">CRED_R</text>
+                <text x="144" y="2580">=</text>
+                <text x="204" y="2580">AUTH_CRED_RS</text>
+                <text x="268" y="2580">by</text>
+                <text x="320" y="2580">reference</text>
+                <text x="80" y="2628">EDHOC</text>
+                <text x="144" y="2628">message_3</text>
+                <text x="196" y="2628">to</text>
+                <text x="236" y="2628">/edhoc</text>
+                <text x="72" y="2644">(no</text>
+                <text x="116" y="2644">access</text>
+                <text x="176" y="2644">control</text>
+                <text x="220" y="2644">is</text>
+                <text x="272" y="2644">enforced)</text>
+                <text x="16" y="2660">M15</text>
+                <text x="80" y="2676">EAD_3</text>
+                <text x="144" y="2676">contains:</text>
+                <text x="64" y="2692">-</text>
+                <text x="88" y="2692">EAD</text>
+                <text x="124" y="2692">item</text>
+                <text x="184" y="2692">ACE-OAuth</text>
+                <text x="252" y="2692">Access</text>
+                <text x="304" y="2692">Token</text>
+                <text x="120" y="2708">(access</text>
+                <text x="180" y="2708">token)</text>
+                <text x="96" y="2740">ID_CRED_I</text>
+                <text x="180" y="2740">identifies</text>
+                <text x="108" y="2756">CRED_I</text>
+                <text x="144" y="2756">=</text>
+                <text x="200" y="2756">AUTH_CRED_C</text>
+                <text x="260" y="2756">by</text>
+                <text x="312" y="2756">reference</text>
+                <text x="84" y="2804">Access</text>
+                <text x="124" y="2804">to</text>
+                <text x="176" y="2804">protected</text>
+                <text x="252" y="2804">resource</text>
+                <text x="300" y="2804">/r</text>
+                <text x="128" y="2820">(OSCORE-protected</text>
+                <text x="236" y="2820">message)</text>
+                <text x="88" y="2836">(access</text>
+                <text x="152" y="2836">control</text>
+                <text x="196" y="2836">is</text>
+                <text x="248" y="2836">enforced)</text>
+                <text x="16" y="2852">M16</text>
+                <text x="92" y="2900">Response</text>
+                <text x="128" y="2916">(OSCORE-protected</text>
+                <text x="236" y="2916">message)</text>
+                <text x="16" y="2932">M17</text>
+                <text x="376" y="2948">|</text>
               </g>
             </svg><a href="#appendix-A.1-2.1" class="pilcrow">¶</a>
 </div>
@@ -4801,40 +4786,40 @@ This is relevant in the case that AS and RS actually require a secure associatio
 <p id="appendix-A.2-2">Consequently, the interaction between C and RS consists of only two roundtrips to run EDHOC, upload the access token, and access the protected resource at RS.<a href="#appendix-A.2-2" class="pilcrow">¶</a></p>
 <div id="appendix-A.2-3">
           <div class="alignLeft art-svg artwork" id="appendix-A.2-3.1">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1536" width="576" viewBox="0 0 576 1536" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
-              <path d="M 40,48 L 40,784" fill="none" stroke="black"></path>
-              <path d="M 40,880 L 40,1280" fill="none" stroke="black"></path>
-              <path d="M 40,1440 L 40,1520" fill="none" stroke="black"></path>
-              <path d="M 392,48 L 392,784" fill="none" stroke="black"></path>
-              <path d="M 392,880 L 392,920" fill="none" stroke="black"></path>
-              <path d="M 392,936 L 392,1000" fill="none" stroke="black"></path>
-              <path d="M 392,1016 L 392,1096" fill="none" stroke="black"></path>
-              <path d="M 392,1112 L 392,1280" fill="none" stroke="black"></path>
-              <path d="M 392,1440 L 392,1496" fill="none" stroke="black"></path>
-              <path d="M 568,48 L 568,784" fill="none" stroke="black"></path>
-              <path d="M 568,880 L 568,1280" fill="none" stroke="black"></path>
-              <path d="M 568,1440 L 568,1520" fill="none" stroke="black"></path>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="1568" width="576" viewBox="0 0 576 1568" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 40,48 L 40,800" fill="none" stroke="black"></path>
+              <path d="M 40,896 L 40,1312" fill="none" stroke="black"></path>
+              <path d="M 40,1472 L 40,1552" fill="none" stroke="black"></path>
+              <path d="M 392,48 L 392,800" fill="none" stroke="black"></path>
+              <path d="M 392,896 L 392,936" fill="none" stroke="black"></path>
+              <path d="M 392,952 L 392,1016" fill="none" stroke="black"></path>
+              <path d="M 392,1032 L 392,1128" fill="none" stroke="black"></path>
+              <path d="M 392,1144 L 392,1312" fill="none" stroke="black"></path>
+              <path d="M 392,1472 L 392,1528" fill="none" stroke="black"></path>
+              <path d="M 568,48 L 568,800" fill="none" stroke="black"></path>
+              <path d="M 568,896 L 568,1312" fill="none" stroke="black"></path>
+              <path d="M 568,1472 L 568,1552" fill="none" stroke="black"></path>
               <path d="M 40,80 L 384,80" fill="none" stroke="black"></path>
               <path d="M 48,144 L 392,144" fill="none" stroke="black"></path>
-              <path d="M 40,240 L 384,240" fill="none" stroke="black"></path>
-              <path d="M 64,304 L 80,304" fill="none" stroke="black"></path>
-              <path d="M 96,304 L 112,304" fill="none" stroke="black"></path>
-              <path d="M 128,304 L 144,304" fill="none" stroke="black"></path>
-              <path d="M 48,448 L 392,448" fill="none" stroke="black"></path>
-              <path d="M 40,928 L 560,928" fill="none" stroke="black"></path>
-              <path d="M 48,1008 L 568,1008" fill="none" stroke="black"></path>
-              <path d="M 40,1104 L 560,1104" fill="none" stroke="black"></path>
-              <path d="M 64,1232 L 80,1232" fill="none" stroke="black"></path>
-              <path d="M 96,1232 L 112,1232" fill="none" stroke="black"></path>
-              <path d="M 128,1232 L 144,1232" fill="none" stroke="black"></path>
-              <path d="M 48,1504 L 568,1504" fill="none" stroke="black"></path>
-              <polygon class="arrowhead" points="568,1104 556,1098.4 556,1109.6" fill="black" transform="rotate(0,560,1104)"></polygon>
-              <polygon class="arrowhead" points="568,928 556,922.4 556,933.6" fill="black" transform="rotate(0,560,928)"></polygon>
-              <polygon class="arrowhead" points="392,240 380,234.4 380,245.6" fill="black" transform="rotate(0,384,240)"></polygon>
+              <path d="M 40,256 L 384,256" fill="none" stroke="black"></path>
+              <path d="M 64,320 L 80,320" fill="none" stroke="black"></path>
+              <path d="M 96,320 L 112,320" fill="none" stroke="black"></path>
+              <path d="M 128,320 L 144,320" fill="none" stroke="black"></path>
+              <path d="M 48,464 L 392,464" fill="none" stroke="black"></path>
+              <path d="M 40,944 L 560,944" fill="none" stroke="black"></path>
+              <path d="M 48,1024 L 568,1024" fill="none" stroke="black"></path>
+              <path d="M 40,1136 L 560,1136" fill="none" stroke="black"></path>
+              <path d="M 64,1264 L 80,1264" fill="none" stroke="black"></path>
+              <path d="M 96,1264 L 112,1264" fill="none" stroke="black"></path>
+              <path d="M 128,1264 L 144,1264" fill="none" stroke="black"></path>
+              <path d="M 48,1536 L 568,1536" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="568,1136 556,1130.4 556,1141.6" fill="black" transform="rotate(0,560,1136)"></polygon>
+              <polygon class="arrowhead" points="568,944 556,938.4 556,949.6" fill="black" transform="rotate(0,560,944)"></polygon>
+              <polygon class="arrowhead" points="392,256 380,250.4 380,261.6" fill="black" transform="rotate(0,384,256)"></polygon>
               <polygon class="arrowhead" points="392,80 380,74.4 380,85.6" fill="black" transform="rotate(0,384,80)"></polygon>
-              <polygon class="arrowhead" points="56,1504 44,1498.4 44,1509.6" fill="black" transform="rotate(180,48,1504)"></polygon>
-              <polygon class="arrowhead" points="56,1008 44,1002.4 44,1013.6" fill="black" transform="rotate(180,48,1008)"></polygon>
-              <polygon class="arrowhead" points="56,448 44,442.4 44,453.6" fill="black" transform="rotate(180,48,448)"></polygon>
+              <polygon class="arrowhead" points="56,1536 44,1530.4 44,1541.6" fill="black" transform="rotate(180,48,1536)"></polygon>
+              <polygon class="arrowhead" points="56,1024 44,1018.4 44,1029.6" fill="black" transform="rotate(180,48,1024)"></polygon>
+              <polygon class="arrowhead" points="56,464 44,458.4 44,469.6" fill="black" transform="rotate(180,48,464)"></polygon>
               <polygon class="arrowhead" points="56,144 44,138.4 44,149.6" fill="black" transform="rotate(180,48,144)"></polygon>
               <g class="text">
                 <text x="40" y="36">C</text>
@@ -4861,209 +4846,213 @@ This is relevant in the case that AS and RS actually require a secure associatio
                 <text x="208" y="228">request</text>
                 <text x="252" y="228">to</text>
                 <text x="292" y="228">/token</text>
-                <text x="16" y="244">M03</text>
-                <text x="64" y="260">-</text>
-                <text x="96" y="260">EDHOC</text>
-                <text x="160" y="260">message_3</text>
-                <text x="128" y="276">ID_CRED_I</text>
-                <text x="212" y="276">identifies</text>
-                <text x="140" y="292">CRED_I</text>
-                <text x="176" y="292">=</text>
-                <text x="232" y="292">AUTH_CRED_C</text>
-                <text x="292" y="292">by</text>
-                <text x="344" y="292">reference</text>
-                <text x="64" y="324">-</text>
-                <text x="140" y="324">OSCORE-protected</text>
-                <text x="228" y="324">part</text>
-                <text x="116" y="340">Access</text>
-                <text x="168" y="340">token</text>
-                <text x="224" y="340">request</text>
-                <text x="152" y="356">"req_cnf"</text>
-                <text x="236" y="356">identifies</text>
-                <text x="184" y="372">AUTH_CRED_C</text>
-                <text x="244" y="372">by</text>
-                <text x="296" y="372">reference</text>
-                <text x="84" y="420">Access</text>
-                <text x="136" y="420">token</text>
-                <text x="196" y="420">response</text>
-                <text x="128" y="436">(OSCORE-protected</text>
-                <text x="236" y="436">message)</text>
-                <text x="16" y="452">M04</text>
-                <text x="92" y="468">"rs_cnf"</text>
-                <text x="168" y="468">specifies</text>
-                <text x="132" y="484">AUTH_CRED_RS</text>
-                <text x="196" y="484">by</text>
-                <text x="232" y="484">value</text>
-                <text x="112" y="516">"ace_profile"</text>
-                <text x="208" y="516">specifies</text>
-                <text x="264" y="516">the</text>
-                <text x="72" y="532">ACE</text>
-                <text x="120" y="532">profile</text>
-                <text x="232" y="532">"coap_edhoc_oscore"</text>
-                <text x="108" y="564">"edhoc_info"</text>
-                <text x="204" y="564">specifies:</text>
-                <text x="88" y="580">{</text>
-                <text x="152" y="596">e'session_id'</text>
-                <text x="216" y="596">:</text>
-                <text x="252" y="596">h'01',</text>
-                <text x="164" y="612">e'cipher_suites'</text>
-                <text x="240" y="612">:</text>
-                <text x="260" y="612">2,</text>
-                <text x="140" y="628">e'methods'</text>
-                <text x="192" y="628">:</text>
-                <text x="212" y="628">3,</text>
-                <text x="144" y="644">e'uri_path'</text>
-                <text x="200" y="644">:</text>
-                <text x="244" y="644">"/edhoc"</text>
-                <text x="88" y="660">}</text>
-                <text x="68" y="692">In</text>
-                <text x="96" y="692">the</text>
-                <text x="140" y="692">access</text>
-                <text x="196" y="692">token:</text>
-                <text x="64" y="708">-</text>
-                <text x="88" y="708">the</text>
-                <text x="128" y="708">"cnf"</text>
-                <text x="176" y="708">claim</text>
-                <text x="240" y="708">specifies</text>
-                <text x="120" y="724">AUTH_CRED_C</text>
-                <text x="180" y="724">by</text>
-                <text x="216" y="724">value</text>
-                <text x="64" y="740">-</text>
-                <text x="88" y="740">the</text>
-                <text x="156" y="740">"edhoc_info"</text>
-                <text x="232" y="740">claim</text>
-                <text x="112" y="756">specifies</text>
-                <text x="168" y="756">the</text>
-                <text x="204" y="756">same</text>
-                <text x="236" y="756">as</text>
-                <text x="124" y="772">"edhoc_info"</text>
-                <text x="200" y="772">above</text>
-                <text x="76" y="820">Possibly</text>
-                <text x="136" y="820">after</text>
-                <text x="184" y="820">chain</text>
-                <text x="264" y="820">verification,</text>
-                <text x="328" y="820">C</text>
-                <text x="356" y="820">adds</text>
-                <text x="428" y="820">AUTH_CRED_RS</text>
-                <text x="52" y="836">to</text>
-                <text x="80" y="836">the</text>
-                <text x="112" y="836">set</text>
-                <text x="140" y="836">of</text>
-                <text x="168" y="836">its</text>
-                <text x="216" y="836">trusted</text>
-                <text x="268" y="836">peer</text>
-                <text x="348" y="836">authentication</text>
-                <text x="460" y="836">credentials,</text>
-                <text x="72" y="852">relying</text>
-                <text x="116" y="852">on</text>
-                <text x="140" y="852">AS</text>
-                <text x="164" y="852">as</text>
-                <text x="208" y="852">trusted</text>
-                <text x="280" y="852">provider.</text>
-                <text x="80" y="900">EDHOC</text>
-                <text x="144" y="900">message_1</text>
-                <text x="196" y="900">to</text>
-                <text x="236" y="900">/edhoc</text>
-                <text x="72" y="916">(no</text>
-                <text x="116" y="916">access</text>
-                <text x="176" y="916">control</text>
-                <text x="220" y="916">is</text>
-                <text x="272" y="916">enforced)</text>
-                <text x="16" y="932">M05</text>
-                <text x="80" y="996">EDHOC</text>
-                <text x="144" y="996">message_2</text>
-                <text x="16" y="1012">M06</text>
-                <text x="96" y="1028">ID_CRED_R</text>
-                <text x="180" y="1028">identifies</text>
-                <text x="108" y="1044">CRED_R</text>
-                <text x="144" y="1044">=</text>
-                <text x="204" y="1044">AUTH_CRED_RS</text>
-                <text x="268" y="1044">by</text>
-                <text x="320" y="1044">reference</text>
-                <text x="80" y="1092">EDHOC</text>
-                <text x="112" y="1092">+</text>
-                <text x="148" y="1092">OSCORE</text>
-                <text x="208" y="1092">request</text>
-                <text x="252" y="1092">to</text>
-                <text x="276" y="1092">/r</text>
-                <text x="16" y="1108">M07</text>
-                <text x="64" y="1124">-</text>
-                <text x="96" y="1124">EDHOC</text>
-                <text x="160" y="1124">message_3</text>
-                <text x="112" y="1140">EAD_3</text>
-                <text x="176" y="1140">contains:</text>
-                <text x="96" y="1156">-</text>
-                <text x="120" y="1156">EAD</text>
-                <text x="156" y="1156">item</text>
-                <text x="216" y="1156">ACE-OAuth</text>
-                <text x="284" y="1156">Access</text>
-                <text x="336" y="1156">Token</text>
-                <text x="152" y="1172">(access</text>
-                <text x="212" y="1172">token)</text>
-                <text x="128" y="1204">ID_CRED_I</text>
-                <text x="212" y="1204">identifies</text>
-                <text x="140" y="1220">CRED_I</text>
-                <text x="176" y="1220">=</text>
-                <text x="232" y="1220">AUTH_CRED_C</text>
-                <text x="292" y="1220">by</text>
-                <text x="344" y="1220">reference</text>
-                <text x="64" y="1252">-</text>
-                <text x="140" y="1252">OSCORE-protected</text>
-                <text x="228" y="1252">part</text>
-                <text x="136" y="1268">Application</text>
-                <text x="216" y="1268">request</text>
-                <text x="260" y="1268">to</text>
-                <text x="284" y="1268">/r</text>
-                <text x="76" y="1316">Possibly</text>
-                <text x="136" y="1316">after</text>
-                <text x="184" y="1316">chain</text>
-                <text x="264" y="1316">verification,</text>
-                <text x="332" y="1316">RS</text>
-                <text x="364" y="1316">adds</text>
-                <text x="432" y="1316">AUTH_CRED_C</text>
-                <text x="52" y="1332">to</text>
-                <text x="80" y="1332">the</text>
-                <text x="112" y="1332">set</text>
-                <text x="140" y="1332">of</text>
-                <text x="168" y="1332">its</text>
-                <text x="216" y="1332">trusted</text>
-                <text x="268" y="1332">peer</text>
-                <text x="348" y="1332">authentication</text>
-                <text x="460" y="1332">credentials,</text>
-                <text x="72" y="1348">relying</text>
-                <text x="116" y="1348">on</text>
-                <text x="140" y="1348">AS</text>
-                <text x="164" y="1348">as</text>
-                <text x="208" y="1348">trusted</text>
-                <text x="276" y="1348">provider</text>
-                <text x="64" y="1380">After</text>
-                <text x="104" y="1380">the</text>
-                <text x="144" y="1380">EDHOC</text>
-                <text x="212" y="1380">processing</text>
-                <text x="268" y="1380">is</text>
-                <text x="324" y="1380">completed,</text>
-                <text x="396" y="1380">access</text>
-                <text x="456" y="1380">control</text>
-                <text x="52" y="1396">is</text>
-                <text x="100" y="1396">enforced</text>
-                <text x="148" y="1396">on</text>
-                <text x="176" y="1396">the</text>
-                <text x="224" y="1396">rebuilt</text>
-                <text x="324" y="1396">OSCORE-protected</text>
-                <text x="428" y="1396">request,</text>
-                <text x="60" y="1412">like</text>
-                <text x="92" y="1412">if</text>
-                <text x="120" y="1412">the</text>
-                <text x="168" y="1412">request</text>
-                <text x="216" y="1412">had</text>
-                <text x="252" y="1412">been</text>
-                <text x="292" y="1412">sent</text>
-                <text x="360" y="1412">stand-alone</text>
-                <text x="92" y="1476">Response</text>
-                <text x="128" y="1492">(OSCORE-protected</text>
-                <text x="236" y="1492">message)</text>
-                <text x="16" y="1508">M08</text>
-                <text x="392" y="1524">|</text>
+                <text x="128" y="244">(OSCORE-protected</text>
+                <text x="236" y="244">message)</text>
+                <text x="16" y="260">M03</text>
+                <text x="64" y="276">-</text>
+                <text x="96" y="276">EDHOC</text>
+                <text x="160" y="276">message_3</text>
+                <text x="128" y="292">ID_CRED_I</text>
+                <text x="212" y="292">identifies</text>
+                <text x="140" y="308">CRED_I</text>
+                <text x="176" y="308">=</text>
+                <text x="232" y="308">AUTH_CRED_C</text>
+                <text x="292" y="308">by</text>
+                <text x="344" y="308">reference</text>
+                <text x="64" y="340">-</text>
+                <text x="140" y="340">OSCORE-protected</text>
+                <text x="228" y="340">part</text>
+                <text x="116" y="356">Access</text>
+                <text x="168" y="356">token</text>
+                <text x="224" y="356">request</text>
+                <text x="152" y="372">"req_cnf"</text>
+                <text x="236" y="372">identifies</text>
+                <text x="184" y="388">AUTH_CRED_C</text>
+                <text x="244" y="388">by</text>
+                <text x="296" y="388">reference</text>
+                <text x="84" y="436">Access</text>
+                <text x="136" y="436">token</text>
+                <text x="196" y="436">response</text>
+                <text x="128" y="452">(OSCORE-protected</text>
+                <text x="236" y="452">message)</text>
+                <text x="16" y="468">M04</text>
+                <text x="92" y="484">"rs_cnf"</text>
+                <text x="168" y="484">specifies</text>
+                <text x="132" y="500">AUTH_CRED_RS</text>
+                <text x="196" y="500">by</text>
+                <text x="232" y="500">value</text>
+                <text x="112" y="532">"ace_profile"</text>
+                <text x="208" y="532">specifies</text>
+                <text x="264" y="532">the</text>
+                <text x="72" y="548">ACE</text>
+                <text x="120" y="548">profile</text>
+                <text x="232" y="548">"coap_edhoc_oscore"</text>
+                <text x="108" y="580">"edhoc_info"</text>
+                <text x="204" y="580">specifies:</text>
+                <text x="88" y="596">{</text>
+                <text x="152" y="612">e'session_id'</text>
+                <text x="216" y="612">:</text>
+                <text x="252" y="612">h'01',</text>
+                <text x="164" y="628">e'cipher_suites'</text>
+                <text x="240" y="628">:</text>
+                <text x="260" y="628">2,</text>
+                <text x="140" y="644">e'methods'</text>
+                <text x="192" y="644">:</text>
+                <text x="212" y="644">3,</text>
+                <text x="144" y="660">e'uri_path'</text>
+                <text x="200" y="660">:</text>
+                <text x="244" y="660">"/edhoc"</text>
+                <text x="88" y="676">}</text>
+                <text x="68" y="708">In</text>
+                <text x="96" y="708">the</text>
+                <text x="140" y="708">access</text>
+                <text x="196" y="708">token:</text>
+                <text x="64" y="724">-</text>
+                <text x="88" y="724">the</text>
+                <text x="128" y="724">"cnf"</text>
+                <text x="176" y="724">claim</text>
+                <text x="240" y="724">specifies</text>
+                <text x="120" y="740">AUTH_CRED_C</text>
+                <text x="180" y="740">by</text>
+                <text x="216" y="740">value</text>
+                <text x="64" y="756">-</text>
+                <text x="88" y="756">the</text>
+                <text x="156" y="756">"edhoc_info"</text>
+                <text x="232" y="756">claim</text>
+                <text x="112" y="772">specifies</text>
+                <text x="168" y="772">the</text>
+                <text x="204" y="772">same</text>
+                <text x="236" y="772">as</text>
+                <text x="124" y="788">"edhoc_info"</text>
+                <text x="200" y="788">above</text>
+                <text x="76" y="836">Possibly</text>
+                <text x="136" y="836">after</text>
+                <text x="184" y="836">chain</text>
+                <text x="264" y="836">verification,</text>
+                <text x="328" y="836">C</text>
+                <text x="356" y="836">adds</text>
+                <text x="428" y="836">AUTH_CRED_RS</text>
+                <text x="52" y="852">to</text>
+                <text x="80" y="852">the</text>
+                <text x="112" y="852">set</text>
+                <text x="140" y="852">of</text>
+                <text x="168" y="852">its</text>
+                <text x="216" y="852">trusted</text>
+                <text x="268" y="852">peer</text>
+                <text x="348" y="852">authentication</text>
+                <text x="460" y="852">credentials,</text>
+                <text x="72" y="868">relying</text>
+                <text x="116" y="868">on</text>
+                <text x="140" y="868">AS</text>
+                <text x="164" y="868">as</text>
+                <text x="208" y="868">trusted</text>
+                <text x="280" y="868">provider.</text>
+                <text x="80" y="916">EDHOC</text>
+                <text x="144" y="916">message_1</text>
+                <text x="196" y="916">to</text>
+                <text x="236" y="916">/edhoc</text>
+                <text x="72" y="932">(no</text>
+                <text x="116" y="932">access</text>
+                <text x="176" y="932">control</text>
+                <text x="220" y="932">is</text>
+                <text x="272" y="932">enforced)</text>
+                <text x="16" y="948">M05</text>
+                <text x="80" y="1012">EDHOC</text>
+                <text x="144" y="1012">message_2</text>
+                <text x="16" y="1028">M06</text>
+                <text x="96" y="1044">ID_CRED_R</text>
+                <text x="180" y="1044">identifies</text>
+                <text x="108" y="1060">CRED_R</text>
+                <text x="144" y="1060">=</text>
+                <text x="204" y="1060">AUTH_CRED_RS</text>
+                <text x="268" y="1060">by</text>
+                <text x="320" y="1060">reference</text>
+                <text x="80" y="1108">EDHOC</text>
+                <text x="112" y="1108">+</text>
+                <text x="148" y="1108">OSCORE</text>
+                <text x="208" y="1108">request</text>
+                <text x="252" y="1108">to</text>
+                <text x="276" y="1108">/r</text>
+                <text x="128" y="1124">(OSCORE-protected</text>
+                <text x="236" y="1124">message)</text>
+                <text x="16" y="1140">M07</text>
+                <text x="64" y="1156">-</text>
+                <text x="96" y="1156">EDHOC</text>
+                <text x="160" y="1156">message_3</text>
+                <text x="112" y="1172">EAD_3</text>
+                <text x="176" y="1172">contains:</text>
+                <text x="96" y="1188">-</text>
+                <text x="120" y="1188">EAD</text>
+                <text x="156" y="1188">item</text>
+                <text x="216" y="1188">ACE-OAuth</text>
+                <text x="284" y="1188">Access</text>
+                <text x="336" y="1188">Token</text>
+                <text x="152" y="1204">(access</text>
+                <text x="212" y="1204">token)</text>
+                <text x="128" y="1236">ID_CRED_I</text>
+                <text x="212" y="1236">identifies</text>
+                <text x="140" y="1252">CRED_I</text>
+                <text x="176" y="1252">=</text>
+                <text x="232" y="1252">AUTH_CRED_C</text>
+                <text x="292" y="1252">by</text>
+                <text x="344" y="1252">reference</text>
+                <text x="64" y="1284">-</text>
+                <text x="140" y="1284">OSCORE-protected</text>
+                <text x="228" y="1284">part</text>
+                <text x="136" y="1300">Application</text>
+                <text x="216" y="1300">request</text>
+                <text x="260" y="1300">to</text>
+                <text x="284" y="1300">/r</text>
+                <text x="76" y="1348">Possibly</text>
+                <text x="136" y="1348">after</text>
+                <text x="184" y="1348">chain</text>
+                <text x="264" y="1348">verification,</text>
+                <text x="332" y="1348">RS</text>
+                <text x="364" y="1348">adds</text>
+                <text x="432" y="1348">AUTH_CRED_C</text>
+                <text x="52" y="1364">to</text>
+                <text x="80" y="1364">the</text>
+                <text x="112" y="1364">set</text>
+                <text x="140" y="1364">of</text>
+                <text x="168" y="1364">its</text>
+                <text x="216" y="1364">trusted</text>
+                <text x="268" y="1364">peer</text>
+                <text x="348" y="1364">authentication</text>
+                <text x="460" y="1364">credentials,</text>
+                <text x="72" y="1380">relying</text>
+                <text x="116" y="1380">on</text>
+                <text x="140" y="1380">AS</text>
+                <text x="164" y="1380">as</text>
+                <text x="208" y="1380">trusted</text>
+                <text x="276" y="1380">provider</text>
+                <text x="64" y="1412">After</text>
+                <text x="104" y="1412">the</text>
+                <text x="144" y="1412">EDHOC</text>
+                <text x="212" y="1412">processing</text>
+                <text x="268" y="1412">is</text>
+                <text x="324" y="1412">completed,</text>
+                <text x="396" y="1412">access</text>
+                <text x="456" y="1412">control</text>
+                <text x="52" y="1428">is</text>
+                <text x="100" y="1428">enforced</text>
+                <text x="148" y="1428">on</text>
+                <text x="176" y="1428">the</text>
+                <text x="224" y="1428">rebuilt</text>
+                <text x="324" y="1428">OSCORE-protected</text>
+                <text x="428" y="1428">request,</text>
+                <text x="60" y="1444">like</text>
+                <text x="92" y="1444">if</text>
+                <text x="120" y="1444">the</text>
+                <text x="168" y="1444">request</text>
+                <text x="216" y="1444">had</text>
+                <text x="252" y="1444">been</text>
+                <text x="292" y="1444">sent</text>
+                <text x="360" y="1444">stand-alone</text>
+                <text x="92" y="1508">Response</text>
+                <text x="128" y="1524">(OSCORE-protected</text>
+                <text x="236" y="1524">message)</text>
+                <text x="16" y="1540">M08</text>
+                <text x="392" y="1556">|</text>
               </g>
             </svg><a href="#appendix-A.2-3.1" class="pilcrow">¶</a>
 </div>
@@ -5091,7 +5080,7 @@ This is relevant in the case that AS and RS actually require a secure associatio
             </ul>
 </li>
           <li id="appendix-A.3-4.2">
-            <p id="appendix-A.3-4.2.1">RS replies with EDHOC message_2, specifying its authentication credential AUTH_CRED_RS by value in ID_CRED_R<a href="#appendix-A.3-4.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.3-4.2.1">RS replies with EDHOC message_2, specifying its authentication credential AUTH_CRED_RS by value in ID_CRED_R.<a href="#appendix-A.3-4.2.1" class="pilcrow">¶</a></p>
 <p id="appendix-A.3-4.2.2">
 In the same EDHOC message_2, the EAD_2 field includes the EAD item Request Creation Hints, whose CBOR byte string specified as ead_value encodes the information that would have been included in an AS Request Creation Hints response to an unauthorized request sent to RS. In particular, this information includes the URI to the /token endpoint at the AS.<a href="#appendix-A.3-4.2.2" class="pilcrow">¶</a></p>
 <p id="appendix-A.3-4.2.3">
@@ -5108,7 +5097,7 @@ C should already know the right audience and scope to specify in the access toke
           <li id="appendix-A.3-4.5">
             <p id="appendix-A.3-4.5.1">If a protected request from C for accessing a resource at RS is not authorized per the issued access token, then RS replies with a protected error response. Within that error response, RS can provide C with information that would have been specified in an AS Request Creation Hints response. This time, that information also includes "audience" and "scope". After this, C can request from AS a new access token that dynamically updates access rights accordingly (see <a href="#c-as" class="auto internal xref">Section 3.1</a>).<a href="#appendix-A.3-4.5.1" class="pilcrow">¶</a></p>
 <p id="appendix-A.3-4.5.2">
-Note that this applies also if C uses the EDHOC + OSCORE combined request (see <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span>), hence combining EDHOC message_3 with the first OSCORE-protected request to access a protected resource at RS (see <a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a>).<a href="#appendix-A.3-4.5.2" class="pilcrow">¶</a></p>
+Note that this applies also if C uses the EDHOC + OSCORE combined request <span>[<a href="#RFC9668" class="cite xref">RFC9668</a>]</span>, hence combining EDHOC message_3 with the first OSCORE-protected request to access a protected resource at RS (see <a href="#example-with-optimization" class="auto internal xref">Appendix A.2</a>).<a href="#appendix-A.3-4.5.2" class="pilcrow">¶</a></p>
 </li>
         </ol>
 <p id="appendix-A.3-5">Instead, if the EDHOC reverse message flow is used, then the following differences apply compared to what is described above:<a href="#appendix-A.3-5" class="pilcrow">¶</a></p>
@@ -5441,7 +5430,7 @@ Note that this applies also if C uses the EDHOC + OSCORE combined request (see <
           <p id="appendix-B-2.2.1">Optionally, specify new grant types: Not specified.<a href="#appendix-B-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-2.3">
-          <p id="appendix-B-2.3.1">Optionally, define the use of client certificates as client credential type: C can use authentication credentials of any type admitted by the EDHOC protocol, including public key certificates such as X.509 <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span> and C509 certificates <span>[<a href="#I-D.ietf-cose-cbor-encoded-cert" class="cite xref">I-D.ietf-cose-cbor-encoded-cert</a>]</span>.<a href="#appendix-B-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-B-2.3.1">Optionally, define the use of client certificates as client credential type: C can use authentication credentials of any type admitted by the EDHOC protocol, including public key certificates such as X.509 certificates <span>[<a href="#RFC5280" class="cite xref">RFC5280</a>]</span> and C509 certificates <span>[<a href="#I-D.ietf-cose-cbor-encoded-cert" class="cite xref">I-D.ietf-cose-cbor-encoded-cert</a>]</span>.<a href="#appendix-B-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-B-2.4">
           <p id="appendix-B-2.4.1">Specify the communication protocol the client and RS must use: CoAP.<a href="#appendix-B-2.4.1" class="pilcrow">¶</a></p>

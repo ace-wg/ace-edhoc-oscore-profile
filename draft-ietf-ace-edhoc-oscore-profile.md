@@ -1235,7 +1235,9 @@ Furthermore, the security considerations from OSCORE {{RFC8613}} and from EDHOC 
 
 As previously stated, once completed the EDHOC session, C and RS are mutually authenticated through their respective authentication credentials, whose retrieval has been facilitated by AS. Also, once completed the EDHOC session, C and RS have established a long-term secret key PRK\_out enjoying forward secrecy. This is in turn used by C and RS to establish an OSCORE Security Context.
 
-Furthermore, RS achieves confirmation that C has PRK\_out (proof of possession) when completing the EDHOC session. Instead, C achieves confirmation that RS has PRK\_out (proof of possession) either when receiving the optional EDHOC message\_4 from RS, or when successfully verifying a response from RS protected with the established OSCORE Security Context.
+When using the EDHOC forward message flow (see {{forward}}), RS achieves confirmation that C has PRK\_out when receiving and successfully processing EDHOC message_3 from C. Instead, C achieves confirmation that RS has PRK\_out when receiving and successfully processing the optional EDHOC message_4 from RS, or when receiving and successfully verifying a response from RS protected with the established OSCORE Security Context.
+
+When using the EDHOC reverse message flow (see {{reverse}}), RS achieves confirmation that C has PRK\_out when receiving and successfully processing EDHOC message_4 from C. Instead, C achieves confirmation that RS has PRK\_out when receiving and successfully processing EDHOC message_3 from RS.
 
 OSCORE is designed to secure point-to-point communication, providing a secure binding between a request and the corresponding response(s). Thus, the basic OSCORE protocol is not intended for use in point-to-multipoint communication (e.g., enforced via multicast or a publish-subscribe model). Implementers of this profile should make sure that their use case of OSCORE corresponds to the expected one, in order to prevent weakening the security assurances provided by OSCORE.
 

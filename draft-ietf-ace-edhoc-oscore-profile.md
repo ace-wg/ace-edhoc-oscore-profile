@@ -1233,6 +1233,12 @@ This document specifies a profile for the Authentication and Authorization for C
 
 Furthermore, the security considerations from OSCORE {{RFC8613}} and from EDHOC {{RFC9528}} also apply to this specific use of the OSCORE and EDHOC protocols.
 
+Proof of possession is achieved by RS during the EDHOC session, as soon as both the following conditions hold. The EDHOC message flow used by C and RS determines when the two conditions are met during the EDHOC session at the earliest.
+
+* RS has received from C the EDHOC message that specifies the access token, which in turn is bound to and specifies C's authentication credential AUTH_CRED_C; and
+
+* RS has authenticated C as per AUTH_CRED_C, thereby proving that C owns the private key corresponding to the public key associated with AUTH_CRED_C.
+
 As previously stated, once completed the EDHOC session, C and RS are mutually authenticated through their respective authentication credentials, whose retrieval has been facilitated by AS. Also, once completed the EDHOC session, C and RS have established a long-term secret key PRK\_out enjoying forward secrecy. This is in turn used by C and RS to establish an OSCORE Security Context.
 
 When using the EDHOC forward message flow (see {{forward}}), RS achieves confirmation that C has PRK\_out when receiving and successfully processing EDHOC message_3 from C. Instead, C achieves confirmation that RS has PRK\_out when receiving and successfully processing the optional EDHOC message_4 from RS, or when receiving and successfully verifying a response from RS protected with the established OSCORE Security Context.
@@ -2128,11 +2134,7 @@ This section lists the specifications of this profile based on the requirements 
 
 * Specify how the client and RS mutually authenticate: Explicitly, by successfully executing the EDHOC protocol, after which a common OSCORE Security Context is exported from the EDHOC session. As per the EDHOC authentication method used during the EDHOC session, authentication is provided by digital signatures, or by Message Authentication Codes (MACs) computed from an ephemeral-static ECDH shared secret.
 
-* Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of-possession protocol:
-
-  * When using EDHOC in its forward message flow, proof of possession is first achieved by RS when successfully processing the incoming EDHOC message\_3 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys. Proof of possession is later achieved by C when receiving from RS and successfully processing: i) the optional EDHOC message\_4 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys; or ii) the first response protected with the OSCORE Security Context established after the EDHOC session with RS, through OSCORE algorithms and OSCORE symmetric keys derived from the completed EDHOC session.
-
-  * Instead, when using EDHOC in its reverse message flow, proof of possession is first achieved by C when successfully processing the incoming EDHOC message\_3 during the EDHOC session with RS, through EDHOC algorithms and symmetric EDHOC session keys. Proof of possession is later achieved by RS when receiving from C and successfully processing EDHOC message_4 during the EDHOC session with C, through EDHOC algorithms and symmetric EDHOC session keys.
+* Specify the proof-of-possession protocol(s) and how to select one, if several are available. Also specify which key types (e.g., symmetric/asymmetric) are supported by a specific proof-of-possession protocol: EDHOC authentication methods and EDHOC algorithms for RS to authenticate C during the EDHOC session, per C's public authentication credential used in the session and bound to the access token specified to RS in the session.
 
 * Specify a unique ace_profile identifier: coap_edhoc_oscore.
 
@@ -2210,6 +2212,8 @@ x5u_ta_type = 35
 * Clarified definition of "prescriptive" / "non-prescriptive" parameters.
 
 * In the reverse message flow, C can upload the access token to RS only in message_4.
+
+* Fixed mix-up between proof of possession and key confirmation.
 
 * New EAD items:
 

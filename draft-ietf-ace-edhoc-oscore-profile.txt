@@ -2403,12 +2403,19 @@ Table of Contents
    secret key PRK_out enjoying forward secrecy.  This is in turn used by
    C and RS to establish an OSCORE Security Context.
 
-   Furthermore, RS achieves confirmation that C has PRK_out (proof of
-   possession) when completing the EDHOC session.  Instead, C achieves
-   confirmation that RS has PRK_out (proof of possession) either when
-   receiving the optional EDHOC message_4 from RS, or when successfully
-   verifying a response from RS protected with the established OSCORE
-   Security Context.
+   When using the EDHOC forward message flow (see Section 4.3), RS
+   achieves confirmation that C has PRK_out when receiving and
+   successfully processing EDHOC message_3 from C.  Instead, C achieves
+   confirmation that RS has PRK_out when receiving and successfully
+   processing the optional EDHOC message_4 from RS, or when receiving
+   and successfully verifying a response from RS protected with the
+   established OSCORE Security Context.
+
+   When using the EDHOC reverse message flow (see Section 4.4), RS
+   achieves confirmation that C has PRK_out when receiving and
+   successfully processing EDHOC message_4 from C.  Instead, C achieves
+   confirmation that RS has PRK_out when receiving and successfully
+   processing EDHOC message_3 from RS.
 
    OSCORE is designed to secure point-to-point communication, providing
    a secure binding between a request and the corresponding response(s).

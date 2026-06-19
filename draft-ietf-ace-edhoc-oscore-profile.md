@@ -229,7 +229,7 @@ The ACE framework describes how integrity protected authorization information pr
 
 If the request is granted, then AS replies to C with a successful response that specifies the authentication credential of RS. Also, AS can provide the access token to C by including it in the response, or instead upload the access token directly to RS as per the alternative workflow defined in {{I-D.ietf-ace-workflow-and-params}}. The latter option is not detailed further in this document.
 
-After that, C and RS run the EDHOC protocol. If C has obtained an access token from AS, then C specifies the access token within an External Authorization Data (EAD) field of an EDHOC message sent during the EDHOC session (see {{Section 3.8 of RFC9528}}). RS uses the authentication credential of C bound to and specified in the access token. How C and RS run EDHOC is detailed in {{edhoc-exec}}.
+In order to establish an OSCORE Security Context, C and RS run the EDHOC protocol. If C has obtained an access token from AS, then C specifies the access token within an External Authorization Data (EAD) field of an EDHOC message sent during the EDHOC session (see {{Section 3.8 of RFC9528}}). The authentication credential of C that is used during the EDHOC session is the same one that is bound to and specified in the access token. How C and RS run EDHOC is detailed in {{edhoc-exec}}.
 
 If C and RS successfully complete the EDHOC execution and the validation of each other's authentication credential, they are mutually authenticated and derive the OSCORE Security Context as per {{Section A.1 of RFC9528}}.
 

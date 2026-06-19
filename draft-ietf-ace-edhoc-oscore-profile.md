@@ -1212,14 +1212,14 @@ In addition to the considerations already discussed in this document, this secti
 
 It is possible that RS supports multiple EDHOC cipher suites and methods. In such case, it could happen that RS has different authentication credentials, each consistent with one or more supported combinations of cipher suite and method.
 
-For example, if RS supports EDHOC cipher suites 0 and 2 as well as methods 0 and 3, RS can have four authentication credentials:
+For example, if RS supports EDHOC cipher suites 0 and 2 as well as methods 0 and 3, RS needs to have the following authentication credentials:
 
 - One credential using EdDSA with curve Ed25519 for method 0.
 - One credential using ECDSA with curve P-256 for method 0.
 - One credential using ECDSA with curve P-256 for method 3.
 - One credential using X25519 for method 3.
 
-To allow RS and C to distinguish between which authentication credential to use, a different audience pertaining to RS should be associated with each authentication credential. That is, RS should belong to a different audience for each of its authentication credentials.
+To allow AS to select the appropriate authentication credential of RS when composing the access token response to C (see {{as-c}}), RS should belong to a different audience for each of its authentication credentials.
 
 When C requests an access token from AS (see {{c-as}}), it specifies an audience corresponding to an authentication credential of RS that is compatible with the authentication credential of C specified in the access token request. This means that, prior to requesting an access token, C has to determine which EDHOC cipher suites and methods RS supports and the corresponding audience values. The discovery of RS' capabilities can rely on pre-configuration or on mechanisms defined in {{I-D.ietf-lake-app-profiles}}. The knowledge of audience values can be pre-configured.
 

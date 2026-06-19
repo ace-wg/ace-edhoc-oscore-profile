@@ -227,9 +227,9 @@ RS maintains a collection of clients' authentication credentials. These are asso
 
 The ACE framework describes how integrity protected authorization information propagates from AS to RS. This profile describes how C requests from AS an access token specifying authorization information for the resources that C wants to access at RS, by sending an access token request to the /token endpoint at AS (see {{Section 5.8 of RFC9200}}).
 
-If the request is granted, then AS can provide C with an access token when sending a response to C, or instead upload the access token directly to RS as per the alternative workflow defined in {{I-D.ietf-ace-workflow-and-params}}. The latter option is not detailed further in this document.
+If the request is granted, then AS replies to C with a successful response that specifies the authentication credential of RS. Also, AS can provide the access token to C by including it in the response, or instead upload the access token directly to RS as per the alternative workflow defined in {{I-D.ietf-ace-workflow-and-params}}. The latter option is not detailed further in this document.
 
-After that, C and RS run the EDHOC protocol, with C using the authentication credential of RS obtained from AS. If C has obtained an access token from AS, then C specifies the access token within an External Authorization Data (EAD) field of an EDHOC message sent during the EDHOC session (see {{Section 3.8 of RFC9528}}). RS uses the authentication credential of C bound to and specified in the access token. How C and RS run EDHOC is detailed in {{edhoc-exec}}.
+After that, C and RS run the EDHOC protocol. If C has obtained an access token from AS, then C specifies the access token within an External Authorization Data (EAD) field of an EDHOC message sent during the EDHOC session (see {{Section 3.8 of RFC9528}}). RS uses the authentication credential of C bound to and specified in the access token. How C and RS run EDHOC is detailed in {{edhoc-exec}}.
 
 If C and RS successfully complete the EDHOC execution and the validation of each other's authentication credential, they are mutually authenticated and derive the OSCORE Security Context as per {{Section A.1 of RFC9528}}.
 

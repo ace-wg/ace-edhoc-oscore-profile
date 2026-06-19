@@ -1054,7 +1054,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 20 December 2026</td>
+<td class="center">Expires 21 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-18" class="published">18 June 2026</time>
+<time datetime="2026-06-19" class="published">19 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-20">20 December 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-21">21 December 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3128,7 +3128,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
 <a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-rs-belonging-to-multiple-au" class="section-name selfRef">RS Belonging to Multiple Audiences with Different Authentication Credentials</a>
         </h3>
 <p id="section-11.1-1">It is possible that RS supports multiple EDHOC cipher suites and methods. In such case, it could happen that RS has different authentication credentials, each consistent with one or more supported combinations of cipher suite and method.<a href="#section-11.1-1" class="pilcrow">¶</a></p>
-<p id="section-11.1-2">For example, if RS supports EDHOC cipher suites 0 and 2 as well as methods 0 and 3, RS can have four authentication credentials:<a href="#section-11.1-2" class="pilcrow">¶</a></p>
+<p id="section-11.1-2">For example, if RS supports EDHOC cipher suites 0 and 2 as well as methods 0 and 3, RS needs to have the following authentication credentials:<a href="#section-11.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-11.1-3.1">
             <p id="section-11.1-3.1.1">One credential using EdDSA with curve Ed25519 for method 0.<a href="#section-11.1-3.1.1" class="pilcrow">¶</a></p>
@@ -3143,7 +3143,7 @@ Specifically, N_S is exported from the EDHOC session associated with the access 
             <p id="section-11.1-3.4.1">One credential using X25519 for method 3.<a href="#section-11.1-3.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-11.1-4">To allow RS and C to distinguish between which authentication credential to use, a different audience pertaining to RS should be associated with each authentication credential. That is, RS should belong to a different audience for each of its authentication credentials.<a href="#section-11.1-4" class="pilcrow">¶</a></p>
+<p id="section-11.1-4">To allow AS to select the appropriate authentication credential of RS when composing the access token response to C (see <a href="#as-c" class="auto internal xref">Section 3.3</a>), RS should belong to a different audience for each of its authentication credentials.<a href="#section-11.1-4" class="pilcrow">¶</a></p>
 <p id="section-11.1-5">When C requests an access token from AS (see <a href="#c-as" class="auto internal xref">Section 3.1</a>), it specifies an audience corresponding to an authentication credential of RS that is compatible with the authentication credential of C specified in the access token request. This means that, prior to requesting an access token, C has to determine which EDHOC cipher suites and methods RS supports and the corresponding audience values. The discovery of RS' capabilities can rely on pre-configuration or on mechanisms defined in <span>[<a href="#I-D.ietf-lake-app-profiles" class="cite xref">I-D.ietf-lake-app-profiles</a>]</span>. The knowledge of audience values can be pre-configured.<a href="#section-11.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>

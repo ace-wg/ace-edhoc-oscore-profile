@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 20 December 2026                                      M. Tiloca
+Expires: 21 December 2026                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            18 June 2026
+                                                            19 June 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 December 2026.
+   This Internet-Draft will expire on 21 December 2026.
 
 Copyright Notice
 
@@ -2346,7 +2346,8 @@ Table of Contents
    supported combinations of cipher suite and method.
 
    For example, if RS supports EDHOC cipher suites 0 and 2 as well as
-   methods 0 and 3, RS can have four authentication credentials:
+   methods 0 and 3, RS needs to have the following authentication
+   credentials:
 
    *  One credential using EdDSA with curve Ed25519 for method 0.
 
@@ -2356,10 +2357,9 @@ Table of Contents
 
    *  One credential using X25519 for method 3.
 
-   To allow RS and C to distinguish between which authentication
-   credential to use, a different audience pertaining to RS should be
-   associated with each authentication credential.  That is, RS should
-   belong to a different audience for each of its authentication
+   To allow AS to select the appropriate authentication credential of RS
+   when composing the access token response to C (see Section 3.3), RS
+   should belong to a different audience for each of its authentication
    credentials.
 
    When C requests an access token from AS (see Section 3.1), it

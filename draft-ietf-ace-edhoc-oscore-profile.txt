@@ -1839,23 +1839,18 @@ Table of Contents
    sender client acquire a valid access token from AS.  These parameters
    include "audience" and "scope".
 
-   When using this profile and running EDHOC per its reverse message
-   flow (see Section 4.4), RS acts as EDHOC Initiator.  A compelling
-   reason to do so is the wish to protect the identity of RS against
-   active attackers, consistent with the EDHOC security properties.
-
-   However, the identity protection achieved through EDHOC can be
-   defeated if RS exposes information such as audience and scope, when
-   specifying the corresponding parameters in an unprotected AS Request
-   Creation Hints message.
-
-   Therefore, if RS supports the EDHOC reverse message flow and sends an
-   AS Request Creation Hints, the following applies:
+   If RS supports the EDHOC reverse message flow and sends an
+   unprotected AS Request Creation Hints message, the following applies:
 
    *  The message payload MUST NOT include the "audience" parameter.
 
    *  The message payload SHOULD NOT include the "scope" parameter,
       unless its value cannot contribute to expose the identity of RS.
+
+   This ensures that, if EDHOC is run per its reverse message flow (see
+   Section 4.4), the protection of RS' identity against active attackers
+   is not defeated by exposing information about RS such as audience and
+   scope.
 
    AS Request Creation Hints can also be requested and retrieved by
    means of the EAD item Request Creation Hints defined in this section.

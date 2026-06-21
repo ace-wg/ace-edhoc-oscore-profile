@@ -834,6 +834,27 @@ The processing of EDHOC message\_4 is as specified in {{Section 5.5 of RFC9528}}
 
   Editor's note: Instead of ERR\_CODE = 1, consider using ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz
 
+### Timing of Access Token Request
+
+When C sends to AS an access token request for requesting the first access token in a token series (see {{c-as}}), the "req_cnf" parameter of the access token request specifies C's authentication credential AUTH_CRED_C to be bound to the access token and to be used as CRED_R in the EDHOC session with RS. In particular, AUTH_CRED_C has to be consistent with the EDHOC session run with RS, i.e., compatible with the EDHOC authentication method and selected cipher suite used in that session.
+
+However, when using the EDHOC reverse message flow, such information is effectively indicated by RS when sending EDHOC message_1 to C. Therefore, C is generally not able to specify an appropriate AUTH_CRED_C to AS when requesting an access token as early as before sending the trigger message to RS.
+
+In the general case, the following applies.
+
+* If C knows the right AS associated with RS before sending the trigger message, then C can send the access token request to AS as soon as it receives and successfully processes EDHOC message_1 from RS. In particular, the "req_cnf" parameter of the access token request specifies the authentication credential AUTH_CRED_C that C uses in the ongoing EDHOC session, as specified through ID_CRED_R of EDHOC message_2 from C.
+
+  The exchange of access token request/response between C and AS can occur in parallel with the exchange of EDHOC message_2 and message_3 between C and RS. However, receiving an access token response from AS is required by C to complete the processing of EDHOC message_3 from RS (unless C already stores RS' authentication credential AUTH_CRED_RS) and to compose EDHOC message_4 to send to RS.
+
+* If C does not know the right AS associated with RS before sending the trigger message, C can gain knowledge of such AS during the EDHOC session, by including the EAD item Request Creation Hints in EDHOC message_2 and retrieving the information specified by RS from the EAD item Request Creation Hints in EDHOC message_3 (see {{as-creation-hints}}). Consequently, C can send the access token request to AS as soon as it receives EDHOC message_3 from RS. In particular, the "req_cnf" parameter of the access token request specifies the authentication credential AUTH_CRED_C that C uses in the ongoing EDHOC session and that was specified through ID_CRED_R of EDHOC message_2 from C.
+
+  Like in the previous case, receiving an access token response from AS is required by C to complete the processing of EDHOC message_3 from RS (unless C already stores RS' authentication credential AUTH_CRED_RS) and to compose EDHOC message_4 to send to RS.
+
+If C knows the right AS associated with RS before sending the trigger message, there are however particular circumstances by which C is able to send the access token request to AS even before sending the trigger message to RS. For example:
+
+* C owns only one authentication credential AUTH_CRED_C; or
+
+* C knows in advance the EDHOC authentication method and selected cipher suite that RS is going to indicate in EDHOC message_1. Therefore, C can determine in advance an appropriate AUTH_CRED_C to bound to an access token and to specify in the access token request to AS.
 
 ## OSCORE Security Context {#oscore-security-context}
 
@@ -2210,6 +2231,8 @@ x5u_ta_type = 35
 * Clarified definition of "prescriptive" / "non-prescriptive" parameters.
 
 * In the reverse message flow, C can upload the access token to RS only in message_4.
+
+* Discussed timing of access token request when using the EDHOC reverse message flow.
 
 * Fixed mix-up between proof of possession and key confirmation.
 

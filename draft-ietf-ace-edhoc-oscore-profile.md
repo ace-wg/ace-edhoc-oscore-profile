@@ -53,7 +53,6 @@ normative:
   RFC7519:
   RFC7800:
   RFC8126:
-  RFC8323:
   RFC8392:
   RFC8610:
   RFC8613:

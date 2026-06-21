@@ -1054,7 +1054,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 21 December 2026</td>
+<td class="center">Expires 23 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-19" class="published">19 June 2026</time>
+<time datetime="2026-06-21" class="published">21 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-21">21 December 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-23">23 December 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 21 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1244,6 +1244,9 @@ This profile can be used to delegate management of authorization information fro
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.5">
                     <p id="section-toc.1-1.4.2.4.2.5.1"><a href="#section-4.4.5" class="auto internal xref">4.4.5</a>.  <a href="#name-edhoc-message_4" class="internal xref">EDHOC message_4</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.6">
+                    <p id="section-toc.1-1.4.2.4.2.6.1"><a href="#section-4.4.6" class="auto internal xref">4.4.6</a>.  <a href="#name-timing-of-access-token-requ" class="internal xref">Timing of Access Token Request</a></p>
 </li>
                 </ul>
 </li>
@@ -2490,6 +2493,37 @@ The EAD_4 field <span class="bcp14">MUST NOT</span> include multiple EAD items s
 RS <span class="bcp14">MUST</span> verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in <a href="#rs-c" class="auto internal xref">Section 4.6.2</a>. If such validation fails, RS <span class="bcp14">MUST</span> reply to C with an EDHOC error message with ERR_CODE = 1 (see <span><a href="https://rfc-editor.org/rfc/rfc9528#section-6" class="relref">Section 6</a> of [<a href="#RFC9528" class="cite xref">RFC9528</a>]</span>) and it <span class="bcp14">MUST</span> abort the EDHOC session.<a href="#section-4.4.5-2.1.3" class="pilcrow">¶</a></p>
 <p id="section-4.4.5-2.1.4">
 Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz<a href="#section-4.4.5-2.1.4" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</section>
+</div>
+<div id="timing-of-access-token-request">
+<section id="section-4.4.6">
+          <h4 id="name-timing-of-access-token-requ">
+<a href="#section-4.4.6" class="section-number selfRef">4.4.6. </a><a href="#name-timing-of-access-token-requ" class="section-name selfRef">Timing of Access Token Request</a>
+          </h4>
+<p id="section-4.4.6-1">When C sends to AS an access token request for requesting the first access token in a token series (see <a href="#c-as" class="auto internal xref">Section 3.1</a>), the "req_cnf" parameter of the access token request specifies C's authentication credential AUTH_CRED_C to be bound to the access token and to be used as CRED_R in the EDHOC session with RS. In particular, AUTH_CRED_C has to be consistent with the EDHOC session run with RS, i.e., compatible with the EDHOC authentication method and selected cipher suite used in that session.<a href="#section-4.4.6-1" class="pilcrow">¶</a></p>
+<p id="section-4.4.6-2">However, when using the EDHOC reverse message flow, such information is effectively indicated by RS when sending EDHOC message_1 to C. Therefore, C is generally not able to specify an appropriate AUTH_CRED_C to AS when requesting an access token as early as before sending the trigger message to RS.<a href="#section-4.4.6-2" class="pilcrow">¶</a></p>
+<p id="section-4.4.6-3">In the general case, the following applies.<a href="#section-4.4.6-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.4.6-4.1">
+              <p id="section-4.4.6-4.1.1">If C knows the right AS associated with RS before sending the trigger message, then C can send the access token request to AS as soon as it receives and successfully processes EDHOC message_1 from RS. In particular, the "req_cnf" parameter of the access token request specifies the authentication credential AUTH_CRED_C that C uses in the ongoing EDHOC session, as specified through ID_CRED_R of EDHOC message_2 from C.<a href="#section-4.4.6-4.1.1" class="pilcrow">¶</a></p>
+<p id="section-4.4.6-4.1.2">
+The exchange of access token request/response between C and AS can occur in parallel with the exchange of EDHOC message_2 and message_3 between C and RS. However, receiving an access token response from AS is required by C to complete the processing of EDHOC message_3 from RS (unless C already stores RS' authentication credential AUTH_CRED_RS) and to compose EDHOC message_4 to send to RS.<a href="#section-4.4.6-4.1.2" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4.4.6-4.2">
+              <p id="section-4.4.6-4.2.1">If C does not know the right AS associated with RS before sending the trigger message, C can gain knowledge of such AS during the EDHOC session, by including the EAD item Request Creation Hints in EDHOC message_2 and retrieving the information specified by RS from the EAD item Request Creation Hints in EDHOC message_3 (see <a href="#as-creation-hints" class="auto internal xref">Section 4.13</a>). Consequently, C can send the access token request to AS as soon as it receives EDHOC message_3 from RS. In particular, the "req_cnf" parameter of the access token request specifies the authentication credential AUTH_CRED_C that C uses in the ongoing EDHOC session and that was specified through ID_CRED_R of EDHOC message_2 from C.<a href="#section-4.4.6-4.2.1" class="pilcrow">¶</a></p>
+<p id="section-4.4.6-4.2.2">
+Like in the previous case, receiving an access token response from AS is required by C to complete the processing of EDHOC message_3 from RS (unless C already stores RS' authentication credential AUTH_CRED_RS) and to compose EDHOC message_4 to send to RS.<a href="#section-4.4.6-4.2.2" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+<p id="section-4.4.6-5">If C knows the right AS associated with RS before sending the trigger message, there are however particular circumstances by which C is able to send the access token request to AS even before sending the trigger message to RS. For example:<a href="#section-4.4.6-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.4.6-6.1">
+              <p id="section-4.4.6-6.1.1">C owns only one authentication credential AUTH_CRED_C; or<a href="#section-4.4.6-6.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-4.4.6-6.2">
+              <p id="section-4.4.6-6.2.1">C knows in advance the EDHOC authentication method and selected cipher suite that RS is going to indicate in EDHOC message_1. Therefore, C can determine in advance an appropriate AUTH_CRED_C to bound to an access token and to specify in the access token request to AS.<a href="#section-4.4.6-6.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 </section>
@@ -5559,56 +5593,59 @@ x5u_ta_type = 35
             <p id="appendix-D.1-1.3.1">In the reverse message flow, C can upload the access token to RS only in message_4.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.4">
-            <p id="appendix-D.1-1.4.1">Fixed mix-up between proof of possession and key confirmation.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.4.1">Discussed timing of access token request when using the EDHOC reverse message flow.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.5">
-            <p id="appendix-D.1-1.5.1">New EAD items:<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-D.1-1.5.2.1">
-                <p id="appendix-D.1-1.5.2.1.1">Consistent and simpler naming.<a href="#appendix-D.1-1.5.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="appendix-D.1-1.5.2.2">
-                <p id="appendix-D.1-1.5.2.2.1">Revised format/style of their definition.<a href="#appendix-D.1-1.5.2.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="appendix-D.1-1.5.2.3">
-                <p id="appendix-D.1-1.5.2.3.1">Revised normative language for using AS Request Creation Hints.<a href="#appendix-D.1-1.5.2.3.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="normal" id="appendix-D.1-1.5.2.4">
-                <p id="appendix-D.1-1.5.2.4.1">Fixed CDDL definition of ead_request_creation_hints.<a href="#appendix-D.1-1.5.2.4.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
+            <p id="appendix-D.1-1.5.1">Fixed mix-up between proof of possession and key confirmation.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.6">
-            <p id="appendix-D.1-1.6.1">Removed definition of the EAD item Session ID.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-D.1-1.7">
-            <p id="appendix-D.1-1.7.1">Added the "Operational Considerations" section.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.6.1">New EAD items:<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-D.1-1.7.2.1">
-                <p id="appendix-D.1-1.7.2.1.1">RS belonging to multiple audiences with different credentials.<a href="#appendix-D.1-1.7.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="appendix-D.1-1.6.2.1">
+                <p id="appendix-D.1-1.6.2.1.1">Consistent and simpler naming.<a href="#appendix-D.1-1.6.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="appendix-D.1-1.7.2.2">
-                <p id="appendix-D.1-1.7.2.2.1">Keeping knowledge about C and RS up-to-date at AS.<a href="#appendix-D.1-1.7.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="appendix-D.1-1.6.2.2">
+                <p id="appendix-D.1-1.6.2.2.1">Revised format/style of their definition.<a href="#appendix-D.1-1.6.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-D.1-1.6.2.3">
+                <p id="appendix-D.1-1.6.2.3.1">Revised normative language for using AS Request Creation Hints.<a href="#appendix-D.1-1.6.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-D.1-1.6.2.4">
+                <p id="appendix-D.1-1.6.2.4.1">Fixed CDDL definition of ead_request_creation_hints.<a href="#appendix-D.1-1.6.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
+          <li class="normal" id="appendix-D.1-1.7">
+            <p id="appendix-D.1-1.7.1">Removed definition of the EAD item Session ID.<a href="#appendix-D.1-1.7.1" class="pilcrow">¶</a></p>
+</li>
           <li class="normal" id="appendix-D.1-1.8">
-            <p id="appendix-D.1-1.8.1">Added figure with message flow for Non-sequential Workflow.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.8.1">Added the "Operational Considerations" section.<a href="#appendix-D.1-1.8.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-D.1-1.8.2.1">
+                <p id="appendix-D.1-1.8.2.1.1">RS belonging to multiple audiences with different credentials.<a href="#appendix-D.1-1.8.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="appendix-D.1-1.8.2.2">
+                <p id="appendix-D.1-1.8.2.2.1">Keeping knowledge about C and RS up-to-date at AS.<a href="#appendix-D.1-1.8.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
 </li>
           <li class="normal" id="appendix-D.1-1.9">
-            <p id="appendix-D.1-1.9.1">Improved notation and details in examples of message exchanges.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.9.1">Added figure with message flow for Non-sequential Workflow.<a href="#appendix-D.1-1.9.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.10">
-            <p id="appendix-D.1-1.10.1">Added references to IANA registries.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.10.1">Improved notation and details in examples of message exchanges.<a href="#appendix-D.1-1.10.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.11">
-            <p id="appendix-D.1-1.11.1">Avoid normative language with inherited normative behavior.<a href="#appendix-D.1-1.11.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.11.1">Added references to IANA registries.<a href="#appendix-D.1-1.11.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.12">
-            <p id="appendix-D.1-1.12.1">Updated compliance with profile requirements.<a href="#appendix-D.1-1.12.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.12.1">Avoid normative language with inherited normative behavior.<a href="#appendix-D.1-1.12.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.13">
-            <p id="appendix-D.1-1.13.1">Editorial improvements.<a href="#appendix-D.1-1.13.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.13.1">Updated compliance with profile requirements.<a href="#appendix-D.1-1.13.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.14">
+            <p id="appendix-D.1-1.14.1">Editorial improvements.<a href="#appendix-D.1-1.14.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

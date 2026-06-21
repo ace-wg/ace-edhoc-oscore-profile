@@ -26,8 +26,9 @@ author:
     org: Ericsson
     email: goran.selander@ericsson.com
 -
-    ins: J. Preuß Mattsson
     name: John Preuß Mattsson
+    initials: J
+    surname: Preuß Mattsson
     org: Ericsson
     email: john.mattsson@ericsson.com
 -

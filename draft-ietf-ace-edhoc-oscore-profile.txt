@@ -3372,12 +3372,6 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [RFC8323]  Bormann, C., Lemay, S., Tschofenig, H., Hartke, K.,
-              Silverajan, B., and B. Raymor, Ed., "CoAP (Constrained
-              Application Protocol) over TCP, TLS, and WebSockets",
-              RFC 8323, DOI 10.17487/RFC8323, February 2018,
-              <https://www.rfc-editor.org/rfc/rfc8323>.
-
    [RFC8392]  Jones, M., Wahlstroem, E., Erdtman, S., and H. Tschofenig,
               "CBOR Web Token (CWT)", RFC 8392, DOI 10.17487/RFC8392,
               May 2018, <https://www.rfc-editor.org/rfc/rfc8392>.

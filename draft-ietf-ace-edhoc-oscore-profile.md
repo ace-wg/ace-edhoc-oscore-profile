@@ -2191,7 +2191,6 @@ c5b = 27
 
 ; EDHOC External Authorization Data
 ead_request_creation_hints_label = 1
-ead_session_id_label = 2
 ead_credential_by_value_label = 15
 ead_ace_oauth_access_token_label = 24
 

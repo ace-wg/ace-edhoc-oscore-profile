@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 23 December 2026                                      M. Tiloca
+Expires: 25 December 2026                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            21 June 2026
+                                                            23 June 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 December 2026.
+   This Internet-Draft will expire on 25 December 2026.
 
 Copyright Notice
 
@@ -4186,7 +4186,6 @@ Appendix C.  CDDL Model
 
    ; EDHOC External Authorization Data
    ead_request_creation_hints_label = 1
-   ead_session_id_label = 2
    ead_credential_by_value_label = 15
    ead_ace_oauth_access_token_label = 24
 

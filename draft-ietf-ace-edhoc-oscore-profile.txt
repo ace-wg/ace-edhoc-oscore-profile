@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 25 December 2026                                      M. Tiloca
+Expires: 27 December 2026                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            23 June 2026
+                                                            25 June 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 December 2026.
+   This Internet-Draft will expire on 27 December 2026.
 
 Copyright Notice
 
@@ -397,12 +397,18 @@ Table of Contents
     |<----------- 2.04 Changed --------------+                         |
     |           (EDHOC message_2)            |                         |
     |                                        |                         |
+ / Authentication of RS /                    |                         |
+    |                                        |                         |
  / Derivation of OSCORE                      |                         |
- Security Context /                          |                         |
+   Security Context /                        |                         |
     |                                        |                         |
     +------- POST /.well-known/edhoc ------->|                         |
     |         (EDHOC message_3 with          |                         |
     |         access_token in EAD_3)         |                         |
+    |                                        |                         |
+    |                            / Authentication of C /               |
+    |                                        |                         |
+    |                            / Proof of possession /               |
     |                                        |                         |
     |                            / Derivation of OSCORE                |
     |                              Security Context /                  |

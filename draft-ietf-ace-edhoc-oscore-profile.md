@@ -255,12 +255,18 @@ The OSCORE Security Context is discarded when an access token (whether the same 
    |<----------- 2.04 Changed --------------+                         |
    |           (EDHOC message_2)            |                         |
    |                                        |                         |
+/ Authentication of RS /                    |                         |
+   |                                        |                         |
 / Derivation of OSCORE                      |                         |
-Security Context /                          |                         |
+  Security Context /                        |                         |
    |                                        |                         |
    +------- POST /.well-known/edhoc ------->|                         |
    |         (EDHOC message_3 with          |                         |
    |         access_token in EAD_3)         |                         |
+   |                                        |                         |
+   |                            / Authentication of C /               |
+   |                                        |                         |
+   |                            / Proof of possession /               |
    |                                        |                         |
    |                            / Derivation of OSCORE                |
    |                              Security Context /                  |

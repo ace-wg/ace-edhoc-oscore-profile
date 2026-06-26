@@ -2168,7 +2168,7 @@ This section lists the specifications of this profile based on the requirements 
 
 * Specify if/how the authz-info endpoint is protected, including how error responses are protected: Not protected.
 
-* Optionally, define methods of token transport other than the authz-info endpoint: C can upload the access token when executing EDHOC with RS, by specifying the access token in the EAD item ACE-OAuth Access Token (see {{AT-in-EAD}}). The EDHOC message where the EAD item is included depends on the EDHOC message flow used.
+* Optionally, define methods of token transport other than the authz-info endpoint: C can upload the access token when executing EDHOC with RS, by specifying the access token through a dedicated EAD item, such as the EAD item ACE-OAuth Access Token (see {{AT-in-EAD}}). The EDHOC message where the EAD item is included depends on the EDHOC message flow used.
 
 # CDDL Model # {#sec-cddl-model}
 {:removeinrfc}

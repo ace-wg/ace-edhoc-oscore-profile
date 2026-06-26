@@ -4162,9 +4162,10 @@ Appendix B.  Profile Requirements
 
    *  Optionally, define methods of token transport other than the
       authz-info endpoint: C can upload the access token when executing
-      EDHOC with RS, by specifying the access token in the EAD item ACE-
-      OAuth Access Token (see Section 4.1).  The EDHOC message where the
-      EAD item is included depends on the EDHOC message flow used.
+      EDHOC with RS, by specifying the access token through a dedicated
+      EAD item, such as the EAD item ACE-OAuth Access Token (see
+      Section 4.1).  The EDHOC message where the EAD item is included
+      depends on the EDHOC message flow used.
 
 Appendix C.  CDDL Model
 

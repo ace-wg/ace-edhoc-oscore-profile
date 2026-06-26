@@ -1081,7 +1081,7 @@ In the EDHOC reverse message flow, this EAD item can be employed for better cont
 
 # Secure Communication with AS # {#secure-comm-as}
 
-As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicate via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED, in order to reduce the number of libraries that C and RS have to support. Other protocols fulfilling the security requirements defined in {{Section 5 of RFC9200}} (such as HTTP and DTLS {{RFC9147}} or TLS {{RFC8446}}) MAY be used instead.
+As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicate via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED, in order to reduce the number of libraries that C and RS have to support. Other protocols fulfilling the security requirements defined in {{Sections 5 and 6 of RFC9200}} (such as HTTP and DTLS {{RFC9147}} or TLS {{RFC8446}}) MAY be used instead.
 
 If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the EDHOC protocol, as shown between C and AS by the examples in {{examples}}. This also applies to the communication between RS and AS, for example to protect the upload of access tokens from AS directly to RS as described in {{I-D.ietf-ace-workflow-and-params}}.
 

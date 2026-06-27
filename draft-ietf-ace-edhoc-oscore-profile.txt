@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 28 December 2026                                      M. Tiloca
+Expires: 29 December 2026                                      M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            26 June 2026
+                                                            27 June 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 December 2026.
+   This Internet-Draft will expire on 29 December 2026.
 
 Copyright Notice
 
@@ -601,12 +601,12 @@ Table of Contents
 
    AS MUST verify that the received "session_id" identifies a token
    series to which a still valid access token belongs, such that the
-   access token is issued to C and intended for the audience specified
-   by the "audience" parameter of the POST request, if present therein,
-   or for the default audience associated with C otherwise.  If that is
-   not the case, the Client-to-AS request MUST be declined with the
-   error code "invalid_request" as defined in Section 5.8.3 of
-   [RFC9200].
+   access token is issued to C, is bound to AUTH_CRED_C, and is intended
+   for the audience specified by the "audience" parameter of the POST
+   request, if present therein, or for the default audience associated
+   with C otherwise.  If that is not the case, the Client-to-AS request
+   MUST be declined with the error code "invalid_request" as defined in
+   Section 5.8.3 of [RFC9200].
 
       Header: POST (Code=0.02)
       Uri-Host: "as.example.com"

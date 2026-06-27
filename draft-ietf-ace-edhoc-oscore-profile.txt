@@ -1564,7 +1564,7 @@ Table of Contents
 4.4.6.  Timing of Access Token Request
 
    When C sends to AS an access token request for requesting the first
-   access token in a token series (see Section 3.1), the "req_cnf"
+   access token of a token series (see Section 3.1), the "req_cnf"
    parameter of the access token request specifies C's authentication
    credential AUTH_CRED_C to be bound to the access token and to be used
    as CRED_R in the EDHOC session with RS.  In particular, AUTH_CRED_C

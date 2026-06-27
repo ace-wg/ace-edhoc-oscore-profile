@@ -841,7 +841,7 @@ The processing of EDHOC message\_4 is as specified in {{Section 5.5 of RFC9528}}
 
 ### Timing of Access Token Request
 
-When C sends to AS an access token request for requesting the first access token in a token series (see {{c-as}}), the "req_cnf" parameter of the access token request specifies C's authentication credential AUTH_CRED_C to be bound to the access token and to be used as CRED_R in the EDHOC session with RS. In particular, AUTH_CRED_C has to be consistent with the EDHOC session run with RS, i.e., compatible with the EDHOC authentication method and selected cipher suite used in that session.
+When C sends to AS an access token request for requesting the first access token of a token series (see {{c-as}}), the "req_cnf" parameter of the access token request specifies C's authentication credential AUTH_CRED_C to be bound to the access token and to be used as CRED_R in the EDHOC session with RS. In particular, AUTH_CRED_C has to be consistent with the EDHOC session run with RS, i.e., compatible with the EDHOC authentication method and selected cipher suite used in that session.
 
 However, when using the EDHOC reverse message flow, such information is effectively indicated by RS when sending EDHOC message_1 to C. Therefore, C is generally not able to specify an appropriate AUTH_CRED_C to AS when requesting an access token as early as before sending the trigger message to RS.
 

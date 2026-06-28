@@ -1054,7 +1054,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Selander, et al.</td>
-<td class="center">Expires 29 December 2026</td>
+<td class="center">Expires 30 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1067,12 @@ svg {
 <dd class="internet-draft">draft-ietf-ace-edhoc-oscore-profile-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-27" class="published">27 June 2026</time>
+<time datetime="2026-06-28" class="published">28 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-29">29 December 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-30">30 December 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1136,7 @@ This profile can be used to delegate management of authorization information fro
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 30 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1812,7 +1812,7 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 <p id="section-3.1-14">The identifier "session_id" is assigned by AS as discussed in <a href="#token-series" class="auto internal xref">Section 3.2</a> and identifies an ongoing token series associated with the pair (AUTH_CRED_C, AUTH_CRED_RS). That is, previous access tokens in that series were issued by AS to C, as bound to AUTH_CRED_C and intended for RS as identified by AUTH_CRED_RS.<a href="#section-3.1-14" class="pilcrow">¶</a></p>
 <p id="section-3.1-15">Note that the same "session_id" value might identify multiple ongoing token series, e.g., if those are associated with the same client but different resource servers. In this case, AS can use the "session_id" value together with other information such as the targeted audience (see <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.1" class="relref">Section 5.8.1</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>) and the authenticated identity of C, in order to determine the exact token series to which the new requested access token has to be added.<a href="#section-3.1-15" class="pilcrow">¶</a></p>
 <p id="section-3.1-16">The "audience" parameter <span class="bcp14">MUST</span> be included in the POST request, if it was included in the POST request that C previously sent to AS for requesting the first access token in the token series to which the new requested access token has to be added. If the "audience" parameter is included in the present POST request, its value <span class="bcp14">MUST</span> be the same value of the "audience" parameter in that previous POST request.<a href="#section-3.1-16" class="pilcrow">¶</a></p>
-<p id="section-3.1-17">AS <span class="bcp14">MUST</span> verify that the received "session_id" identifies a token series to which a still valid access token belongs, such that the access token is issued to C, is bound to AUTH_CRED_C, and is intended for the audience specified by the "audience" parameter of the POST request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request <span class="bcp14">MUST</span> be declined with the error code "invalid_request" as defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-3.1-17" class="pilcrow">¶</a></p>
+<p id="section-3.1-17">AS <span class="bcp14">MUST</span> verify that the received "session_id" identifies a token series to which a still valid access token belongs, such that the access token is issued to C and is intended for the audience specified by the "audience" parameter of the POST request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request <span class="bcp14">MUST</span> be declined with the error code "invalid_request" as defined in <span><a href="https://rfc-editor.org/rfc/rfc9200#section-5.8.3" class="relref">Section 5.8.3</a> of [<a href="#RFC9200" class="cite xref">RFC9200</a>]</span>.<a href="#section-3.1-17" class="pilcrow">¶</a></p>
 <span id="name-example-c-to-as-post-token-r"></span><div id="token-request-update">
 <figure id="figure-4">
           <div class="alignLeft art-text artwork" id="section-3.1-18.1">

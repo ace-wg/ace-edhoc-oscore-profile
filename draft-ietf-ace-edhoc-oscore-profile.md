@@ -379,7 +379,7 @@ The text above has been revisited, also based on the revised safer criterion for
 
 The "audience" parameter MUST be included in the POST request, if it was included in the POST request that C previously sent to AS for requesting the first access token in the token series to which the new requested access token has to be added. If the "audience" parameter is included in the present POST request, its value MUST be the same value of the "audience" parameter in that previous POST request.
 
-AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token belongs, such that the access token is issued to C, is bound to AUTH\_CRED\_C, and is intended for the audience specified by the "audience" parameter of the POST request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid\_request" as defined in {{Section 5.8.3 of RFC9200}}.
+AS MUST verify that the received "session\_id" identifies a token series to which a still valid access token belongs, such that the access token is issued to C and is intended for the audience specified by the "audience" parameter of the POST request, if present therein, or for the default audience associated with C otherwise. If that is not the case, the Client-to-AS request MUST be declined with the error code "invalid\_request" as defined in {{Section 5.8.3 of RFC9200}}.
 
 ~~~~~~~~~~~~~~~~~~~~~~~
    Header: POST (Code=0.02)

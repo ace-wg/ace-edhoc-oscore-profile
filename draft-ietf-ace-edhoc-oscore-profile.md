@@ -1129,9 +1129,9 @@ The confirmation method "x5bag" specifies a bag of X.509 certificates {{RFC5280}
 
 The confirmation method "x5t" specifies the hash value of the end-entity X.509 certificate {{RFC5280}}. The semantics of "x5t" is like that of the "x5t" COSE Header Parameter specified in {{RFC9360}}.
 
-## URI Pointing to an Ordered Chain of X.509 Certificates # {#ssec-cwt-conf-x5u}
+## URI Pointing to an X.509 Certificate # {#ssec-cwt-conf-x5u}
 
-The confirmation method "x5u" specifies the URI {{RFC3986}} of an ordered chain of X.509 certificates {{RFC5280}}. The semantics of "x5u" is like that of the "x5u" COSE Header Parameter specified in {{RFC9360}}.
+The confirmation method "x5u" specifies a URI {{RFC3986}} that identifies an X.509 certificate {{RFC5280}}. The semantics of "x5u" is like that of the "x5u" COSE Header Parameter specified in {{RFC9360}}.
 
 ## Ordered Chain of C509 Certificates # {#ssec-cwt-conf-c5c}
 
@@ -1145,9 +1145,9 @@ The confirmation method "c5b" specifies a bag of C509 certificates {{I-D.ietf-co
 
 The confirmation method "c5t" specifies the hash value of the end-entity C509 certificate {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5t" is like that of the "c5t" COSE Header Parameter specified in {{I-D.ietf-cose-cbor-encoded-cert}}.
 
-## URI Pointing to an Ordered Chain of C509 Certificates # {#ssec-cwt-conf-c5u}
+## URI Pointing to a C509 Certificate # {#ssec-cwt-conf-c5u}
 
-The confirmation method "c5u" specifies the URI {{RFC3986}} of a COSE_C509 containing an ordered chain of C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. COSE_C509 is defined in {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5u" is like that of the "c5u" COSE Header Parameter specified in {{I-D.ietf-cose-cbor-encoded-cert}}.
+The confirmation method "c5u" specifies a URI {{RFC3986}} that identifies a C509 certificate {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5u" is like that of the "c5u" COSE Header Parameter specified in {{I-D.ietf-cose-cbor-encoded-cert}}.
 
 ## CWT Containing a COSE_Key # {#ssec-cwt-conf-kcwt}
 
@@ -1173,9 +1173,9 @@ The confirmation method "x5b" specifies a bag of X.509 certificates {{RFC5280}}.
 
 The confirmation method "x5t" specifies the hash value of the end-entity X.509 certificate {{RFC5280}}. The semantics of "x5t" is like that of the "x5t" JSON Web Signature and Encryption Header Parameter specified in {{RFC7515}}.
 
-## URI Pointing to an Ordered Chain of X.509 Certificates # {#ssec-jwt-conf-x5u}
+## URI Pointing to an X.509 Certificate # {#ssec-jwt-conf-x5u}
 
-The confirmation method "x5u" specifies the URI {{RFC3986}} of an ordered chain of X.509 certificates {{RFC5280}}. The semantics of "x5u" is like that of the "x5u" COSE Header Parameter specified in {{RFC9360}}, with the following difference. The public key contained in the first certificate is the proof-of-possession key and does not have to correspond to a key used to digitally sign the JWS.
+The confirmation method "x5u" specifies a URI {{RFC3986}} that identifies an X.509 certificate {{RFC5280}}. It specifies a JSON string, with value the URI. The semantics of "x5u" is like that of the "x5u" COSE Header Parameter specified in {{RFC9360}}, with the following difference. The public key contained in the X.509 certificate is the proof-of-possession key and does not have to correspond to a key used to digitally sign the JWS.
 
 ## Ordered Chain of C509 Certificates # {#ssec-jwt-conf-c5c}
 
@@ -1189,17 +1189,17 @@ The confirmation method "c5b" specifies a bag of C509 certificates {{I-D.ietf-co
 
 The confirmation method "c5t" specifies the hash value of the end-entity C509 certificate {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5t" is like that of the "x5t" JWT confirmation method defined in {{ssec-jwt-conf-x5t}}, with the following differences. First, the base64url-encoded SHA-1 thumbprint is computed over the C509 certificate. Second, the public key contained in the C509 certificate does not have to correspond to a key used to digitally sign the JWS.
 
-## URI Pointing to an Ordered Chain of C509 Certificates # {#ssec-jwt-conf-c5u}
+## URI Pointing to a C509 Certificate # {#ssec-jwt-conf-c5u}
 
-The confirmation method "c5u" specifies the URI {{RFC3986}} of a COSE_C509 containing an ordered chain of C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. COSE_C509 is defined in {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5u" is like that of the "x5u" JWT confirmation method defined in {{ssec-jwt-conf-x5u}}, with the following differences. First, the URI refers to a resource for the C509 certificate chain. Second, the public key contained in one of the C509 certificates and acting as proof-of-possession key does not have to correspond to a key used to digitally sign the JWS.
+The confirmation method "c5u" specifies a URI {{RFC3986}} that identifies a C509 certificate {{I-D.ietf-cose-cbor-encoded-cert}}. It specifies a JSON string, with value the URI. The semantics of "c5u" is like that of the "x5u" JWT confirmation method defined in {{ssec-jwt-conf-x5u}}, with the following differences. First, the URI refers to a resource for the C509 certificate. Second, the public key contained in the C509 certificate and acting as proof-of-possession key does not have to correspond to a key used to digitally sign the JWS.
 
 ## CWT Containing a COSE_Key # {#ssec-jwt-conf-kcwt}
 
-The confirmation method "kcwt" specifies a CBOR Web Token (CWT) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. The format of "kcwt" is the base64url-encoded serialization of the CWT.
+The confirmation method "kcwt" specifies a CBOR Web Token (CWT) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded serialization of the CWT.
 
 ## CCS Containing a COSE_Key # {#ssec-jwt-conf-kccs}
 
-The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. The format of "kccs" is the base64url-encoded serialization of the CCS.
+The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded serialization of the CCS.
 
 # EDHOC Trust Anchor Purposes # {#sec-edhoc-ta-purposes}
 
@@ -1219,13 +1219,13 @@ This document defines the following EDHOC trust anchor types.
 
 Note to RFC Editor: Please replace all occurrences of "\[RFC-XXXX\]" with the RFC number of this specification and delete this paragraph.
 
-| Name | CBOR label | Value type    | Description                                                            | Reference                                      |
-| uuid | 0          | #6.37(bstr)   | Binary CBOR-encoded UUID                                               | {{&SELF}}{{RFC9562}}                           |
-| kid  | 4          | bstr          | Key identifier                                                         | {{&SELF}}{{RFC9052}}                           |
-| c5t  | 22         | COSE_CertHash | Hash of a C509 certificate                                             | {{&SELF}}\[draft-ietf-cose-cbor-encoded-cert\] |
-| c5u  | 23         | uri           | URI pointing to a COSE_C509 containing a ordered chain of certificates | {{&SELF}}\[draft-ietf-cose-cbor-encoded-cert\] |
-| x5t  | 34         | COSE_CertHash | Hash of an X.509 certificate                                           | {{&SELF}}{{RFC9360}}                           |
-| x5u  | 35         | uri           | URI pointing to an X.509 certificate                                   | {{&SELF}}{{RFC9360}}                           |
+| Name | CBOR label | Value type    | Description                          | Reference                                      |
+| uuid | 0          | #6.37(bstr)   | Binary CBOR-encoded UUID             | {{&SELF}}{{RFC9562}}                           |
+| kid  | 4          | bstr          | Key identifier                       | {{&SELF}}{{RFC9052}}                           |
+| c5t  | 22         | COSE_CertHash | Hash of a C509 certificate           | {{&SELF}}\[draft-ietf-cose-cbor-encoded-cert\] |
+| c5u  | 23         | uri           | URI pointing to a C509 certificate   | {{&SELF}}\[draft-ietf-cose-cbor-encoded-cert\] |
+| x5t  | 34         | COSE_CertHash | Hash of an X.509 certificate         | {{&SELF}}{{RFC9360}}                           |
+| x5u  | 35         | uri           | URI pointing to an X.509 certificate | {{&SELF}}{{RFC9360}}                           |
 {: #table-edhoc-ta-types title="EDHOC Trust Anchor Types" align="center"}
 
 # Operational Considerations
@@ -1374,7 +1374,7 @@ IANA is asked to add the following entries to the "JWT Confirmation Methods" reg
 <br>
 
 * Confirmation Method Value: x5u
-* Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
+* Confirmation Method Description: URI pointing to an X.509 certificate
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-x5u}} of {{&SELF}}
 
@@ -1402,7 +1402,7 @@ IANA is asked to add the following entries to the "JWT Confirmation Methods" reg
 <br>
 
 * Confirmation Method Value: c5u
-* Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
+* Confirmation Method Description: URI pointing to a C509 certificate
 * Change Controller: IETF
 * Reference: {{ssec-jwt-conf-c5u}} of {{&SELF}}
 
@@ -1455,7 +1455,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 <br>
 
 * Confirmation Method Name: x5u
-* Confirmation Method Description: URI pointing to an ordered chain of X.509 certificates
+* Confirmation Method Description: URI pointing to an X.509 certificate
 * JWT Confirmation Method Name: x5u
 * Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: uri
@@ -1495,7 +1495,7 @@ IANA is asked to add the following entries to the "CWT Confirmation Methods" reg
 <br>
 
 * Confirmation Method Name: c5u
-* Confirmation Method Description: URI pointing to a COSE_C509 containing an ordered chain of C509 certificates
+* Confirmation Method Description: URI pointing to a C509 certificate
 * JWT Confirmation Method Name: c5u
 * Confirmation Key: TBD (value between 24 and 255)
 * Confirmation Value Type: uri
@@ -2261,6 +2261,10 @@ x5u_ta_type = 35
 * Added figure with message flow for Non-sequential Workflow.
 
 * Improved notation and details in examples of message exchanges.
+
+* Aligned the "c5u" confirmation method with draft-ietf-cose-cbor-encoded-cert-20.
+
+* Fixes to the confirmation methods "x5u, "kcwt, and "kccs".
 
 * Added references to IANA registries.
 

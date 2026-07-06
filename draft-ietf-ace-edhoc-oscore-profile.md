@@ -184,7 +184,7 @@ When using this profile, C accesses protected resources hosted at RS according t
 
 Whereas {{RFC9200}} recommends the use of CBOR Web Tokens (CWTs) {{RFC8392}} as access tokens, this profile requires it (see {{access-token}}). Furthermore, this profile requires that, for messages exchanged between C and AS to request and provide an access token, the payload is encoded in CBOR {{RFC8949}} (see {{c-as}} and {{as-c}}), which ACE requires if CoAP is used (see {{Section 5 of RFC9200}}) and recommends otherwise (see {{Section 3 of RFC9200}}).
 
-An authentication credential can be a CWT; a raw public key, e.g., encoded as a CWT Claims Set (CCS) {{RFC8392}}; or a public key certificate, e.g., an X.509 certificate {{RFC5280}} or a CBOR-encoded C509 certificate {{I-D.ietf-cose-cbor-encoded-cert}}); or a different type of data structure containing the public key of the peer in question.
+An authentication credential can be a CWT; a raw public key, e.g., encoded as a CWT Claims Set (CCS) {{RFC8392}}; or a public key certificate, e.g., an X.509 certificate {{RFC5280}} or a CBOR-encoded C509 certificate {{I-D.ietf-cose-cbor-encoded-cert}}; or a different type of data structure containing the public key of the peer in question.
 
 The ACE framework establishes what those authentication credentials are, and it may transport the actual authentication credentials by value or uniquely refer to them. If an authentication credential is pre-provisioned or can be obtained over less constrained links, then it suffices that ACE provides a unique reference such as a certificate hash (e.g., by using the COSE header parameter "x5t" {{RFC9360}}). This is in the same spirit as EDHOC, where the authentication credentials specified in the ID_CRED_x message fields can be transported by value or referred to (see {{Section 3.5.3 of RFC9528}}).
 
@@ -697,7 +697,7 @@ trust_anchors_inner_entry_value = any
 
 This section describes the exchange between C and RS, including the execution of the EDHOC protocol and the uploading of the access token from C to RS. An alternative workflow, where AS uploads the access token directly to RS, is defined in {{I-D.ietf-ace-workflow-and-params}}.
 
-C and RS run the EDHOC protocol (see {{edhoc-exec}}) and C uploads the access token through the EAD field of an EDHOC message (see {{AT-in-EAD}}). Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context (see {{oscore-security-context}}). After that, OSCORE is used for protecting communications when C accesses resources at RS, as per the authorization information indicated in the access token (see {{access-rights-verif}}).
+C and RS run the EDHOC protocol (see {{edhoc-exec}}) and C uploads the access token through the EAD field of an EDHOC message (see {{AT-in-EAD}}). Once the EDHOC session is successfully completed, C and RS derive an OSCORE Security Context (see {{oscore-security-context}}). After that, OSCORE is used for protecting communications when C accesses resources at RS, as per the authorization information indicated in the access token (see {{access-rights-verif}}).
 
 Detailed examples are shown in {{examples}}.
 
@@ -807,7 +807,7 @@ In this profile of ACE, if C/RS implements the EDHOC reverse message flow, then 
 
 ### Trigger Message
 
-As specified in {{Section A.2.2 of RFC9528}}, the trigger message is a POST request with no payload that C sends to the EDHOC resource at RS, as intended to trigger a response conveying EDHOC message\_1.
+As specified in {{Section A.2.2 of RFC9528}}, the trigger message is a POST request with no payload that C sends to the EDHOC resource at RS, intended to trigger a response conveying EDHOC message\_1.
 
 If the access token is issued for a group-audience (see {{Section 6.9 of RFC9200}}), then C can perform an EDHOC "roll call", by sending the trigger message as a group request, e.g., over IP multicast {{I-D.ietf-core-groupcomm-bis}}. For the sake of efficiency, it is expected that the group-audience is appropriately associated with a CoAP group and/or application group (see {{Section 2 of I-D.ietf-core-groupcomm-bis}}), so that only the resource servers belonging to the group-audience receive the trigger message. After that, C can receive a different EDHOC message_1 from each of the targeted RSs and separately progresses the corresponding EDHOC sessions, by sending a different EDHOC message_2 to each RS that has replied with an EDHOC message_1.
 
@@ -855,15 +855,15 @@ In the general case, the following applies.
 
   Like in the previous case, receiving an access token response from AS is required by C to complete the processing of EDHOC message_3 from RS (unless C already stores RS' authentication credential AUTH_CRED_RS) and to compose EDHOC message_4 to send to RS.
 
-If C knows the right AS associated with RS before sending the trigger message, there are however particular circumstances by which C is able to send the access token request to AS even before sending the trigger message to RS. For example:
+If C knows the right AS associated with RS before sending the trigger message, there are however particular circumstances under which C is able to send the access token request to AS even before sending the trigger message to RS. For example:
 
 * C owns only one authentication credential AUTH_CRED_C; or
 
-* C knows in advance the EDHOC authentication method and selected cipher suite that RS is going to indicate in EDHOC message_1. Therefore, C can determine in advance an appropriate AUTH_CRED_C to bound to an access token and to specify in the access token request to AS.
+* C knows in advance the EDHOC authentication method and selected cipher suite that RS is going to indicate in EDHOC message_1. Therefore, C can determine in advance an appropriate AUTH_CRED_C to bind to an access token and to specify in the access token request to AS.
 
 ## OSCORE Security Context {#oscore-security-context}
 
-Once successfully completed the EDHOC session, C and RS derive an OSCORE Security Context as defined in {{Section A.1 of RFC9528}}.
+Once the EDHOC session is successfully completed, C and RS derive an OSCORE Security Context as defined in {{Section A.1 of RFC9528}}.
 
 In addition, RS associates the latest EDHOC session and the derived OSCORE Security Context with the stored access token, which is bound to the authentication credential AUTH\_CRED\_C used in the EDHOC session. The access token is also associated with the pair (SESSION\_ID, AUTH\_CRED\_C), where SESSION\_ID is the identifier of the token series to which the access token belongs.
 
@@ -988,7 +988,7 @@ If an authentication credential AUTH\_CRED\_RS of RS is invalidated (e.g., it ex
 
 ## EDHOC Session Invalidity # {#session-validity}
 
-If an EDHOC session is aborted and purged for other reasons than those compiled in {{auth-cred-validity}}, then RS and C that established the session MUST delete the OSCORE Security Context derived from that session (see {{discard-context}}).
+If an EDHOC session is aborted and purged for other reasons than those listed in {{auth-cred-validity}}, then RS and C that established the session MUST delete the OSCORE Security Context derived from that session (see {{discard-context}}).
 
 ## Using AS Request Creation Hints # {#as-creation-hints}
 
@@ -1042,7 +1042,7 @@ Since C has not made an actual request targeting a specific application resource
 
 ## Requesting Authentication Credential By Value  {#auth-cred-by-value}
 
-EDHOC peers need access to each other's authentication credentials to complete the protocol. To reduce unnecessary overhead, EDHOC allows to identifying credentials by reference alternatively to transporting them by value. The ACE protocol includes the initial transport of authentication credentials of C and RS by value, and thus it matches the identification of credentials by reference in EDHOC.
+EDHOC peers need access to each other's authentication credentials to complete the protocol. To reduce unnecessary overhead, EDHOC allows identifying credentials by reference alternatively to transporting them by value. The ACE protocol includes the initial transport of authentication credentials of C and RS by value, and thus it matches the identification of credentials by reference in EDHOC.
 
 However, if one of the peers has deleted the other peer's authentication credential from its local storage, then there should be a way to restore it without requesting a new access token.
 
@@ -1247,9 +1247,9 @@ To allow AS to select the appropriate authentication credential of RS when compo
 
 When C requests an access token from AS (see {{c-as}}), it specifies an audience corresponding to an authentication credential of RS that is compatible with the authentication credential of C specified in the access token request. This means that, prior to requesting an access token, C has to determine which EDHOC cipher suites and methods RS supports and the corresponding audience values. The discovery of RS' capabilities can rely on pre-configuration or on mechanisms defined in {{I-D.ietf-lake-app-profiles}}. The knowledge of audience values can be pre-configured.
 
-## Keeping Knowledge About C and RS up-to-date at the AS
+## Keeping Information About C and RS Up-to-Date at AS
 
-In this profile, the EDHOC_Information object is built by AS to guide C and RS towards executing the EDHOC protocol. Note that, when AS builds an EDHOC_Information object intended for C (included in an access token response) or RS (included in an access token), the object must specify information that is aligned with the capabilities of C and RS, to the best of AS' knowledge. In practice, this means that it is important that the information that AS has about C and RS is kept up-to-date, to reflect what C and RS supports as EDHOC peers. The means that AS uses to achieve this are out of scope for this document.
+In this profile, the EDHOC_Information object is built by AS to guide C and RS towards executing the EDHOC protocol. Note that, when AS builds an EDHOC_Information object intended for C (included in an access token response) or RS (included in an access token), the object must specify information that is aligned with the capabilities of C and RS, to the best of AS' knowledge. In practice, this means that it is important that the information that AS has about C and RS is kept up-to-date, to reflect what C and RS support as EDHOC peers. The means that AS uses to achieve this are out of scope for this document.
 
 # Security Considerations
 
@@ -1675,7 +1675,7 @@ This appendix provides examples where this profile of ACE is used. In particular
 
 * {{example-without-optimization}} does not make use of any optimization.
 
-* {{example-with-optimization}} makes use of the optimizations defined in {{RFC9668}}, hence reducing the roundtrips of the interactions between C and AS as well as between C and RS.
+* {{example-with-optimization}} makes use of the optimizations defined in {{RFC9668}}, hence reducing the round trips of the interactions between C and AS as well as between C and RS.
 
 * {{example-non-sequential-workflow}} makes use of the EAD items Request Creation Hints (see {{as-creation-hints}}) and Credential By Value (see {{auth-cred-by-value}}), with the former allowing C to receive AS Request Creation Hints during an EDHOC session. This is useful if C is not able to determine in advance the appropriate AS to contact.
 
@@ -1818,7 +1818,7 @@ M10 |<----------------------------------------------------------------+
      C asks for a new access token; now all the authentication
      credentials can be identified by reference.
 
-     The price to pay is on AS, about remembering that at least
+     The cost falls on AS, which must remember that at least
      one access token has been issued for the pair (C, RS)
      and considering the pair (AUTH_CRED_C, AUTH_CRED_RS).
 
@@ -1895,7 +1895,7 @@ M17 |<----------------------------------------------------------------+
 
 The example below builds on the example in {{example-without-optimization}}, additionally using the EDHOC + OSCORE request defined in {{RFC9668}} when running EDHOC both with AS and with RS.
 
-Consequently, the interaction between C and RS consists of only two roundtrips to run EDHOC, upload the access token, and access the protected resource at RS.
+Consequently, the interaction between C and RS consists of only two round trips to run EDHOC, upload the access token, and access the protected resource at RS.
 
 ~~~~~~~~~~~ aasvg
     C                                          AS                    RS
@@ -2012,7 +2012,7 @@ The following describes an example scenario where this functionality is used in 
 
 2. RS replies with EDHOC message\_2, specifying its authentication credential AUTH\_CRED\_RS by value in ID\_CRED\_R.
 
-   In the same EDHOC message_2, the EAD\_2 field includes the EAD item Request Creation Hints, whose CBOR byte string specified as ead\_value encodes the information that would have been included in an AS Request Creation Hints response to an unauthorized request sent to RS. In particular, this information includes the URI to the /token endpoint at the AS.
+   In the same EDHOC message_2, the EAD\_2 field includes the EAD item Request Creation Hints, whose CBOR byte string specified as ead\_value encodes the information that would have been included in an AS Request Creation Hints response to an unauthorized request sent to RS. In particular, this information includes the URI to the /token endpoint at AS.
 
      Note that C has not made an actual request with a specific request method and targeting a specific application resource. That is, RS does not know yet what resources C is actually interested in accessing later on.
 
@@ -2264,7 +2264,7 @@ x5u_ta_type = 35
 
 * Aligned the "c5u" confirmation method with draft-ietf-cose-cbor-encoded-cert-20.
 
-* Fixes to the confirmation methods "x5u, "kcwt, and "kccs".
+* Fixes to the confirmation methods "x5u", "kcwt", and "kccs".
 
 * Added references to IANA registries.
 

@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 1 January 2027                                        M. Tiloca
+Expires: 7 January 2027                                        M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                            30 June 2026
+                                                             6 July 2026
 
 
    Ephemeral Diffie-Hellman Over COSE (EDHOC) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 January 2027.
+   This Internet-Draft will expire on 7 January 2027.
 
 Copyright Notice
 
@@ -148,7 +148,7 @@ Table of Contents
    11. Operational Considerations
      11.1.  RS Belonging to Multiple Audiences with Different
             Authentication Credentials
-     11.2.  Keeping Knowledge About C and RS up-to-date at the AS
+     11.2.  Keeping Information About C and RS Up-to-Date at AS
    12. Security Considerations
    13. Privacy Considerations
    14. IANA Considerations
@@ -226,7 +226,7 @@ Table of Contents
    An authentication credential can be a CWT; a raw public key, e.g.,
    encoded as a CWT Claims Set (CCS) [RFC8392]; or a public key
    certificate, e.g., an X.509 certificate [RFC5280] or a CBOR-encoded
-   C509 certificate [I-D.ietf-cose-cbor-encoded-cert]); or a different
+   C509 certificate [I-D.ietf-cose-cbor-encoded-cert]; or a different
    type of data structure containing the public key of the peer in
    question.
 
@@ -1268,9 +1268,9 @@ Table of Contents
 
    C and RS run the EDHOC protocol (see Section 4.2) and C uploads the
    access token through the EAD field of an EDHOC message (see
-   Section 4.1).  Once successfully completed the EDHOC session, C and
-   RS derive an OSCORE Security Context (see Section 4.5).  After that,
-   OSCORE is used for protecting communications when C accesses
+   Section 4.1).  Once the EDHOC session is successfully completed, C
+   and RS derive an OSCORE Security Context (see Section 4.5).  After
+   that, OSCORE is used for protecting communications when C accesses
    resources at RS, as per the authorization information indicated in
    the access token (see Section 4.9).
 
@@ -1501,7 +1501,7 @@ Table of Contents
 
    As specified in Appendix A.2.2 of [RFC9528], the trigger message is a
    POST request with no payload that C sends to the EDHOC resource at
-   RS, as intended to trigger a response conveying EDHOC message_1.
+   RS, intended to trigger a response conveying EDHOC message_1.
 
    If the access token is issued for a group-audience (see Section 6.9
    of [RFC9200]), then C can perform an EDHOC "roll call", by sending
@@ -1614,7 +1614,7 @@ Table of Contents
       AUTH_CRED_RS) and to compose EDHOC message_4 to send to RS.
 
    If C knows the right AS associated with RS before sending the trigger
-   message, there are however particular circumstances by which C is
+   message, there are however particular circumstances under which C is
    able to send the access token request to AS even before sending the
    trigger message to RS.  For example:
 
@@ -1623,12 +1623,12 @@ Table of Contents
    *  C knows in advance the EDHOC authentication method and selected
       cipher suite that RS is going to indicate in EDHOC message_1.
       Therefore, C can determine in advance an appropriate AUTH_CRED_C
-      to bound to an access token and to specify in the access token
+      to bind to an access token and to specify in the access token
       request to AS.
 
 4.5.  OSCORE Security Context
 
-   Once successfully completed the EDHOC session, C and RS derive an
+   Once the EDHOC session is successfully completed, C and RS derive an
    OSCORE Security Context as defined in Appendix A.1 of [RFC9528].
 
    In addition, RS associates the latest EDHOC session and the derived
@@ -1898,7 +1898,7 @@ Table of Contents
 4.12.  EDHOC Session Invalidity
 
    If an EDHOC session is aborted and purged for other reasons than
-   those compiled in Section 4.11, then RS and C that established the
+   those listed in Section 4.11, then RS and C that established the
    session MUST delete the OSCORE Security Context derived from that
    session (see Section 4.7).
 
@@ -1987,7 +1987,7 @@ Table of Contents
 
    EDHOC peers need access to each other's authentication credentials to
    complete the protocol.  To reduce unnecessary overhead, EDHOC allows
-   to identifying credentials by reference alternatively to transporting
+   identifying credentials by reference alternatively to transporting
    them by value.  The ACE protocol includes the initial transport of
    authentication credentials of C and RS by value, and thus it matches
    the identification of credentials by reference in EDHOC.
@@ -2436,7 +2436,7 @@ Table of Contents
    mechanisms defined in [I-D.ietf-lake-app-profiles].  The knowledge of
    audience values can be pre-configured.
 
-11.2.  Keeping Knowledge About C and RS up-to-date at the AS
+11.2.  Keeping Information About C and RS Up-to-Date at AS
 
    In this profile, the EDHOC_Information object is built by AS to guide
    C and RS towards executing the EDHOC protocol.  Note that, when AS
@@ -2445,7 +2445,7 @@ Table of Contents
    object must specify information that is aligned with the capabilities
    of C and RS, to the best of AS' knowledge.  In practice, this means
    that it is important that the information that AS has about C and RS
-   is kept up-to-date, to reflect what C and RS supports as EDHOC peers.
+   is kept up-to-date, to reflect what C and RS support as EDHOC peers.
    The means that AS uses to achieve this are out of scope for this
    document.
 
@@ -3456,11 +3456,11 @@ Table of Contents
 15.2.  Informative References
 
    [I-D.ietf-ace-coap-est-oscore]
-              Selander, G., Raza, S., Furuhed, M., Vučinić, M., and T.
-              Claeys, "Protecting EST Payloads with OSCORE", Work in
-              Progress, Internet-Draft, draft-ietf-ace-coap-est-oscore-
-              10, 2 March 2026, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-ace-coap-est-oscore-10>.
+              Selander, G., Raza, S., Furuhed, M., and M. Vučinić,
+              "Protecting EST Payloads with OSCORE", Work in Progress,
+              Internet-Draft, draft-ietf-ace-coap-est-oscore-11, 2 July
+              2026, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              ace-coap-est-oscore-11>.
 
    [I-D.ietf-ace-group-oscore-profile]
               Tiloca, M., Höglund, R., and F. Palombini, "The Group
@@ -3552,8 +3552,8 @@ Appendix A.  Examples
    *  Appendix A.1 does not make use of any optimization.
 
    *  Appendix A.2 makes use of the optimizations defined in [RFC9668],
-      hence reducing the roundtrips of the interactions between C and AS
-      as well as between C and RS.
+      hence reducing the round trips of the interactions between C and
+      AS as well as between C and RS.
 
    *  Appendix A.3 makes use of the EAD items Request Creation Hints
       (see Section 4.13) and Credential By Value (see Section 4.14),
@@ -3721,7 +3721,7 @@ A.1.  Workflow without Optimizations
       C asks for a new access token; now all the authentication
       credentials can be identified by reference.
 
-      The price to pay is on AS, about remembering that at least
+      The cost falls on AS, which must remember that at least
       one access token has been issued for the pair (C, RS)
       and considering the pair (AUTH_CRED_C, AUTH_CRED_RS).
 
@@ -3800,7 +3800,7 @@ A.2.  Workflow with Optimizations
    EDHOC both with AS and with RS.
 
    Consequently, the interaction between C and RS consists of only two
-   roundtrips to run EDHOC, upload the access token, and access the
+   round trips to run EDHOC, upload the access token, and access the
    protected resource at RS.
 
      C                                          AS                    RS
@@ -3939,7 +3939,7 @@ A.3.  Non-sequential Workflow
        ead_value encodes the information that would have been included
        in an AS Request Creation Hints response to an unauthorized
        request sent to RS.  In particular, this information includes the
-       URI to the /token endpoint at the AS.
+       URI to the /token endpoint at AS.
 
        Note that C has not made an actual request with a specific
        request method and targeting a specific application resource.
@@ -4262,7 +4262,7 @@ D.1.  Version -10 to -11
    *  Aligned the "c5u" confirmation method with draft-ietf-cose-cbor-
       encoded-cert-20.
 
-   *  Fixes to the confirmation methods "x5u, "kcwt, and "kccs".
+   *  Fixes to the confirmation methods "x5u", "kcwt", and "kccs".
 
    *  Added references to IANA registries.
 

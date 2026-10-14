@@ -493,8 +493,8 @@ Table of Contents
 
    The request to the /token endpoint and the corresponding response can
    include LAKE_Information, which is a CBOR map object containing
-   information related to a LAKE implementation (see Section 3.4).  This
-   object is transported in the "lake_info" parameter registered in
+   information about the use of LAKE between C and RS (see Section 3.4).
+   This object is transported in the "lake_info" parameter registered in
    Section 14.2 and Section 14.3.
 
 3.1.  C-to-AS: POST to /token Endpoint
@@ -927,11 +927,11 @@ Table of Contents
 
 3.4.  LAKE_Information
 
-   LAKE_Information is an object including information that guides two
-   peers towards executing the LAKE protocol.  In particular, the
-   LAKE_Information is defined to be serialized and transported between
-   nodes as specified by this document, but it can also be used by other
-   specifications.
+   LAKE_Information is an object including information about the use of
+   LAKE, e.g., to guide peers towards executing LAKE.  In particular,
+   the LAKE_Information is defined to be serialized and transported
+   between nodes as specified by this document, but it can also be used
+   by other specifications.
 
    In the "coap_lake_oscore" profile of the ACE-OAuth framework, which
    is specified in this document, the LAKE_Information object MUST be

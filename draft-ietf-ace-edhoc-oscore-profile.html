@@ -2596,7 +2596,7 @@ Like in the previous case, receiving an access token response from AS is require
               <p id="section-4.6.1-6.2.1">RS checks whether the OSCORE Security Context CTX used to protect the request matches the OSCORE Security Context associated with the stored access token T_OLD.<a href="#section-4.6.1-6.2.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
-<p id="section-4.6.1-7">If both the conditions above hold, RS <span class="bcp14">MUST</span> supersede the old access token T_OLD by replacing the corresponding authorization information with the one specified in the new access token T_NEW, and it <span class="bcp14">MUST</span> associate T_NEW with the OSCORE Security Context CTX.<a href="#section-4.6.1-7" class="pilcrow">¶</a></p>
+<p id="section-4.6.1-7">If both the conditions above hold, the new access token T_NEW supersedes T_OLD, i.e., RS <span class="bcp14">MUST</span> replace the authorization information specified in T_OLD with that specified in T_NEW, and it <span class="bcp14">MUST</span> associate T_NEW with the OSCORE Security Context CTX.<a href="#section-4.6.1-7" class="pilcrow">¶</a></p>
 <p id="section-4.6.1-8">Note that C and RS do not execute the LAKE protocol, they do not establish a new OSCORE Security Context, and AUTH_CRED_C remains the same.<a href="#section-4.6.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>

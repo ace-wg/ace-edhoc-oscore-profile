@@ -1718,9 +1718,9 @@ Table of Contents
       the request matches the OSCORE Security Context associated with
       the stored access token T_OLD.
 
-   If both the conditions above hold, RS MUST supersede the old access
-   token T_OLD by replacing the corresponding authorization information
-   with the one specified in the new access token T_NEW, and it MUST
+   If both the conditions above hold, the new access token T_NEW
+   supersedes T_OLD, i.e., RS MUST replace the authorization information
+   specified in T_OLD with that specified in T_NEW, and it MUST
    associate T_NEW with the OSCORE Security Context CTX.
 
    Note that C and RS do not execute the LAKE protocol, they do not

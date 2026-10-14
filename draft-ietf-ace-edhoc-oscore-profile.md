@@ -206,7 +206,7 @@ This document uses the acronym LAKE, expanded to Lightweight Authenticated Key E
 
 Readers are also expected to be familiar with the terms and concepts of the ACE framework described in {{RFC9200}} and in {{RFC9201}}.
 
-Terminology for entities in the architecture is defined in OAuth 2.0 {{RFC6749}}, such as the client (C), the resource server (RS), and the authorization server (AS). It is assumed in this document that a given resource on a specific RS is associated with a unique AS.
+Terminology for entities in the architecture is defined in OAuth 2.0 {{RFC6749}}, such as the client (C), the resource server (RS), and the authorization server (AS). It is assumed in this document that a given resource on a specific RS is associated with a single AS.
 
 Note that the term "endpoint" is used here, as in {{RFC9200}}, following its OAuth definition, which is to denote resources such as /token and /introspect at AS, and /authz-info at RS. The CoAP definition, which is "\[a\]n entity participating in the CoAP protocol" {{RFC7252}}, is not used in this document.
 
@@ -234,7 +234,7 @@ In order to establish an OSCORE Security Context, C and RS run the LAKE protocol
 
 If C and RS successfully complete the LAKE execution and the validation of each other's authentication credential, they are mutually authenticated and derive the OSCORE Security Context as per {{Section A.1 of RFC9528}}.
 
-From then on and as long as there is a valid access token, C effectively gains authorized and secure access to protected resources at RS using the established OSCORE Security Context. When RS receives a request from C protected with an OSCORE Security Context derived from a LAKE session implementing this profile, then that OSCORE Security Context is used to retrieve the uniquely associated access token indicating the access rights of C.
+From then on and as long as there is a valid access token, C effectively gains authorized and secure access to protected resources at RS using the established OSCORE Security Context. When RS receives a request from C protected with an OSCORE Security Context derived from a LAKE session according to this profile, then that OSCORE Security Context is used to retrieve the uniquely associated access token indicating the access rights of C.
 
 The OSCORE Security Context is discarded when an access token (whether the same or a different one) specifying the same authentication credential of C is used to successfully derive a new OSCORE Security Context for C.
 

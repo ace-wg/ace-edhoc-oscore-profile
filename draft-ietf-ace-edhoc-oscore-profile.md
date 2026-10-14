@@ -797,8 +797,6 @@ The processing of LAKE message\_3 is as specified in {{Section 5.4 of RFC9528}},
 
   RS MUST verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with a LAKE error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the LAKE session.
 
-  Editor's note: Instead of ERR\_CODE = 1, consider using ERR\_CODE = 3 "Access Denied" defined in draft-ietf-lake-authz
-
 ## Reverse Message Flow {#reverse}
 
 This section details the case where the LAKE reverse message flow is used (see {{Section A.2.2 of RFC9528}}), i.e., where C acts as the Responder R and RS acts as the Initiator I.
@@ -838,8 +836,6 @@ The processing of LAKE message\_4 is as specified in {{Section 5.5 of RFC9528}},
   The EAD_4 field MUST NOT include multiple EAD items specifying the access token. If zero or more than one EAD items specifying the access token are included in the EAD_4 field, then RS MUST abort the LAKE session.
 
   RS MUST verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with a LAKE error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the LAKE session.
-
-  Editor's note: Instead of ERR\_CODE = 1, consider using ERR\_CODE = 3 "Access Denied"  defined in draft-ietf-lake-authz
 
 ### Timing of Access Token Request
 

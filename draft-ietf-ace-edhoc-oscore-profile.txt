@@ -291,7 +291,7 @@ Table of Contents
    Terminology for entities in the architecture is defined in OAuth 2.0
    [RFC6749], such as the client (C), the resource server (RS), and the
    authorization server (AS).  It is assumed in this document that a
-   given resource on a specific RS is associated with a unique AS.
+   given resource on a specific RS is associated with a single AS.
 
    Note that the term "endpoint" is used here, as in [RFC9200],
    following its OAuth definition, which is to denote resources such as
@@ -377,7 +377,7 @@ Table of Contents
    effectively gains authorized and secure access to protected resources
    at RS using the established OSCORE Security Context.  When RS
    receives a request from C protected with an OSCORE Security Context
-   derived from a LAKE session implementing this profile, then that
+   derived from a LAKE session according to this profile, then that
    OSCORE Security Context is used to retrieve the uniquely associated
    access token indicating the access rights of C.
 

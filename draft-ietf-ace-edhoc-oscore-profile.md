@@ -321,7 +321,7 @@ The following subsections describe the details of the POST request and response 
 
 In this exchange, C provides AS with its own authentication credential AUTH\_CRED\_C. Then, AS issues the access token as securely bound to AUTH\_CRED\_C, by including it or uniquely referring to it in the access token. Together with the access token, AS provides C with a set of parameters that enable C to run LAKE with RS. In particular, these parameters include information about the authentication credential AUTH\_CRED\_RS of RS, which is transported by value or uniquely referred to.
 
-The request to the /token endpoint and the corresponding response can include LAKE\_Information, which is a CBOR map object containing information related to a LAKE implementation (see {{edhoc-parameters-object}}). This object is transported in the "lake\_info" parameter registered in {{iana-oauth-params}} and {{iana-oauth-cbor-mappings}}.
+The request to the /token endpoint and the corresponding response can include LAKE\_Information, which is a CBOR map object containing information about the use of LAKE between C and RS (see {{edhoc-parameters-object}}). This object is transported in the "lake\_info" parameter registered in {{iana-oauth-params}} and {{iana-oauth-cbor-mappings}}.
 
 ## C-to-AS: POST to /token Endpoint # {#c-as}
 
@@ -542,7 +542,7 @@ As defined in {{access-token}}, the "session\_id" field is included in the LAKE\
 
 ## LAKE_Information # {#edhoc-parameters-object}
 
-LAKE\_Information is an object including information that guides two peers towards executing the LAKE protocol. In particular, the LAKE\_Information is defined to be serialized and transported between nodes as specified by this document, but it can also be used by other specifications.
+LAKE\_Information is an object including information about the use of LAKE, e.g., to guide peers towards executing LAKE. In particular, the LAKE\_Information is defined to be serialized and transported between nodes as specified by this document, but it can also be used by other specifications.
 
 In the "coap_lake_oscore" profile of the ACE-OAuth framework, which is specified in this document, the LAKE\_Information object MUST be encoded as CBOR. However, for easy applicability to other contexts, the JSON encoding is also defined.
 

@@ -333,7 +333,7 @@ When using this profile, the payload of the POST request MUST be encoded in CBOR
 
 AUTH\_CRED\_C is specified in the "req_cnf" parameter {{RFC9201}} of the POST request, either transported by value or uniquely referred to. AS could explicitly ask C to provide its authentication credential AUTH_CRED_C by value in the access token request, e.g., by relying on the method defined in {{I-D.ietf-ace-workflow-and-params}}.
 
-For AUTH_CRED_C, its authentication credential type MUST be one of those supported by LAKE, e.g., CBOR Web Tokens (CWTs) and CWT Claims Sets (CCSs) {{RFC8392}}, X.509 certificates {{RFC5280}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Consequently, the "req_cnf" parameter MUST specify a confirmation method suitable for the type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is an X.509 certificate transported by value or referred to, respectively.
+For AUTH_CRED_C, its authentication credential type MUST be one of those supported by LAKE, e.g., CWTs and CCSs {{RFC8392}}, X.509 certificates {{RFC5280}}, and C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. Consequently, the "req_cnf" parameter MUST specify a confirmation method suitable for the type of AUTH_CRED_C, e.g., "x5chain" or "x5t" when AUTH_CRED_C is an X.509 certificate transported by value or referred to, respectively.
 
 Note that LAKE does not admit the use of "naked" COSE_Keys as authentication credentials. The closest admitted authentication credential type is a CCS containing a COSE_Key in a "cnf" claim and possibly other claims, which can be transported by value using the confirmation method "kccs". Therefore, the "req_cnf" parameter MUST NOT specify the confirmation method "COSE_Key" (CBOR abbreviation: 1).
 
@@ -479,7 +479,7 @@ When issuing an access token for dynamically updating access rights (i.e., the a
 
 ### Access Token {#access-token}
 
-To avoid the complexity of different encodings, an access token of this profile SHALL be a CBOR Web Token (CWT) {{RFC8392}}.
+To avoid the complexity of different encodings, an access token of this profile SHALL be a CWT {{RFC8392}}.
 
 When issuing any access token of a token series, AS MUST include the following claims in the access token:
 
@@ -1153,11 +1153,11 @@ The confirmation method "c5u" specifies a URI {{RFC3986}} that identifies a C509
 
 ## CWT Containing a COSE_Key # {#ssec-cwt-conf-kcwt}
 
-The confirmation method "kcwt" specifies a CBOR Web Token (CWT) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. The semantics of "kcwt" is like that of the "kcwt" COSE Header Parameter specified in {{RFC9528}}.
+The confirmation method "kcwt" specifies a CWT {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. The semantics of "kcwt" is like that of the "kcwt" COSE Header Parameter specified in {{RFC9528}}.
 
 ## CCS Containing a COSE_Key # {#ssec-cwt-conf-kccs}
 
-The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. The semantics of "kccs" is like that of the "kccs" COSE Header Parameter specified in {{RFC9528}}.
+The confirmation method "kccs" specifies a CCS {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. The semantics of "kccs" is like that of the "kccs" COSE Header Parameter specified in {{RFC9528}}.
 
 # JWT Confirmation Methods # {#ssec-jwt-conf}
 
@@ -1197,11 +1197,11 @@ The confirmation method "c5u" specifies a URI {{RFC3986}} that identifies a C509
 
 ## CWT Containing a COSE_Key # {#ssec-jwt-conf-kcwt}
 
-The confirmation method "kcwt" specifies a CBOR Web Token (CWT) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded serialization of the CWT.
+The confirmation method "kcwt" specifies a CWT {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded serialization of the CWT.
 
 ## CCS Containing a COSE_Key # {#ssec-jwt-conf-kccs}
 
-The confirmation method "kccs" specifies a CWT Claims Set (CCS) {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded serialization of the CCS.
+The confirmation method "kccs" specifies a CCS {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded serialization of the CCS.
 
 # LAKE Trust Anchor Purposes # {#sec-edhoc-ta-purposes}
 
@@ -1275,7 +1275,7 @@ OSCORE is designed to secure point-to-point communication, providing a secure bi
 
 When using this profile, it is RECOMMENDED that RS stores only one access token per client. The use of multiple access tokens for a single client increases the strain on RS, since it must consider every access token associated with the client and calculate the actual permissions that the client has. Also, access tokens indicating different or disjoint permissions from each other may lead RS to enforce wrong permissions. If one of the access tokens expires earlier than others, the resulting permissions may offer insufficient protection. Developers SHOULD avoid using multiple access tokens for the same client. Furthermore, with reference to access tokens issued in accordance with this profile, RS MUST NOT store more than one access token per client per PoP-key (i.e., per client's authentication credential).
 
-This profile defines the confirmation methods "kcwt" and "kccs" corresponding to the use of CBOR Web Tokens (CWTs) and CWT Claims Set (CCSs), respectively. Security considerations for CWTs and CCSs and for the COSE header parameters "kcwt" and "kccs" are given in {{Section 9.8 of RFC9528}}, and they also apply to the corresponding confirmation methods defined in {{ssec-cwt-conf}} and {{ssec-jwt-conf}} of this document. In particular, the contents of the CWT or CCS must be processed as untrusted input. The application needs to define a trust-establishment mechanism and identify the relevant trust anchors.
+This profile defines the confirmation methods "kcwt" and "kccs" corresponding to the use of CWTs and CCSs, respectively. Security considerations for CWTs and CCSs and for the COSE header parameters "kcwt" and "kccs" are given in {{Section 9.8 of RFC9528}}, and they also apply to the corresponding confirmation methods defined in {{ssec-cwt-conf}} and {{ssec-jwt-conf}} of this document. In particular, the contents of the CWT or CCS must be processed as untrusted input. The application needs to define a trust-establishment mechanism and identify the relevant trust anchors.
 
 # Privacy Considerations
 

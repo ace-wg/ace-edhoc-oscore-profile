@@ -176,7 +176,7 @@ This profile can be used to delegate management of authorization information fro
 
 # Introduction
 
-This document defines the "coap_lake_oscore" profile of the ACE-OAuth framework {{RFC9200}}. This profile addresses a "zero-touch" constrained setting where authenticated and authorized operations can be performed with low overhead without endpoint specific configurations.
+This document defines the "coap_lake_oscore" profile of the Authentication and Authorization for Constrained Environments (ACE) framework {{RFC9200}}, also denoted as ACE-OAuth framework. This profile addresses a "zero-touch" constrained setting where authenticated and authorized operations can be performed with low overhead without endpoint specific configurations.
 
 Like in the "coap_oscore" profile {{RFC9203}}, also in this profile a client (C) and a resource server (RS) use the Constrained Application Protocol (CoAP) {{RFC7252}} to communicate and Object Security for Constrained RESTful Environments (OSCORE) {{RFC8613}} to protect their communications. However, this profile uses the Lightweight Authenticated Key Exchange (LAKE) protocol {{RFC9528}} to establish the OSCORE Security Context. The processing of requests for specific protected resources is identical to what is defined in the "coap_oscore" profile.
 
@@ -2235,7 +2235,7 @@ x5u_ta_type = 35
 
 * Renamed EDHOC to LAKE as appropriate.
 
-* Editorial fixes.
+* Editorial fixes and improvements.
 
 ## Version -10 to -11 ## {#sec-10-11}
 

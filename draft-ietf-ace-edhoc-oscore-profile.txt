@@ -1481,9 +1481,6 @@ Table of Contents
       a LAKE error message with ERR_CODE = 1 (see Section 6 of
       [RFC9528]) and it MUST abort the LAKE session.
 
-      Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE =
-      3 "Access Denied" defined in draft-ietf-lake-authz
-
 4.4.  Reverse Message Flow
 
    This section details the case where the LAKE reverse message flow is
@@ -1561,9 +1558,6 @@ Table of Contents
       Section 4.6.2.  If such validation fails, RS MUST reply to C with
       a LAKE error message with ERR_CODE = 1 (see Section 6 of
       [RFC9528]) and it MUST abort the LAKE session.
-
-      Editor's note: Instead of ERR_CODE = 1, consider using ERR_CODE =
-      3 "Access Denied" defined in draft-ietf-lake-authz
 
 4.4.6.  Timing of Access Token Request
 

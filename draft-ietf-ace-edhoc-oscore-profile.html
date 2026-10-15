@@ -3252,7 +3252,7 @@ Specifically, N_S is exported from the LAKE session associated with the access t
           <p id="section-13-6.2.1">The LAKE Connection Identifier C_R (C_I) of RS is going to be the OSCORE Recipient ID of RS, i.e., the OSCORE Sender ID of C.<a href="#section-13-6.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-13-7">These OSCORE identifiers are privacy sensitive (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-12.8" class="relref">Section 12.8</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>). In particular, they could reveal information about C or may be used for correlating different requests from C, e.g., across different networks that C has joined and left over time. This can be mitigated if C and RS dynamically update their OSCORE identifiers, e.g., by using the method defined in <span>[<a href="#I-D.ietf-core-oscore-id-update" class="cite xref">I-D.ietf-core-oscore-id-update</a>]</span>.<a href="#section-13-7" class="pilcrow">¶</a></p>
+<p id="section-13-7">These OSCORE identifiers are privacy sensitive (see <span><a href="https://rfc-editor.org/rfc/rfc8613#section-12.8" class="relref">Section 12.8</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>). In particular, they could reveal information about C or may be used for correlating different requests from C, e.g., across different networks that C has joined and left over time. This can be mitigated if C and RS dynamically update their OSCORE identifiers (e.g., by using the method defined in <span>[<a href="#I-D.ietf-core-oscore-id-update" class="cite xref">I-D.ietf-core-oscore-id-update</a>]</span>), or if C and RS obfuscate their OSCORE identifiers in their OSCORE-protected messages (e.g., by using the method defined in <span>[<a href="#I-D.tiloca-core-oscore-piv-enc" class="cite xref">I-D.tiloca-core-oscore-piv-enc</a>]</span>).<a href="#section-13-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -4259,6 +4259,10 @@ The value <span class="bcp14">MUST</span> be unique. The value can be a positive
 <dt id="I-D.serafin-lake-ta-hint">[I-D.serafin-lake-ta-hint]</dt>
         <dd>
 <span class="refAuthor">Serafin, M.</span> and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Trust Anchor Hints in Ephemeral Diffie-Hellman Over COSE (EDHOC)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-serafin-lake-ta-hint-00</span>, <time datetime="2024-10-21" class="refDate">21 October 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-serafin-lake-ta-hint-00">https://datatracker.ietf.org/doc/html/draft-serafin-lake-ta-hint-00</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.tiloca-core-oscore-piv-enc">[I-D.tiloca-core-oscore-piv-enc]</dt>
+        <dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Höglund, R.</span>, and <span class="refAuthor">G. Selander</span>, <span class="refTitle">"Stand-in Key Identifier and Encrypted Partial IV in the Constrained Application Protocol (CoAP) OSCORE Option"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-tiloca-core-oscore-piv-enc-03</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-tiloca-core-oscore-piv-enc-03">https://datatracker.ietf.org/doc/html/draft-tiloca-core-oscore-piv-enc-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4949">[RFC4949]</dt>
         <dd>
@@ -5619,7 +5623,10 @@ x5u_ta_type = 35
             <p id="appendix-D.1-1.4.1">More precise wording on base64 encoding.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.5">
-            <p id="appendix-D.1-1.5.1">Editorial fixes and improvements.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.5.1">Updated privacy considerations about OSCORE identifiers.<a href="#appendix-D.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.6">
+            <p id="appendix-D.1-1.6.1">Editorial fixes and improvements.<a href="#appendix-D.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

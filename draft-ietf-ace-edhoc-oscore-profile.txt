@@ -2580,9 +2580,11 @@ Table of Contents
    [RFC8613]).  In particular, they could reveal information about C or
    may be used for correlating different requests from C, e.g., across
    different networks that C has joined and left over time.  This can be
-   mitigated if C and RS dynamically update their OSCORE identifiers,
-   e.g., by using the method defined in
-   [I-D.ietf-core-oscore-id-update].
+   mitigated if C and RS dynamically update their OSCORE identifiers
+   (e.g., by using the method defined in
+   [I-D.ietf-core-oscore-id-update]), or if C and RS obfuscate their
+   OSCORE identifiers in their OSCORE-protected messages (e.g., by using
+   the method defined in [I-D.tiloca-core-oscore-piv-enc]).
 
 14.  IANA Considerations
 
@@ -3556,6 +3558,15 @@ Table of Contents
               21 October 2024, <https://datatracker.ietf.org/doc/html/
               draft-serafin-lake-ta-hint-00>.
 
+   [I-D.tiloca-core-oscore-piv-enc]
+              Tiloca, M., Mattsson, J. P., Höglund, R., and G. Selander,
+              "Stand-in Key Identifier and Encrypted Partial IV in the
+              Constrained Application Protocol (CoAP) OSCORE Option",
+              Work in Progress, Internet-Draft, draft-tiloca-core-
+              oscore-piv-enc-03, 6 July 2026,
+              <https://datatracker.ietf.org/doc/html/draft-tiloca-core-
+              oscore-piv-enc-03>.
+
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
               <https://www.rfc-editor.org/rfc/rfc4949>.
@@ -4263,6 +4274,8 @@ D.1.  Version -11 to -12
    *  Fixed JSON and CBOR examples of the LAKE_Information object.
 
    *  More precise wording on base64 encoding.
+
+   *  Updated privacy considerations about OSCORE identifiers.
 
    *  Editorial fixes and improvements.
 

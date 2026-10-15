@@ -575,7 +575,7 @@ This categorization helps coordinate the use of LAKE application profiles (see {
 | trust_anchors | 11         | map                  | LAKE Trust Anchor Purposes registry and LAKE Trust Anchor Types registry | Set of supported trust anchors                                           | NP   |
 {: #table-cbor-key-edhoc-params title="LAKE_Information Parameters. Types: P (Prescriptive), NP (Non-Prescriptive)" align="center"}
 
-* session\_id: This parameter identifies a 'session' that the LAKE information is associated with, but it does not necessarily identify a specific LAKE session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a Base64 encoded byte string. In CBOR, the "session\_id" type is a byte string, and it has label 0.
+* session\_id: This parameter specifies an identifier of a "session" that the LAKE information is associated with, but it does not necessarily identify a specific LAKE session. In this document, "session\_id" identifies a token series. In JSON, the "session\_id" value is a string, with value the base64url-encoding (see {{Section 5 of RFC4648}}) without padding of the binary representation of the identifier. In CBOR, the "session\_id" type is a byte string with value the binary representation of the identifier, and it has label 0.
 
 * methods: This parameter specifies a set of supported LAKE methods (see {{Section 3.2 of RFC9528}}). If the set is composed of a single LAKE method, this is encoded as an integer. Otherwise, the set is encoded as an array of integers, where each array element encodes one LAKE method. In JSON, the "methods" value is an integer or an array of integers. In CBOR, the "methods" is an integer or an array of integers, and it has label 1.
 

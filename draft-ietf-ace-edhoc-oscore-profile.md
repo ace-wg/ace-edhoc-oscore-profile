@@ -1181,7 +1181,7 @@ The confirmation method "x5u" specifies a URI {{RFC3986}} that identifies an X.5
 
 ## Ordered Chain of C509 Certificates # {#ssec-jwt-conf-c5c}
 
-The confirmation method "c5c" specifies an ordered array of C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5c" is like that of the "x5c" JWT confirmation method defined in {{ssec-jwt-conf-x5c}}, with the following difference. Each string in the JSON array is a base64-encoded ({{Section 4 of RFC4648}} - not base64url-encoded) C509 certificate.
+The confirmation method "c5c" specifies an ordered array of C509 certificates {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5c" is like that of the "x5c" JWT confirmation method defined in {{ssec-jwt-conf-x5c}}, with the following difference. Each string in the JSON array is the base64-encoding ({{Section 4 of RFC4648}} - not base64url-encoding) of the binary representation of a C509 certificate.
 
 ## Unordered Bag of C509 Certificates # {#ssec-jwt-conf-c5b}
 
@@ -1197,11 +1197,11 @@ The confirmation method "c5u" specifies a URI {{RFC3986}} that identifies a C509
 
 ## CWT Containing a COSE_Key # {#ssec-jwt-conf-kcwt}
 
-The confirmation method "kcwt" specifies a CWT {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded ({{Section 5 of RFC4648}}) serialization of the CWT.
+The confirmation method "kcwt" specifies a CWT {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoding ({{Section 5 of RFC4648}}) of the binary representation of the CWT.
 
 ## CCS Containing a COSE_Key # {#ssec-jwt-conf-kccs}
 
-The confirmation method "kccs" specifies a CCS {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded ({{Section 5 of RFC4648}}) serialization of the CCS.
+The confirmation method "kccs" specifies a CCS {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoding ({{Section 5 of RFC4648}}) of the binary representation of the CCS.
 
 # LAKE Trust Anchor Purposes # {#sec-edhoc-ta-purposes}
 
@@ -2236,6 +2236,8 @@ x5u_ta_type = 35
 * Renamed EDHOC to LAKE as appropriate.
 
 * Fixed JSON and CBOR examples of the LAKE_Information object.
+
+* More precise wording on base64 encoding.
 
 * Editorial fixes and improvements.
 

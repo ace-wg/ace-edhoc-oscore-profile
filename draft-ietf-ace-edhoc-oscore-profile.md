@@ -507,7 +507,7 @@ AS protects the access token using a COSE method {{RFC9052}} as specified in {{R
 
 {{fig-token}} shows an example of CWT Claims Set, including the relevant LAKE parameters in the "lake\_info" claim. The "cnf" claim specifies the authentication credential of C, as an X.509 certificate transported by value in the "x5chain" field. The authentication credential of C has been truncated for readability.
 
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~ cbor-diag
    {
     / aud /   3 : "tempSensorInLivingRoom",
     / iat /   6 : 1563451500,
@@ -625,37 +625,41 @@ This categorization helps coordinate the use of LAKE application profiles (see {
 
     - The inner entry's value specifies the identifier of TA, whose encoding depends on TYPE and is specified by the 'Value type' column of the "LAKE Trust Anchor Types" registry, for the registry entry that has TYPE as value of the 'Name' column.
 
-An example of JSON LAKE\_Information is given in {{fig-edhoc-info-json}}.
+{{fig-edhoc-info-json}} shows an example where a JSON object includes a property with value a LAKE\_Information object.
 
-~~~~~~~~~~~
-   "lake_info" : {
-       "session_id"    : b64'AQ==',
-       "methods"       : 1,
-       "cipher_suites" : 0,
-       "trust_anchors" : {
-         "lake_cred" : [
-           { "c5u" : "coap://certs.c509.example" },
-           { "x5u" : "coap://certs.x509.example" }
-         ]
-       }
+~~~~~~~~~~~ json
+   {
+     "lake_info" : {
+         "session_id"    : "AQ",
+         "methods"       : 1,
+         "cipher_suites" : 0,
+         "trust_anchors" : {
+           "lake_cred" : [
+             { "c5u" : "coap://certs.c509.example" },
+             { "x5u" : "coap://certs.x509.example" }
+           ]
+         }
+     }
    }
 ~~~~~~~~~~~
 {: #fig-edhoc-info-json title="Example of JSON LAKE_Information"}
 
-An example of CBOR LAKE\_Information is given in {{fig-edhoc-info-cbor}}.
+{{fig-edhoc-info-cbor}} shows an example where a CBOR map includes an element with value a LAKE\_Information object.
 
-~~~~~~~~~~~
-   e'lake_info_param' : {
-     e'session_id'    : h'01',
-     e'methods'       : 1,
-     e'cipher_suites' : 0,
-     e'trust_anchors' : {
-       e'lake_cred' : [
-         { e'c5t_ta_type' : [-15, h'81DC2F32CB87E163'] },
-         { e'c5u_ta_type' : "coap://certs.c509.example" },
-         { e'x5t_ta_type' : [-15, h'79F2A41B510C1F9B'] },
-         { e'x5u_ta_type' : "coap://certs.x509.example" }
-       ]
+~~~~~~~~~~~ cbor-diag
+   {
+     e'lake_info_param' : {
+       e'session_id'    : h'01',
+       e'methods'       : 1,
+       e'cipher_suites' : 0,
+       e'trust_anchors' : {
+         e'lake_cred' : [
+           { e'c5t_ta_type' : [-15, h'81DC2F32CB87E163'] },
+           { e'c5u_ta_type' : "coap://certs.c509.example" },
+           { e'x5t_ta_type' : [-15, h'79F2A41B510C1F9B'] },
+           { e'x5u_ta_type' : "coap://certs.x509.example" }
+         ]
+       }
      }
    }
 ~~~~~~~~~~~
@@ -663,7 +667,7 @@ An example of CBOR LAKE\_Information is given in {{fig-edhoc-info-cbor}}.
 
 The CDDL grammar describing the CBOR LAKE_Information is:
 
-~~~~~~~~~~~
+~~~~~~~~~~~ cddl
 LAKE_Information = {
   ?  0 => bstr,                               ; id
   ?  1 => int / [2* int],                     ; methods
@@ -1185,7 +1189,7 @@ The confirmation method "c5b" specifies a bag of C509 certificates {{I-D.ietf-co
 
 ## Hash of a C509 Certificate # {#ssec-jwt-conf-c5t}
 
-The confirmation method "c5t" specifies the hash value of the end-entity C509 certificate {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5t" is like that of the "x5t" JWT confirmation method defined in {{ssec-jwt-conf-x5t}}, with the following differences. First, the base64url-encoded SHA-1 thumbprint is computed over the C509 certificate. Second, the public key contained in the C509 certificate does not have to correspond to a key used to digitally sign the JWS.
+The confirmation method "c5t" specifies the hash value of the end-entity C509 certificate {{I-D.ietf-cose-cbor-encoded-cert}}. The semantics of "c5t" is like that of the "x5t" JWT confirmation method defined in {{ssec-jwt-conf-x5t}}, with the following differences. First, the base64url-encoded ({{Section 5 of RFC4648}}) SHA-1 thumbprint is computed over the C509 certificate. Second, the public key contained in the C509 certificate does not have to correspond to a key used to digitally sign the JWS.
 
 ## URI Pointing to a C509 Certificate # {#ssec-jwt-conf-c5u}
 
@@ -1193,11 +1197,11 @@ The confirmation method "c5u" specifies a URI {{RFC3986}} that identifies a C509
 
 ## CWT Containing a COSE_Key # {#ssec-jwt-conf-kcwt}
 
-The confirmation method "kcwt" specifies a CWT {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded serialization of the CWT.
+The confirmation method "kcwt" specifies a CWT {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded ({{Section 5 of RFC4648}}) serialization of the CWT.
 
 ## CCS Containing a COSE_Key # {#ssec-jwt-conf-kccs}
 
-The confirmation method "kccs" specifies a CCS {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded serialization of the CCS.
+The confirmation method "kccs" specifies a CCS {{RFC8392}} containing a COSE_Key {{RFC9053}} in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded ({{Section 5 of RFC4648}}) serialization of the CCS.
 
 # LAKE Trust Anchor Purposes # {#sec-edhoc-ta-purposes}
 
@@ -2230,6 +2234,8 @@ x5u_ta_type = 35
 ## Version -11 to -12 ## {#sec-11-12}
 
 * Renamed EDHOC to LAKE as appropriate.
+
+* Fixed JSON and CBOR examples of the LAKE_Information object.
 
 * Editorial fixes and improvements.
 

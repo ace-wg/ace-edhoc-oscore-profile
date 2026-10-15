@@ -162,6 +162,7 @@ informative:
   I-D.ietf-ace-group-oscore-profile:
   I-D.ietf-lake-authkem-edhoc:
   I-D.ietf-lake-edhoc-psk:
+  I-D.tiloca-core-oscore-piv-enc:
 
 entity:
   SELF: "[RFC-XXXX]"
@@ -1297,7 +1298,7 @@ The identifiers used in OSCORE, i.e., the OSCORE Sender/Recipient IDs, are negot
 
 * The LAKE Connection Identifier C\_R (C\_I) of RS is going to be the OSCORE Recipient ID of RS, i.e., the OSCORE Sender ID of C.
 
-These OSCORE identifiers are privacy sensitive (see {{Section 12.8 of RFC8613}}). In particular, they could reveal information about C or may be used for correlating different requests from C, e.g., across different networks that C has joined and left over time. This can be mitigated if C and RS dynamically update their OSCORE identifiers, e.g., by using the method defined in {{I-D.ietf-core-oscore-id-update}}.
+These OSCORE identifiers are privacy sensitive (see {{Section 12.8 of RFC8613}}). In particular, they could reveal information about C or may be used for correlating different requests from C, e.g., across different networks that C has joined and left over time. This can be mitigated if C and RS dynamically update their OSCORE identifiers (e.g., by using the method defined in {{I-D.ietf-core-oscore-id-update}}), or if C and RS obfuscate their OSCORE identifiers in their OSCORE-protected messages (e.g., by using the method defined in {{I-D.tiloca-core-oscore-piv-enc}}).
 
 # IANA Considerations
 
@@ -2244,6 +2245,8 @@ x5u_ta_type = 35
 * Fixed JSON and CBOR examples of the LAKE_Information object.
 
 * More precise wording on base64 encoding.
+
+* Updated privacy considerations about OSCORE identifiers.
 
 * Editorial fixes and improvements.
 

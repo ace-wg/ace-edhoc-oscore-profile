@@ -261,6 +261,18 @@ Table of Contents
    A similar procedure can also be applied between C and AS for
    registering a client and for the establishment of a trust anchor.
 
+   With reference to initial authentication, the scope of this profile
+   only includes the use of LAKE with authentication methods based on
+   public key authentication, such as those specified in Section 3.2 of
+   [RFC9528] and the one specified in [I-D.ietf-lake-authkem-edhoc].
+   Future documents can extend this profile to also support the use of
+   LAKE with other (kinds of) authentication methods for initial
+   authentication, such as the one defined in [I-D.ietf-lake-edhoc-psk]
+   and based on symmetric pre-shared keys (PSKs).  Note that, according
+   to this document, it is already possible to use the method defined in
+   [I-D.ietf-lake-edhoc-psk] in order to perform LAKE session resumption
+   with PSK-based authentication.
+
 1.1.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -3513,6 +3525,14 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
               app-profiles-05>.
 
+   [I-D.ietf-lake-authkem-edhoc]
+              Fraile, L. P., Koulamas, C., Fournaris, A., and E.
+              Haleplidis, "KEM-based Authentication for EDHOC", Work in
+              Progress, Internet-Draft, draft-ietf-lake-authkem-edhoc-
+              01, 28 September 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
+              authkem-edhoc-01>.
+
    [I-D.ietf-lake-authz]
               Selander, G., Mattsson, J. P., Vučinić, M., Fedrecheski,
               G., and M. Richardson, "Lightweight Authorization using
@@ -3520,6 +3540,14 @@ Table of Contents
               Progress, Internet-Draft, draft-ietf-lake-authz-08, 6 July
               2026, <https://datatracker.ietf.org/doc/html/draft-ietf-
               lake-authz-08>.
+
+   [I-D.ietf-lake-edhoc-psk]
+              Lopez-Perez, Selander, G., Mattsson, J. P., Marin-Lopez,
+              R., and F. Lopez-Gomez, "LAKE Authenticated with Pre-
+              Shared Keys (PSKs)", Work in Progress, Internet-Draft,
+              draft-ietf-lake-edhoc-psk-10, 5 October 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
+              edhoc-psk-10>.
 
    [I-D.serafin-lake-ta-hint]
               Serafin, M. and G. Selander, "Trust Anchor Hints in
@@ -4227,6 +4255,10 @@ Appendix D.  Document Updates
 D.1.  Version -11 to -12
 
    *  Renamed EDHOC to LAKE as appropriate.
+
+   *  Clarification: for initial authentication, only methods based on
+      public keys can be used.  PSK-based authentication can be used for
+      session resumption.
 
    *  Fixed JSON and CBOR examples of the LAKE_Information object.
 

@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 17 April 2027                                         M. Tiloca
+Expires: 18 April 2027                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         14 October 2026
+                                                         15 October 2026
 
 
  Lightweight Authenticated Key Exchange (LAKE) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 April 2027.
+   This Internet-Draft will expire on 18 April 2027.
 
 Copyright Notice
 
@@ -1198,35 +1198,41 @@ Table of Contents
             registry, for the registry entry that has TYPE as value of
             the 'Name' column.
 
-   An example of JSON LAKE_Information is given in Figure 7.
+   Figure 7 shows an example where a JSON object includes a property
+   with value a LAKE_Information object.
 
-      "lake_info" : {
-          "session_id"    : b64'AQ==',
-          "methods"       : 1,
-          "cipher_suites" : 0,
-          "trust_anchors" : {
-            "lake_cred" : [
-              { "c5u" : "coap://certs.c509.example" },
-              { "x5u" : "coap://certs.x509.example" }
-            ]
-          }
+      {
+        "lake_info" : {
+            "session_id"    : "AQ",
+            "methods"       : 1,
+            "cipher_suites" : 0,
+            "trust_anchors" : {
+              "lake_cred" : [
+                { "c5u" : "coap://certs.c509.example" },
+                { "x5u" : "coap://certs.x509.example" }
+              ]
+            }
+        }
       }
 
                  Figure 7: Example of JSON LAKE_Information
 
-   An example of CBOR LAKE_Information is given in Figure 8.
+   Figure 8 shows an example where a CBOR map includes an element with
+   value a LAKE_Information object.
 
-      e'lake_info_param' : {
-        e'session_id'    : h'01',
-        e'methods'       : 1,
-        e'cipher_suites' : 0,
-        e'trust_anchors' : {
-          e'lake_cred' : [
-            { e'c5t_ta_type' : [-15, h'81DC2F32CB87E163'] },
-            { e'c5u_ta_type' : "coap://certs.c509.example" },
-            { e'x5t_ta_type' : [-15, h'79F2A41B510C1F9B'] },
-            { e'x5u_ta_type' : "coap://certs.x509.example" }
-          ]
+      {
+        e'lake_info_param' : {
+          e'session_id'    : h'01',
+          e'methods'       : 1,
+          e'cipher_suites' : 0,
+          e'trust_anchors' : {
+            e'lake_cred' : [
+              { e'c5t_ta_type' : [-15, h'81DC2F32CB87E163'] },
+              { e'c5u_ta_type' : "coap://certs.c509.example" },
+              { e'x5t_ta_type' : [-15, h'79F2A41B510C1F9B'] },
+              { e'x5u_ta_type' : "coap://certs.x509.example" }
+            ]
+          }
         }
       }
 
@@ -2301,10 +2307,10 @@ Table of Contents
    entity C509 certificate [I-D.ietf-cose-cbor-encoded-cert].  The
    semantics of "c5t" is like that of the "x5t" JWT confirmation method
    defined in Section 8.3, with the following differences.  First, the
-   base64url-encoded SHA-1 thumbprint is computed over the C509
-   certificate.  Second, the public key contained in the C509
-   certificate does not have to correspond to a key used to digitally
-   sign the JWS.
+   base64url-encoded (Section 5 of [RFC4648]) SHA-1 thumbprint is
+   computed over the C509 certificate.  Second, the public key contained
+   in the C509 certificate does not have to correspond to a key used to
+   digitally sign the JWS.
 
 8.8.  URI Pointing to a C509 Certificate
 
@@ -2322,15 +2328,15 @@ Table of Contents
 
    The confirmation method "kcwt" specifies a CWT [RFC8392] containing a
    COSE_Key [RFC9053] in a "cnf" claim and possibly other claims.  It
-   specifies a JSON string, with value the base64url-encoded
-   serialization of the CWT.
+   specifies a JSON string, with value the base64url-encoded (Section 5
+   of [RFC4648]) serialization of the CWT.
 
 8.10.  CCS Containing a COSE_Key
 
    The confirmation method "kccs" specifies a CCS [RFC8392] containing a
    COSE_Key [RFC9053] in a "cnf" claim and possibly other claims.  It
-   specifies a JSON string, with value the base64url-encoded
-   serialization of the CCS.
+   specifies a JSON string, with value the base64url-encoded (Section 5
+   of [RFC4648]) serialization of the CCS.
 
 9.  LAKE Trust Anchor Purposes
 
@@ -4218,6 +4224,8 @@ Appendix D.  Document Updates
 D.1.  Version -11 to -12
 
    *  Renamed EDHOC to LAKE as appropriate.
+
+   *  Fixed JSON and CBOR examples of the LAKE_Information object.
 
    *  Editorial fixes and improvements.
 

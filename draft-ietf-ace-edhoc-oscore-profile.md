@@ -160,6 +160,8 @@ informative:
   I-D.serafin-lake-ta-hint:
   I-D.ietf-lake-app-profiles:
   I-D.ietf-ace-group-oscore-profile:
+  I-D.ietf-lake-authkem-edhoc:
+  I-D.ietf-lake-edhoc-psk:
 
 entity:
   SELF: "[RFC-XXXX]"
@@ -191,6 +193,8 @@ The ACE framework establishes what those authentication credentials are, and it 
 In general, AS and RS are likely to have trusted access to each other's authentication credentials, since AS acts on behalf of RS as per the trust model of ACE. Also, AS needs to have some information about C, including the relevant authentication credential, in order to identify C when C requests an access token and to determine what access rights can be granted. However, the authentication credential of C may potentially be conveyed (or uniquely referred to) within the request for an access token that C makes to AS.
 
 The establishment of an association between RS and AS in an ACE ecosystem is out of scope, but one solution is to build on the same primitives as used in this document, i.e., LAKE for authentication and OSCORE for communication security, using for example {{I-D.ietf-lake-authz}} for onboarding RS with AS and {{I-D.ietf-ace-coap-est-oscore}} for establishing a trust anchor in RS. A similar procedure can also be applied between C and AS for registering a client and for the establishment of a trust anchor.
+
+With reference to initial authentication, the scope of this profile only includes the use of LAKE with authentication methods based on public key authentication, such as those specified in {{Section 3.2 of RFC9528}} and the one specified in {{I-D.ietf-lake-authkem-edhoc}}. Future documents can extend this profile to also support the use of LAKE with other (kinds of) authentication methods for initial authentication, such as the one defined in {{I-D.ietf-lake-edhoc-psk}} and based on symmetric pre-shared keys (PSKs). Note that, according to this document, it is already possible to use the method defined in {{I-D.ietf-lake-edhoc-psk}} in order to perform LAKE session resumption with PSK-based authentication.
 
 ## Terminology # {#terminology}
 
@@ -2234,6 +2238,8 @@ x5u_ta_type = 35
 ## Version -11 to -12 ## {#sec-11-12}
 
 * Renamed EDHOC to LAKE as appropriate.
+
+* Clarification: for initial authentication, only methods based on public keys can be used. PSK-based authentication can be used for session resumption.
 
 * Fixed JSON and CBOR examples of the LAKE_Information object.
 

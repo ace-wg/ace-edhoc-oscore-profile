@@ -1041,12 +1041,15 @@ Table of Contents
      Table 1: LAKE_Information Parameters.  Types: P (Prescriptive),
                           NP (Non- Prescriptive)
 
-   *  session_id: This parameter identifies a 'session' that the LAKE
-      information is associated with, but it does not necessarily
-      identify a specific LAKE session.  In this document, "session_id"
-      identifies a token series.  In JSON, the "session_id" value is a
-      Base64 encoded byte string.  In CBOR, the "session_id" type is a
-      byte string, and it has label 0.
+   *  session_id: This parameter specifies an identifier of a "session"
+      that the LAKE information is associated with, but it does not
+      necessarily identify a specific LAKE session.  In this document,
+      "session_id" identifies a token series.  In JSON, the "session_id"
+      value is a string, with value the base64url-encoding (see
+      Section 5 of [RFC4648]) without padding of the binary
+      representation of the identifier.  In CBOR, the "session_id" type
+      is a byte string with value the binary representation of the
+      identifier, and it has label 0.
 
    *  methods: This parameter specifies a set of supported LAKE methods
       (see Section 3.2 of [RFC9528]).  If the set is composed of a

@@ -3014,7 +3014,7 @@ Specifically, N_S is exported from the LAKE session associated with the access t
         <h3 id="name-ordered-chain-of-c509-certif">
 <a href="#section-8.5" class="section-number selfRef">8.5. </a><a href="#name-ordered-chain-of-c509-certif" class="section-name selfRef">Ordered Chain of C509 Certificates</a>
         </h3>
-<p id="section-8.5-1">The confirmation method "c5c" specifies an ordered array of C509 certificates <span>[<a href="#I-D.ietf-cose-cbor-encoded-cert" class="cite xref">I-D.ietf-cose-cbor-encoded-cert</a>]</span>. The semantics of "c5c" is like that of the "x5c" JWT confirmation method defined in <a href="#ssec-jwt-conf-x5c" class="auto internal xref">Section 8.1</a>, with the following difference. Each string in the JSON array is a base64-encoded (<span><a href="https://rfc-editor.org/rfc/rfc4648#section-4" class="relref">Section 4</a> of [<a href="#RFC4648" class="cite xref">RFC4648</a>]</span> - not base64url-encoded) C509 certificate.<a href="#section-8.5-1" class="pilcrow">¶</a></p>
+<p id="section-8.5-1">The confirmation method "c5c" specifies an ordered array of C509 certificates <span>[<a href="#I-D.ietf-cose-cbor-encoded-cert" class="cite xref">I-D.ietf-cose-cbor-encoded-cert</a>]</span>. The semantics of "c5c" is like that of the "x5c" JWT confirmation method defined in <a href="#ssec-jwt-conf-x5c" class="auto internal xref">Section 8.1</a>, with the following difference. Each string in the JSON array is the base64-encoding (<span><a href="https://rfc-editor.org/rfc/rfc4648#section-4" class="relref">Section 4</a> of [<a href="#RFC4648" class="cite xref">RFC4648</a>]</span> - not base64url-encoding) of the binary representation of a C509 certificate.<a href="#section-8.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ssec-jwt-conf-c5b">
@@ -3046,7 +3046,7 @@ Specifically, N_S is exported from the LAKE session associated with the access t
         <h3 id="name-cwt-containing-a-cose_key-2">
 <a href="#section-8.9" class="section-number selfRef">8.9. </a><a href="#name-cwt-containing-a-cose_key-2" class="section-name selfRef">CWT Containing a COSE_Key</a>
         </h3>
-<p id="section-8.9-1">The confirmation method "kcwt" specifies a CWT <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded (<span><a href="https://rfc-editor.org/rfc/rfc4648#section-5" class="relref">Section 5</a> of [<a href="#RFC4648" class="cite xref">RFC4648</a>]</span>) serialization of the CWT.<a href="#section-8.9-1" class="pilcrow">¶</a></p>
+<p id="section-8.9-1">The confirmation method "kcwt" specifies a CWT <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoding (<span><a href="https://rfc-editor.org/rfc/rfc4648#section-5" class="relref">Section 5</a> of [<a href="#RFC4648" class="cite xref">RFC4648</a>]</span>) of the binary representation of the CWT.<a href="#section-8.9-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="ssec-jwt-conf-kccs">
@@ -3054,7 +3054,7 @@ Specifically, N_S is exported from the LAKE session associated with the access t
         <h3 id="name-ccs-containing-a-cose_key-2">
 <a href="#section-8.10" class="section-number selfRef">8.10. </a><a href="#name-ccs-containing-a-cose_key-2" class="section-name selfRef">CCS Containing a COSE_Key</a>
         </h3>
-<p id="section-8.10-1">The confirmation method "kccs" specifies a CCS <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoded (<span><a href="https://rfc-editor.org/rfc/rfc4648#section-5" class="relref">Section 5</a> of [<a href="#RFC4648" class="cite xref">RFC4648</a>]</span>) serialization of the CCS.<a href="#section-8.10-1" class="pilcrow">¶</a></p>
+<p id="section-8.10-1">The confirmation method "kccs" specifies a CCS <span>[<a href="#RFC8392" class="cite xref">RFC8392</a>]</span> containing a COSE_Key <span>[<a href="#RFC9053" class="cite xref">RFC9053</a>]</span> in a "cnf" claim and possibly other claims. It specifies a JSON string, with value the base64url-encoding (<span><a href="https://rfc-editor.org/rfc/rfc4648#section-5" class="relref">Section 5</a> of [<a href="#RFC4648" class="cite xref">RFC4648</a>]</span>) of the binary representation of the CCS.<a href="#section-8.10-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -5604,7 +5604,10 @@ x5u_ta_type = 35
             <p id="appendix-D.1-1.2.1">Fixed JSON and CBOR examples of the LAKE_Information object.<a href="#appendix-D.1-1.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-D.1-1.3">
-            <p id="appendix-D.1-1.3.1">Editorial fixes and improvements.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
+            <p id="appendix-D.1-1.3.1">More precise wording on base64 encoding.<a href="#appendix-D.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-D.1-1.4">
+            <p id="appendix-D.1-1.4.1">Editorial fixes and improvements.<a href="#appendix-D.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>

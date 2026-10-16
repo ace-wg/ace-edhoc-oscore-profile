@@ -148,9 +148,9 @@ normative:
 
 informative:
   RFC4949:
-  RFC8446:
   RFC9110:
   RFC9147:
+  RFC9846:
   I-D.ietf-core-groupcomm-bis:
   I-D.ietf-ace-workflow-and-params:
   I-D.ietf-core-oscore-key-update:
@@ -780,7 +780,7 @@ This section details the case where the LAKE forward message flow is used (see {
 
 Consistent with the LAKE forward message flow, C sends LAKE message\_1 and LAKE message\_3 to a LAKE resource at RS, as CoAP POST requests. RS sends LAKE message\_2 and (optionally) LAKE message\_4 as CoAP 2.04 (Changed) responses.
 
-### LAKE message\_1
+### LAKE message\_1 {#forward-m1}
 
 The processing of LAKE message\_1 is as specified in {{Section 5.2 of RFC9528}}, with the following additions:
 
@@ -804,7 +804,7 @@ The processing of LAKE message\_3 is as specified in {{Section 5.4 of RFC9528}},
 
   The EAD\_3 field MUST NOT include multiple EAD items specifying the access token. If zero or more than one EAD items specifying the access token are included in the EAD\_3 field, then RS MUST abort the LAKE session.
 
-  RS MUST verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with a LAKE error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the LAKE session.
+  RS MUST verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with a LAKE error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}), and it MUST abort the LAKE session.
 
 ## Reverse Message Flow {#reverse}
 
@@ -844,9 +844,9 @@ The processing of LAKE message\_4 is as specified in {{Section 5.5 of RFC9528}},
 
   The EAD_4 field MUST NOT include multiple EAD items specifying the access token. If zero or more than one EAD items specifying the access token are included in the EAD_4 field, then RS MUST abort the LAKE session.
 
-  RS MUST verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with a LAKE error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}) and it MUST abort the LAKE session.
+  RS MUST verify that the access token specified in the EAD item is valid. The validation follows the procedure specified in {{rs-c}}. If such validation fails, RS MUST reply to C with a LAKE error message with ERR\_CODE = 1 (see {{Section 6 of RFC9528}}), and it MUST abort the LAKE session.
 
-### Timing of Access Token Request
+### Timing of Access Token Request # {#timing-reverse-message-flow}
 
 When C sends to AS an access token request for requesting the first access token of a token series (see {{c-as}}), the "req_cnf" parameter of the access token request specifies C's authentication credential AUTH_CRED_C to be bound to the access token and to be used as CRED_R in the LAKE session with RS. In particular, AUTH_CRED_C has to be consistent with the LAKE session run with RS, i.e., compatible with the LAKE authentication method and selected cipher suite used in that session.
 
@@ -867,6 +867,38 @@ If C knows the right AS associated with RS before sending the trigger message, t
 * C owns only one authentication credential AUTH_CRED_C; or
 
 * C knows in advance the LAKE authentication method and selected cipher suite that RS is going to indicate in LAKE message_1. Therefore, C can determine in advance an appropriate AUTH_CRED_C to bind to an access token and to specify in the access token request to AS.
+
+
+## Possible Conflicting Information from AS
+
+In the best-case scenario, C uses the LAKE forward message flow and knows the right AS associated with RS before sending LAKE message_1. Consequently, when requesting the first access token of a token series, C can first complete the access token request-response exchange with AS, and then send LAKE message_1 to RS, consistent with what AS specified within the LAKE_Information object of the access token response (see {{as-c}}, {{edhoc-exec}}, and {{forward-m1}}).
+
+In other scenarios, C has to request the first access token of a token series during an already ongoing LAKE session with RS, i.e.:
+
+* When using the LAKE forward message flow without knowing in advance the right AS associated with RS, which C learns during the LAKE session through the EAD item Request Creation Hints (see {{as-creation-hints}}). That is, the access token request-response exchange with AS occurs after C has received LAKE message_2 from RS.
+
+* When using the LAKE reverse message flow, as discussed in {{timing-reverse-message-flow}}. That is, the access token request-response exchange with AS occurs after C has received LAKE message_1 or message_3 from RS, depending on whether or not C knows in advance the right AS associated with RS before sending the trigger message to RS.
+
+In the scenarios above, the information that AS specifies within the LAKE_Information object of the access token response could contradict the already ongoing LAKE session between C and RS. With reference to the LAKE_Information object in the access token response, this particularly concerns:
+
+* The URI path of the LAKE resource targeted in the session, which might differ from the one indicated by the "uri_path" field if present, or from the path /.well-known/edhoc otherwise.
+
+* The LAKE method used in the session and indicated in LAKE message_1, which might not be indicated by the "methods" field (if present).
+
+* The selected cipher suite used in the session and indicated in LAKE message_1, which might not be indicated by the "cipher_suites" field (if present).
+
+When C receives the access token response from AS, if C detects any contradiction between the ongoing LAKE session with RS and the information specified in the received LAKE_Information object, C MUST reply to RS with a LAKE error message with ERR_CODE = 1 (see {{Section 6 of RFC9528}}), and it MUST abort the LAKE session. Note that such error message is sent in reply to:
+
+* LAKE message_2, when using the LAKE forward message flow.
+
+* LAKE message_1 or message_3, when using the LAKE reverse message flow, depending on whether or not C knows in advance the right AS associated with RS before sending the trigger message to RS.
+
+After aborting the LAKE session, C can take advantage of the just issued access token and run a new LAKE session with RS as intended to be bound to that access token. The new session is run consistent with the received LAKE_Information object that was conveyed in the access token response from AS. In particular:
+
+* If C decides to use the LAKE forward message flow, it sends LAKE message_1 consistent with the received LAKE_Information object.
+
+* If C decides to use the LAKE reverse message flow, it sends the trigger message to RS consistent with the received LAKE_Information object. In practice, this is simply about sending the trigger message to the LAKE resource with URI path indicated by the "uri_path" field, if present in the LAKE_Information object, or with URI path /.well-known/edhoc otherwise.
+
 
 ## OSCORE Security Context {#oscore-security-context}
 
@@ -1088,7 +1120,7 @@ In the LAKE reverse message flow, this EAD item can be employed for better contr
 
 # Secure Communication with AS # {#secure-comm-as}
 
-As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicate via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED, in order to reduce the number of libraries that C and RS have to support. Other protocols fulfilling the security requirements defined in {{Sections 5 and 6 of RFC9200}} (such as HTTP and DTLS {{RFC9147}} or TLS {{RFC8446}}) MAY be used instead.
+As specified in the ACE framework (see {{Sections 5.8 and 5.9 of RFC9200}}), the requesting entity (RS and/or C) and AS communicate via the /token or /introspect endpoint. When using this profile, the use of CoAP {{RFC7252}} and OSCORE {{RFC8613}} for this communication is RECOMMENDED, in order to reduce the number of libraries that C and RS have to support. Other protocols fulfilling the security requirements defined in {{Sections 5 and 6 of RFC9200}} (such as HTTP and DTLS {{RFC9147}} or TLS {{RFC9846}}) MAY be used instead.
 
 If OSCORE is used, the requesting entity and AS need to have an OSCORE Security Context in place. While this can be pre-installed, the requesting entity and AS can establish such an OSCORE Security Context, for example, by running the LAKE protocol, as shown between C and AS by the examples in {{examples}}. This also applies to the communication between RS and AS, for example to protect the upload of access tokens from AS directly to RS as described in {{I-D.ietf-ace-workflow-and-params}}.
 
@@ -2241,6 +2273,8 @@ x5u_ta_type = 35
 * Renamed EDHOC to LAKE as appropriate.
 
 * Clarification: for initial authentication, only methods based on public keys can be used. PSK-based authentication can be used for session resumption.
+
+* Added new section on possible conflicting information from AS to C.
 
 * Fixed JSON and CBOR examples of the LAKE_Information object.
 

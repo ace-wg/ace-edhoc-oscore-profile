@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 18 April 2027                                         M. Tiloca
+Expires: 19 April 2027                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         15 October 2026
+                                                         16 October 2026
 
 
  Lightweight Authenticated Key Exchange (LAKE) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 April 2027.
+   This Internet-Draft will expire on 19 April 2027.
 
 Copyright Notice
 
@@ -107,18 +107,19 @@ Table of Contents
        4.4.4.  LAKE message_3
        4.4.5.  LAKE message_4
        4.4.6.  Timing of Access Token Request
-     4.5.  OSCORE Security Context
-     4.6.  Update of Access Rights
-       4.6.1.  C-to-RS: POST to /authz-info Endpoint
-       4.6.2.  RS-to-C: 2.01 (Created)
-     4.7.  Discarding the OSCORE Security Context
-     4.8.  Establishing a New OSCORE Security Context
-     4.9.  Access Rights Verification
-     4.10. Access Token Invalidity
-     4.11. Authentication Credential Invalidity
-     4.12. LAKE Session Invalidity
-     4.13. Using AS Request Creation Hints
-     4.14. Requesting Authentication Credential By Value
+     4.5.  Possible Conflicting Information from AS
+     4.6.  OSCORE Security Context
+     4.7.  Update of Access Rights
+       4.7.1.  C-to-RS: POST to /authz-info Endpoint
+       4.7.2.  RS-to-C: 2.01 (Created)
+     4.8.  Discarding the OSCORE Security Context
+     4.9.  Establishing a New OSCORE Security Context
+     4.10. Access Rights Verification
+     4.11. Access Token Invalidity
+     4.12. Authentication Credential Invalidity
+     4.13. LAKE Session Invalidity
+     4.14. Using AS Request Creation Hints
+     4.15. Requesting Authentication Credential By Value
    5.  Secure Communication with AS
    6.  Use with Application Profiles of ACE for Group Key Provisioning
    7.  CWT Confirmation Methods
@@ -453,7 +454,7 @@ Table of Contents
    token to RS using the /authz-info endpoint as specified in
    Section 5.10 of [RFC9200], where the exchanged CoAP messages are
    protected by the previously established OSCORE Security Context (see
-   Section 4.6).  If the access token is valid, RS replies to the
+   Section 4.7).  If the access token is valid, RS replies to the
    request with a 2.01 (Created) response.
 
    Upon successful update of access rights, the new issued access token
@@ -1295,10 +1296,10 @@ Table of Contents
    C and RS run the LAKE protocol (see Section 4.2) and C uploads the
    access token through the EAD field of a LAKE message (see
    Section 4.1).  Once the LAKE session is successfully completed, C and
-   RS derive an OSCORE Security Context (see Section 4.5).  After that,
+   RS derive an OSCORE Security Context (see Section 4.6).  After that,
    OSCORE is used for protecting communications when C accesses
    resources at RS, as per the authorization information indicated in
-   the access token (see Section 4.9).
+   the access token (see Section 4.10).
 
    Detailed examples are shown in Appendix A.
 
@@ -1339,7 +1340,7 @@ Table of Contents
 
    This EAD item is used only when uploading the first access token of a
    token series, but not for the dynamic update of access rights (see
-   Section 4.6).
+   Section 4.7).
 
    Example: assuming that ead_label is 24 and that the value of the
    "access_token" field of the access token response from AS is equal to
@@ -1498,9 +1499,9 @@ Table of Contents
 
       RS MUST verify that the access token specified in the EAD item is
       valid.  The validation follows the procedure specified in
-      Section 4.6.2.  If such validation fails, RS MUST reply to C with
+      Section 4.7.2.  If such validation fails, RS MUST reply to C with
       a LAKE error message with ERR_CODE = 1 (see Section 6 of
-      [RFC9528]) and it MUST abort the LAKE session.
+      [RFC9528]), and it MUST abort the LAKE session.
 
 4.4.  Reverse Message Flow
 
@@ -1576,9 +1577,9 @@ Table of Contents
 
       RS MUST verify that the access token specified in the EAD item is
       valid.  The validation follows the procedure specified in
-      Section 4.6.2.  If such validation fails, RS MUST reply to C with
+      Section 4.7.2.  If such validation fails, RS MUST reply to C with
       a LAKE error message with ERR_CODE = 1 (see Section 6 of
-      [RFC9528]) and it MUST abort the LAKE session.
+      [RFC9528]), and it MUST abort the LAKE session.
 
 4.4.6.  Timing of Access Token Request
 
@@ -1620,7 +1621,7 @@ Table of Contents
       LAKE session, by including the EAD item Request Creation Hints in
       LAKE message_2 and retrieving the information specified by RS from
       the EAD item Request Creation Hints in LAKE message_3 (see
-      Section 4.13).  Consequently, C can send the access token request
+      Section 4.14).  Consequently, C can send the access token request
       to AS as soon as it receives LAKE message_3 from RS.  In
       particular, the "req_cnf" parameter of the access token request
       specifies the authentication credential AUTH_CRED_C that C uses in
@@ -1645,7 +1646,82 @@ Table of Contents
       to bind to an access token and to specify in the access token
       request to AS.
 
-4.5.  OSCORE Security Context
+4.5.  Possible Conflicting Information from AS
+
+   In the best-case scenario, C uses the LAKE forward message flow and
+   knows the right AS associated with RS before sending LAKE message_1.
+   Consequently, when requesting the first access token of a token
+   series, C can first complete the access token request-response
+   exchange with AS, and then send LAKE message_1 to RS, consistent with
+   what AS specified within the LAKE_Information object of the access
+   token response (see Section 3.3, Section 4.2, and Section 4.3.1).
+
+   In other scenarios, C has to request the first access token of a
+   token series during an already ongoing LAKE session with RS, i.e.:
+
+   *  When using the LAKE forward message flow without knowing in
+      advance the right AS associated with RS, which C learns during the
+      LAKE session through the EAD item Request Creation Hints (see
+      Section 4.14).  That is, the access token request-response
+      exchange with AS occurs after C has received LAKE message_2 from
+      RS.
+
+   *  When using the LAKE reverse message flow, as discussed in
+      Section 4.4.6.  That is, the access token request-response
+      exchange with AS occurs after C has received LAKE message_1 or
+      message_3 from RS, depending on whether or not C knows in advance
+      the right AS associated with RS before sending the trigger message
+      to RS.
+
+   In the scenarios above, the information that AS specifies within the
+   LAKE_Information object of the access token response could contradict
+   the already ongoing LAKE session between C and RS.  With reference to
+   the LAKE_Information object in the access token response, this
+   particularly concerns:
+
+   *  The URI path of the LAKE resource targeted in the session, which
+      might differ from the one indicated by the "uri_path" field if
+      present, or from the path /.well-known/edhoc otherwise.
+
+   *  The LAKE method used in the session and indicated in LAKE
+      message_1, which might not be indicated by the "methods" field (if
+      present).
+
+   *  The selected cipher suite used in the session and indicated in
+      LAKE message_1, which might not be indicated by the
+      "cipher_suites" field (if present).
+
+   When C receives the access token response from AS, if C detects any
+   contradiction between the ongoing LAKE session with RS and the
+   information specified in the received LAKE_Information object, C MUST
+   reply to RS with a LAKE error message with ERR_CODE = 1 (see
+   Section 6 of [RFC9528]), and it MUST abort the LAKE session.  Note
+   that such error message is sent in reply to:
+
+   *  LAKE message_2, when using the LAKE forward message flow.
+
+   *  LAKE message_1 or message_3, when using the LAKE reverse message
+      flow, depending on whether or not C knows in advance the right AS
+      associated with RS before sending the trigger message to RS.
+
+   After aborting the LAKE session, C can take advantage of the just
+   issued access token and run a new LAKE session with RS as intended to
+   be bound to that access token.  The new session is run consistent
+   with the received LAKE_Information object that was conveyed in the
+   access token response from AS.  In particular:
+
+   *  If C decides to use the LAKE forward message flow, it sends LAKE
+      message_1 consistent with the received LAKE_Information object.
+
+   *  If C decides to use the LAKE reverse message flow, it sends the
+      trigger message to RS consistent with the received
+      LAKE_Information object.  In practice, this is simply about
+      sending the trigger message to the LAKE resource with URI path
+      indicated by the "uri_path" field, if present in the
+      LAKE_Information object, or with URI path /.well-known/edhoc
+      otherwise.
+
+4.6.  OSCORE Security Context
 
    Once the LAKE session is successfully completed, C and RS derive an
    OSCORE Security Context as defined in Appendix A.1 of [RFC9528].
@@ -1671,7 +1747,7 @@ Table of Contents
    before sending LAKE message_3.  An example is provided in
    Appendix A.2.
 
-4.6.  Update of Access Rights
+4.7.  Update of Access Rights
 
    If C has a valid OSCORE Security Context associated with a valid
    access token at RS, then C can request from AS an update of the
@@ -1682,7 +1758,7 @@ Table of Contents
    same token series of the current access token (see Section 3.2).
 
    According to this document, AS provides the new access token to C
-   (see Section 3.3) for further uploading to RS (see Section 4.6.1).
+   (see Section 3.3) for further uploading to RS (see Section 4.7.1).
    Alternatively, the new access token can be uploaded by AS directly to
    RS, as described in [I-D.ietf-ace-workflow-and-params].
 
@@ -1693,7 +1769,7 @@ Table of Contents
    The rest of this section describes the message exchange for the
    uploading of the new access token from C to RS.
 
-4.6.1.  C-to-RS: POST to /authz-info Endpoint
+4.7.1.  C-to-RS: POST to /authz-info Endpoint
 
    C can update its access rights by uploading the updated access token
    to RS using CoAP [RFC7252] and the Authorization Information endpoint
@@ -1742,7 +1818,7 @@ Table of Contents
    establish a new OSCORE Security Context, and AUTH_CRED_C remains the
    same.
 
-4.6.2.  RS-to-C: 2.01 (Created)
+4.7.2.  RS-to-C: 2.01 (Created)
 
    If all validations are successful, RS stores the new access token in
    such a way that it is possible to retrieve it based on the pair
@@ -1765,17 +1841,17 @@ Table of Contents
 
    As specified in Section 5.10.1 of [RFC9200], when receiving a valid
    access token with updated authorization information from C (see
-   Section 4.6.1), it is recommended that RS overwrites the previous
+   Section 4.7.1), it is recommended that RS overwrites the previous
    access token.  That is, only the latest authorization information in
    the access token received by RS is valid.  This simplifies the
    process needed by RS to keep track of authorization information for a
    given client.
 
-4.7.  Discarding the OSCORE Security Context
+4.8.  Discarding the OSCORE Security Context
 
    There are a number of cases where C or RS have to discard the OSCORE
    Security Context that they share, after which they can establish a
-   new one (see Section 4.8).
+   new one (see Section 4.9).
 
    C MUST discard the current OSCORE Security Context shared with RS
    when any of the following occurs:
@@ -1827,12 +1903,12 @@ Table of Contents
    those observations are going to be protected with the newly derived
    OSCORE Security Context.
 
-4.8.  Establishing a New OSCORE Security Context
+4.9.  Establishing a New OSCORE Security Context
 
    The procedure for provisioning a new access token to RS specified in
    this section applies to various cases where an OSCORE Security
    Context shared between C and RS has been deleted, for example as
-   described in Section 4.7.
+   described in Section 4.8.
 
    Another exceptional case is that where there is still a valid OSCORE
    Security Context but it needs to be updated, e.g., due to a policy
@@ -1856,7 +1932,7 @@ Table of Contents
    RS re-run the LAKE protocol, they preserve their OSCORE identifiers,
    i.e., their OSCORE Sender/Recipient IDs.
 
-4.9.  Access Rights Verification
+4.10.  Access Rights Verification
 
    RS MUST follow the procedures defined in Section 5.10.2 of [RFC9200].
    That is, if RS receives an OSCORE-protected request targeting a
@@ -1869,7 +1945,7 @@ Table of Contents
    MUST verify that the authorization information covers the target
    resource and the action intended by C on it.
 
-4.10.  Access Token Invalidity
+4.11.  Access Token Invalidity
 
    When an access token becomes invalid (e.g., due to its expiration or
    revocation), the following applies:
@@ -1883,7 +1959,7 @@ Table of Contents
    *  RS notifies C with a 4.01 (Unauthorized) error response for any
       long-running request, as specified in Section 5.8.3 of [RFC9200].
 
-4.11.  Authentication Credential Invalidity
+4.12.  Authentication Credential Invalidity
 
    If an authentication credential AUTH_CRED_C of C is invalidated
    (e.g., it expires), then the following applies:
@@ -1898,7 +1974,7 @@ Table of Contents
    *  RS and C MUST abort and purge all the LAKE sessions that used
       AUTH_CRED_C and successfully completed.  Also, RS and C MUST
       delete the OSCORE Security Contexts derived from those sessions
-      (see Section 4.7).
+      (see Section 4.8).
 
    If an authentication credential AUTH_CRED_RS of RS is invalidated
    (e.g., it expires), then the following applies:
@@ -1913,16 +1989,16 @@ Table of Contents
    *  RS and C MUST abort and purge all the LAKE sessions that used
       AUTH_CRED_RS and successfully completed.  Also, RS and C MUST
       delete the OSCORE Security Contexts derived from those sessions
-      (see Section 4.7).
+      (see Section 4.8).
 
-4.12.  LAKE Session Invalidity
+4.13.  LAKE Session Invalidity
 
    If a LAKE session is aborted and purged for other reasons than those
-   listed in Section 4.11, then RS and C that established the session
+   listed in Section 4.12, then RS and C that established the session
    MUST delete the OSCORE Security Context derived from that session
-   (see Section 4.7).
+   (see Section 4.8).
 
-4.13.  Using AS Request Creation Hints
+4.14.  Using AS Request Creation Hints
 
    When replying to an unauthorized resource request message from a
    client, RS can send an unprotected AS Request Creation Hints message
@@ -2002,7 +2078,7 @@ Table of Contents
    CBOR map MUST NOT include "audience" and SHOULD NOT include "scope"
    when present in the EAD item conveyed in the EAD_2 field.
 
-4.14.  Requesting Authentication Credential By Value
+4.15.  Requesting Authentication Credential By Value
 
    LAKE peers need access to each other's authentication credentials to
    complete the protocol.  To reduce unnecessary overhead, LAKE allows
@@ -2103,7 +2179,7 @@ Table of Contents
    RECOMMENDED, in order to reduce the number of libraries that C and RS
    have to support.  Other protocols fulfilling the security
    requirements defined in Sections 5 and 6 of [RFC9200] (such as HTTP
-   and DTLS [RFC9147] or TLS [RFC8446]) MAY be used instead.
+   and DTLS [RFC9147] or TLS [RFC9846]) MAY be used instead.
 
    If OSCORE is used, the requesting entity and AS need to have an
    OSCORE Security Context in place.  While this can be pre-installed,
@@ -2557,7 +2633,7 @@ Table of Contents
    An unprotected response to an unauthorized request may disclose
    information about RS and/or its existing relationship with C.  It is
    advisable to include as little information as possible in an
-   unencrypted response from RS (see also Section 4.13).  When an OSCORE
+   unencrypted response from RS (see also Section 4.14).  When an OSCORE
    Security Context already exists between C and RS, more detailed
    information may be included in a protected response from RS.
 
@@ -2989,7 +3065,7 @@ Table of Contents
    *  Description: The sender peer wishes to receive the other peer's
       credential transported by value (and not identified by reference)
 
-   *  Reference: [RFC-XXXX], Section 4.14
+   *  Reference: [RFC-XXXX], Section 4.15
 
 
 
@@ -2999,7 +3075,7 @@ Table of Contents
 
    *  Description: Request or convey AS Request Creation Hints
 
-   *  Reference: [RFC-XXXX], Section 4.13
+   *  Reference: [RFC-XXXX], Section 4.14
 
 14.9.  EDHOC Exporter Labels
 
@@ -3571,10 +3647,6 @@ Table of Contents
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
               <https://www.rfc-editor.org/rfc/rfc4949>.
 
-   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
-              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
-              <https://www.rfc-editor.org/rfc/rfc8446>.
-
    [RFC9110]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP Semantics", STD 97, RFC 9110,
               DOI 10.17487/RFC9110, June 2022,
@@ -3584,6 +3656,10 @@ Table of Contents
               Datagram Transport Layer Security (DTLS) Protocol Version
               1.3", RFC 9147, DOI 10.17487/RFC9147, April 2022,
               <https://www.rfc-editor.org/rfc/rfc9147>.
+
+   [RFC9846]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 9846, DOI 10.17487/RFC9846, July 2026,
+              <https://www.rfc-editor.org/rfc/rfc9846>.
 
 Appendix A.  Examples
 
@@ -3597,7 +3673,7 @@ Appendix A.  Examples
       AS as well as between C and RS.
 
    *  Appendix A.3 makes use of the EAD items Request Creation Hints
-      (see Section 4.13) and Credential By Value (see Section 4.14),
+      (see Section 4.14) and Credential By Value (see Section 4.15),
       with the former allowing C to receive AS Request Creation Hints
       during a LAKE session.  This is useful if C is not able to
       determine in advance the appropriate AS to contact.
@@ -3958,8 +4034,8 @@ A.3.  Non-sequential Workflow
 
    The following describes an example scenario where this functionality
    is used in the LAKE forward message flow, in particular taking
-   advantage of the EAD items Request Creation Hints (see Section 4.13)
-   and Credential By Value (see Section 4.14).
+   advantage of the EAD items Request Creation Hints (see Section 4.14)
+   and Credential By Value (see Section 4.15).
 
    1.  Without having an access token, C sends LAKE message_1 to RS,
        including in EAD_1:
@@ -3997,7 +4073,7 @@ A.3.  Non-sequential Workflow
        C needs to know in advance the right audience and scope to
        specify in the access token request to AS, since that information
        is not provided by RS in the EAD item Request Creation Hints
-       within LAKE message_2 (see Section 4.13).  There may also be
+       within LAKE message_2 (see Section 4.14).  There may also be
        default audience and scope set at AS to use, if none is specified
        by C in its access token request.
 
@@ -4153,7 +4229,7 @@ Appendix B.  Profile Requirements
       necessary permissions and AS for accessing a resource, different
       from the one proposed in [RFC9200]: AS discovery is supported by
       using the EAD item Request Creation Hints as described in
-      Section 4.13.
+      Section 4.14.
 
    *  Optionally, specify new grant types: Not specified.
 
@@ -4270,6 +4346,9 @@ D.1.  Version -11 to -12
    *  Clarification: for initial authentication, only methods based on
       public keys can be used.  PSK-based authentication can be used for
       session resumption.
+
+   *  Added new section on possible conflicting information from AS to
+      C.
 
    *  Fixed JSON and CBOR examples of the LAKE_Information object.
 

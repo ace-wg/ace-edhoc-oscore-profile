@@ -73,6 +73,7 @@ normative:
   I-D.ietf-core-uri-path-abbrev:
   I-D.ietf-ace-key-groupcomm-oscore:
   I-D.ietf-ace-coap-pubsub-profile:
+  I-D.ietf-lake-edhoc-psk:
   COSE.Header.Parameters:
     author:
       org: IANA
@@ -161,7 +162,6 @@ informative:
   I-D.ietf-lake-app-profiles:
   I-D.ietf-ace-group-oscore-profile:
   I-D.ietf-lake-authkem-edhoc:
-  I-D.ietf-lake-edhoc-psk:
   I-D.tiloca-core-oscore-piv-enc:
 
 entity:
@@ -987,7 +987,9 @@ Furthermore, implementations may want to cancel CoAP observations at RS, if regi
 
 The procedure for provisioning a new access token to RS specified in this section applies to various cases where an OSCORE Security Context shared between C and RS has been deleted, for example as described in {{discard-context}}.
 
-Another exceptional case is that where there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS MAY alternatively attempt to run a key update protocol that they both support. One lightweight example is KUDOS {{I-D.ietf-core-oscore-key-update}}, which is independent of ACE and LAKE and does not require the uploading of an access token. If C and RS do not support a common key update protocol to use for updating their still valid OSCORE Security Context, then C and RS fall back to LAKE as outlined above.
+Another exceptional case is that where there is still a valid OSCORE Security Context but it needs to be updated, e.g., due to a policy limiting its use in terms of time or amount of processed data, or to the imminent exhaustion of the OSCORE Sender Sequence Number space. In this case, C and RS MAY alternatively attempt to run a key update protocol that they both support. One lightweight example is KUDOS {{I-D.ietf-core-oscore-key-update}}, which is independent of ACE and LAKE and does not require the uploading of an access token. If C and RS do not support a common key update protocol to use for updating their still valid OSCORE Security Context, then C and RS fall back to running LAKE.
+
+Regardless of whether a valid Security Context is available, if the access token is still valid, C and RS can rerun LAKE to perform session resumption with PSK-based authentication {{I-D.ietf-lake-edhoc-psk}}, assuming that they support session resumption and the underlying LAKE authentication method. When doing so, the access token is not specified in the LAKE messages sent to RS. Also, consistent with {{edhoc-exec}}, the previous LAKE session and the OSCORE Security Context derived thereof are deleted, and the new LAKE session becomes associated with the same pair (SESSION_ID, AUTH_CRED_C) that was associated with the previous session. Note that AUTH_CRED_C is the authentication credential of C that is bound to the access token and that C used for its initial authentication based on public keys.
 
 In either case, C and RS establish a new OSCORE Security Context that replaces the old one and will be used for protecting their communications from then on. In particular, RS MUST associate the new OSCORE Security Context with the current (potentially re-uploaded) access token. Furthermore, the SESSION\_ID identifying the token series to which the access token belongs remains unchanged, even if C and RS have established a new LAKE session. Unless C and RS re-run the LAKE protocol, they preserve their OSCORE identifiers, i.e., their OSCORE Sender/Recipient IDs.
 

@@ -5,10 +5,10 @@
 ACE Working Group                                            G. Selander
 Internet-Draft                                         J. Preuß Mattsson
 Intended status: Standards Track                                Ericsson
-Expires: 19 April 2027                                         M. Tiloca
+Expires: 22 April 2027                                         M. Tiloca
                                                               R. Höglund
                                                                     RISE
-                                                         16 October 2026
+                                                         19 October 2026
 
 
  Lightweight Authenticated Key Exchange (LAKE) and Object Security for
@@ -64,7 +64,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 April 2027.
+   This Internet-Draft will expire on 22 April 2027.
 
 Copyright Notice
 
@@ -1920,7 +1920,21 @@ Table of Contents
    LAKE and does not require the uploading of an access token.  If C and
    RS do not support a common key update protocol to use for updating
    their still valid OSCORE Security Context, then C and RS fall back to
-   LAKE as outlined above.
+   running LAKE.
+
+   Regardless of whether a valid Security Context is available, if the
+   access token is still valid, C and RS can rerun LAKE to perform
+   session resumption with PSK-based authentication
+   [I-D.ietf-lake-edhoc-psk], assuming that they support session
+   resumption and the underlying LAKE authentication method.  When doing
+   so, the access token is not specified in the LAKE messages sent to
+   RS.  Also, consistent with Section 4.2, the previous LAKE session and
+   the OSCORE Security Context derived thereof are deleted, and the new
+   LAKE session becomes associated with the same pair (SESSION_ID,
+   AUTH_CRED_C) that was associated with the previous session.  Note
+   that AUTH_CRED_C is the authentication credential of C that is bound
+   to the access token and that C used for its initial authentication
+   based on public keys.
 
    In either case, C and RS establish a new OSCORE Security Context that
    replaces the old one and will be used for protecting their
@@ -3388,6 +3402,14 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-cose-
               cbor-encoded-cert-21>.
 
+   [I-D.ietf-lake-edhoc-psk]
+              Lopez-Perez, Selander, G., Mattsson, J. P., Marin-Lopez,
+              R., and F. Lopez-Gomez, "LAKE Authenticated with Pre-
+              Shared Keys (PSKs)", Work in Progress, Internet-Draft,
+              draft-ietf-lake-edhoc-psk-10, 5 October 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
+              edhoc-psk-10>.
+
    [JSON.Web.Token.Claims]
               IANA, "JSON Web Token Claims",
               <https://www.iana.org/assignments/jwt/jwt.xhtml#claims>.
@@ -3618,14 +3640,6 @@ Table of Contents
               Progress, Internet-Draft, draft-ietf-lake-authz-08, 6 July
               2026, <https://datatracker.ietf.org/doc/html/draft-ietf-
               lake-authz-08>.
-
-   [I-D.ietf-lake-edhoc-psk]
-              Lopez-Perez, Selander, G., Mattsson, J. P., Marin-Lopez,
-              R., and F. Lopez-Gomez, "LAKE Authenticated with Pre-
-              Shared Keys (PSKs)", Work in Progress, Internet-Draft,
-              draft-ietf-lake-edhoc-psk-10, 5 October 2026,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-lake-
-              edhoc-psk-10>.
 
    [I-D.serafin-lake-ta-hint]
               Serafin, M. and G. Selander, "Trust Anchor Hints in
